@@ -1,5 +1,7 @@
 # Mentor LMS Docker Setup
 
+Docker is optional in this project. For aaPanel or a traditional VPS/MySQL deployment, use the normal `.env` file and ignore the Docker-specific flow below.
+
 ## Quick Start
 
 ### 1. Build the Application
@@ -32,6 +34,8 @@ docker run -d --name mentor-lms-app --network mentor-network -p 8080:80 mentor-l
 - Database: `mentor_lms`
 - Username: `mentor_user`
 - Password: `your_password`
+
+If you are not using Docker, configure the same values in `.env` instead of creating `docker.env`.
 
 #### Option B: With External MySQL
 ```bash

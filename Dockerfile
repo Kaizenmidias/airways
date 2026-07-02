@@ -87,8 +87,8 @@ COPY --chown=www-data:www-data . .
 # Copy built assets from node stage
 COPY --from=node-builder --chown=www-data:www-data /app/public/build ./public/build
 
-# Copy environment file from docker.env to .env if .env doesn't exist
-RUN if [ ! -f .env ]; then cp docker.env .env; fi
+# Copy a baseline environment file if no .env is supplied at build time
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
 
 # Generate APP_KEY if not present (required for some Composer operations)
 RUN if ! grep -q "APP_KEY=base64:" .env; then \
