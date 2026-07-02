@@ -11,8 +11,9 @@ import TopCategories from './partials/home-2/top-categories';
 import TopCourses from './partials/home-2/top-courses';
 import TopInstructors from './partials/home-2/top-instructors';
 import Layout from './partials/layout';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 
-const Home1 = ({ system, page }: IntroPageProps) => {
+const Home1 = ({ system, page, airways }: IntroPageProps) => {
    const { sections } = page;
    const components: any[] = [];
 
@@ -36,6 +37,7 @@ const Home1 = ({ system, page }: IntroPageProps) => {
                components.push(NewCourses);
                break;
             case 'top_instructors':
+               if (!isAirwaysFeatureEnabled(airways, 'instructors')) break;
                components.push(TopInstructors);
                break;
             case 'testimonials':
@@ -48,6 +50,7 @@ const Home1 = ({ system, page }: IntroPageProps) => {
                components.push(CallToAction);
                break;
             case 'blogs':
+               if (!isAirwaysFeatureEnabled(airways, 'blog')) break;
                components.push(Blogs);
                break;
             default:

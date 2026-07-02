@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 
 const LandingNavbar = () => {
    const { props } = usePage<SharedData>();
-   const { page, auth, customize } = props;
+   const { page, auth, customize, airways } = props;
    const navbar = getPageSection(page, 'navbar');
 
    const user = auth.user;
@@ -161,7 +161,7 @@ const LandingNavbar = () => {
                            </>
                         ) : (
                            <>
-                              {user.role === 'instructor' && props.system.sub_type === 'collaborative' && (
+                              {user.role === 'instructor' && airways.marketplace && (
                                  <Link href={route('dashboard')} className="text-sm font-normal">
                                     Dashboard
                                  </Link>

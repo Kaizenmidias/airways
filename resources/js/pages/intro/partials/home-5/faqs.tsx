@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 import { getPageSection, getPropertyArray } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -6,8 +7,9 @@ import Section from '../section';
 
 const FAQs = () => {
    const { props } = usePage<IntroPageProps>();
-   const { page, customize } = props;
+   const { page, customize, airways } = props;
    const faqsCoursesSection = getPageSection(page, 'faqs');
+   const showForumFaq = isAirwaysFeatureEnabled(airways, 'forum');
 
    const faqs = [
       {
@@ -32,7 +34,9 @@ const FAQs = () => {
          id: 'item-4',
          question: 'Can I ask questions or get support during the course?',
          answer:
-            'Absolutely! Each course includes a discussion forum where you can ask questions, interact with other students, and receive support from instructors and the community.',
+            showForumFaq
+               ? 'Absolutely! Each course includes a discussion forum where you can ask questions, interact with other students, and receive support from instructors and the community.'
+               : 'Absolutely! Each course includes support materials, practical guidance, and clear lesson resources to help you stay on track.',
       },
       {
          id: 'item-5',

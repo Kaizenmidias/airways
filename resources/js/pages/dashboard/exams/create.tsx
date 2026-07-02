@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import DashboardLayout from '@/layouts/dashboard/layout';
+import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
 import { SharedData } from '@/types/global';
 import { useForm } from '@inertiajs/react';
@@ -25,8 +26,10 @@ interface Props extends SharedData {
 
 const CreateExam = (props: Props) => {
    const { user } = useAuth();
-   const { categories, instructors, system, translate } = props;
+   const { categories, instructors, system, translate, airways } = props;
    const { input } = translate;
+   const showInstructorSelector = user?.role === 'admin' && shouldShowCollaborativeUi(airways, system?.sub_type);
+   const defaultInstructorId = String(user?.instructor_id ?? instructors[0]?.id ?? '');
 
    const { data, setData, post, errors, processing } = useForm({
       title: '',
@@ -46,7 +49,7 @@ const CreateExam = (props: Props) => {
       expiry_type: 'lifetime',
       expiry_duration: new Date(),
       thumbnail: null as File | null,
-      instructor_id: user.role === 'admin' && system.sub_type === 'collaborative' ? '' : user.instructor_id,
+      instructor_id: showInstructorSelector ? '' : defaultInstructorId,
       exam_category_id: '',
    });
 
@@ -123,7 +126,7 @@ const CreateExam = (props: Props) => {
 
                {/* Right Column */}
                <div className="space-y-4">
-                  {user?.role === 'admin' && system?.sub_type === 'collaborative' && (
+                  {showInstructorSelector && (
                      <div>
                         <Label htmlFor="instructor_id">Exam Instructor *</Label>
                         <Combobox

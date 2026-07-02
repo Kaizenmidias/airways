@@ -5,6 +5,8 @@ import Layout from '../intro/partials/layout';
 import Hero from './partials/hero';
 import Sections from './sections';
 import Career from './sections/career';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
+import { usePage } from '@inertiajs/react';
 
 export interface InnerPageProps extends SharedData {
    innerPage: Page;
@@ -13,6 +15,7 @@ export interface InnerPageProps extends SharedData {
 }
 
 const Index = ({ innerPage, jobCirculars }: InnerPageProps) => {
+   const { props } = usePage<InnerPageProps>();
    return (
       <Layout page={innerPage} navbarHeight={false}>
          <Head title={innerPage.name} />
@@ -21,7 +24,7 @@ const Index = ({ innerPage, jobCirculars }: InnerPageProps) => {
 
          {innerPage.sections.length > 0 && <Sections sections={innerPage.sections} />}
 
-         {innerPage.slug === 'careers' && jobCirculars && <Career jobCirculars={jobCirculars} />}
+         {innerPage.slug === 'careers' && jobCirculars && isAirwaysFeatureEnabled(props.airways, 'jobs') && <Career jobCirculars={jobCirculars} />}
 
          <div className="container">
             {innerPage.description && (

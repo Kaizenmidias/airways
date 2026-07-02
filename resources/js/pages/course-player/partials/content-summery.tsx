@@ -9,12 +9,14 @@ import { useEffect, useState } from 'react';
 import ReviewForm from '../forms/review';
 import Forum from './forum';
 import Resource from './resource';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 
 const ContentSummery = () => {
    const { props } = usePage<CoursePlayerProps>();
-   const { translate, type } = props;
+   const { translate, type, airways } = props;
    const { button } = translate;
    const [isResource, setIsResource] = useState(false);
+   const showForum = isAirwaysFeatureEnabled(airways, 'forum');
 
    useEffect(() => {
       if (type === 'lesson') {
@@ -35,10 +37,14 @@ const ContentSummery = () => {
          value: 'resource',
          label: 'Resource',
       },
-      {
-         value: 'forum',
-         label: button.forum,
-      },
+      ...(showForum
+         ? [
+              {
+                 value: 'forum',
+                 label: button.forum,
+              },
+           ]
+         : []),
       {
          value: 'review',
          label: button.review,
@@ -77,9 +83,11 @@ const ContentSummery = () => {
                <Resource />
             </TabsContent>
          )}
-         <TabsContent value="forum" className="m-0 p-5">
-            <Forum />
-         </TabsContent>
+         {showForum && (
+            <TabsContent value="forum" className="m-0 p-5">
+               <Forum />
+            </TabsContent>
+         )}
          <TabsContent value="review" className="m-0 space-y-6 p-5">
             <StudentFeedback totalReviews={props.totalReviews} />
             <ReviewForm />

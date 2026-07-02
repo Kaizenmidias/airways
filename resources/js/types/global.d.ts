@@ -4,6 +4,22 @@ declare global {
    const route: typeof routeFn;
 }
 
+interface AirwaysFeatures {
+   instructors: boolean;
+   jobs: boolean;
+   payouts: boolean;
+   forum: boolean;
+   blog: boolean;
+   blog_social: boolean;
+   newsletter: boolean;
+}
+
+interface AirwaysConfig {
+   mode: string;
+   marketplace: boolean;
+   features: AirwaysFeatures;
+}
+
 export interface SharedData {
    page: Page;
    auth: Auth;
@@ -22,6 +38,7 @@ export interface SharedData {
    locale: string;
    direction: 'ltr' | 'rtl';
    cartCount: number;
+   airways: AirwaysConfig;
    translate: LanguageTranslations;
    [key: string]: unknown;
 }

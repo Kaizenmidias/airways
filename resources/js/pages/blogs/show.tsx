@@ -7,6 +7,7 @@ import { SharedData } from '@/types/global';
 import { Head, usePage } from '@inertiajs/react';
 import BlogComments from './partials/blog-comments';
 import BlogLikeDislike from './partials/blog-like-dislike';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 
 export interface BlogShowProps extends SharedData {
    blog: Blog;
@@ -18,8 +19,9 @@ export interface BlogShowProps extends SharedData {
 
 const ShowBlog = ({ blog }: BlogShowProps) => {
    const { url, props } = usePage<BlogShowProps>();
-   const { translate } = props;
+   const { translate, airways } = props;
    const { frontend } = translate;
+   const showBlogSocial = isAirwaysFeatureEnabled(airways, 'blog_social');
    
    const createdAt = new Date(blog.created_at).toLocaleDateString();
    const authorInitials = blog.user?.name
@@ -161,14 +163,18 @@ const ShowBlog = ({ blog }: BlogShowProps) => {
                <Separator className="my-6" />
 
                {/* Like/Dislike Section */}
-               <div className="flex items-center justify-center py-4">
-                  <BlogLikeDislike />
-               </div>
+               {showBlogSocial && (
+                  <>
+                     <div className="flex items-center justify-center py-4">
+                        <BlogLikeDislike />
+                     </div>
 
-               <Separator className="my-6" />
+                     <Separator className="my-6" />
 
-               {/* Comments Section */}
-               <BlogComments />
+                     {/* Comments Section */}
+                     <BlogComments />
+                  </>
+               )}
             </div>
          </div>
       </LandingLayout>

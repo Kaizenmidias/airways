@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 import { cn } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/react';
 import { MessageCircle, Send, Trash2 } from 'lucide-react';
@@ -11,6 +12,9 @@ import { BlogShowProps } from '../show';
 const BlogComments = () => {
    const { props } = usePage<BlogShowProps>();
    const { auth, blog, translate } = props;
+   if (!isAirwaysFeatureEnabled(props.airways, 'blog_social')) {
+      return null;
+   }
    const { button, frontend, input } = translate;
 
    // Comment form

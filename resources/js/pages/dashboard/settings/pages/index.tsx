@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { cn } from '@/lib/utils';
 import { PageSelectProps } from '@/types/page';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import * as React from 'react';
 import CustomPageCreateForm from './partials/custom-page-create-form';
@@ -17,15 +17,16 @@ import HomeTableColumn from './partials/home-pages-table-columns';
 
 const Pages = ({ pages, home, system, translate }: PageSelectProps) => {
    const { settings, button, common, input } = translate;
+   const { airways } = usePage<PageSelectProps>().props;
    const [modal, setModal] = React.useState<boolean>(false);
-   const [systemType, setSystemType] = React.useState<string>(system.sub_type);
+   const [systemType, setSystemType] = React.useState<string>(airways.marketplace ? system.sub_type : 'administrative');
    // Memoize the filtered data to prevent unnecessary recalculations
 
    const homePages = React.useMemo(() => pages.filter((page) => page.type !== 'inner_page'), [pages]);
    const customPages = React.useMemo(() => pages.filter((page) => page.type === 'inner_page'), [pages]);
 
    // Memoize column definitions
-   const homeColumns = React.useMemo(() => HomeTableColumn(home, system, translate), [home, system, translate]);
+   const homeColumns = React.useMemo(() => HomeTableColumn(home, system, translate, airways), [airways, home, system, translate]);
    const customColumns = React.useMemo(() => CustomTableColumn(translate), []);
 
    const homePagesTable = useReactTable({
@@ -74,9 +75,11 @@ const Pages = ({ pages, home, system, translate }: PageSelectProps) => {
                            <SelectValue placeholder={input.system_type_placeholder} />
                         </SelectTrigger>
                         <SelectContent>
-                           <SelectItem value="collaborative" className="cursor-pointer">
-                              {button.collaborative}
-                           </SelectItem>
+                           {airways.marketplace && (
+                              <SelectItem value="collaborative" className="cursor-pointer">
+                                 {button.collaborative}
+                              </SelectItem>
+                           )}
                            <SelectItem value="administrative" className="cursor-pointer">
                               {button.administrative}
                            </SelectItem>

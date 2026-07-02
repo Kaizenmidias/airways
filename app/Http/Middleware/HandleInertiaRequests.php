@@ -109,6 +109,7 @@ class HandleInertiaRequests extends Middleware
             'locale' => $locale,
             'direction' => $direction,
             'cartCount' => $cartCount,
+            'airways' => config('airways'),
             'translate' => [
                 'auth' => trans('auth'),
                 'button' => trans('button'),

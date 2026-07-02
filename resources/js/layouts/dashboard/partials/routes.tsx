@@ -1,11 +1,19 @@
+import { isAirwaysFeatureEnabled, isMarketplaceEnabled } from '@/lib/airways';
 import { routeLastSegment } from '@/lib/route';
+import { SharedData } from '@/types/global';
 import { Award, Book, Briefcase, CassetteTape, LayoutDashboard, Newspaper, Receipt, School, Settings, Users } from 'lucide-react';
 
-export const getDashboardRoutes = (translate: LanguageTranslations): DashboardRoute[] => {
+export const getDashboardRoutes = (translate: LanguageTranslations, airways: SharedData['airways']): DashboardRoute[] => {
    const { button } = translate;
+   const routes: DashboardRoute[] = [];
+   const showMarketplace = isMarketplaceEnabled(airways);
+   const showInstructors = showMarketplace && isAirwaysFeatureEnabled(airways, 'instructors');
+   const showPayouts = showMarketplace && isAirwaysFeatureEnabled(airways, 'payouts');
+   const showJobs = isAirwaysFeatureEnabled(airways, 'jobs');
+   const showBlog = isAirwaysFeatureEnabled(airways, 'blog');
+   const showNewsletter = isAirwaysFeatureEnabled(airways, 'newsletter');
 
-   return [
-   {
+   routes.push({
       title: button.main_menu ?? 'Main Menu',
       slug: 'main-menu',
       pages: [
@@ -108,139 +116,159 @@ export const getDashboardRoutes = (translate: LanguageTranslations): DashboardRo
                },
             ],
          },
-         {
-            Icon: Users,
-            name: button.instructors ?? 'Instructors',
-            path: '',
-            slug: 'instructors',
-            active: true,
-            access: ['admin', 'collaborative'],
-            children: [
-               {
-                  name: button.manage_instructors ?? 'Manage Instructors',
-                  slug: routeLastSegment(route('instructors.index')),
-                  path: route('instructors.index'),
-                  access: ['admin', 'collaborative'],
-               },
-               {
-                  name: button.create_instructor ?? 'Create Instructor',
-                  slug: routeLastSegment(route('instructors.create')),
-                  path: route('instructors.create'),
-                  access: ['admin', 'collaborative'],
-               },
-               {
-                  name: button.applications ?? 'Applications',
-                  slug: routeLastSegment(route('instructors.applications')),
-                  path: route('instructors.applications', {
-                     status: 'pending',
-                  }),
-                  access: ['admin', 'collaborative'],
-               },
-            ],
-         },
-         {
-            Icon: Receipt,
-            name: button.payout_report ?? 'Payout Report',
-            path: '',
-            slug: 'payouts',
-            active: true,
-            access: ['admin', 'collaborative'],
-            children: [
-               {
-                  name: button.payout_request ?? 'Payout Request',
-                  slug: routeLastSegment(route('payouts.request.index')),
-                  path: route('payouts.request.index'),
-                  access: ['admin', 'collaborative'],
-               },
-               {
-                  name: button.payout_history ?? 'Payout History',
-                  slug: routeLastSegment(route('payouts.history.index')),
-                  path: route('payouts.history.index'),
-                  access: ['admin', 'collaborative'],
-               },
-            ],
-         },
-         {
-            Icon: Receipt,
-            name: button.payouts ?? 'Payouts',
-            path: '',
-            slug: 'payouts',
-            active: true,
-            access: ['instructor', 'collaborative'],
-            children: [
-               {
-                  name: button.withdraw ?? 'Withdraw',
-                  slug: routeLastSegment(route('payouts.index')),
-                  path: route('payouts.index'),
-                  access: ['instructor', 'collaborative'],
-               },
-               {
-                  name: button.settings ?? 'Settings',
-                  slug: routeLastSegment(route('payouts.settings.index')),
-                  path: route('payouts.settings.index'),
-                  access: ['instructor', 'collaborative'],
-               },
-            ],
-         },
-         {
-            Icon: Briefcase,
-            name: button.job_circulars ?? 'Job Circulars',
-            path: '',
-            slug: 'job-circulars',
-            active: true,
-            access: ['admin', 'collaborative', 'administrative'],
-            children: [
-               {
-                  name: button.all_jobs ?? 'All Jobs',
-                  slug: routeLastSegment(route('job-circulars.index')),
-                  path: route('job-circulars.index'),
-                  access: ['admin', 'collaborative', 'administrative'],
-               },
-               {
-                  name: button.create_job ?? 'Create Job',
-                  slug: routeLastSegment(route('job-circulars.create')),
-                  path: route('job-circulars.create'),
-                  access: ['admin', 'collaborative', 'administrative'],
-               },
-            ],
-         },
-         {
-            Icon: Book,
-            name: button.blogs ?? 'Blogs',
-            path: '',
-            slug: 'blogs',
-            active: true,
-            access: ['admin', 'instructor', 'collaborative', 'administrative'],
-            children: [
-               {
-                  name: button.categories ?? 'Categories',
-                  slug: routeLastSegment(route('blogs.categories.index')),
-                  path: route('blogs.categories.index'),
-                  access: ['admin', 'instructor', 'collaborative', 'administrative'],
-               },
-               {
-                  name: button.create_blog ?? 'Create Blog',
-                  slug: routeLastSegment(route('blogs.create')),
-                  path: route('blogs.create'),
-                  access: ['admin', 'instructor', 'collaborative', 'administrative'],
-               },
-               {
-                  name: button.manage_blog ?? 'Manage Blog',
-                  slug: routeLastSegment(route('blogs.index')),
-                  path: route('blogs.index'),
-                  access: ['admin', 'instructor', 'collaborative', 'administrative'],
-               },
-            ],
-         },
-         {
-            Icon: Newspaper,
-            name: button.newsletters ?? 'Newsletters',
-            path: route('newsletters.index'),
-            slug: routeLastSegment(route('newsletters.index')),
-            active: true,
-            access: ['admin', 'collaborative', 'administrative'],
-            children: [],
-         },
+         ...(showInstructors
+            ? [
+                 {
+                    Icon: Users,
+                    name: button.instructors ?? 'Instructors',
+                    path: '',
+                    slug: 'instructors',
+                    active: true,
+                    access: ['admin', 'collaborative'],
+                    children: [
+                       {
+                          name: button.manage_instructors ?? 'Manage Instructors',
+                          slug: routeLastSegment(route('instructors.index')),
+                          path: route('instructors.index'),
+                          access: ['admin', 'collaborative'],
+                       },
+                       {
+                          name: button.create_instructor ?? 'Create Instructor',
+                          slug: routeLastSegment(route('instructors.create')),
+                          path: route('instructors.create'),
+                          access: ['admin', 'collaborative'],
+                       },
+                       {
+                          name: button.applications ?? 'Applications',
+                          slug: routeLastSegment(route('instructors.applications')),
+                          path: route('instructors.applications', {
+                             status: 'pending',
+                          }),
+                          access: ['admin', 'collaborative'],
+                       },
+                    ],
+                 },
+              ]
+            : []),
+         ...(showPayouts
+            ? [
+                 {
+                    Icon: Receipt,
+                    name: button.payout_report ?? 'Payout Report',
+                    path: '',
+                    slug: 'payouts',
+                    active: true,
+                    access: ['admin', 'collaborative'],
+                    children: [
+                       {
+                          name: button.payout_request ?? 'Payout Request',
+                          slug: routeLastSegment(route('payouts.request.index')),
+                          path: route('payouts.request.index'),
+                          access: ['admin', 'collaborative'],
+                       },
+                       {
+                          name: button.payout_history ?? 'Payout History',
+                          slug: routeLastSegment(route('payouts.history.index')),
+                          path: route('payouts.history.index'),
+                          access: ['admin', 'collaborative'],
+                       },
+                    ],
+                 },
+                 {
+                    Icon: Receipt,
+                    name: button.payouts ?? 'Payouts',
+                    path: '',
+                    slug: 'payouts',
+                    active: true,
+                    access: ['instructor', 'collaborative'],
+                    children: [
+                       {
+                          name: button.withdraw ?? 'Withdraw',
+                          slug: routeLastSegment(route('payouts.index')),
+                          path: route('payouts.index'),
+                          access: ['instructor', 'collaborative'],
+                       },
+                       {
+                          name: button.settings ?? 'Settings',
+                          slug: routeLastSegment(route('payouts.settings.index')),
+                          path: route('payouts.settings.index'),
+                          access: ['instructor', 'collaborative'],
+                       },
+                    ],
+                 },
+              ]
+            : []),
+         ...(showJobs
+            ? [
+                 {
+                    Icon: Briefcase,
+                    name: button.job_circulars ?? 'Job Circulars',
+                    path: '',
+                    slug: 'job-circulars',
+                    active: true,
+                    access: ['admin', 'collaborative', 'administrative'],
+                    children: [
+                       {
+                          name: button.all_jobs ?? 'All Jobs',
+                          slug: routeLastSegment(route('job-circulars.index')),
+                          path: route('job-circulars.index'),
+                          access: ['admin', 'collaborative', 'administrative'],
+                       },
+                       {
+                          name: button.create_job ?? 'Create Job',
+                          slug: routeLastSegment(route('job-circulars.create')),
+                          path: route('job-circulars.create'),
+                          access: ['admin', 'collaborative', 'administrative'],
+                       },
+                    ],
+                 },
+              ]
+            : []),
+         ...(showBlog
+            ? [
+                 {
+                    Icon: Book,
+                    name: button.blogs ?? 'Blogs',
+                    path: '',
+                    slug: 'blogs',
+                    active: true,
+                    access: ['admin', 'instructor', 'collaborative', 'administrative'],
+                    children: [
+                       {
+                          name: button.categories ?? 'Categories',
+                          slug: routeLastSegment(route('blogs.categories.index')),
+                          path: route('blogs.categories.index'),
+                          access: ['admin', 'instructor', 'collaborative', 'administrative'],
+                       },
+                       {
+                          name: button.create_blog ?? 'Create Blog',
+                          slug: routeLastSegment(route('blogs.create')),
+                          path: route('blogs.create'),
+                          access: ['admin', 'instructor', 'collaborative', 'administrative'],
+                       },
+                       {
+                          name: button.manage_blog ?? 'Manage Blog',
+                          slug: routeLastSegment(route('blogs.index')),
+                          path: route('blogs.index'),
+                          access: ['admin', 'instructor', 'collaborative', 'administrative'],
+                       },
+                    ],
+                 },
+              ]
+            : []),
+         ...(showNewsletter
+            ? [
+                 {
+                    Icon: Newspaper,
+                    name: button.newsletters ?? 'Newsletters',
+                    path: route('newsletters.index'),
+                    slug: routeLastSegment(route('newsletters.index')),
+                    active: true,
+                    access: ['admin', 'collaborative', 'administrative'],
+                    children: [],
+                 },
+              ]
+            : []),
          {
             Icon: Users,
             name: button.all_users ?? 'All Users',
@@ -270,18 +298,6 @@ export const getDashboardRoutes = (translate: LanguageTranslations): DashboardRo
                   path: route('marksheet.templates.index'),
                   access: ['admin', 'collaborative', 'administrative'],
                },
-               // {
-               //    name: 'Create Certificate',
-               //    slug: routeLastSegment(route('certificate.templates.create')),
-               //    path: route('certificate.templates.create'),
-               //    access: ['admin', 'collaborative', 'administrative'],
-               // },
-               // {
-               //    name: 'Create Marksheet',
-               //    slug: routeLastSegment(route('marksheet.templates.create')),
-               //    path: route('marksheet.templates.create'),
-               //    access: ['admin', 'collaborative', 'administrative'],
-               // },
             ],
          },
          {
@@ -349,6 +365,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations): DashboardRo
             ],
          },
       ],
-   },
-   ];
+   });
+
+   return routes;
 };

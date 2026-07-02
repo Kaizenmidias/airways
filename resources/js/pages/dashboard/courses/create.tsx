@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import courseLanguages from '@/data/course-languages';
 import DashboardLayout from '@/layouts/dashboard/layout';
+import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
 import { SharedData } from '@/types/global';
 import { useForm, usePage } from '@inertiajs/react';
@@ -28,11 +29,13 @@ interface Props extends SharedData {
 
 const Index = (props: Props) => {
    const { props: pageProps } = usePage<Props>();
-   const { translate } = pageProps;
+   const { translate, airways } = pageProps;
    const { input, button, common } = translate;
 
    const user = props.auth.user;
    const { labels, prices, expiries, categories, instructors, system } = props;
+   const showInstructorSelector = user.role === 'admin' && shouldShowCollaborativeUi(airways, system.sub_type);
+   const defaultInstructorId = String(user.instructor_id ?? instructors[0]?.id ?? '');
 
    const { data, setData, post, errors, processing } = useForm({
       title: '',
@@ -49,7 +52,7 @@ const Index = (props: Props) => {
       expiry_duration: new Date(),
       drip_content: false as boolean,
       thumbnail: null,
-      instructor_id: user.role === 'admin' && system.sub_type === 'collaborative' ? '' : user.instructor_id,
+      instructor_id: showInstructorSelector ? '' : defaultInstructorId,
       course_category_id: '',
       course_category_child_id: '',
    });
@@ -138,7 +141,7 @@ const Index = (props: Props) => {
 
                {/* Right Column */}
                <div className="space-y-4">
-                  {user.role === 'admin' && system.sub_type === 'collaborative' && (
+                  {showInstructorSelector && (
                      <div>
                         <Label htmlFor="instructor_id">{input.course_instructor} *</Label>
                         <Combobox

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 import { cn } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/react';
 import { MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react';
@@ -8,6 +9,9 @@ import { BlogShowProps } from '../show';
 const BlogLikeDislike = () => {
    const { props } = usePage<BlogShowProps>();
    const { blog, likesCount, dislikesCount, userReaction, commentsCount, translate } = props;
+   if (!isAirwaysFeatureEnabled(props.airways, 'blog_social')) {
+      return null;
+   }
    const { button, common } = translate;
 
    const { data, setData, post, processing } = useForm({

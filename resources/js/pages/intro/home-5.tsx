@@ -1,3 +1,4 @@
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 import { IntroPageProps } from '@/types/page';
 import { Head } from '@inertiajs/react';
 import Blogs from './partials/home-5/blogs';
@@ -12,7 +13,7 @@ import TopCourse from './partials/home-5/top-course';
 import TopCourses from './partials/home-5/top-courses';
 import Layout from './partials/layout';
 
-const Home3 = ({ page, system }: IntroPageProps) => {
+const Home3 = ({ page, system, airways }: IntroPageProps) => {
    const { sections } = page;
    const components: any[] = [];
 
@@ -36,6 +37,7 @@ const Home3 = ({ page, system }: IntroPageProps) => {
                components.push(TopCourses);
                break;
             case 'instructor':
+               if (!isAirwaysFeatureEnabled(airways, 'instructors')) break;
                components.push(Instructor);
                break;
             case 'faqs':
@@ -48,6 +50,7 @@ const Home3 = ({ page, system }: IntroPageProps) => {
                components.push(CallToAction);
                break;
             case 'blogs':
+               if (!isAirwaysFeatureEnabled(airways, 'blog')) break;
                components.push(Blogs);
                break;
             default:

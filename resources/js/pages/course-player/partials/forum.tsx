@@ -16,11 +16,15 @@ import { format } from 'date-fns';
 import { EllipsisVertical, MessageCircle, SquarePen, Trash } from 'lucide-react';
 import ForumEdit from '../forms/forum-edit';
 import ForumReply from '../forms/forum-reply';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 
 const Forum = () => {
    const { props, url } = usePage<CoursePlayerProps>();
    const { translate } = props;
    const { button, input, frontend } = translate;
+   if (!isAirwaysFeatureEnabled(props.airways, 'forum')) {
+      return null;
+   }
    const lesson = props.watching as SectionLesson;
 
    const { data, setData, post, errors, processing, reset } = useForm({

@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import courseLanguages from '@/data/course-languages';
 import DashboardLayout from '@/layouts/dashboard/layout';
+import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
 import { useForm, usePage } from '@inertiajs/react';
 import { ReactNode, useMemo } from 'react';
@@ -17,8 +18,9 @@ import { CourseUpdateProps } from '../update';
 
 const Basic = () => {
    const { props } = usePage<CourseUpdateProps>();
-   const { auth, system, tab, labels, categories, course, instructors, translate } = props;
+   const { auth, system, tab, labels, categories, course, instructors, translate, airways } = props;
    const { input, button, common } = translate;
+   const showInstructorSelector = auth.user.role === 'admin' && shouldShowCollaborativeUi(airways, system.sub_type);
 
    const { data, setData, post, errors, processing } = useForm({
       tab: tab,
@@ -129,7 +131,7 @@ const Basic = () => {
                <InputError message={errors.description} />
             </div>
 
-            {auth.user.role === 'admin' && system.sub_type === 'collaborative' && (
+            {showInstructorSelector && (
                <div>
                   <Label>{input.course_instructor} *</Label>
                   <Combobox

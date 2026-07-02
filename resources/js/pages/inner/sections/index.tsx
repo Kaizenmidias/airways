@@ -3,12 +3,16 @@ import Hero from './hero';
 import SuccessStatistics from './success-statistics';
 import Team from './team';
 import TopInstructors from './top-instructors';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types/global';
 
 interface Props {
    sections: PageSection[];
 }
 
 const Index = ({ sections }: Props) => {
+   const { props } = usePage<SharedData>();
    const components: any[] = [];
 
    sections
@@ -32,6 +36,7 @@ const Index = ({ sections }: Props) => {
                break;
 
             case 'top_instructors':
+               if (!isAirwaysFeatureEnabled(props.airways, 'instructors')) break;
                components.push(TopInstructors);
                break;
 

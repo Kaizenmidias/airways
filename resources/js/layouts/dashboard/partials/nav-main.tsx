@@ -11,8 +11,8 @@ import { getDashboardRoutes } from './routes';
 
 export function NavMain() {
    const page = usePage<SharedData>();
-   const { auth, system } = page.props;
-   const routes = getDashboardRoutes(page.props.translate);
+   const { auth, system, airways } = page.props;
+   const routes = getDashboardRoutes(page.props.translate, airways);
    const [openAccordions, setOpenAccordions] = useState<string>('');
 
    // Set initial accordion state based on URL

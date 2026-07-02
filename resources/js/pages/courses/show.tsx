@@ -2,8 +2,9 @@ import Tabs from '@/components/tabs';
 import { Separator } from '@/components/ui/separator';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LandingLayout from '@/layouts/landing-layout';
+import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
 import CourseHeader from './partials/course-header';
 import CoursePreview from './partials/course-preview';
@@ -25,6 +26,8 @@ export interface CourseDetailsProps extends SharedData {
 
 const Show = ({ course, system, translate }: CourseDetailsProps & { translate: any }) => {
    const { button, frontend } = translate;
+   const { props } = usePage<CourseDetailsProps>();
+   const showInstructorTab = shouldShowCollaborativeUi(props.airways, system.sub_type);
 
    const tabs = [
       {
@@ -53,8 +56,8 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
          Component: <CourseReviews />,
       },
    ].filter((tab) => {
-      if (tab.value === 'instructor') {
-         return system.sub_type === 'collaborative' ? true : false;
+         if (tab.value === 'instructor') {
+         return showInstructorTab;
       }
 
       return true;

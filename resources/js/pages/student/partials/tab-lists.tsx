@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { StudentDashboardProps } from '@/types/page';
 import { router, usePage } from '@inertiajs/react';
 import { LayoutDashboard, LogOut, LucideProps } from 'lucide-react';
@@ -15,7 +16,7 @@ interface TabListsProps {
 
 const TabLists = ({ tabs }: TabListsProps) => {
    const { props } = usePage<StudentDashboardProps>();
-   const { auth, system, instructor, translate } = props;
+   const { auth, system, instructor, translate, airways } = props;
    const { button, common } = translate;
 
    return (
@@ -34,7 +35,7 @@ const TabLists = ({ tabs }: TabListsProps) => {
             <p className="text-muted-foreground text-sm">{auth.user.email}</p>
          </div>
 
-         {instructor && instructor.status === 'approved' && (
+         {airways.marketplace && instructor && instructor.status === 'approved' && (
             <Button
                variant="ghost"
                className="text-muted-foreground h-11 w-full justify-start gap-3 rounded-none px-5 py-3 text-start"
@@ -68,7 +69,7 @@ const TabLists = ({ tabs }: TabListsProps) => {
             </Button>
          </TabsList>
 
-         {((system.sub_type === 'collaborative' && !instructor) || (instructor && instructor.status !== 'approved')) && (
+         {(shouldShowCollaborativeUi(airways, system.sub_type) && !instructor) || (instructor && instructor.status !== 'approved') ? (
             <Button
                variant="outline"
                className="hover:bg-background border-secondary-light mt-7 w-full"
@@ -82,7 +83,7 @@ const TabLists = ({ tabs }: TabListsProps) => {
             >
                {button.become_instructor}
             </Button>
-         )}
+         ) : null}
       </div>
    );
 };

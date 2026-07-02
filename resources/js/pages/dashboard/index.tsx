@@ -34,9 +34,11 @@ export interface DashboardProps extends SharedData {
 }
 
 const Dashboard = (props: DashboardProps) => {
-   const { auth, system, statistics, revenueData, courseStatusDistribution, pendingWithdrawals, translate } = props;
+   const { auth, system, statistics, revenueData, courseStatusDistribution, pendingWithdrawals, translate, airways } = props;
    const { frontend } = translate;
    const isAdmin = auth.user.role === 'admin';
+   const showMarketplace = airways.marketplace;
+   const showInstructorMetrics = showMarketplace && airways.features.instructors;
 
    // Format course status data for pie chart
    const pieChartData = useMemo(() => {
@@ -59,16 +61,16 @@ const Dashboard = (props: DashboardProps) => {
          <Head title={frontend.dashboard} />
 
          {/* Statistics Cards */}
-         <div className={cn('grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3', isAdmin ? 'lg:grid-cols-5' : 'lg:grid-cols-4')}>
+         <div className={cn('grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3', isAdmin ? (showInstructorMetrics ? 'lg:grid-cols-5' : 'lg:grid-cols-4') : 'lg:grid-cols-4')}>
             <StatCard title={frontend.courses} value={statistics.courses} icon={<FiBookOpen className="h-6 w-6 text-blue-500" />} />
             <StatCard title={frontend.lessons} value={statistics.lessons} icon={<FiVideo className="h-6 w-6 text-green-500" />} />
             <StatCard title={frontend.enrollment} value={statistics.enrollments} icon={<FiUserCheck className="h-6 w-6 text-amber-500" />} />
             <StatCard title={frontend.students} value={statistics.students} icon={<FiUsers className="h-6 w-6 text-purple-500" />} />
-            {isAdmin && <StatCard title={'Instructors'} value={statistics.instructors} icon={<FiUserPlus className="h-6 w-6 text-rose-500" />} />}
+            {isAdmin && showInstructorMetrics && <StatCard title={'Instructors'} value={statistics.instructors} icon={<FiUserPlus className="h-6 w-6 text-rose-500" />} />}
          </div>
 
          {/* Revenue Chart - Full Width */}
-         {system.sub_type === 'collaborative' && <RevenueChart />}
+         {showMarketplace && <RevenueChart />}
 
          {/* Course Status Chart */}
          <div className="grid grid-cols-2 gap-6 lg:grid-cols-12">
@@ -111,7 +113,7 @@ const Dashboard = (props: DashboardProps) => {
                </div>
             </Card>
 
-            {system.sub_type === 'collaborative' ? (
+            {showMarketplace ? (
                <Card className="col-span-full lg:col-span-8">
                   <div className="flex items-center justify-between gap-6 p-6">
                      <h3 className="text-lg font-medium">{frontend.latest_pending_withdrawal_request}</h3>

@@ -3,9 +3,16 @@ import { cn } from '@/lib/utils';
 import { router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
+import { SharedData } from '@/types/global';
 
-const TableColumn = (home: Settings<PageFields>, system: Settings<SystemFields>, translate: LanguageTranslations): ColumnDef<Page>[] => {
+const TableColumn = (
+   home: Settings<PageFields>,
+   system: Settings<SystemFields>,
+   translate: LanguageTranslations,
+   airways: SharedData['airways'],
+): ColumnDef<Page>[] => {
    const { table, common } = translate;
+   const currentType = airways.marketplace ? system.sub_type : 'administrative';
 
    return [
       {
@@ -32,7 +39,7 @@ const TableColumn = (home: Settings<PageFields>, system: Settings<SystemFields>,
          header: () => <p className="px-3">{table.use_case}</p>,
          cell: ({ row }) => (
             <div className="text-muted-foreground px-3 py-1 text-sm">
-               {row.original.type === 'administrative' ? table.best_single_instructor : table.best_multiple_instructors}
+               {currentType === 'administrative' ? table.best_single_instructor : table.best_multiple_instructors}
             </div>
          ),
       },
@@ -61,7 +68,7 @@ const TableColumn = (home: Settings<PageFields>, system: Settings<SystemFields>,
                      </a>
                   </Button>
 
-                  {system.sub_type === page.type && (
+                  {currentType === page.type && (
                      <Button
                         size="sm"
                         disabled={isSelected}

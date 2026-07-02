@@ -21,7 +21,7 @@ interface MediaFields {
 
 const Website = () => {
    const { props } = usePage<SharedData & SystemProps>();
-   const { translate } = props;
+   const { translate, airways } = props;
    const { input, settings } = translate;
 
    const mediaFields: MediaFields = {
@@ -259,7 +259,7 @@ const Website = () => {
                   </div>
 
                   {/* Other Settings */}
-                  {props.system.sub_type === 'collaborative' && (
+                  {airways.marketplace && (
                      <div>
                         <Label>{'Instructor Revenue (%)'}</Label>
                         <Input

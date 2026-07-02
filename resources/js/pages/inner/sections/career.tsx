@@ -3,10 +3,18 @@ import TableFooter from '@/components/table/table-footer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { isAirwaysFeatureEnabled } from '@/lib/airways';
 import { Link } from '@inertiajs/react';
 import { Briefcase, BriefcaseBusiness, Building2, Calendar, Eye, MapPin, TrendingUp } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types/global';
 
 const Career = ({ jobCirculars }: { jobCirculars: Pagination<JobCircular> }) => {
+   const { props } = usePage<SharedData>();
+   if (!isAirwaysFeatureEnabled(props.airways, 'jobs')) {
+      return null;
+   }
+
    const getStatusBadge = (status: string) => {
       const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
          draft: 'outline',
