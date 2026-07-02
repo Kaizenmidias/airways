@@ -24,7 +24,7 @@
    @unless ($isFree)
       <div class="border-border bg-muted/50 space-y-3 rounded-lg border border-dashed p-4">
          <div class="flex items-center justify-between text-sm font-medium">
-            <span>Course Price</span>
+            <span>Preço do Curso</span>
             <span class="text-base">
                @if ($hasDiscount)
                   <span class="text-muted-foreground line-through">
@@ -40,7 +40,7 @@
 
          @if ($hasDiscount)
             <div class="flex items-center justify-between text-sm font-medium">
-               <span>Discounted Price</span>
+               <span>Preço com Desconto</span>
                <span class="text-primary text-base font-semibold">
                   {{ $currency }} {{ $item->discount_price }}
                </span>
@@ -55,14 +55,14 @@
          @endif
 
          <div class="flex items-center justify-between text-base font-semibold">
-            <span>Total Payment</span>
+            <span>Total do Pagamento</span>
             <span>{{ $currency }} {{ $discountedPrice }}</span>
          </div>
       </div>
    @else
       <div class="rounded-lg border border-dashed border-emerald-500 bg-emerald-50 p-4 text-emerald-700">
-         <p class="text-sm font-semibold uppercase tracking-wide">Free Course</p>
-         <p class="text-2xl font-bold">Enjoy the course for free!</p>
+         <p class="text-sm font-semibold uppercase tracking-wide">Curso Grátis</p>
+         <p class="text-2xl font-bold">Aproveite o curso gratuitamente!</p>
       </div>
    @endunless
 
@@ -77,7 +77,7 @@
                class="flex items-center justify-between rounded-lg border border-emerald-500 bg-emerald-50 px-4 py-3 text-sm"
             >
                <div>
-                  <p class="font-medium text-emerald-700">Coupon Applied</p>
+                  <p class="font-medium text-emerald-700">Cupom Aplicado</p>
                   <p class="text-lg font-semibold uppercase text-emerald-700">{{ $coupon->code }}</p>
                </div>
                <a

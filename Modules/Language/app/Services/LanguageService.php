@@ -70,10 +70,14 @@ class LanguageService extends MediaService
 
    function setLanguageProperties(string $locale): void
    {
-      $cached = Cache::rememberForever($this->cacheKey, function () use ($locale) {
+      $cached = Cache::rememberForever($this->cacheKey . ':' . $locale, function () use ($locale) {
          $language = Language::where('code', $locale)
             ->with('properties')
             ->first();
+
+         if (!$language) {
+            return [];
+         }
 
          $groups = [];
          foreach ($language->properties as $property) {

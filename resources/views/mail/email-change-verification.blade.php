@@ -45,7 +45,7 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Email Change Request
+      Solicitação de Alteração de E-mail
    </h1>
 
    <p style="margin-bottom: 1em;">
@@ -62,7 +62,7 @@
       href="{{ $verificationUrl }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Verify New Email Address
+      Verificar Novo Endereço de E-mail
    </a>
 
 

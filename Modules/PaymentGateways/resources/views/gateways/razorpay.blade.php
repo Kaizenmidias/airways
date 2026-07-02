@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
    >
-   <title>Razorpay Payment</title>
+   <title>Pagamento via Razorpay</title>
    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -15,21 +15,21 @@
    <div class="w-full max-w-[400px] overflow-hidden rounded-lg bg-white shadow-lg">
       <!-- Information List Section -->
       <div class="p-6">
-         <h2 class="mb-4 text-lg font-bold text-gray-900">Payment Details</h2>
+         <h2 class="mb-4 text-lg font-bold text-gray-900">Detalhes do Pagamento</h2>
 
          <div class="space-y-3">
             <div class="flex items-center justify-between border-b border-gray-200 py-2">
-               <span class="text-sm text-gray-600">Amount</span>
+               <span class="text-sm text-gray-600">Valor</span>
                <span class="text-sm font-medium text-gray-900">₹{{ $amount }}</span>
             </div>
 
             <div class="flex items-center justify-between border-b border-gray-200 py-2">
-               <span class="text-sm text-gray-600">Customer Name</span>
+               <span class="text-sm text-gray-600">Nome do Cliente</span>
                <span class="text-sm font-medium text-gray-900">{{ $user->name }}</span>
             </div>
 
             <div class="flex items-center justify-between py-2">
-               <span class="text-sm text-gray-600">Customer Email</span>
+               <span class="text-sm text-gray-600">E-mail do Cliente</span>
                <span class="text-sm font-medium text-gray-900">{{ $user->email }}</span>
             </div>
          </div>

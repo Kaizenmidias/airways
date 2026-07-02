@@ -89,8 +89,8 @@ const Career = ({ jobCirculars }: { jobCirculars: Pagination<JobCircular> }) => 
                ) : (
                   <div className="py-12 text-center">
                      <Briefcase className="text-muted-foreground mx-auto h-12 w-12" />
-                     <h3 className="mt-4 text-lg font-semibold">No job circulars found</h3>
-                     <p className="text-muted-foreground mt-2">Get started by creating your first job circular</p>
+                     <h3 className="mt-4 text-lg font-semibold">Nenhum comunicado encontrado</h3>
+                     <p className="text-muted-foreground mt-2">Comece criando seu primeiro comunicado</p>
                   </div>
                )}
             </CardContent>

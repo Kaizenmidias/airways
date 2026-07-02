@@ -42,7 +42,7 @@ class ResetPasswordNotification extends Notification
         ], false));
 
         return (new MailMessage)
-            ->subject('Reset Password Notification')
+            ->subject('Redefinição de senha')
             ->view('mail.reset-password', [
                 'url' => $url,
                 'user' => $notifiable,

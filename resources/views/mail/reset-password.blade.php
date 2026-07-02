@@ -49,18 +49,18 @@
    </h1>
 
    <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-      Reset Password Notification
+      Redefinição de Senha
    </h2>
 
    <p style="margin-bottom: 1.5em;">
-      You are receiving this email because we received a password reset request for your account.
+      Você recebeu este e-mail porque foi solicitada uma redefinição de senha para sua conta.
    </p>
 
    <a
       href="{{ $url }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Reset Password
+      Redefinir Senha
    </a>
 
    <p style="margin-bottom: 1em;">
@@ -68,7 +68,7 @@
    </p>
 
    <p style="margin-bottom: 1em;">
-      If you did not request a password reset, no further action is required.
+      Se você não solicitou a redefinição, nenhuma ação é necessária.
    </p>
 
    <p style="margin: 2em 0 0;">

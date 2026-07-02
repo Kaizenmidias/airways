@@ -35,9 +35,9 @@ class ForumNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('Você recebeu uma nova notificação.')
+            ->action('Ver notificação', url('/'))
+            ->line('Obrigado por usar nossa plataforma!');
     }
 
     /**
@@ -48,7 +48,7 @@ class ForumNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => 'Forum Q&A: ' . $this->data['title'],
+            'title' => 'Fórum de perguntas e respostas: ' . $this->data['title'],
             'body' => $this->data['description'],
             'url' => config('app.url') . $this->data['url'],
         ];

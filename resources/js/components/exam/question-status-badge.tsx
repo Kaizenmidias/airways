@@ -10,14 +10,14 @@ const QuestionStatusBadge = ({ answer }: { answer: ExamAttemptAnswer }) => {
    // Check if marks indicate correctness (full marks obtained)
    const isFullMarks = totalMarks > 0 && marksObtained === totalMarks;
 
-   if (answer.is_correct === null) return <Badge variant="secondary">Pending Review</Badge>;
+   if (answer.is_correct === null) return <Badge variant="secondary">Aguardando correção</Badge>;
    if (answer.is_correct || isFullMarks)
       return (
          <Badge variant="default" className="bg-green-600">
             Correct
          </Badge>
       );
-   return <Badge variant="destructive">Incorrect</Badge>;
+   return <Badge variant="destructive">Incorreta</Badge>;
 };
 
 export default QuestionStatusBadge;

@@ -36,7 +36,7 @@ class InstructorApprovalNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Instructor Application Status Update')
+            ->subject('Atualização da solicitação para professor')
             ->view('mail.instructor-approval', [
                 'user' => $notifiable,
                 'status' => $this->data['status'],
@@ -59,10 +59,10 @@ class InstructorApprovalNotification extends Notification
 
         $feedback = $notifiable->role === 'student' || $notifiable->role === 'instructor'
             ? $this->data['feedback']
-            : 'Instructor application is submitted for admin approval';
+            : 'Uma solicitação para professor foi enviada para aprovação do administrador';
 
         return [
-            'title' => 'Instructor Application is ' . $this->data['status'],
+            'title' => 'Status da solicitação para professor: ' . $this->data['status'],
             'body' => $feedback,
             'url' => $url,
         ];

@@ -36,7 +36,7 @@ class ExamApprovalNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Exam Approval Status Update')
+            ->subject('Atualização do status de aprovação da prova')
             ->view('mail.exam-approval', [
                 'user' => $notifiable,
                 'exam' => $this->exam,
@@ -59,7 +59,7 @@ class ExamApprovalNotification extends Notification
 
         return [
             'title' => $this->exam->status . ': ' . $this->exam->title,
-            'body' => $this->data['feedback'] ?? 'Your exam status has been updated.',
+            'body' => $this->data['feedback'] ?? 'O status da sua prova foi atualizado.',
             'url' => $url,
         ];
     }

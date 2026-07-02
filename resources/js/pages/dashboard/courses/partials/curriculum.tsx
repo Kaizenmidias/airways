@@ -71,7 +71,7 @@ const Curriculum = () => {
                            <Popover>
                               <PopoverTrigger>
                                  <Button variant="ghost" className="bg-muted hover:!bg-muted-foreground/10 px-2.5">
-                                    <span>Section Menu</span>
+                                    <span>Menu do Módulo</span>
                                     <ChevronDown className="h-4 w-4" />
                                  </Button>
                               </PopoverTrigger>
@@ -91,7 +91,7 @@ const Curriculum = () => {
                                     data={section.section_lessons}
                                     handler={
                                        <Button variant="ghost" className="bg-muted hover:!bg-muted-foreground/10 h-8 w-full">
-                                          <span>Sort Lessons</span>
+                                          <span>Ordenar Aulas</span>
                                        </Button>
                                     }
                                     onOrderChange={(newOrder) => {
@@ -161,7 +161,7 @@ const Curriculum = () => {
                                     title="Lesson Resources"
                                     handler={
                                        <Button variant="secondary" className="h-7 px-2">
-                                          <FolderOpen className="h-3 w-3" /> <span>Resource</span>
+                                          <FolderOpen className="h-3 w-3" /> <span>Recurso</span>
                                        </Button>
                                     }
                                  />
@@ -191,7 +191,7 @@ const Curriculum = () => {
                            </div>
                         ))
                      ) : (
-                        <div className="text-muted-foreground py-4 text-center text-sm">No lessons found in this section.</div>
+                        <div className="text-muted-foreground py-4 text-center text-sm">Nenhuma aula encontrada neste módulo.</div>
                      )}
 
                      {section.section_quizzes.map((quiz: SectionQuiz) => (

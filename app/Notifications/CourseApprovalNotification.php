@@ -36,7 +36,7 @@ class CourseApprovalNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Course Approval Status Update')
+            ->subject('Atualização do status de aprovação do curso')
             ->view('mail.course-approval', [
                 'user' => $notifiable,
                 'course' => $this->course,

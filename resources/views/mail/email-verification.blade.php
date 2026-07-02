@@ -54,13 +54,13 @@
       href="{{ $url }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Verify Email Address
+      Verificar Endereço de E-mail
    </a>
    <p style="margin-bottom: 1em;">
       This verification link will expire in 5 minutes.
    </p>
    <p style="margin-bottom: 1em;">
-      If you did not create an account, no further action is required.
+      Se você não criou uma conta, nenhuma ação é necessária.
    </p>
 
    <p style="margin: 2em 0 0;">

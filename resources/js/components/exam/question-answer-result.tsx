@@ -8,7 +8,7 @@ const QuestionAnswerResult = ({ question, answer }: { question: ExamQuestion; an
    const answerData = answer.answer_data;
 
    if (!answerData) {
-      return <p className="text-gray-500 italic">No answer provided</p>;
+      return <p className="text-gray-500 italic">Nenhuma resposta informada</p>;
    }
 
    switch (question.question_type) {
@@ -53,7 +53,7 @@ const QuestionAnswerResult = ({ question, answer }: { question: ExamQuestion; an
                               </div>
                               <div className="flex-1">
                                  <p className="text-sm">{option.option_text}</p>
-                                 {isSelected && <span className="text-xs font-semibold text-blue-600">Selected Answer </span>}
+                                 {isSelected && <span className="text-xs font-semibold text-blue-600">Resposta selecionada </span>}
                                  {isCorrect && !isSelected && <span className="text-xs font-semibold text-green-600">(Correct Answer)</span>}
                               </div>
                            </div>

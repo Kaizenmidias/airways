@@ -68,7 +68,7 @@ const ExamCard1 = ({ exam, variant = 'default', viewType = 'grid', onAddToCart, 
             <CardFooter className={cn('flex items-center justify-between border-t p-4', viewType === 'list' && 'mt-auto')}>
                <div className="flex items-baseline gap-2">
                   {exam.pricing_type === 'free' ? (
-                     <span className="text-lg font-bold text-green-600">Free</span>
+                     <span className="text-lg font-bold text-green-600">Grátis</span>
                   ) : (
                      <>
                         <span className="text-2xl font-bold">${exam.discount_price}</span>

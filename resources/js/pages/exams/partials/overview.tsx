@@ -11,7 +11,7 @@ const Overview = () => {
          <TiptapRenderer>{exam.description as string}</TiptapRenderer>
 
          <Accordion type="single" collapsible>
-            <h6 className="mb-4 text-xl font-semibold">Faqs</h6>
+            <h6 className="mb-4 text-xl font-semibold">Perguntas frequentes</h6>
 
             <div className="border-border border-y">
                {exam.faqs?.map((faq) => (

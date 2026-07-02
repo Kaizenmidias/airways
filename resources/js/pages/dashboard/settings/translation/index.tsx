@@ -41,10 +41,10 @@ const Index = () => {
             </div>
 
             <div className="rounded-md bg-blue-50 p-4 text-sm text-blue-700">
-               <div className="mb-2 font-medium">Translation Scope Information</div>
+               <div className="mb-2 font-medium">Informações sobre o alcance das traduções</div>
                <ul className="list-disc space-y-1 pl-5">
                   <li>Translations will be applied to dashboard interfaces (admin, instructor, student).</li>
-                  <li>Public pages are not affected by these translations as they are fully customizable through the page editor.</li>
+                  <li>As páginas públicas não são afetadas por estas traduções, pois são totalmente personalizáveis pelo editor de páginas.</li>
                </ul>
             </div>
 

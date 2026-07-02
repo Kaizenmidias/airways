@@ -65,9 +65,12 @@ class HandleInertiaRequests extends Middleware
 
         if (Schema::hasTable('languages')) {
             $langs = Language::where('is_active', true)->orderBy('is_default', 'desc')->get();
-            $default = $langs->where('is_default', true)->first()->code;
+            $default = $langs->where('is_default', true)->first()?->code ?? config('app.locale', 'en');
             config(['app.locale' => $default]);
             $locale = Cookie::get('locale', $default);
+            if (!$langs->contains('code', $locale)) {
+                $locale = $default;
+            }
             App::setLocale($locale);
 
             $this->languageService->setLanguageProperties($locale);

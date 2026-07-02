@@ -78,7 +78,7 @@ class LanguageController extends Controller
 
     public function change_lang(Request $request)
     {
-        Cache::forget($this->languageService->cacheKey);
+        Cache::forget($this->languageService->cacheKey . ':' . $request->locale);
         $cookie = Cookie::forever('locale', $request->locale);
 
         return back()->withCookie($cookie);

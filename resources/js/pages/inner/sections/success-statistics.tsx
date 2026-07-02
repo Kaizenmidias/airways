@@ -20,7 +20,7 @@ const SuccessStatistics = () => {
                   </div>
 
                   <ButtonGradientPrimary asChild shadow={false}>
-                     <Link href="/courses/all">Browse Courses</Link>
+                     <Link href="/courses/all">Explorar Cursos</Link>
                   </ButtonGradientPrimary>
 
                   <div className="relative z-10 flex items-center justify-center gap-2.5 lg:justify-start">
