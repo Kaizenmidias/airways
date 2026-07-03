@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import { safeLocalStorageGet, safeLocalStorageSet, safeMatchMedia } from '@/lib/browser';
 
 const prefersDark = () => {
-   if (typeof window === 'undefined') {
-      return false;
-   }
-
-   return window.matchMedia('(prefers-color-scheme: dark)').matches;
+   return safeMatchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
 };
 
 const setCookie = (name: string, value: string, days = 365) => {
@@ -24,25 +21,34 @@ const applyTheme = (appearance: Appearance) => {
 };
 
 const mediaQuery = () => {
-   if (typeof window === 'undefined') {
-      return null;
-   }
-
-   return window.matchMedia('(prefers-color-scheme: dark)');
+   return safeMatchMedia('(prefers-color-scheme: dark)');
 };
 
 const handleSystemThemeChange = () => {
-   const currentAppearance = localStorage.getItem('appearance') as Appearance;
+   const currentAppearance = safeLocalStorageGet('appearance') as Appearance;
    applyTheme(currentAppearance || 'system');
 };
 
 export function initializeTheme() {
-   const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'light';
+   try {
+      const savedAppearance = (safeLocalStorageGet('appearance') as Appearance) || 'light';
 
-   applyTheme(savedAppearance);
+      applyTheme(savedAppearance);
 
-   // Add the event listener for system theme changes...
-   mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+      const mql = mediaQuery();
+
+      if (!mql) {
+         return;
+      }
+
+      if (typeof mql.addEventListener === 'function') {
+         mql.addEventListener('change', handleSystemThemeChange);
+      } else if (typeof mql.addListener === 'function') {
+         mql.addListener(handleSystemThemeChange);
+      }
+   } catch {
+      // Keep the app usable even if the browser blocks storage or media queries.
+   }
 }
 
 export function useAppearance(defaultTheme: Appearance = 'system') {
@@ -52,7 +58,7 @@ export function useAppearance(defaultTheme: Appearance = 'system') {
       setAppearance(mode);
 
       // Store in localStorage for client-side persistence...
-      localStorage.setItem('appearance', mode);
+      safeLocalStorageSet('appearance', mode);
 
       // Store in cookie for SSR...
       setCookie('appearance', mode);
@@ -61,10 +67,22 @@ export function useAppearance(defaultTheme: Appearance = 'system') {
    }, []);
 
    useEffect(() => {
-      const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
+      const savedAppearance = safeLocalStorageGet('appearance') as Appearance | null;
       updateAppearance(savedAppearance || defaultTheme);
 
-      return () => mediaQuery()?.removeEventListener('change', handleSystemThemeChange);
+      const mql = mediaQuery();
+
+      return () => {
+         if (!mql) {
+            return;
+         }
+
+         if (typeof mql.removeEventListener === 'function') {
+            mql.removeEventListener('change', handleSystemThemeChange);
+         } else if (typeof mql.removeListener === 'function') {
+            mql.removeListener(handleSystemThemeChange);
+         }
+      };
    }, [defaultTheme, updateAppearance]);
 
    return { appearance, updateAppearance } as const;

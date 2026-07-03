@@ -1,4 +1,5 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { safeLocalStorageGet, safeLocalStorageSet } from '@/lib/browser';
 import { useState } from 'react';
 
 interface AppShellProps {
@@ -7,14 +8,12 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, variant = 'header' }: AppShellProps) {
-   const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? localStorage.getItem('sidebar') !== 'false' : true));
+   const [isOpen, setIsOpen] = useState(() => safeLocalStorageGet('sidebar') !== 'false');
 
    const handleSidebarChange = (open: boolean) => {
       setIsOpen(open);
 
-      if (typeof window !== 'undefined') {
-         localStorage.setItem('sidebar', String(open));
-      }
+      safeLocalStorageSet('sidebar', String(open));
    };
 
    if (variant === 'header') {

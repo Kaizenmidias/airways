@@ -14,6 +14,7 @@ import Main from '@/layouts/main';
 import { Head, router } from '@inertiajs/react';
 import { AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { safeLocalStorageGet, safeLocalStorageRemove, safeLocalStorageSet } from '@/lib/browser';
 import AttemptNavbar from './partials/attempt-navbar';
 import QuestionNavigator from './partials/question-navigator';
 import QuestionRenderer from './partials/question-renderer';
@@ -41,7 +42,7 @@ const TakeExam = ({ attempt }: Props) => {
 
    // Load saved answers from localStorage
    useEffect(() => {
-      const savedAnswers = localStorage.getItem(`exam-attempt-${attempt.id}`);
+      const savedAnswers = safeLocalStorageGet(`exam-attempt-${attempt.id}`);
       if (savedAnswers) {
          try {
             const parsed = JSON.parse(savedAnswers);
@@ -74,7 +75,7 @@ const TakeExam = ({ attempt }: Props) => {
    }, []);
 
    const saveToLocalStorage = () => {
-      localStorage.setItem(
+      safeLocalStorageSet(
          `exam-attempt-${attempt.id}`,
          JSON.stringify({
             answers,
@@ -143,7 +144,7 @@ const TakeExam = ({ attempt }: Props) => {
                console.log(errors);
             },
             onSuccess: () => {
-               localStorage.removeItem(`exam-attempt-${attempt.id}`);
+               safeLocalStorageRemove(`exam-attempt-${attempt.id}`);
             },
             onFinish: () => {
                setIsSubmitting(false);
