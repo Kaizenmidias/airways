@@ -12,9 +12,20 @@ interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
    containerClass?: string;
    containerStyle?: React.CSSProperties;
    contentStyle?: React.CSSProperties;
+   editorButtonClassName?: string;
 }
 
-const Section = ({ containerClass, contentClass, children, pageSection, customize, containerStyle, contentStyle, ...props }: SectionProps) => {
+const Section = ({
+   containerClass,
+   contentClass,
+   children,
+   pageSection,
+   customize,
+   containerStyle,
+   contentStyle,
+   editorButtonClassName = 'top-3 right-3',
+   ...props
+}: SectionProps) => {
    return (
       <section className={cn('container', containerClass)} {...props} style={containerStyle}>
          <div className={cn(contentClass, customize && 'section-edit')} style={contentStyle}>
@@ -22,7 +33,7 @@ const Section = ({ containerClass, contentClass, children, pageSection, customiz
                <SectionEditor
                   section={pageSection}
                   actionComponent={
-                     <Button size="icon" variant="secondary" className="absolute top-3 right-3 z-50">
+                     <Button size="icon" variant="secondary" className={cn('absolute z-50', editorButtonClassName)}>
                         <Pencil className="h-7 w-7" />
                      </Button>
                   }

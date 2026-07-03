@@ -14,7 +14,13 @@ const Hero = () => {
    const backgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
 
    return (
-      <Section customize={props.customize} pageSection={heroSection} containerClass="!max-w-none !px-0 !pt-0" contentClass="relative isolate overflow-hidden">
+      <Section
+         customize={props.customize}
+         pageSection={heroSection}
+         containerClass="!max-w-none !px-0 !pt-0"
+         contentClass="relative isolate overflow-hidden"
+         editorButtonClassName="top-[96px] right-6"
+      >
          <div className="relative min-h-screen">
             <div className="absolute inset-0">
                {backgroundVideo ? (
