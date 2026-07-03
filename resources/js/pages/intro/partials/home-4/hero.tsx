@@ -45,8 +45,8 @@ const Hero = () => {
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.2),transparent_34%),radial-gradient(circle_at_right_center,rgba(30,41,59,0.16),transparent_24%)]" />
             </div>
 
-            <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] items-center">
-               <div className="w-full px-6 py-20 sm:px-8 lg:px-12 lg:py-24">
+            <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] items-start lg:items-center">
+               <div className="w-full px-6 pt-[7.5rem] pb-20 sm:px-8 sm:pt-32 lg:px-12 lg:py-24">
                   <div className="max-w-3xl text-white">
                      <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md">
                         <span className="bg-primary h-2 w-2 rounded-full" />
