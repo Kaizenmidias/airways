@@ -32,6 +32,13 @@ class Setting extends Model implements HasMedia
         'fields' => 'array',
     ];
 
+    public function getFieldsAttribute($value): array
+    {
+        $decoded = is_string($value) ? json_decode($value, true) : $value;
+
+        return airways_normalize_internal_value($decoded ?? []);
+    }
+
     /**
      * Scope a query to only include settings of a specific type.
      *

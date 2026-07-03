@@ -43,13 +43,13 @@
       @if (!empty(app('system_settings')->fields['favicon']))
          <link
             rel="icon"
-            href="{{ app('system_settings')->fields['favicon'] }}"
+            href="{{ airways_normalize_internal_value(app('system_settings')->fields['favicon']) }}"
             type="image/png"
          >
       @elseif (!empty(app('system_settings')->fields['logo_light']))
          <link
             rel="icon"
-            href="{{ app('system_settings')->fields['logo_light'] }}"
+            href="{{ airways_normalize_internal_value(app('system_settings')->fields['logo_light']) }}"
             type="image/png"
          >
       @endif
@@ -95,7 +95,7 @@
       @elseif (!empty(app('system_settings')->fields['banner']))
          <meta
             property="og:image"
-            content="{{ app('system_settings')->fields['banner'] }}"
+            content="{{ airways_normalize_internal_value(app('system_settings')->fields['banner']) }}"
          >
          <meta
             property="og:image:width"
@@ -131,7 +131,7 @@
       @elseif (!empty(app('system_settings')->fields['banner']))
          <meta
             name="twitter:image"
-            content="{{ app('system_settings')->fields['banner'] }}"
+            content="{{ airways_normalize_internal_value(app('system_settings')->fields['banner']) }}"
          >
       @endif
    @endif

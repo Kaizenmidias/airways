@@ -26,6 +26,16 @@ class Page extends Model
         'meta_keywords',
     ];
 
+    public function getBannerAttribute($value): mixed
+    {
+        return airways_normalize_internal_value($value);
+    }
+
+    public function getFaviconAttribute($value): mixed
+    {
+        return airways_normalize_internal_value($value);
+    }
+
     /**
      * Get all sections for this page
      */

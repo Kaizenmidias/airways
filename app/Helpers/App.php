@@ -55,6 +55,23 @@ function airways_storage_url(string $path = ''): string
    return airways_asset_url($path === '' ? 'storage' : 'storage/' . ltrim($path, '/'));
 }
 
+function airways_normalize_internal_value(mixed $value): mixed
+{
+   if (is_array($value)) {
+      foreach ($value as $key => $item) {
+         $value[$key] = airways_normalize_internal_value($item);
+      }
+
+      return $value;
+   }
+
+   if (!is_string($value) || $value === '') {
+      return $value;
+   }
+
+   return str_replace('http://airwaysacademy.com.br', 'https://airwaysacademy.com.br', $value);
+}
+
 function isDBConnected(): bool
 {
    try {

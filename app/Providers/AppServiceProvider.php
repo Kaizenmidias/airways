@@ -61,6 +61,12 @@ class AppServiceProvider extends ServiceProvider
             return airways_frontend_url('/reset-password?token=' . $token . '&email=' . $user->email);
         });
 
+        config([
+            'app.url' => airways_app_url(),
+            'app.asset_url' => airways_asset_url(),
+            'app.frontend_url' => airways_frontend_url(),
+        ]);
+
         // Trust proxies when running behind a reverse proxy (e.g., Docker, nginx)
         // This allows Laravel to correctly detect HTTPS when behind a proxy
         if (!app()->environment('local')) {

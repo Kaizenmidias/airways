@@ -42,6 +42,23 @@ class PageSection extends Model implements HasMedia
         'properties' => 'array',
     ];
 
+    public function getThumbnailAttribute($value): mixed
+    {
+        return airways_normalize_internal_value($value);
+    }
+
+    public function getBackgroundImageAttribute($value): mixed
+    {
+        return airways_normalize_internal_value($value);
+    }
+
+    public function getPropertiesAttribute($value): array
+    {
+        $decoded = is_string($value) ? json_decode($value, true) : $value;
+
+        return airways_normalize_internal_value($decoded ?? []);
+    }
+
     /**
      * Get the page that owns this section
      */
