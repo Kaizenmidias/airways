@@ -4,7 +4,6 @@ import AppearanceToggleTab from '@/components/appearance-tabs';
 import CourseCart from '@/components/course-cart';
 import Language from '@/components/language';
 import Notification from '@/components/notification';
-import SearchInput from '@/components/search-input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -220,12 +219,6 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                <div className="hidden flex-1 items-center justify-center gap-6 xl:flex">
                   {linkItems.length > 0 && <nav className="flex items-center gap-6">{linkItems.map((item) => renderNavItem(item))}</nav>}
-
-                  <SearchInput
-                     className="hidden min-w-[230px] max-w-[280px] 2xl:block"
-                     placeholder={translate.common?.search || 'Search'}
-                     onChangeValue={(value) => router.get(route('category.courses', { category: 'all', search: value }))}
-                  />
                </div>
 
                <div className="flex items-center gap-2">
@@ -279,12 +272,6 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             {isMenuOpen && (
                <ScrollArea className="border-t border-slate-200 bg-white lg:hidden">
                   <div className="space-y-6 px-5 py-6">
-                     <SearchInput
-                        className="w-full max-w-none"
-                        placeholder={translate.common?.search || 'Search'}
-                        onChangeValue={(value) => router.get(route('category.courses', { category: 'all', search: value }))}
-                     />
-
                      {linkItems.length > 0 && <nav className="flex flex-col gap-4">{linkItems.map((item) => renderNavItem(item))}</nav>}
 
                      <div className="grid gap-3 sm:grid-cols-2">

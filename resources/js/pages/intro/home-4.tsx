@@ -63,7 +63,7 @@ const Home3 = ({ page, system, airways }: IntroPageProps) => {
       });
 
    return (
-      <Layout>
+      <Layout navbarHeight={false}>
          <Head title={system.fields.name} />
 
          {components.map((Component, index) => (
