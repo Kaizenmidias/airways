@@ -16,6 +16,7 @@ export default defineConfig({
    ],
    esbuild: {
       jsx: 'automatic',
+      target: 'es2019',
    },
    resolve: {
       alias: {
@@ -23,6 +24,8 @@ export default defineConfig({
       },
    },
    build: {
+      target: 'es2019',
+      cssTarget: 'safari14',
       rollupOptions: {
          output: {
             manualChunks(id) {

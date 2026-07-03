@@ -13,7 +13,7 @@ interface LayoutProps {
 const LandingLayout = ({ children, language = false, navbarHeight = true, customizable }: LayoutProps) => {
    return (
       <Main>
-         <div className="flex min-h-screen flex-col justify-between overflow-x-hidden">
+         <div className="landing-shell flex min-h-screen flex-col justify-between overflow-x-hidden">
             <main>
                <Navbar heightCover={navbarHeight} customizable={customizable} language={language} />
 
