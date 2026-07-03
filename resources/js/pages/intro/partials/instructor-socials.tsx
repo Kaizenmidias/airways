@@ -59,3 +59,4 @@ const InstructorSocials = ({ instructor, className, buttonClass, buttonVariant =
 };
 
 export default InstructorSocials;
+

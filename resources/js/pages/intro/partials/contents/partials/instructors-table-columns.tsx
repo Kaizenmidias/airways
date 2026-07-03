@@ -63,3 +63,4 @@ const InstructorsTableColumn = (translate: LanguageTranslations): ColumnDef<Inst
 };
 
 export default InstructorsTableColumn;
+

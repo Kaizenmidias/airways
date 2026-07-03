@@ -118,10 +118,11 @@ const TopCourse = () => {
 
             <div className="after:pointer-events-none after:absolute after:top-[50%] after:left-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(97,95,255,1)] after:blur-[310px] after:content-['']"></div>
 
-            <div className="after:pointer-events-none after:absolute after:top-[40%] after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[240px] after:content-['']"></div>
+            <div className="after:pointer-events-none after:absolute after:top-[40%] after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[240px] after:content-['']"></div>
          </Section>
       </div>
    );
 };
 
 export default TopCourse;
+

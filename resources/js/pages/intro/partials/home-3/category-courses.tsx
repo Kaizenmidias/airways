@@ -60,3 +60,4 @@ const CategoryCourses = () => {
 };
 
 export default CategoryCourses;
+

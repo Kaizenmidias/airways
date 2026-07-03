@@ -38,3 +38,4 @@ const Contents = ({ contents, section_slug, selectedIds = [], onSelectChange }: 
 };
 
 export default Contents;
+

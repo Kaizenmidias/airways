@@ -74,3 +74,4 @@ const Courses = ({ courses, selectedIds = [], onCourseSelect }: CoursesProps) =>
 };
 
 export default Courses;
+

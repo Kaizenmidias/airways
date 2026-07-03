@@ -86,3 +86,4 @@ const Instructor = () => {
 };
 
 export default Instructor;
+

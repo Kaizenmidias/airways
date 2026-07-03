@@ -94,3 +94,4 @@ const TopCourses = () => {
 };
 
 export default TopCourses;
+

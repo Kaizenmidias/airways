@@ -207,7 +207,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
          <div
             className={cn(
-               'sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl',
+               'fixed top-0 left-0 z-50 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-xl',
                isSticky && 'shadow-[0_12px_40px_rgba(15,23,42,0.08)]',
             )}
          >

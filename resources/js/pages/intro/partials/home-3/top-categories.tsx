@@ -23,7 +23,7 @@ const TopCategories = () => {
                ))}
             </div>
 
-            <div className="after:pointer-events-none after:absolute after:top-0 after:left-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[290px] after:content-['']"></div>
+            <div className="after:pointer-events-none after:absolute after:top-0 after:left-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[290px] after:content-['']"></div>
 
             <div className="after:pointer-events-none after:absolute after:right-0 after:bottom-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(97,95,255,1))] after:blur-[290px] after:content-['']"></div>
          </div>
@@ -32,3 +32,4 @@ const TopCategories = () => {
 };
 
 export default TopCategories;
+

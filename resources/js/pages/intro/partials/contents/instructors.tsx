@@ -75,3 +75,4 @@ const Instructors = ({ instructors, selectedIds = [], onCourseSelect }: Instruct
 };
 
 export default Instructors;
+

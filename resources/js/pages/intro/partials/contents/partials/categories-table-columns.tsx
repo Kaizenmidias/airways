@@ -46,3 +46,4 @@ const CategoriesTableColumn = (translate: LanguageTranslations): ColumnDef<Categ
 };
 
 export default CategoriesTableColumn;
+

@@ -81,9 +81,10 @@ const Overview = () => {
 
          <Partners />
 
-         <div className="after:pointer-events-none after:absolute after:-top-14 after:-left-[180px] after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[290px] after:content-['']"></div>
+         <div className="after:pointer-events-none after:absolute after:-top-14 after:-left-[180px] after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[290px] after:content-['']"></div>
       </Section>
    );
 };
 
 export default Overview;
+

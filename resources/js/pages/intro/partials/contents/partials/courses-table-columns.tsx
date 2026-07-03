@@ -53,3 +53,4 @@ const CoursesTableColumn = (translate: LanguageTranslations): ColumnDef<Course>[
 };
 
 export default CoursesTableColumn;
+

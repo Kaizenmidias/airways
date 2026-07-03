@@ -137,3 +137,4 @@ const TableFooter = (props: Props) => {
 };
 
 export default TableFooter;
+

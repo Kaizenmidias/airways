@@ -25,7 +25,7 @@ const TopCourse = () => {
                   className="relative z-10 h-[348px] w-full rounded-xl object-cover object-center"
                />
 
-               <div className="after:pointer-events-none after:absolute after:top-1/2 after:left-1/2 after:h-[260px] after:w-[260px] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[290px] after:content-['']"></div>
+               <div className="after:pointer-events-none after:absolute after:top-1/2 after:left-1/2 after:h-[260px] after:w-[260px] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[290px] after:content-['']"></div>
             </div>
 
             <div className="relative">
@@ -70,3 +70,4 @@ const TopCourse = () => {
 };
 
 export default TopCourse;
+

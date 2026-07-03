@@ -25,7 +25,7 @@ const Features = () => {
 
                <div className="after:pointer-events-none after:absolute after:top-0 after:left-0 after:h-20 after:w-20 after:rounded-full after:bg-[rgba(97,95,255,1))] after:blur-[140px] after:content-['']"></div>
 
-               <div className="after:pointer-events-none after:absolute after:right-0 after:bottom-0 after:h-20 after:w-20 after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[140px] after:content-['']"></div>
+               <div className="after:pointer-events-none after:absolute after:right-0 after:bottom-0 after:h-20 after:w-20 after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[140px] after:content-['']"></div>
             </div>
          ))}
       </Section>
@@ -33,3 +33,4 @@ const Features = () => {
 };
 
 export default Features;
+

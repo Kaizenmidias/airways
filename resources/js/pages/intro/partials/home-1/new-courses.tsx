@@ -93,7 +93,7 @@ const NewCourses = () => {
                </div>
             </div>
 
-            <div className="after:pointer-events-none after:absolute after:top-20 after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(0,120,103,1)] after:blur-[180px] after:content-['']"></div>
+            <div className="after:pointer-events-none after:absolute after:top-20 after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.82)] after:blur-[180px] after:content-['']"></div>
             <div className="after:pointer-events-none after:absolute after:bottom-20 after:left-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(97,95,255,1))] after:blur-[180px] after:content-['']"></div>
          </Section>
       </div>
@@ -101,3 +101,4 @@ const NewCourses = () => {
 };
 
 export default NewCourses;
+

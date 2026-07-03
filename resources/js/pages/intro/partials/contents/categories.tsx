@@ -77,3 +77,4 @@ const Categories = ({ categories, selectedIds = [], onCourseSelect }: CategoryPr
 };
 
 export default Categories;
+

@@ -31,7 +31,7 @@ const Hero = () => {
                   onChangeValue={(value) => router.get(route('category.courses', { category: 'all', search: value }))}
                />
 
-               <div className="after:pointer-events-none after:absolute after:top-1/2 after:-left-[60px] after:h-[240px] after:w-[240px] after:-translate-y-1/2 after:rounded-full after:bg-[rgba(0,167,111,1)] after:blur-[290px] after:content-[''] dark:after:bg-[#fff5cc6d]"></div>
+               <div className="after:pointer-events-none after:absolute after:top-1/2 after:-left-[60px] after:h-[240px] after:w-[240px] after:-translate-y-1/2 after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[290px] after:content-[''] dark:after:bg-[#fff5cc6d]"></div>
             </div>
          </div>
 
@@ -46,3 +46,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
