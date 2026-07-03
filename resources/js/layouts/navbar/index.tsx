@@ -245,7 +245,12 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                      </div>
                   )}
 
-                  <Button size="icon" variant="secondary" className="h-10 w-10 rounded-full lg:hidden" onClick={() => setIsMenuOpen((value) => !value)}>
+                  <Button
+                     size="icon"
+                     variant="outline"
+                     className="h-10 w-10 rounded-full border-white/20 bg-white/10 text-white shadow-none hover:bg-white/15 hover:text-white lg:hidden"
+                     onClick={() => setIsMenuOpen((value) => !value)}
+                  >
                      {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                   </Button>
                </div>

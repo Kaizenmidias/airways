@@ -12,15 +12,15 @@ const Notification = () => {
    const { button, frontend, dashboard } = translate;
 
    return (
-      <Popover>
-         <PopoverTrigger asChild>
-            <Button variant="secondary" size="icon" className="relative h-9 w-9 rounded-full p-0">
-               <Bell className="!h-5 !w-5" />
+         <Popover>
+            <PopoverTrigger asChild>
+            <Button variant="outline" size="icon" className="relative h-9 w-9 rounded-full border-white/20 bg-white/10 p-0 text-white shadow-none hover:bg-white/15 hover:text-white">
+               <Bell className="!h-5 !w-5 text-white" />
                {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
-                     {notifications.length}
-                  </span>
-               )}
+                     <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+                        {notifications.length}
+                     </span>
+                  )}
             </Button>
          </PopoverTrigger>
          <PopoverContent align="end" className="w-80 p-0">

@@ -45,9 +45,9 @@ const Hero = () => {
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.2),transparent_34%),radial-gradient(circle_at_right_center,rgba(30,41,59,0.16),transparent_24%)]" />
             </div>
 
-            <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col justify-between">
-               <div className="px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
-                  <div className="max-w-3xl pt-14 text-white sm:pt-20 lg:pt-24">
+            <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] items-center">
+               <div className="w-full px-6 py-20 sm:px-8 lg:px-12 lg:py-24">
+                  <div className="max-w-3xl text-white">
                      <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md">
                         <span className="bg-primary h-2 w-2 rounded-full" />
                         <span>{'Airways Academy'}</span>
@@ -61,7 +61,7 @@ const Hero = () => {
 
                      <div className="mt-8 flex flex-wrap items-center gap-4">
                         {heroSection?.properties?.button_text_1 && (
-                           <Button asChild className="h-12 rounded-full bg-primary px-7 text-sm font-semibold text-white shadow-none hover:bg-primary/90">
+                           <Button asChild className="h-12 rounded-full bg-[#FD122E] px-7 text-sm font-semibold text-white shadow-none hover:bg-[#d90f27]">
                               <Link href={heroSection?.properties?.button_link_1 || '#'}>{heroSection?.properties?.button_text_1}</Link>
                            </Button>
                         )}
