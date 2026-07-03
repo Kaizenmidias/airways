@@ -53,7 +53,7 @@ const Hero = () => {
                         <span>{'Airways Academy'}</span>
                      </div>
 
-                     <h1 className="mt-6 max-w-4xl text-4xl leading-[1.03] font-semibold tracking-[-0.05em] text-white sm:text-5xl lg:text-[5.2rem]">
+                     <h1 className="mt-6 max-w-4xl text-4xl leading-[1.03] font-semibold tracking-[-0.05em] text-white sm:text-5xl lg:text-[4.4rem]">
                         {heroSection?.title || 'Formação premium para profissionais da aviação.'}
                      </h1>
 

@@ -60,7 +60,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
    const renderNavItem = (item: NavbarAction) => {
       const href = resolveHref(item);
-      const linkClass = 'text-sm font-medium text-slate-700 transition-colors hover:text-slate-950';
+      const linkClass = 'text-sm font-medium text-white/90 transition-colors hover:text-white';
 
       if (item.type === 'dropdown' && Array.isArray(item.items) && item.items.length > 0) {
          return (
@@ -69,30 +69,30 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   <span>{item.title}</span>
                   <ChevronDown className="h-4 w-4" />
                </DropdownMenuTrigger>
-               <DropdownMenuContent align="start" className="min-w-56">
+               <DropdownMenuContent align="start" className="min-w-56 border-white/10 bg-slate-950/95 text-white">
                   {item.items
                      .filter((subItem) => subItem.active !== false)
                      .map((subItem, index) => {
                      const subHref = subItem.value || '';
                      if (!subHref) {
                         return (
-                           <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-default px-4 py-2">
+                           <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-default px-4 py-2 text-white/80">
                               {subItem.title}
                            </DropdownMenuItem>
                         );
                      }
 
                      return (
-                        <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-pointer px-0 py-0" asChild>
-                           {isExternal(subHref) ? (
-                              <a href={subHref} className="block w-full px-4 py-2">
-                                 {subItem.title}
-                              </a>
-                           ) : (
-                              <Link href={subHref} className="block w-full px-4 py-2">
-                                 {subItem.title}
-                              </Link>
-                           )}
+                           <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-pointer px-0 py-0" asChild>
+                              {isExternal(subHref) ? (
+                                 <a href={subHref} className="block w-full px-4 py-2 text-white/90 hover:text-white">
+                                    {subItem.title}
+                                 </a>
+                              ) : (
+                                 <Link href={subHref} className="block w-full px-4 py-2 text-white/90 hover:text-white">
+                                    {subItem.title}
+                                 </Link>
+                              )}
                         </DropdownMenuItem>
                      );
                      })}
@@ -186,31 +186,13 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
    return (
       <div className={cn('landing-navbar', isMenuOpen && 'bg-white')}>
-         <div className="border-b border-slate-200/70 bg-slate-950 text-white">
-            <PublicContainer className="flex h-9 items-center justify-between gap-4 text-[11px] uppercase tracking-[0.28em]">
-               <span className="truncate text-slate-300">{system.fields.slogan || system.fields.description || system.fields.name}</span>
-               <div className="hidden items-center gap-5 md:flex">
-                  {system.fields.email && (
-                     <a href={`mailto:${system.fields.email}`} className="text-slate-300 transition-colors hover:text-white">
-                        {system.fields.email}
-                     </a>
-                  )}
-                  {system.fields.phone && (
-                     <a href={`tel:${system.fields.phone}`} className="text-slate-300 transition-colors hover:text-white">
-                        {system.fields.phone}
-                     </a>
-                  )}
-               </div>
-            </PublicContainer>
-         </div>
-
          <div
             className={cn(
-               'fixed top-0 left-0 z-50 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-xl',
-               isSticky && 'shadow-[0_12px_40px_rgba(15,23,42,0.08)]',
+               'fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-slate-950/45 text-white backdrop-blur-xl',
+               isSticky && 'shadow-[0_14px_40px_rgba(15,23,42,0.28)]',
             )}
          >
-            <PublicContainer className={cn('relative flex h-[80px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
+            <PublicContainer className={cn('relative flex h-[82px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
                      <AppLogo className="h-8 w-auto" />
@@ -245,7 +227,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   </div>
 
                   {customizable && isAdmin && (
-                     <Button asChild variant="outline" className="hidden h-10 rounded-full px-5 shadow-none lg:inline-flex">
+                     <Button asChild variant="outline" className="hidden h-10 rounded-full border-white/20 bg-white/5 px-5 text-white shadow-none hover:bg-white/10 lg:inline-flex">
                         <Link href={customizeLink}>{props.customize ? translate.button.back || 'Back' : translate.button.edit || 'Customize'}</Link>
                      </Button>
                   )}
@@ -254,10 +236,10 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                      <div className="hidden items-center gap-3 lg:flex">{renderProfileMenu()}</div>
                   ) : (
                      <div className="hidden items-center gap-2 lg:flex">
-                        <Button asChild variant="outline" className="h-10 rounded-full px-5 shadow-none">
+                        <Button asChild variant="outline" className="h-10 rounded-full border-white/20 bg-white/5 px-5 text-white shadow-none hover:bg-white/10">
                            <Link href={route('register')}>{translate.button.sign_up || 'Sign up'}</Link>
                         </Button>
-                        <Button asChild className="h-10 rounded-full bg-primary px-5 shadow-none hover:bg-primary/90">
+                        <Button asChild className="h-10 rounded-full bg-primary px-5 text-white shadow-none hover:bg-primary/90">
                            <Link href={route('login')}>{translate.button.log_in || 'Log in'}</Link>
                         </Button>
                      </div>
@@ -270,7 +252,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             </PublicContainer>
 
             {isMenuOpen && (
-               <ScrollArea className="border-t border-slate-200 bg-white lg:hidden">
+               <ScrollArea className="border-t border-white/10 bg-slate-950/95 text-white lg:hidden">
                   <div className="space-y-6 px-5 py-6">
                      {linkItems.length > 0 && <nav className="flex flex-col gap-4">{linkItems.map((item) => renderNavItem(item))}</nav>}
 
@@ -283,7 +265,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            if (item.slug === 'language' && system.fields.language_selector && language) {
                               return (
                                  <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-slate-200 px-4 py-3">
-                                    <span className="text-sm font-medium text-slate-700">{translate.button.language || 'Language'}</span>
+                                    <span className="text-sm font-medium text-white/90">{translate.button.language || 'Language'}</span>
                                     <Language />
                                  </div>
                               );
@@ -291,8 +273,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                            if (item.slug === 'cart') {
                               return (
-                                 <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-slate-200 px-4 py-3">
-                                    <span className="text-sm font-medium text-slate-700">{translate.button.cart || 'Cart'}</span>
+                                 <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-white/10 px-4 py-3">
+                                    <span className="text-sm font-medium text-white/90">{translate.button.cart || 'Cart'}</span>
                                     <CourseCart />
                                  </div>
                               );
@@ -309,8 +291,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                      )}
 
                      {user ? (
-                        <div className="space-y-3 border-t border-slate-200 pt-4">
-                           <div className="flex items-center gap-3 rounded-[20px] border border-slate-200 bg-slate-50 px-4 py-3">
+                        <div className="space-y-3 border-t border-white/10 pt-4">
+                           <div className="flex items-center gap-3 rounded-[20px] border border-white/10 bg-white/5 px-4 py-3">
                               {user.photo ? (
                                  <Avatar className="h-10 w-10">
                                     <AvatarImage src={user.photo} alt={user.name ?? ''} className="h-full w-full content-center object-cover" />
@@ -320,42 +302,42 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                                  <UserCircle className="h-10 w-10 text-slate-500" />
                               )}
                               <div className="min-w-0">
-                                 <p className="truncate text-sm font-semibold text-slate-950">{user.name}</p>
-                                 <p className="truncate text-xs text-slate-500">{user.email}</p>
+                                 <p className="truncate text-sm font-semibold text-white">{user.name}</p>
+                                 <p className="truncate text-xs text-slate-300">{user.email}</p>
                               </div>
                            </div>
 
                            {(user.role === 'admin' || user.role === 'instructor') && (
-                              <Button asChild className="w-full rounded-full bg-primary shadow-none hover:bg-primary/90">
+                              <Button asChild className="w-full rounded-full bg-primary text-white shadow-none hover:bg-primary/90">
                                  <Link href={route('dashboard')}>{translate.button.dashboard || 'Dashboard'}</Link>
                               </Button>
                            )}
 
                            {(user.role === 'student' || user.role === 'instructor') && (
                               <>
-                                 <Button asChild variant="outline" className="w-full rounded-full shadow-none">
+                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
                                     <Link href={route('student.index', { tab: 'courses' })}>{translate.button.my_courses || 'My Courses'}</Link>
                                  </Button>
-                                 <Button asChild variant="outline" className="w-full rounded-full shadow-none">
+                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
                                     <Link href={route('student.index', { tab: 'profile' })}>{translate.button.profile || 'Profile'}</Link>
                                  </Button>
-                                 <Button asChild variant="outline" className="w-full rounded-full shadow-none">
+                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
                                     <Link href={route('student.index', { tab: 'settings' })}>{translate.button.settings || 'Settings'}</Link>
                                  </Button>
                               </>
                            )}
 
-                           <Button variant="secondary" className="w-full rounded-full" onClick={() => router.post('/logout')}>
+                           <Button variant="secondary" className="w-full rounded-full bg-white/10 text-white hover:bg-white/15" onClick={() => router.post('/logout')}>
                               <LogOut className="mr-2 h-4 w-4" />
                               {translate.button.logout || 'Log out'}
                            </Button>
                         </div>
                      ) : (
                         <div className="space-y-3 border-t border-slate-200 pt-4">
-                           <Button asChild variant="outline" className="w-full rounded-full shadow-none">
+                           <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
                               <Link href={route('register')}>{translate.button.sign_up || 'Sign up'}</Link>
                            </Button>
-                           <Button asChild className="w-full rounded-full bg-primary shadow-none hover:bg-primary/90">
+                           <Button asChild className="w-full rounded-full bg-primary text-white shadow-none hover:bg-primary/90">
                               <Link href={route('login')}>{translate.button.log_in || 'Log in'}</Link>
                            </Button>
                         </div>
@@ -365,7 +347,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             )}
          </div>
 
-         {heightCover && <div className="relative z-20 h-[80px] bg-transparent" />}
+         {heightCover && <div className="relative z-20 h-[82px] bg-transparent" />}
       </div>
    );
 };
