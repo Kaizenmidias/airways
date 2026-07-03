@@ -22,7 +22,7 @@ const Section = ({ containerClass, contentClass, children, pageSection, customiz
                <SectionEditor
                   section={pageSection}
                   actionComponent={
-                     <Button size="icon" variant="secondary" className="absolute top-3 right-3 z-20">
+                     <Button size="icon" variant="secondary" className="absolute top-3 right-3 z-50">
                         <Pencil className="h-7 w-7" />
                      </Button>
                   }

@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { getPageSection } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { Link, usePage } from '@inertiajs/react';
-import { ChevronDown } from 'lucide-react';
 import Section from '../section';
 
 const Hero = () => {
@@ -15,12 +14,7 @@ const Hero = () => {
    const backgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
 
    return (
-      <Section
-         customize={props.customize}
-         pageSection={heroSection}
-         containerClass="!max-w-none !px-0 !pt-0"
-         contentClass="relative overflow-hidden"
-      >
+      <Section customize={props.customize} pageSection={heroSection} containerClass="!max-w-none !px-0 !pt-0" contentClass="relative isolate overflow-hidden">
          <div className="relative min-h-screen">
             <div className="absolute inset-0">
                {backgroundVideo ? (
@@ -50,11 +44,11 @@ const Hero = () => {
                   <div className="max-w-3xl pt-14 text-white sm:pt-20 lg:pt-24">
                      <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md">
                         <span className="bg-primary h-2 w-2 rounded-full" />
-                        <span>{heroSection?.title || 'Airways Academy'}</span>
+                        <span>{'Airways Academy'}</span>
                      </div>
 
                      <h1 className="mt-6 max-w-4xl text-4xl leading-[1.03] font-semibold tracking-[-0.05em] text-white sm:text-5xl lg:text-[5.2rem]">
-                        {heroSection?.sub_title || 'Training aviation professionals with premium standards.'}
+                        {heroSection?.title || 'Formação premium para profissionais da aviação.'}
                      </h1>
 
                      {heroSection?.description && <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">{heroSection?.description}</p>}
@@ -72,7 +66,6 @@ const Hero = () => {
                            </Button>
                         )}
                      </div>
-
                      {heroSection?.properties?.ratings || heroSection?.properties?.subscribers ? (
                         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-200">
                            {heroSection?.properties?.ratings && (
@@ -85,13 +78,6 @@ const Hero = () => {
                            {heroSection?.properties?.subscribers && <p className="text-sm text-slate-300">{heroSection?.properties?.subscribers}</p>}
                         </div>
                      ) : null}
-                  </div>
-               </div>
-
-               <div className="flex items-end justify-end gap-8 px-6 pb-6 text-white/90 sm:px-8 lg:px-12">
-                  <div className="hidden items-center gap-3 rounded-full border border-white/15 bg-white/8 px-5 py-3 text-xs font-semibold uppercase tracking-[0.28em] backdrop-blur-md lg:flex">
-                     <ChevronDown className="h-4 w-4" />
-                     Scroll for more
                   </div>
                </div>
             </div>
