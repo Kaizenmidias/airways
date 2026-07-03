@@ -3,6 +3,58 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
+function airways_should_force_https(): bool
+{
+   return filter_var(env('APP_FORCE_HTTPS', env('APP_ENV', 'production') !== 'local'), FILTER_VALIDATE_BOOL);
+}
+
+function airways_normalize_url(?string $url, ?bool $forceHttps = null): string
+{
+   $url = trim((string) $url);
+
+   if ($url === '') {
+      return '';
+   }
+
+   $forceHttps = $forceHttps ?? airways_should_force_https();
+
+   if (!preg_match('#^https?://#i', $url)) {
+      $url = ($forceHttps ? 'https://' : 'http://') . ltrim($url, '/');
+   }
+
+   if ($forceHttps) {
+      $url = preg_replace('#^http://#i', 'https://', $url);
+   }
+
+   return rtrim($url, '/');
+}
+
+function airways_app_url(string $path = ''): string
+{
+   $base = airways_normalize_url(config('app.url') ?: env('APP_URL', 'http://localhost'));
+
+   return $path === '' ? $base : $base . '/' . ltrim($path, '/');
+}
+
+function airways_frontend_url(string $path = ''): string
+{
+   $base = airways_normalize_url(config('app.frontend_url') ?: env('FRONTEND_URL', env('APP_URL', 'http://localhost')));
+
+   return $path === '' ? $base : $base . '/' . ltrim($path, '/');
+}
+
+function airways_asset_url(string $path = ''): string
+{
+   $base = airways_normalize_url(config('app.asset_url') ?: env('ASSET_URL', env('APP_URL', 'http://localhost')));
+
+   return $path === '' ? $base : $base . '/' . ltrim($path, '/');
+}
+
+function airways_storage_url(string $path = ''): string
+{
+   return airways_asset_url($path === '' ? 'storage' : 'storage/' . ltrim($path, '/'));
+}
+
 function isDBConnected(): bool
 {
    try {

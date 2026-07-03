@@ -55,14 +55,14 @@ class GoogleAuthController extends Controller
             if ($registered->role === UserType::STUDENT->value) {
                 if ($from && $from == 'api') {
                     session()->forget('from');
-                    return redirect()->intended(config('app.frontend_url') . '/student');
+                    return redirect()->intended(airways_frontend_url('/student'));
                 } else {
                     return redirect()->intended(route('student.index', ['tab' => 'courses'], absolute: false));
                 }
             } else {
                 if ($from && $from == 'api') {
                     session()->forget('from');
-                    return redirect()->intended(config('app.frontend_url') . '/dashboard');
+                    return redirect()->intended(airways_frontend_url('/dashboard'));
                 } else {
                     return redirect()->intended(route('dashboard', absolute: false));
                 }
@@ -70,7 +70,7 @@ class GoogleAuthController extends Controller
         } catch (\Throwable $th) {
             if ($from && $from == 'api') {
                 session()->forget('from');
-                return redirect()->intended(config('app.frontend_url') . '/login');
+                return redirect()->intended(airways_frontend_url('/login'));
             } else {
                 return redirect()->route('login')->with('error', $th->getMessage());
             }

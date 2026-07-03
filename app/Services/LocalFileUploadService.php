@@ -83,8 +83,8 @@ class LocalFileUploadService
 
          fclose($finalHandle);
 
-         // Generate the local file URL
-         $fileUrl = asset('storage/' . $upload->key);
+         // Generate the local file URL from the configured public disk
+         $fileUrl = Storage::disk($this->disk)->url($upload->key);
 
          $upload->update([
             'status' => 'completed',

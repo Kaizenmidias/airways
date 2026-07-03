@@ -60,7 +60,7 @@
       >
       <meta
          property="og:url"
-         content="{{ $ogUrl ?? env('APP_URL', config('app.url')) }}"
+         content="{{ $ogUrl ?? airways_app_url() }}"
       >
       <meta
          property="og:title"

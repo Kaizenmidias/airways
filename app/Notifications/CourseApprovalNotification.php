@@ -58,7 +58,7 @@ class CourseApprovalNotification extends Notification
         $url = route('course.details', [$slug, $id]);
 
         if ($this->course->created_from == 'api') {
-            $url = config('app.frontend_url') . "/courses/$slug/$id";
+            $url = airways_frontend_url("/courses/$slug/$id");
         }
 
         return [

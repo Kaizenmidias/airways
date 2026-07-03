@@ -59,7 +59,7 @@ class PaystackController extends Controller
                 session()->forget(['request_id']);
 
                 if ($slug == 'api') {
-                    return redirect()->to(env('FRONTEND_URL') . '/student');
+                    return redirect()->to(airways_frontend_url('/student'));
                 } else {
                     return redirect()->route('payouts.request.index')->with('success', 'Congratulation! payout have completed');
                 }

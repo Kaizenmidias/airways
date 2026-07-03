@@ -36,7 +36,7 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        config(['app.frontend_url' => config('app.url')]);
+        config(['app.frontend_url' => airways_frontend_url()]);
 
         // Password::sendResetLink(
         //     $request->only('email')

@@ -60,7 +60,7 @@ class MollieController extends Controller
                 $this->payoutService->completePayoutRequest($request_id, $payment->id, 'mollie');
 
                 if ($slug == 'api') {
-                    return redirect()->to(env('FRONTEND_URL') . '/student');
+                    return redirect()->to(airways_frontend_url('/student'));
                 } else {
                     return redirect()
                         ->route('payouts.request.index')

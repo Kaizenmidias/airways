@@ -72,7 +72,7 @@ class InstallerController extends Controller
         $APP_DEBUG = session('APP_DEBUG') ?? config('app.debug');
         $APP_KEY = $request->APP_KEY ?? (session('APP_KEY') ?? config('app.key'));
         $APP_TIMEZONE = session('APP_TIMEZONE') ?? config('app.timezone');
-        $APP_URL = session('APP_URL') ?? config('app.url');
+        $APP_URL = session('APP_URL') ?? airways_app_url();
 
         return Inertia::render('installer/Step2', compact(
             'APP_ENV',
@@ -90,7 +90,7 @@ class InstallerController extends Controller
         // session()->put('APP_NAME', '"' . $request->app_name . '"');
         session()->put('APP_KEY', $request->app_key);
         session()->put('APP_TIMEZONE', '"' . $request->app_timezone . '"');
-        session()->put('APP_URL', $request->app_url);
+        session()->put('APP_URL', airways_normalize_url($request->app_url));
 
         return redirect()->route('install.show-step3');
     }

@@ -58,12 +58,12 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return env('FRONTEND_URL') . '/reset-password?token=' . $token . '&email=' . $user->email;
+            return airways_frontend_url('/reset-password?token=' . $token . '&email=' . $user->email);
         });
 
         // Trust proxies when running behind a reverse proxy (e.g., Docker, nginx)
         // This allows Laravel to correctly detect HTTPS when behind a proxy
-        if (config('app.env') !== 'local' || request()->hasHeader('X-Forwarded-Proto')) {
+        if (!app()->environment('local')) {
             request()->setTrustedProxies(
                 ['*'],
                 \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
@@ -76,7 +76,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Force HTTPS scheme for URLs when accessed via HTTPS
         // This ensures assets load with the correct protocol
-        if (request()->header('X-Forwarded-Proto') === 'https' || request()->secure()) {
+        if (airways_should_force_https()) {
             URL::forceScheme('https');
         }
     }

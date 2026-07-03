@@ -137,7 +137,7 @@ class SslCommerzController extends Controller
             $temp->delete();
 
             if ($from == 'api') {
-                return redirect()->to(env('FRONTEND_URL') . '/student');
+                return redirect()->to(airways_frontend_url('/student'));
             } else {
                 return redirect()
                     ->route('student.index', ['tab' => 'courses'])

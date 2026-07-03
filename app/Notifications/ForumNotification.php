@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -35,8 +34,8 @@ class ForumNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('Você recebeu uma nova notificação.')
-            ->action('Ver notificação', url('/'))
+            ->line('VocÃª recebeu uma nova notificaÃ§Ã£o.')
+            ->action('Ver notificaÃ§Ã£o', airways_app_url())
             ->line('Obrigado por usar nossa plataforma!');
     }
 
@@ -48,9 +47,9 @@ class ForumNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => 'Fórum de perguntas e respostas: ' . $this->data['title'],
+            'title' => 'FÃ³rum de perguntas e respostas: ' . $this->data['title'],
             'body' => $this->data['description'],
-            'url' => config('app.url') . $this->data['url'],
+            'url' => airways_app_url($this->data['url']),
         ];
     }
 }
