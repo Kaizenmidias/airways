@@ -1,123 +1,90 @@
+import BlogCard1 from '@/components/cards/blog-card-1';
 import { Button } from '@/components/ui/button';
+import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { getPageSection } from '@/lib/page';
-import { getReadingTime } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
-import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, Clock3, Newspaper } from 'lucide-react';
-import { formatDistanceToNowStrict } from 'date-fns';
+import { usePage } from '@inertiajs/react';
+import Autoplay from 'embla-carousel-autoplay';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Section from '../section';
-import { EditorialHeading, SectionCard } from './ui';
 
 const Blogs = () => {
    const { props } = usePage<IntroPageProps>();
    const { page, customize, blogs } = props;
    const blogsSection = getPageSection(page, 'blogs');
-   const featuredBlog = blogs[0];
-   const secondaryBlogs = blogs.slice(1, 4);
+   const [api, setApi] = useState<CarouselApi>();
+   const [currentSlide, setCurrentSlide] = useState(0);
+
+   useEffect(() => {
+      if (!api) {
+         return;
+      }
+
+      const handleSelect = () => {
+         setCurrentSlide(api.selectedScrollSnap());
+      };
+
+      api.on('select', handleSelect);
+
+      return () => {
+         api.off('select', handleSelect);
+      };
+   }, [api]);
 
    return (
-      <Section customize={customize} pageSection={blogsSection} containerClass="py-12 lg:py-16">
-         <div className="grid gap-10">
-            <EditorialHeading
-               eyebrow={blogsSection?.title || 'Conteúdo e atualizações'}
-               title={blogsSection?.sub_title || 'O blog passa a funcionar como uma área editorial da escola, com tom institucional e menos cara de catálogo.'}
-               description={
-                  blogsSection?.description ||
-                  'Mantemos a origem dinâmica das postagens, mas reestruturamos a apresentação para parecer uma publicação corporativa de aviação.'
-               }
-            />
+      <Section customize={customize} pageSection={blogsSection} containerClass="z-10 py-20">
+         <div className="mx-auto text-center md:max-w-2xl">
+            <h2 className="mb-2 text-3xl font-bold sm:text-4xl">{blogsSection?.title}</h2>
+            <p className="text-muted-foreground">{blogsSection?.description}</p>
+         </div>
 
-            {blogs.length > 0 ? (
-               <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-                  {featuredBlog && (
-                     <SectionCard className="overflow-hidden">
-                        <Link href={route('blogs.read', { slug: featuredBlog.slug, id: featuredBlog.id })} className="block h-full">
-                           <div className="grid h-full lg:grid-cols-2">
-                              <div className="relative min-h-[280px]">
-                                 <img
-                                    src={featuredBlog.thumbnail || '/assets/images/blank-image.jpg'}
-                                    alt={featuredBlog.title}
-                                    className="h-full w-full object-cover object-center"
-                                    onError={(e) => {
-                                       const target = e.target as HTMLImageElement;
-                                       target.src = '/assets/images/blank-image.jpg';
-                                    }}
-                                 />
-                                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.02),rgba(15,23,42,0.5))]" />
-                                 <div className="absolute left-4 top-4 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-600 backdrop-blur">
-                                    Destaque
-                                 </div>
-                              </div>
+         <Carousel setApi={setApi} className="py-10" opts={{ align: 'start', loop: true }} plugins={[Autoplay({ delay: 3000 })]}>
+            <CarouselContent>
+               {blogs.map((blog) => (
+                  <CarouselItem key={blog.id} className="basis-full md:basis-1/2 lg:basis-1/4">
+                     <div className="h-full px-1.5 py-0.5">
+                        <BlogCard1 blog={blog} className="h-full" />
+                     </div>
+                  </CarouselItem>
+               ))}
+            </CarouselContent>
+         </Carousel>
 
-                              <div className="flex flex-col justify-between p-6 sm:p-8">
-                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
-                                       <Newspaper className="h-4 w-4 text-primary" />
-                                       Blog Airways
-                                    </div>
-                                    <h3 className="text-2xl leading-tight font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">{featuredBlog.title}</h3>
-                                    <p className="line-clamp-4 text-sm leading-7 text-slate-600">{featuredBlog.description}</p>
-                                 </div>
+         <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center gap-2.5">
+               {api &&
+                  blogs.map(({ id }, index) => (
+                     <div
+                        key={id}
+                        className={cn(
+                           'cursor-pointer rounded-full transition-all duration-200',
+                           currentSlide === index ? 'bg-primary h-2 w-4' : 'h-2 w-2 bg-gray-300',
+                        )}
+                        onClick={() => api.scrollTo(index)}
+                     ></div>
+                  ))}
+            </div>
 
-                                 <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-slate-200 pt-5 text-sm text-slate-500">
-                                    <span className="inline-flex items-center gap-1.5">
-                                       <Clock3 className="h-4 w-4" />
-                                       {getReadingTime(featuredBlog.description)}
-                                    </span>
-                                    <span className="inline-flex items-center gap-1.5">
-                                       <CalendarDays className="h-4 w-4" />
-                                       {formatDistanceToNowStrict(new Date(featuredBlog.created_at), { addSuffix: true })}
-                                    </span>
-                                 </div>
-                              </div>
-                           </div>
-                        </Link>
-                     </SectionCard>
-                  )}
-
-                  <div className="grid gap-6">
-                     {secondaryBlogs.map((blog) => (
-                        <SectionCard key={blog.id} className="overflow-hidden">
-                           <Link href={route('blogs.read', { slug: blog.slug, id: blog.id })} className="grid h-full gap-0 sm:grid-cols-[0.42fr_0.58fr]">
-                              <div className="relative min-h-[180px]">
-                                 <img
-                                    src={blog.thumbnail || '/assets/images/blank-image.jpg'}
-                                    alt={blog.title}
-                                    className="h-full w-full object-cover object-center"
-                                    onError={(e) => {
-                                       const target = e.target as HTMLImageElement;
-                                       target.src = '/assets/images/blank-image.jpg';
-                                    }}
-                                 />
-                              </div>
-
-                              <div className="flex flex-col justify-between p-5">
-                                 <div className="space-y-3">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Publicação</p>
-                                    <h4 className="text-lg leading-tight font-semibold tracking-[-0.03em] text-slate-950">{blog.title}</h4>
-                                    <p className="line-clamp-3 text-sm leading-6 text-slate-600">{blog.description}</p>
-                                 </div>
-
-                                 <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4 text-xs text-slate-500">
-                                    <span>{getReadingTime(blog.description)}</span>
-                                    <span className="inline-flex items-center gap-1">
-                                       Ler matéria
-                                       <ArrowRight className="h-3.5 w-3.5" />
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </SectionCard>
-                     ))}
-                  </div>
-               </div>
-            ) : (
-               <SectionCard className="p-8 text-center text-sm text-slate-600">Não há posts de blog disponíveis no momento.</SectionCard>
-            )}
-
-            <div className="flex justify-center">
-               <Button asChild className="h-12 rounded-full bg-slate-950 px-6 text-white shadow-none hover:bg-primary">
-                  <Link href={route('blogs.index')}>Ver blog completo</Link>
+            <div className="space-x-4">
+               <Button
+                  size="icon"
+                  variant="outline"
+                  disabled={!api?.canScrollPrev()}
+                  onClick={() => api?.scrollPrev()}
+                  className="hover:border-primary hover:bg-background"
+               >
+                  <ChevronLeft />
+               </Button>
+               <Button
+                  size="icon"
+                  variant="outline"
+                  disabled={!api?.canScrollNext()}
+                  onClick={() => api?.scrollNext()}
+                  className="hover:border-primary hover:bg-background"
+               >
+                  <ChevronRight />
                </Button>
             </div>
          </div>
@@ -126,3 +93,4 @@ const Blogs = () => {
 };
 
 export default Blogs;
+

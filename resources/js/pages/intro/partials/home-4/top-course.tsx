@@ -6,7 +6,6 @@ import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
 import { File, FileQuestion, FileText, Image, Play, Video } from 'lucide-react';
 import Section from '../section';
-import { EditorialHeading, MediaFrame, SectionCard } from './ui';
 
 const TopCourse = () => {
    const { props } = usePage<IntroPageProps>();
@@ -15,29 +14,22 @@ const TopCourse = () => {
    const videoTypes = ['video', 'video_url'];
 
    return (
-      <Section customize={customize} pageSection={topCourseSection} containerClass="py-12 lg:py-20">
-         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <EditorialHeading
-               eyebrow={topCourseSection?.title || 'Programa em destaque'}
-               title={topCourseSection?.sub_title || 'Uma experiência de formação com narrativa clara, material robusto e apresentação premium.'}
-               description={
-                  topCourseSection?.description ||
-                  'Mantivemos o vídeo, os módulos e o conteúdo do CMS, mas a estrutura visual agora conversa com um posicionamento corporativo e aeronáutico.'
-               }
-            />
-
+      <div className="overflow-y-hidden">
+         <Section customize={customize} pageSection={topCourseSection} containerClass="py-20 relative">
             {topCourse ? (
-               <div className="space-y-6">
-                  <MediaFrame className="relative">
-                     <img className="h-[260px] w-full object-cover object-center sm:h-[360px]" src={topCourse.thumbnail ?? '/assets/images/blank-image.jpg'} alt="" />
+               <div className="mx-auto w-full max-w-[960px]">
+                  <div className="relative mb-10">
+                     <img
+                        className="relative z-10 w-full rounded-3xl md:rounded-4xl"
+                        src={topCourse.thumbnail ?? '/assets/images/blank-image.jpg'}
+                        alt=""
+                     />
 
                      {topCourse.preview && (
                         <Dialog>
                            <DialogTrigger asChild>
-                              <button className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950/20 transition-colors hover:bg-slate-950/10">
-                                 <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/25 bg-white/15 backdrop-blur-md">
-                                    <Play className="h-7 w-7 text-white" />
-                                 </span>
+                              <button className="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-black/70 p-4 transition-transform hover:scale-110">
+                                 <Play className="h-6 w-6 text-white" />
                               </button>
                            </DialogTrigger>
 
@@ -56,87 +48,81 @@ const TopCourse = () => {
                            </DialogContent>
                         </Dialog>
                      )}
-                  </MediaFrame>
+                  </div>
 
-                  <SectionCard className="p-6 sm:p-8">
-                     <div className="grid gap-6 lg:grid-cols-[1fr_1.25fr] lg:items-start">
-                        <div className="space-y-4">
-                           <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">
-                              Curso em destaque
-                           </div>
+                  <h6 className="relative z-10 py-5 text-2xl font-bold md:text-[28px]">{topCourse.title}</h6>
 
-                           <h3 className="text-2xl leading-tight font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">{topCourse.title}</h3>
-                           <p className="text-sm leading-7 text-slate-600">
-                              Estrutura do curso, módulos e aulas continuam vindos do CMS, só que agora apresentados em um bloco editorial mais limpo.
-                           </p>
-                        </div>
+                  <Accordion
+                     type="single"
+                     collapsible
+                     className="relative z-10 space-y-4"
+                     defaultValue={topCourse.sections.length > 0 ? (topCourse.sections[0].id as string) : ''}
+                  >
+                     {topCourse.sections.map((section, index) => (
+                        <AccordionItem key={section.id} value={section.id as string} className="overflow-hidden rounded-lg border">
+                           <AccordionTrigger className="[&[data-state=open]]:!bg-muted cursor-pointer px-4 py-3 text-base hover:no-underline">
+                              Module {index + 1}: {section.title}
+                           </AccordionTrigger>
+                           <AccordionContent className="space-y-1 p-4">
+                              {section.section_lessons.length > 0 ? (
+                                 <>
+                                    {section.section_lessons.map((lesson) => (
+                                       <div key={lesson.id} className="flex items-center justify-between gap-3 py-2">
+                                          <div className="flex items-center gap-2">
+                                             <div className="bg-secondary flex h-6 w-6 items-center justify-center rounded-full">
+                                                {videoTypes.includes(lesson.lesson_type) && <Video className="h-4 w-4" />}
 
-                        <Accordion
-                           type="single"
-                           collapsible
-                           className="space-y-3"
-                           defaultValue={topCourse.sections.length > 0 ? (topCourse.sections[0].id as string) : ''}
-                        >
-                           {topCourse.sections.map((section, index) => (
-                              <AccordionItem key={section.id} value={section.id as string} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                                 <AccordionTrigger className="cursor-pointer px-4 py-4 text-left text-base font-semibold hover:no-underline">
-                                    Módulo {index + 1}: {section.title}
-                                 </AccordionTrigger>
-                                 <AccordionContent className="space-y-1 border-t border-slate-100 px-4 pb-4 pt-2">
-                                    {section.section_lessons.length > 0 ? (
-                                       <>
-                                          {section.section_lessons.map((lesson) => (
-                                             <div key={lesson.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-                                                <div className="flex items-center gap-2">
-                                                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-600">
-                                                      {videoTypes.includes(lesson.lesson_type) && <Video className="h-4 w-4" />}
+                                                {['document', 'iframe'].includes(lesson.lesson_type) && <File className="h-4 w-4" />}
 
-                                                      {['document', 'iframe'].includes(lesson.lesson_type) && <File className="h-4 w-4" />}
+                                                {lesson.lesson_type === 'text' && <FileText className="h-4 w-4" />}
 
-                                                      {lesson.lesson_type === 'text' && <FileText className="h-4 w-4" />}
-
-                                                      {lesson.lesson_type === 'image' && <Image className="h-4 w-4" />}
-                                                   </div>
-
-                                                   <p className="text-slate-700">{lesson.title}</p>
-                                                </div>
-
-                                                {videoTypes.includes(lesson.lesson_type) && <span className="text-slate-500">{lesson.duration}</span>}
+                                                {lesson.lesson_type === 'image' && <Image className="h-4 w-4" />}
                                              </div>
-                                          ))}
 
-                                          {section.section_quizzes.map((quiz) => (
-                                             <div key={quiz.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-                                                <div className="flex items-center gap-2">
-                                                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-600">
-                                                      <FileQuestion className="h-4 w-4" />
-                                                   </div>
+                                             <p>{lesson.title}</p>
+                                          </div>
 
-                                                   <p className="text-slate-700">{quiz.title}</p>
-                                                </div>
+                                          {videoTypes.includes(lesson.lesson_type) && <span>{lesson.duration}</span>}
+                                       </div>
+                                    ))}
 
-                                                <span className="text-slate-500">{quiz.duration}</span>
+                                    {section.section_quizzes.map((quiz) => (
+                                       <div key={quiz.id} className="flex items-center justify-between gap-3 py-2">
+                                          <div className="flex items-center gap-2">
+                                             <div className="bg-secondary flex h-6 w-6 items-center justify-center rounded-full">
+                                                <FileQuestion className="h-4 w-4" />
                                              </div>
-                                          ))}
-                                       </>
-                                    ) : (
-                                       <div className="px-4 py-3 text-center text-sm text-slate-500">Nenhuma aula adicionada</div>
-                                    )}
-                                 </AccordionContent>
-                              </AccordionItem>
-                           ))}
-                        </Accordion>
-                     </div>
-                  </SectionCard>
+
+                                             <p>{quiz.title}</p>
+                                          </div>
+
+                                          <span>{quiz.duration}</span>
+                                       </div>
+                                    ))}
+                                 </>
+                              ) : (
+                                 <div className="px-4 py-3 text-center">
+                                    <p>There is no lesson added</p>
+                                 </div>
+                              )}
+                           </AccordionContent>
+                        </AccordionItem>
+                     ))}
+                  </Accordion>
                </div>
             ) : (
-               <SectionCard className="p-8 text-center text-sm text-slate-600">
-                  Não há curso em destaque configurado no momento.
-               </SectionCard>
+               <div className="relative z-10 mx-auto w-full max-w-[960px] space-y-4">
+                  <p className="text-center text-lg font-medium">Top Course Sections. There is no course added.</p>
+               </div>
             )}
-         </div>
-      </Section>
+
+            <div className="after:pointer-events-none after:absolute after:top-[50%] after:left-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(97,95,255,1)] after:blur-[310px] after:content-['']"></div>
+
+            <div className="after:pointer-events-none after:absolute after:top-[40%] after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[240px] after:content-['']"></div>
+         </Section>
+      </div>
    );
 };
 
 export default TopCourse;
+
