@@ -10,10 +10,10 @@ interface LayoutProps {
    customizable?: boolean;
 }
 
-const LandingLayout = ({ children, language = false, navbarHeight = true, customizable }: LayoutProps) => {
+const LandingLayout = ({ children, language = true, navbarHeight = true, customizable }: LayoutProps) => {
    return (
       <Main>
-         <div className="landing-shell flex min-h-screen flex-col justify-between overflow-x-hidden">
+         <div className="landing-shell flex min-h-screen flex-col justify-between overflow-x-hidden bg-background text-foreground">
             <main>
                <Navbar heightCover={navbarHeight} customizable={customizable} language={language} />
 

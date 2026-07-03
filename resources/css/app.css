@@ -204,6 +204,60 @@
       @apply mx-auto max-w-[1280px] px-5;
    }
 
+   .landing-shell {
+      --background: #f8fafc;
+      --foreground: #1e293b;
+      --card: #ffffff;
+      --card-foreground: #1e293b;
+      --popover: #ffffff;
+      --popover-foreground: #1e293b;
+      --primary: #fd122e;
+      --primary-foreground: #ffffff;
+      --secondary: #1e293b;
+      --secondary-foreground: #1e293b;
+      --muted: #eef2f7;
+      --muted-foreground: #64748b;
+      --accent: #f1f5f9;
+      --accent-foreground: #1e293b;
+      --border: rgba(148, 163, 184, 0.22);
+      --input: rgba(148, 163, 184, 0.22);
+      --ring: rgba(253, 18, 46, 0.28);
+      --background-image:
+         radial-gradient(circle at top left, rgba(253, 18, 46, 0.08), transparent 28%),
+         radial-gradient(circle at top right, rgba(30, 41, 59, 0.08), transparent 24%),
+         linear-gradient(180deg, #f8fafc 0%, #ffffff 38%, #eef2f7 100%);
+      color-scheme: light;
+   }
+
+   .dark .landing-shell {
+      --background: #0f172a;
+      --foreground: #e2e8f0;
+      --card: #111827;
+      --card-foreground: #e2e8f0;
+      --popover: #111827;
+      --popover-foreground: #e2e8f0;
+      --primary: #fd122e;
+      --primary-foreground: #ffffff;
+      --secondary: #cbd5e1;
+      --secondary-foreground: #e2e8f0;
+      --muted: #1e293b;
+      --muted-foreground: #94a3b8;
+      --accent: #1e293b;
+      --accent-foreground: #e2e8f0;
+      --border: rgba(71, 85, 105, 0.45);
+      --input: rgba(71, 85, 105, 0.45);
+      --ring: rgba(253, 18, 46, 0.36);
+      --background-image:
+         radial-gradient(circle at top left, rgba(253, 18, 46, 0.12), transparent 26%),
+         radial-gradient(circle at top right, rgba(148, 163, 184, 0.12), transparent 26%),
+         linear-gradient(180deg, #020617 0%, #0f172a 48%, #111827 100%);
+      color-scheme: dark;
+   }
+
+   .landing-shell {
+      background: var(--background-image);
+   }
+
    .horizontal-tabs-list {
       @apply border-border bg-card text-card-foreground grid h-auto grid-cols-1 overflow-hidden rounded-2xl border px-0 py-5 shadow;
    }
