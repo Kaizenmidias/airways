@@ -10,8 +10,8 @@ enum ExpiryLimitType: string
    public function getLabel(): string
    {
       return match ($this) {
-         self::LIFETIME => 'lifetime',
-         self::LIMITED_TIME => 'limited_time',
+         self::LIFETIME => 'Vitalício',
+         self::LIMITED_TIME => 'Tempo limitado',
       };
    }
 }

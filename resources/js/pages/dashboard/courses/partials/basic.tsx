@@ -71,6 +71,13 @@ const Basic = () => {
       value: instructor.id as string,
    }));
 
+   const courseLevelLabels: Record<string, string> = {
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
+      expert: 'Especialista',
+   };
+
    let selectedCategory: any;
    categories.map((category) => {
       if (course.course_category_child_id) {
@@ -165,13 +172,13 @@ const Basic = () => {
                      <SelectTrigger>
                         <SelectValue placeholder={input.course_level_placeholder} />
                      </SelectTrigger>
-                     <SelectContent>
-                        {labels.map((label) => (
-                           <SelectItem key={label} value={label} className="capitalize">
-                              {label}
-                           </SelectItem>
-                        ))}
-                     </SelectContent>
+                        <SelectContent>
+                           {labels.map((label) => (
+                              <SelectItem key={label} value={label} className="capitalize">
+                                 {courseLevelLabels[label] ?? label}
+                              </SelectItem>
+                           ))}
+                        </SelectContent>
                   </Select>
                   <InputError message={errors.level} />
                </div>

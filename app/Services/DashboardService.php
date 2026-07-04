@@ -52,8 +52,23 @@ class DashboardService extends MediaService
 
         // Fill in missing months with zero revenue
         $revenueData = [];
+        $monthNames = [
+            1 => 'jan',
+            2 => 'fev',
+            3 => 'mar',
+            4 => 'abr',
+            5 => 'mai',
+            6 => 'jun',
+            7 => 'jul',
+            8 => 'ago',
+            9 => 'set',
+            10 => 'out',
+            11 => 'nov',
+            12 => 'dez',
+        ];
+
         for ($month = 1; $month <= 12; $month++) {
-            $monthName = Carbon::create($currentYear, $month, 1)->format('F');
+            $monthName = $monthNames[$month];
             $revenueData[$monthName] = $yearlyRevenue[$month] ?? 0;
         }
 
@@ -87,23 +102,23 @@ class DashboardService extends MediaService
             ->mapWithKeys(function ($item) {
                 // Map string status values to standardized display names
                 $statusLabels = [
-                    'approved' => 'Approved',
-                    'upcoming' => 'Upcoming',
-                    'pending' => 'Pending',
-                    'private' => 'Private',
-                    'draft' => 'Draft',
+                    'approved' => 'Aprovado',
+                    'upcoming' => 'Próximo',
+                    'pending' => 'Pendente',
+                    'private' => 'Privado',
+                    'draft' => 'Rascunho',
                 ];
 
                 // For backward compatibility, also handle numeric status if present
                 if (is_numeric($item->status)) {
                     $numericLabels = [
-                        1 => 'Active',
-                        2 => 'Upcoming',
-                        3 => 'Pending',
-                        4 => 'Private',
-                        5 => 'Draft',
+                        1 => 'Ativo',
+                        2 => 'Próximo',
+                        3 => 'Pendente',
+                        4 => 'Privado',
+                        5 => 'Rascunho',
                     ];
-                    $status = $numericLabels[$item->status] ?? 'Unknown';
+                    $status = $numericLabels[$item->status] ?? 'Desconhecido';
                 } else {
                     // Handle string status values
                     $status = $statusLabels[$item->status] ?? ucfirst($item->status);
@@ -114,7 +129,7 @@ class DashboardService extends MediaService
             ->toArray();
 
         // Ensure all status types are included
-        $allStatuses = ['Approved', 'Upcoming', 'Pending', 'Private', 'Draft'];
+        $allStatuses = ['Aprovado', 'Próximo', 'Pendente', 'Privado', 'Rascunho'];
         foreach ($allStatuses as $status) {
             if (!isset($distribution[$status])) {
                 $distribution[$status] = 0;

@@ -100,14 +100,14 @@ const AssignmentForm = ({ title, assignment, handler }: Props) => {
                         <InputError message={errors.pass_mark} />
                      </div>
                      <div>
-                        <Label>{input.retake_attempts}</Label>
+                     <Label>{'Limite de tentativas'}</Label>
                         <Input
                            min="1"
                            required
                            type="number"
                            name="retake"
                            value={data.retake}
-                           placeholder="00"
+                           placeholder="5"
                            onChange={(e) => onHandleChange(e, setData)}
                         />
                         <InputError message={errors.retake} />

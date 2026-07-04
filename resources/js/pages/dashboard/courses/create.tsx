@@ -92,6 +92,23 @@ const Index = (props: Props) => {
       value: instructor.id as string,
    }));
 
+   const courseLevelLabels: Record<string, string> = {
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
+      expert: 'Especialista',
+   };
+
+   const coursePricingLabels: Record<string, string> = {
+      free: 'Grátis',
+      paid: 'Pago',
+   };
+
+   const courseExpiryLabels: Record<string, string> = {
+      lifetime: 'Vitalício',
+      limited_time: 'Tempo limitado',
+   };
+
    return (
       <Card className="container p-6">
          <form onSubmit={handleSubmit} className="space-y-6">
@@ -174,10 +191,10 @@ const Index = (props: Props) => {
                            <SelectTrigger>
                               <SelectValue placeholder={input.course_level_placeholder} />
                            </SelectTrigger>
-                           <SelectContent>
+                        <SelectContent>
                               {labels.map((label) => (
                                  <SelectItem key={label} value={label}>
-                                    {label}
+                                    {courseLevelLabels[label] ?? label}
                                  </SelectItem>
                               ))}
                            </SelectContent>
@@ -207,7 +224,7 @@ const Index = (props: Props) => {
                            <div key={price} className="flex items-center space-x-2">
                               <RadioGroupItem className="cursor-pointer" id={price} value={price} />
                               <Label htmlFor={price} className="capitalize">
-                                 {price}
+                                 {coursePricingLabels[price] ?? price}
                               </Label>
                            </div>
                         ))}
@@ -271,7 +288,7 @@ const Index = (props: Props) => {
                            <div key={expiry} className="flex items-center space-x-2">
                               <RadioGroupItem className="cursor-pointer" id={expiry} value={expiry} />
                               <Label htmlFor={expiry} className="capitalize">
-                                 {expiry}
+                                 {courseExpiryLabels[expiry] ?? expiry}
                               </Label>
                            </div>
                         ))}

@@ -13,11 +13,11 @@ enum CourseStatusType: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::DRAFT => 'Draft',
-            self::UPCOMING => 'Upcoming',
-            self::PENDING => 'Pending',
-            self::REJECTED => 'Rejected',
-            self::APPROVED => 'Approved',
+            self::DRAFT => 'Rascunho',
+            self::UPCOMING => 'Próximo',
+            self::PENDING => 'Pendente',
+            self::REJECTED => 'Rejeitado',
+            self::APPROVED => 'Aprovado',
         };
     }
 }
