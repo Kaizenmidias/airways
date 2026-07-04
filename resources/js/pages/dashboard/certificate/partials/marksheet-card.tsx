@@ -122,7 +122,7 @@ const MarkSheetCard = ({ type, template }: MarkSheetCardProps) => {
                            template={previewMarksheet}
                            studentName="John Doe"
                            courseName="Sample Course Name"
-                           completionDate="January 1, 2025"
+                           completionDate="1 de janeiro de 2025"
                         />
                      </div>
                   </ScrollArea>

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { AlertCircle, Calendar, CheckCircle, Clock, Download, ExternalLink, FileText, Star } from 'lucide-react';
 import { useState } from 'react';
 import AssignmentGradeForm from './forms/assignment-grade-form';
@@ -19,7 +20,7 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
 
    // Format date
    const formatDate = (dateString: string) => {
-      return format(new Date(dateString), 'MMMM dd, yyyy, hh:mm a');
+      return format(new Date(dateString), 'dd MMMM yyyy, HH:mm', { locale: ptBR });
    };
 
    return (
@@ -27,14 +28,14 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
          <DialogTrigger asChild>
             <Button variant="secondary" size="sm" className="gap-2">
                <Star className="h-4 w-4" />
-               <span>{isGraded ? 'Review' : 'Grade'}</span>
+               <span>{isGraded ? 'Revisar' : 'Corrigir'}</span>
             </Button>
          </DialogTrigger>
          <DialogContent className="max-h-[90vh] max-w-4xl p-0">
             <ScrollArea className="max-h-[90vh]">
                <div className="p-6">
                   <DialogHeader className="mb-6">
-                     <DialogTitle className="text-lg">{isGraded ? 'Review Submission' : 'Grade Submission'}</DialogTitle>
+                     <DialogTitle className="text-lg">{isGraded ? 'Revisar envio' : 'Corrigir envio'}</DialogTitle>
                   </DialogHeader>
 
                   <div className="space-y-6">
@@ -63,8 +64,8 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
                               <p>Envio atrasado</p>
                            </div>
                            <p className="text-muted-foreground mt-1 text-xs">
-                              Maximum marks is considered as {submission.assignment?.late_total_mark}{' '}
-                              {submission.is_late ? 'for late submission' : ''}
+                              A nota máxima considerada é {submission.assignment?.late_total_mark}{' '}
+                              {submission.is_late ? 'para entrega atrasada' : ''}
                            </p>
                         </div>
                      )}
@@ -101,7 +102,7 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
                            <Clock className="text-primary h-5 w-5" />
                            <div>
                               <p className="text-muted-foreground text-sm">Número da tentativa</p>
-                              <Badge variant="outline">Attempt #{submission.attempt_number}</Badge>
+                              <Badge variant="outline">Tentativa #{submission.attempt_number}</Badge>
                            </div>
                         </div>
                      </div>
@@ -112,7 +113,7 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
 
                         {/* Attachment */}
                         <div>
-                           <p className="mb-2 text-sm font-medium">Submitted {submission.attachment_type === 'url' ? 'URL' : 'File'}:</p>
+                              <p className="mb-2 text-sm font-medium">Enviado como {submission.attachment_type === 'url' ? 'URL' : 'arquivo'}:</p>
                            {submission.attachment_type === 'url' ? (
                               <a
                                  href={submission.attachment_path}
@@ -127,7 +128,7 @@ const GradeSubmissionDialog = ({ submission }: Props) => {
                               <Button variant="outline" size="sm" className="gap-2" asChild>
                                  <a href={submission.attachment_path} download>
                                     <Download className="h-4 w-4" />
-                                    Download Submission File
+                                    Baixar arquivo enviado
                                  </a>
                               </Button>
                            )}

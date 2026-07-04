@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { SharedData } from '@/types/global';
 import { usePage } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import jsPDF from 'jspdf';
 import { Award, Calendar, Download, FileImage, FileText } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -17,7 +18,7 @@ const Certificate = ({ course, watchHistory }: { course: Course; watchHistory: W
 
    const courseName = course.title;
    const studentName = auth.user.name;
-   const completionDate = format(parseISO(watchHistory.completion_date ?? new Date().toISOString()), 'MMM d, yyyy');
+   const completionDate = format(parseISO(watchHistory.completion_date ?? new Date().toISOString()), 'dd MMM yyyy', { locale: ptBR });
    const [downloadFormat, setDownloadFormat] = useState('png');
    const certificateRef = useRef<HTMLDivElement>(null);
    const dimensions = { width: 900, height: 600 }; // Standard

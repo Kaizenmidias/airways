@@ -43,10 +43,8 @@ const MultipleChoiceForm = ({ data, setData, errors, isMultipleSelect }: Props) 
    const updateCorrectAnswer = (index: number, checked: boolean) => {
       const newOptions = [...options];
       if (isMultipleSelect) {
-         // Multiple select: just toggle this option
          newOptions[index].is_correct = checked;
       } else {
-         // Multiple choice: set only this one as correct
          newOptions.forEach((opt: any, i: number) => {
             newOptions[i].is_correct = i === index ? checked : false;
          });
@@ -54,7 +52,6 @@ const MultipleChoiceForm = ({ data, setData, errors, isMultipleSelect }: Props) 
       setData('question_options', newOptions);
    };
 
-   // Initialize with 4 options if empty (only for new questions)
    const [initialized, setInitialized] = React.useState(false);
 
    React.useEffect(() => {
@@ -72,17 +69,17 @@ const MultipleChoiceForm = ({ data, setData, errors, isMultipleSelect }: Props) 
    return (
       <div className="space-y-4">
          <div className="flex items-center justify-between">
-            <Label>Answer Options *</Label>
+            <Label>Opções de resposta *</Label>
             <Button type="button" variant="outline" size="sm" onClick={addOption}>
                <Plus className="h-4 w-4" />
-               Add Option
+               Adicionar opção
             </Button>
          </div>
 
          <p className="text-sm text-gray-600">
             {isMultipleSelect
-               ? 'Check all correct answers (students can select multiple options)'
-               : 'Select the correct answer (students can select only one)'}
+               ? 'Marque todas as respostas corretas (os alunos podem selecionar várias opções)'
+               : 'Selecione a resposta correta (os alunos podem selecionar apenas uma)'}
          </p>
 
          <div className="space-y-3">
@@ -105,7 +102,7 @@ const MultipleChoiceForm = ({ data, setData, errors, isMultipleSelect }: Props) 
 
                   <div className="flex-1">
                      <Input
-                        placeholder={`Option ${index + 1}`}
+                        placeholder={`Opção ${index + 1}`}
                         value={option.option_text}
                         onChange={(e) => updateOption(index, 'option_text', e.target.value)}
                         className={option.is_correct ? 'border-green-500 bg-green-50' : ''}
@@ -123,7 +120,7 @@ const MultipleChoiceForm = ({ data, setData, errors, isMultipleSelect }: Props) 
          </div>
 
          {options.length > 0 && !options.some((opt: any) => opt.is_correct) && (
-            <p className="text-sm text-amber-600">⚠️ Please mark at least one option as correct</p>
+            <p className="text-sm text-amber-600">⚠️ Marque ao menos uma opção como correta</p>
          )}
 
          <InputError message={errors.question_options} />

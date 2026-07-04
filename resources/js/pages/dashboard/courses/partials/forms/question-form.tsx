@@ -112,8 +112,8 @@ const QuestionForm = ({ title, handler, quiz, question }: Props) => {
                         ssr={true}
                         output="html"
                         placeholder={{
-                           paragraph: 'Type your content here...',
-                           imageCaption: 'Type caption for image (optional)',
+                           paragraph: 'Digite seu conteúdo aqui...',
+                           imageCaption: 'Digite a legenda da imagem (opcional)',
                         }}
                         contentMinHeight={256}
                         contentMaxHeight={640}

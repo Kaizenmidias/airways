@@ -76,14 +76,14 @@ const AssignmentForm = ({ title, assignment, handler }: Props) => {
                         type="text"
                         name="title"
                         value={data.title}
-                        placeholder={'Enter assignment title'}
+                        placeholder={'Digite o título da atividade'}
                         onChange={(e) => onHandleChange(e, setData)}
                      />
                      <InputError message={errors.title} />
                   </div>
 
                   <div>
-                     <Label>{'Deadline'}</Label>
+                     <Label>{'Prazo final'}</Label>
                      <DateTimePicker date={data.deadline} setDate={(date) => setData('deadline', date)} />
                      <InputError message={errors.deadline} />
                   </div>
@@ -115,13 +115,13 @@ const AssignmentForm = ({ title, assignment, handler }: Props) => {
                   </div>
 
                   <div>
-                     <Label htmlFor="summary">{'Summary'}</Label>
+                     <Label htmlFor="summary">{'Resumo'}</Label>
                      <TiptapEditor
                         ssr={true}
                         output="html"
                         placeholder={{
-                           paragraph: 'Type assignment summary here...',
-                           imageCaption: 'Type caption for image (optional)',
+                           paragraph: 'Digite o resumo da atividade aqui...',
+                           imageCaption: 'Digite a legenda da imagem (opcional)',
                         }}
                         contentMinHeight={256}
                         contentMaxHeight={640}
@@ -148,26 +148,26 @@ const AssignmentForm = ({ title, assignment, handler }: Props) => {
                         }
                      />
                      <Label htmlFor="late_submission" className="cursor-pointer">
-                        {'Allow Late Submission'}
+                        {'Permitir envio atrasado'}
                      </Label>
                   </div>
 
                   {data.late_submission && (
                      <>
                         <div>
-                           <Label>{'Late Submission Mark'}</Label>
+                           <Label>{'Nota para envio atrasado'}</Label>
                            <Input
                               type="number"
                               name="late_total_mark"
                               value={data.late_total_mark}
-                              placeholder="Enter marks for late submission"
+                              placeholder="Digite a nota para envio atrasado"
                               onChange={(e) => onHandleChange(e, setData)}
                            />
                            <InputError message={errors.late_total_mark} />
                         </div>
 
                         <div>
-                           <Label>{'Late Submission Deadline'}</Label>
+                           <Label>{'Prazo para envio atrasado'}</Label>
                            <DateTimePicker
                               date={data.late_deadline ? new Date(data.late_deadline) : new Date()}
                               setDate={(date) => setData('late_deadline', date)}

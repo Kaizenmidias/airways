@@ -15,17 +15,17 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
 
    const { data, setData, post, processing, errors } = useForm({
       type: template?.type || 'course',
-      name: template?.name || 'My Certificate Template',
+      name: template?.name || 'Meu modelo de certificado',
       logo: null as File | null,
       template_data: template?.template_data || {
          primaryColor: '#3730a3',
          secondaryColor: '#4b5563',
          backgroundColor: '#dbeafe',
          borderColor: '#f59e0b',
-         titleText: 'Certificate of Completion',
-         descriptionText: 'This certificate is proudly presented to',
-         completionText: 'for successfully completing the course',
-         footerText: 'Authorized Certificate',
+         titleText: 'Certificado de conclusão',
+         descriptionText: 'Este certificado é concedido a',
+         completionText: 'por concluir com sucesso o curso',
+         footerText: 'Certificado autorizado',
          fontFamily: 'serif',
       },
    });
@@ -61,7 +61,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                      <Label htmlFor="type">Tipo de modelo</Label>
                      <Select value={data.type} onValueChange={(value) => setData('type', value as any)}>
                         <SelectTrigger>
-                           <SelectValue placeholder="Select template type" />
+                           <SelectValue placeholder="Selecione o tipo de modelo" />
                         </SelectTrigger>
                         <SelectContent>
                            <SelectItem value="course">Curso</SelectItem>
@@ -77,7 +77,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                         id="name"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
-                        placeholder="e.g., Modern Blue Certificate"
+                        placeholder="Ex.: Certificado azul moderno"
                      />
                      {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                   </div>
@@ -228,7 +228,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                         id="titleText"
                         value={data.template_data.titleText}
                         onChange={(e) => setData('template_data', { ...data.template_data, titleText: e.target.value })}
-                        placeholder="Certificate of Completion"
+                        placeholder="Certificado de conclusão"
                      />
                   </div>
 
@@ -238,7 +238,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                         id="descriptionText"
                         value={data.template_data.descriptionText}
                         onChange={(e) => setData('template_data', { ...data.template_data, descriptionText: e.target.value })}
-                        placeholder="This certificate is proudly presented to"
+                        placeholder="Este certificado é concedido a"
                         rows={3}
                      />
                   </div>
@@ -249,7 +249,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                         id="completionText"
                         value={data.template_data.completionText}
                         onChange={(e) => setData('template_data', { ...data.template_data, completionText: e.target.value })}
-                        placeholder="for successfully completing the course"
+                        placeholder="por concluir com sucesso o curso"
                      />
                   </div>
 
@@ -259,7 +259,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                         id="footerText"
                         value={data.template_data.footerText}
                         onChange={(e) => setData('template_data', { ...data.template_data, footerText: e.target.value })}
-                        placeholder="Authorized Certificate"
+                        placeholder="Certificado autorizado"
                      />
                   </div>
                </CardContent>
@@ -267,7 +267,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
 
             <Button onClick={handleSubmit} disabled={processing} className="w-full">
                <Save className="mr-2 h-4 w-4" />
-               {processing ? 'Saving...' : template ? 'Update Template' : 'Create Template'}
+               {processing ? 'Salvando...' : template ? 'Atualizar modelo' : 'Criar modelo'}
             </Button>
          </div>
 
@@ -283,7 +283,7 @@ const CertificateBuilderForm = ({ template }: { template?: CertificateTemplate |
                      template={data}
                      studentName="John Doe"
                      courseName="Sample Course Name"
-                     completionDate="January 1, 2025"
+                     completionDate="1 de janeiro de 2025"
                      logoUrl={logoPreview}
                   />
                </CardContent>

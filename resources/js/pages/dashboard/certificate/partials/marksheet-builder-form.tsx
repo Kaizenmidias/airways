@@ -15,16 +15,16 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
 
    const { data, setData, post, processing, errors } = useForm({
       type: template?.type || 'course',
-      name: template?.name || 'My Marksheet Template',
+      name: template?.name || 'Meu modelo de boletim',
       logo: null as File | null,
       template_data: template?.template_data || {
          primaryColor: '#1e40af',
          secondaryColor: '#475569',
          backgroundColor: '#ffffff',
          borderColor: '#2563eb',
-         headerText: 'Course Marksheet',
-         institutionName: 'Institute Name',
-         footerText: 'This is an official marksheet',
+         headerText: 'Boletim do curso',
+         institutionName: 'Nome da instituição',
+         footerText: 'Este é um boletim oficial',
          fontFamily: 'sans-serif',
       },
    });
@@ -60,7 +60,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
                      <Label htmlFor="type">Tipo de modelo</Label>
                      <Select value={data.type} onValueChange={(value) => setData('type', value as any)}>
                         <SelectTrigger>
-                           <SelectValue placeholder="Select template type" />
+                           <SelectValue placeholder="Selecione o tipo de modelo" />
                         </SelectTrigger>
                         <SelectContent>
                            <SelectItem value="course">Curso</SelectItem>
@@ -72,7 +72,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
 
                   <div className="space-y-2">
                      <Label htmlFor="name">Nome do modelo</Label>
-                     <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="e.g., Modern Blue Marksheet" />
+                     <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Ex.: Boletim azul moderno" />
                      {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                   </div>
                </CardContent>
@@ -221,7 +221,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
                         id="headerText"
                         value={data.template_data.headerText}
                         onChange={(e) => setData('template_data', { ...data.template_data, headerText: e.target.value })}
-                        placeholder="Course Marksheet"
+                        placeholder="Boletim do curso"
                      />
                   </div>
 
@@ -231,7 +231,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
                         id="institutionName"
                         value={data.template_data.institutionName}
                         onChange={(e) => setData('template_data', { ...data.template_data, institutionName: e.target.value })}
-                        placeholder="Institute Name"
+                        placeholder="Nome da instituição"
                      />
                   </div>
 
@@ -241,7 +241,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
                         id="footerText"
                         value={data.template_data.footerText}
                         onChange={(e) => setData('template_data', { ...data.template_data, footerText: e.target.value })}
-                        placeholder="This is an official marksheet"
+                        placeholder="Este é um boletim oficial"
                         rows={3}
                      />
                   </div>
@@ -250,7 +250,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
 
             <Button onClick={handleSubmit} disabled={processing} className="w-full">
                <Save className="mr-2 h-4 w-4" />
-               {processing ? 'Saving...' : template ? 'Update Template' : 'Create Template'}
+               {processing ? 'Salvando...' : template ? 'Atualizar modelo' : 'Criar modelo'}
             </Button>
          </div>
 
@@ -266,7 +266,7 @@ const MarksheetBuilderForm = ({ template }: { template?: MarksheetTemplate | nul
                      template={data}
                      studentName="John Doe"
                      courseName="Sample Course Name"
-                     completionDate="January 1, 2025"
+                     completionDate="1 de janeiro de 2025"
                      logoUrl={logoPreview}
                   />
                </CardContent>

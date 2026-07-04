@@ -139,7 +139,7 @@ const QuizForm = ({ title, quiz, handler, sectionId }: Props) => {
                            type="number"
                            name="retake"
                            value={data.retake}
-                           placeholder="00"
+                           placeholder={input.retake_attempts}
                            onChange={(e) => onHandleChange(e, setData)}
                         />
                         <InputError message={errors.retake} />
@@ -152,8 +152,8 @@ const QuizForm = ({ title, quiz, handler, sectionId }: Props) => {
                         ssr={true}
                         output="html"
                         placeholder={{
-                           paragraph: 'Type your content here...',
-                           imageCaption: 'Type caption for image (optional)',
+                           paragraph: 'Digite seu conteudo aqui...',
+                           imageCaption: 'Digite a legenda da imagem (opcional)',
                         }}
                         contentMinHeight={256}
                         contentMaxHeight={640}

@@ -31,16 +31,16 @@ const StatusBar = () => {
                 /> */}
                 <MenuButton
                     icon={isFullScreen ? 'Minimize' : 'Maximize'}
-                    text="Fullscreen"
+                    text="Tela cheia"
                     active={isFullScreen}
                     onClick={toggleFullScreen}
                 />
             </Toolbar>
 
             <div className="rte-counter">
-                <span className="rte-word-count">Words: {counter.words}</span>
+                <span className="rte-word-count">Palavras: {counter.words}</span>
                 <span className="rte-charater">
-                    Characters: {counter.characters}
+                    Caracteres: {counter.characters}
                 </span>
             </div>
         </div>

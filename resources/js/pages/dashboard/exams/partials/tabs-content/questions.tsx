@@ -33,7 +33,7 @@ const Questions = () => {
                </div>
                <h3 className="mb-2 text-xl font-semibold text-gray-900">Nenhuma questão ainda</h3>
                <p className="mb-6 max-w-md text-center text-gray-600">
-                  Start building your exam by adding questions. You can create multiple choice, short answer, and many other question types.
+                  Comece montando sua prova adicionando questões. Você pode criar múltipla escolha, resposta curta e muitos outros tipos.
                </p>
 
                <QuestionDialog
@@ -41,7 +41,7 @@ const Questions = () => {
                   handler={
                      <Button>
                         <Plus className="h-4 w-4" />
-                        Add First Question
+                        Adicionar primeira questão
                      </Button>
                   }
                />
@@ -56,18 +56,18 @@ const Questions = () => {
             <div>
                <h3 className="text-lg font-semibold">Questões da prova</h3>
                <p className="text-sm text-gray-600">
-                  {questions.length} {questions.length === 1 ? 'question' : 'questions'} • Total: {exam.total_marks} marks
+                  {questions.length} {questions.length === 1 ? 'questão' : 'questões'} • Total: {exam.total_marks} pontos
                </p>
             </div>
 
             <div className="flex items-center gap-2">
                <DataSortModal
-                  title="Questions"
+                  title="Questões"
                   data={questions}
                   handler={
                      <Button variant="outline" className="flex items-center gap-2">
                         <ArrowUpDown className="h-4 w-4" />
-                        Reorder
+                        Reordenar
                      </Button>
                   }
                   onOrderChange={(newOrder, setOpen) => {
@@ -93,7 +93,7 @@ const Questions = () => {
                   handler={
                      <Button>
                         <Plus className="h-4 w-4" />
-                        Add Question
+                        Adicionar questão
                      </Button>
                   }
                />
@@ -108,7 +108,7 @@ const Questions = () => {
                         <div className="mb-1 flex items-center gap-2">
                            <span className="text-sm font-medium text-gray-500">Q{index + 1}</span>
                            <QuestionTypeBadge type={question.question_type} />
-                           <span className="text-sm font-medium text-blue-600">{question.marks} marks</span>
+                           <span className="text-sm font-medium text-blue-600">{question.marks} pontos</span>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -132,7 +132,7 @@ const Questions = () => {
                            />
 
                            <DeleteModal
-                              message="Are you sure you want to delete this question?"
+                              message="Tem certeza de que deseja excluir esta questão?"
                               routePath={route('exam-questions.destroy', question.id)}
                               actionComponent={
                                  <Button size="icon" variant="ghost" className="bg-destructive/8 hover:bg-destructive/6 h-8 w-8 rounded-full p-0">

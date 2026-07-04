@@ -39,14 +39,14 @@ const AssignmentGradeForm = ({ isGraded, isLate, totalMarks, submission }: Props
       <form onSubmit={handleGradeSubmit} className="space-y-4 rounded-lg border p-4">
          <h3 className="flex items-center gap-2 font-semibold">
             <CheckCircle className="text-primary h-5 w-5" />
-            {isGraded ? 'Update Grade' : 'Grade Submission'}
+            {isGraded ? 'Atualizar nota' : 'Corrigir envio'}
          </h3>
 
          <div className="grid grid-cols-2 gap-4">
             {/* Marks Obtained */}
             <div className="space-y-2">
                <Label htmlFor="marks">
-                  Marks Obtained *
+                  Nota obtida *
                   <span className="text-muted-foreground ml-1 text-xs">
                      (Max: {totalMarks}
                      {isLate && <span className="text-destructive"> - Late Submission</span>})
@@ -58,13 +58,13 @@ const AssignmentGradeForm = ({ isGraded, isLate, totalMarks, submission }: Props
                   min="0"
                   max={totalMarks}
                   step="0.01"
-                  placeholder="Enter marks"
+                  placeholder="Digite a nota"
                   value={data.marks_obtained}
                   onChange={(e) => setData('marks_obtained', e.target.value)}
                   required
                />
                {isLate && data.marks_obtained && parseFloat(data.marks_obtained as string) > totalMarks && (
-                  <p className="text-destructive text-xs">Cannot exceed late submission maximum ({totalMarks})</p>
+                  <p className="text-destructive text-xs">Não pode exceder o máximo permitido para envio atrasado ({totalMarks})</p>
                )}
                <InputError message={errors.marks_obtained} />
             </div>
@@ -88,10 +88,10 @@ const AssignmentGradeForm = ({ isGraded, isLate, totalMarks, submission }: Props
 
          {/* Instructor Feedback */}
          <div className="space-y-2">
-            <Label htmlFor="feedback">Instructor Feedback (Optional)</Label>
+            <Label htmlFor="feedback">Feedback do instrutor (opcional)</Label>
             <Textarea
                id="feedback"
-               placeholder="Provide feedback to the student..."
+               placeholder="Deixe um feedback para o aluno..."
                value={data.instructor_feedback || ''}
                onChange={(e) => setData('instructor_feedback', e.target.value)}
                rows={4}
@@ -103,10 +103,10 @@ const AssignmentGradeForm = ({ isGraded, isLate, totalMarks, submission }: Props
          {data.status === 'graded' && submission?.grader && (
             <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950">
                <p className="text-sm">
-                  <span className="font-medium">Previously graded:</span> {submission.marks_obtained} / {totalMarks}
+                  <span className="font-medium">Já corrigido:</span> {submission.marks_obtained} / {totalMarks}
                </p>
                {submission.instructor_feedback && (
-                  <p className="text-muted-foreground mt-1 text-sm">Previous feedback: {submission.instructor_feedback}</p>
+                  <p className="text-muted-foreground mt-1 text-sm">Feedback anterior: {submission.instructor_feedback}</p>
                )}
             </div>
          )}
@@ -119,7 +119,7 @@ const AssignmentGradeForm = ({ isGraded, isLate, totalMarks, submission }: Props
             <LoadingButton type="submit" className="gap-2" loading={processing} disabled={processing || !data.marks_obtained}>
                <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" />
-                  {isGraded ? 'Update Grade' : 'Submit Grade'}
+                  {isGraded ? 'Atualizar nota' : 'Enviar nota'}
                </div>
             </LoadingButton>
          </div>

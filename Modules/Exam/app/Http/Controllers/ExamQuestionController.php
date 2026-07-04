@@ -24,7 +24,7 @@ class ExamQuestionController extends Controller
    {
       $this->question->createQuestion($request->validated());
 
-      return back()->with('success', 'Question created successfully.');
+      return back()->with('success', 'Questão criada com sucesso.');
    }
 
    /**
@@ -34,7 +34,7 @@ class ExamQuestionController extends Controller
    {
       $this->question->updateQuestion($id, $request->all());
 
-      return back()->with('success', 'Question updated successfully.');
+      return back()->with('success', 'Questão atualizada com sucesso.');
    }
 
    /**
@@ -44,7 +44,7 @@ class ExamQuestionController extends Controller
    {
       $this->question->deleteQuestion($id);
 
-      return back()->with('success', 'Question deleted successfully.');
+      return back()->with('success', 'Questão excluída com sucesso.');
    }
 
    /**
@@ -54,7 +54,7 @@ class ExamQuestionController extends Controller
    {
       $this->question->updateSortValues('exam_questions', $request->sortedData);
 
-      return back()->with('success', 'Questions reordered successfully.');
+      return back()->with('success', 'As questões foram reordenadas com sucesso.');
    }
 
    /**
@@ -64,6 +64,6 @@ class ExamQuestionController extends Controller
    {
       $this->question->duplicateQuestion($question);
 
-      return back()->with('success', 'Question duplicated successfully.');
+      return back()->with('success', 'Questão duplicada com sucesso.');
    }
 }

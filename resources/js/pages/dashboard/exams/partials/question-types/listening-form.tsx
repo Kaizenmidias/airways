@@ -34,9 +34,9 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
             <Label>Instruções</Label>
             <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-900">
                <p className="mb-1 font-medium">Como funcionam as questões de compreensão auditiva:</p>
-               <p>• Upload or link to an audio file</p>
-               <p>• Students listen to the audio and answer the question</p>
-               <p>• You can use multiple choice options or short answer</p>
+               <p>• Envie ou adicione o link de um arquivo de áudio</p>
+               <p>• Os alunos ouvem o áudio e respondem à questão</p>
+               <p>• Você pode usar múltipla escolha ou resposta curta</p>
             </div>
          </div>
 
@@ -46,13 +46,13 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="url" id="url" />
                   <Label htmlFor="url" className="cursor-pointer font-normal">
-                     Audio URL
+                     URL do áudio
                   </Label>
                </div>
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="upload" id="upload" />
                   <Label htmlFor="upload" className="cursor-pointer font-normal">
-                     Upload File
+                     Enviar arquivo
                   </Label>
                </div>
             </RadioGroup>
@@ -60,7 +60,7 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
 
          {audioSource === 'url' ? (
             <div>
-               <Label>Audio URL *</Label>
+               <Label>URL do áudio *</Label>
                <Input
                   type="url"
                   placeholder="https://example.com/audio.mp3"
@@ -77,13 +77,13 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
          ) : (
             <div className="space-y-3">
                <div>
-                  <Label>Upload Audio File *</Label>
+                  <Label>Enviar arquivo de áudio *</Label>
                   <ChunkedUploaderInput
                      isSubmit={isSubmit}
                      filetype="audio"
                      delayUpload={true}
-                     onFileSelected={(file) => {
-                        setIsFileSelected(true); // Mark that a new file was selected (parent state)
+                     onFileSelected={() => {
+                        setIsFileSelected(true);
                      }}
                      onFileUploaded={(fileData) => {
                         setIsFileUploaded(true);
@@ -92,7 +92,7 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
                            new_audio_url: fileData.file_url,
                         });
                      }}
-                     onError={(errors) => {
+                     onError={() => {
                         setIsSubmit(false);
                         setIsFileSelected(false);
                      }}
@@ -109,7 +109,7 @@ const ListeningForm = ({ data, setData, errors, isSubmit, setIsFileSelected, set
          <div>
             <Label>Instruções da resposta</Label>
             <Textarea
-               placeholder="What should students answer after listening? (e.g., 'Summarize the main points' or 'Answer the following questions')"
+               placeholder="O que os alunos devem responder após ouvir? (ex.: 'Resuma os pontos principais' ou 'Responda às perguntas a seguir')"
                rows={3}
                value={data.options?.instructions || ''}
                onChange={(e) =>

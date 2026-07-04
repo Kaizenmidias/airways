@@ -37,7 +37,7 @@ const Pricing = () => {
          <form onSubmit={handleSubmit} className="space-y-4">
             <Accordion collapsible type="single" value={data.pricing_type}>
                <div>
-                  <Label>Pricing Type *</Label>
+                  <Label>Tipo de preço *</Label>
                   <RadioGroup
                      defaultValue={data.pricing_type}
                      className="flex items-center space-x-4 pt-2 pb-1"
@@ -47,7 +47,7 @@ const Pricing = () => {
                         <div key={type} className="flex items-center space-x-2">
                            <RadioGroupItem className="cursor-pointer" id={type} value={type} />
                            <Label htmlFor={type} className="cursor-pointer capitalize">
-                              {type}
+                              {type === 'free' ? 'Grátis' : 'Pago'}
                            </Label>
                         </div>
                      ))}
@@ -58,13 +58,13 @@ const Pricing = () => {
                <AccordionItem value="paid" className="border-none">
                   <AccordionContent className="space-y-4 p-0.5">
                      <div className="pt-3">
-                        <Label>Price *</Label>
+                        <Label>Preço *</Label>
                         <Input
                            type="number"
                            name="price"
                            value={data.price.toString()}
                            onChange={(e) => setData('price', e.target.value)}
-                           placeholder="Enter your exam price ($0)"
+                           placeholder="Digite o preço da prova (US$ 0)"
                         />
                         <InputError message={errors.price} />
                      </div>
@@ -80,7 +80,7 @@ const Pricing = () => {
                               }}
                            />
                            <Label htmlFor="discount" className="cursor-pointer">
-                              Exam Discount
+                              Desconto da prova
                            </Label>
                         </div>
 
@@ -91,7 +91,7 @@ const Pricing = () => {
                                  name="discount_price"
                                  value={data.discount_price.toString()}
                                  onChange={(e) => setData('discount_price', e.target.value)}
-                                 placeholder="Enter discount price"
+                                 placeholder="Digite o preço com desconto"
                               />
                               <InputError message={errors.discount_price} />
                            </div>
@@ -113,7 +113,7 @@ const Pricing = () => {
                         <div key={expiry} className="flex items-center space-x-2">
                            <RadioGroupItem className="cursor-pointer" id={expiry} value={expiry} />
                            <Label htmlFor={expiry} className="capitalize">
-                              {expiry}
+                              {expiry === 'lifetime' ? 'Vitalício' : 'Tempo limitado'}
                            </Label>
                         </div>
                      ))}

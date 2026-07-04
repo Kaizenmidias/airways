@@ -43,7 +43,7 @@ class CertificateTemplateController extends Controller
 
         return redirect()
             ->route('certificate.templates.index')
-            ->with('success', 'Certificate template created successfully!');
+            ->with('success', 'Modelo de certificado criado com sucesso!');
     }
 
     /**
@@ -67,7 +67,7 @@ class CertificateTemplateController extends Controller
 
         return redirect()
             ->route('certificate.templates.index')
-            ->with('success', 'Certificate template updated successfully!');
+            ->with('success', 'Modelo de certificado atualizado com sucesso!');
     }
 
     /**
@@ -77,7 +77,7 @@ class CertificateTemplateController extends Controller
     {
         $this->certificateService->activateCertificateTemplate($id, $request->type);
 
-        return redirect()->back()->with('success', 'Certificate template activated successfully!');
+        return redirect()->back()->with('success', 'Modelo de certificado ativado com sucesso!');
     }
 
     /**
@@ -87,6 +87,6 @@ class CertificateTemplateController extends Controller
     {
         $this->certificateService->deleteCertificateTemplate($id);
 
-        return redirect()->back()->with('success', 'Certificate template deleted successfully!');
+        return redirect()->back()->with('success', 'Modelo de certificado excluído com sucesso!');
     }
 }

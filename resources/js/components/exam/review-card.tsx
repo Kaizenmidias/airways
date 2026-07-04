@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { usePage } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Pencil, Trash2 } from 'lucide-react';
 import RatingDisplay from './rating-display';
 
@@ -26,7 +27,7 @@ const ReviewCard = ({ review, onEdit, onDelete }: Props) => {
                      </div>
                      <div>
                         <p className="font-medium text-gray-900">{review.user?.name || 'Anonymous'}</p>
-                        <p className="text-xs text-gray-500">{format(parseISO(review.created_at), 'MMM dd, yyyy')}</p>
+                        <p className="text-xs text-gray-500">{format(parseISO(review.created_at), 'dd MMM yyyy', { locale: ptBR })}</p>
                      </div>
                   </div>
 

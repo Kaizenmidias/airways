@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import GradeSubmissionDialog from './grade-submission-dialog';
 
 const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<AssignmentSubmission>[] => {
@@ -9,7 +10,7 @@ const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<Assi
    return [
       {
          accessorKey: 'student',
-         header: 'Student Name',
+         header: 'Nome do aluno',
          cell: ({ row }) => {
             const student = row.original.student;
             return (
@@ -27,7 +28,7 @@ const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<Assi
             const isLate = row.getValue('is_late') as boolean;
             return (
                <div className="py-1 text-center">
-                  <Badge variant={isLate ? 'destructive' : 'default'}>{isLate ? 'Late Submission' : 'On Time'}</Badge>
+                  <Badge variant={isLate ? 'destructive' : 'default'}>{isLate ? 'Entrega atrasada' : 'No prazo'}</Badge>
                </div>
             );
          },
@@ -61,13 +62,13 @@ const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<Assi
       // },
       {
          accessorKey: 'submitted_at',
-         header: 'Submitted At',
+         header: 'Enviado em',
          cell: ({ row }) => {
             const date = row.getValue('submitted_at') as string;
             return (
                <div className="py-1 text-sm">
-                  <p>{format(new Date(date), 'MMM dd, yyyy')}</p>
-                  <p className="text-muted-foreground text-xs">{format(new Date(date), 'hh:mm a')}</p>
+                  <p>{format(new Date(date), 'dd MMM yyyy', { locale: ptBR })}</p>
+                  <p className="text-muted-foreground text-xs">{format(new Date(date), 'HH:mm')}</p>
                </div>
             );
          },
@@ -86,9 +87,9 @@ const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<Assi
             };
 
             const getLabel = () => {
-               if (status === 'graded') return 'Graded';
-               if (isLate) return 'Late';
-               return 'Pending';
+               if (status === 'graded') return 'Corrigido';
+               if (isLate) return 'Atrasado';
+               return 'Pendente';
             };
 
             return (
@@ -117,12 +118,12 @@ const SubmissionsTableColumn = (translate: LanguageTranslations): ColumnDef<Assi
                         <p className="font-semibold">
                            {marks} / {totalMarks}
                         </p>
-                        {isLate && <p className="text-muted-foreground text-xs">(Late: Max {submission.assignment?.late_total_mark})</p>}
+                        {isLate && <p className="text-muted-foreground text-xs">(Atrasado: máx. {submission.assignment?.late_total_mark})</p>}
                      </div>
                   ) : (
                      <div>
                         <p className="text-muted-foreground text-sm">Não corrigida</p>
-                        <p className="text-muted-foreground text-xs">Max: {totalMarks}</p>
+                        <p className="text-muted-foreground text-xs">Máx.: {totalMarks}</p>
                      </div>
                   )}
                </div>

@@ -26,8 +26,8 @@ const NewsletterForm = ({ title, newsletter, handler, translate }: Props) => {
          subject: 'Subject',
          subject_placeholder: 'Enter your subject',
          newsletter_description: 'Description',
-         type_content_here: 'Type your content here...',
-         type_caption_optional: 'Type caption for image (optional)',
+         type_content_here: 'Digite seu conteúdo aqui...',
+         type_caption_optional: 'Digite a legenda da imagem (opcional)',
       },
       button: { close: 'Close', submit: 'Submit' },
    };

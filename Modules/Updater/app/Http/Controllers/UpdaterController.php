@@ -71,14 +71,14 @@ class UpdaterController extends Controller
             // 4. Create database backup (now includes the complete backup record with estimated size)
             $this->backupService->createDatabaseBackup($backupName, $backupDir);
 
-            return redirect()->back()->with('success', 'Backup created successfully! Files: ' . $backup->source_code_zip . ', ' . $backup->database_zip);
+            return redirect()->back()->with('success', 'Backup criado com sucesso! Arquivos: ' . $backup->source_code_zip . ', ' . $backup->database_zip);
         } catch (\Exception $e) {
             // If backup creation fails, delete the incomplete backup record
             if (isset($backup)) {
                 $backup->delete();
             }
 
-            return redirect()->back()->with('error', 'Backup failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Falha ao criar o backup: ' . $e->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class UpdaterController extends Controller
 
             return redirect(route('system.maintenance'))->with('success', $message);
         } catch (\Exception $e) {
-            return redirect(route('system.maintenance'))->with('error', 'Failed to delete backup: ' . $e->getMessage());
+            return redirect(route('system.maintenance'))->with('error', 'Falha ao excluir o backup: ' . $e->getMessage());
         }
     }
 
@@ -125,11 +125,11 @@ class UpdaterController extends Controller
             $databasePath = $backupDir . '/' . $backup->database_zip;
 
             if (!file_exists($sourceCodePath)) {
-                throw new \Exception('Source code backup file not found: ' . $backup->source_code_zip);
+                throw new \Exception('Arquivo de backup do código-fonte não encontrado: ' . $backup->source_code_zip);
             }
 
             if (!file_exists($databasePath)) {
-                throw new \Exception('Database backup file not found: ' . $backup->database_zip);
+                throw new \Exception('Arquivo de backup do banco de dados não encontrado: ' . $backup->database_zip);
             }
 
             // Put app into maintenance mode with secret
@@ -152,7 +152,7 @@ class UpdaterController extends Controller
             // Log successful restore
             Log::info("Backup restore completed successfully: {$backup->backup_name}");
 
-            return redirect()->back()->with('success', "Backup '{$backup->backup_name}' restored successfully! Please refresh the page.");
+            return redirect()->back()->with('success', "Backup '{$backup->backup_name}' restaurado com sucesso! Atualize a página.");
         } catch (\Exception $e) {
             // Log the error
             Log::error("Backup restore failed: " . $e->getMessage(), [
@@ -161,7 +161,7 @@ class UpdaterController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
 
-            return redirect()->back()->with('error', 'Restore failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Falha ao restaurar: ' . $e->getMessage());
         } finally {
             // Always disable maintenance mode, regardless of success or failure
             Artisan::call('up');
@@ -183,7 +183,7 @@ class UpdaterController extends Controller
             $dbPath = storage_path('app/backups/' . $backup->database_zip);
 
             if (!file_exists($sourcePath) || !file_exists($dbPath)) {
-                return redirect()->back()->with('error', 'Backup files not found');
+                return redirect()->back()->with('error', 'Arquivos de backup não encontrados.');
             }
 
             // Create a temporary zip containing both files
@@ -206,10 +206,10 @@ class UpdaterController extends Controller
                 return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
             }
 
-            return redirect()->back()->with('error', 'Failed to create download package');
+                return redirect()->back()->with('error', 'Falha ao criar o pacote de download.');
         } catch (\Exception $e) {
             Log::error('Backup download failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to download backup: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Falha ao baixar o backup: ' . $e->getMessage());
         }
     }
 
@@ -279,7 +279,7 @@ class UpdaterController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return redirect()->back()->with('error', 'Update failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Falha na atualização: ' . $e->getMessage());
         } finally {
             // Always disable maintenance mode
             Artisan::call('up');
@@ -321,6 +321,6 @@ class UpdaterController extends Controller
             '--force' => true,
         ]);
 
-        return redirect(route('system.maintenance'))->with('success', 'Update completed successfully!');
+        return redirect(route('system.maintenance'))->with('success', 'Atualização concluída com sucesso!');
     }
 }

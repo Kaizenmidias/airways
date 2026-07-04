@@ -16,7 +16,7 @@ const CertificateIndex = ({ templates }: CertificatePageProps) => {
 
    return (
       <>
-         <Head title="Certificate Templates" />
+         <Head title="Modelos de certificado" />
 
          <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -28,7 +28,7 @@ const CertificateIndex = ({ templates }: CertificatePageProps) => {
                <Link href={route('certificate.templates.create')}>
                   <Button>
                      <Plus className="mr-2 h-4 w-4" />
-                     Create Template
+                     Criar modelo
                   </Button>
                </Link>
             </div>
@@ -45,7 +45,7 @@ const CertificateIndex = ({ templates }: CertificatePageProps) => {
                         <Link href={route('certificate.templates.create')}>
                            <Button>
                               <Plus className="mr-2 h-4 w-4" />
-                              Create Your First Template
+                              Criar seu primeiro modelo
                            </Button>
                         </Link>
                      </div>

@@ -59,11 +59,11 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
       return (
          <div className="flex h-full items-center justify-center p-10">
             <div className="text-center">
-               <h1 className="text-2xl font-semibold text-gray-800">Attempt data unavailable</h1>
-               <p className="mt-2 text-sm text-gray-600">Please return to the exam list and try again.</p>
+               <h1 className="text-2xl font-semibold text-gray-800">Dados da tentativa indisponíveis</h1>
+               <p className="mt-2 text-sm text-gray-600">Volte para a lista de provas e tente novamente.</p>
                <div className="mt-4">
                   <Link href={route('student.index', 'exams')}>
-                     <Button variant="outline">Back to My Exams</Button>
+                     <Button variant="outline">Voltar para minhas provas</Button>
                   </Link>
                </div>
             </div>
@@ -77,13 +77,13 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
          <Card>
             <CardHeader>
                <div className="flex items-center justify-between">
-                  <CardTitle>Detailed Analysis</CardTitle>
+                  <CardTitle>Análise detalhada</CardTitle>
                   {/* <h6 className="text-xl font-semibold">Attempt {attempt.attempt_number} Result</h6> */}
 
                   <Button asChild variant="outline">
                      <Link href={route('exams.edit', { exam: attempt.exam_id, tab: 'attempts' })}>
                         <ArrowLeft className="h-4 w-4" />
-                        Back Attempts
+                        Voltar às tentativas
                      </Link>
                   </Button>
                </div>
@@ -105,7 +105,7 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
                                     </div>
                                     <div className="flex-1">
                                        <div className="mb-2 flex flex-wrap items-center gap-2">
-                                          <span className="text-lg font-semibold">Question {index + 1}</span>
+                                          <span className="text-lg font-semibold">Questão {index + 1}</span>
                                           {question.question_type && <QuestionTypeBadge type={question.question_type as ExamQuestionType} />}
                                           <QuestionStatusBadge answer={answer} />
                                        </div>
@@ -116,7 +116,7 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
                                     <p className="text-lg font-bold text-gray-900">
                                        {answer.marks_obtained || 0}/{question.marks || 0}
                                     </p>
-                                    <p className="text-xs text-gray-500">marks</p>
+                                    <p className="text-xs text-gray-500">pontos</p>
                                  </div>
                               </div>
                            </div>
@@ -134,7 +134,7 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
                               {(question.question_type === 'listening' || question.question_type === 'short_answer') && (
                                  <div className="mt-4 rounded-lg border-t border-gray-200 bg-yellow-50 p-4 pt-4">
                                     <Label htmlFor={`grade-${questionId}`} className="text-sm font-semibold text-gray-700">
-                                       Assign Marks (Max: {question.marks || 0})
+                                       Atribuir nota (Máx.: {question.marks || 0})
                                     </Label>
                                     <Input
                                        id={`grade-${questionId}`}
@@ -142,7 +142,7 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
                                        min="0"
                                        max={question.marks || 0}
                                        step="0.5"
-                                       placeholder="Enter marks"
+                                       placeholder="Digite a nota"
                                        value={manualGrades[questionId] ?? answer.marks_obtained ?? ''}
                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleManualGradeChange(questionId, e.target.value)}
                                        className="mt-1 w-full"
@@ -151,7 +151,7 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
                                     {answer.is_correct === null && (
                                        <p className="mt-2 flex items-center gap-1 text-xs text-yellow-700">
                                           <Clock className="h-3 w-3" />
-                                          This question requires manual grading
+                                          Esta questão exige correção manual
                                        </p>
                                     )}
                                  </div>
@@ -168,10 +168,10 @@ const ExamAttemptReview = ({ attempt }: { attempt: ExamAttempt }) => {
          {needsManualGrading && (
             <div className="flex justify-end gap-4">
                <Button variant="outline" onClick={() => window.history.back()}>
-                  Cancel
+                  Cancelar
                </Button>
                <Button onClick={handleSubmitGrades} disabled={submitting || Object.keys(manualGrades).length === 0}>
-                  {submitting ? 'Submitting...' : 'Submit Grades'}
+                  {submitting ? 'Enviando...' : 'Enviar notas'}
                </Button>
             </div>
          )}

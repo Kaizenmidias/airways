@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { format, isFuture, isPast, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Copy, Pencil } from 'lucide-react';
 import CouponForm from './coupon-form';
 
@@ -11,16 +12,16 @@ interface CouponTableColumnsProps {
 
 const CouponTableColumns = ({ courses }: CouponTableColumnsProps): ColumnDef<CourseCoupon>[] => {
    const getCouponStatus = (coupon: CourseCoupon) => {
-      if (!coupon.is_active) return { label: 'Inactive', variant: 'secondary' as const };
-      if (coupon.valid_to && isPast(parseISO(coupon.valid_to))) return { label: 'Expired', variant: 'destructive' as const };
-      if (coupon.valid_from && isFuture(parseISO(coupon.valid_from))) return { label: 'Scheduled', variant: 'secondary' as const };
-      if (coupon.usage_limit && coupon.used_count >= coupon.usage_limit) return { label: 'Used Up', variant: 'destructive' as const };
-      return { label: 'Active', variant: 'default' as const };
+      if (!coupon.is_active) return { label: 'Inativo', variant: 'secondary' as const };
+      if (coupon.valid_to && isPast(parseISO(coupon.valid_to))) return { label: 'Expirado', variant: 'destructive' as const };
+      if (coupon.valid_from && isFuture(parseISO(coupon.valid_from))) return { label: 'Agendado', variant: 'secondary' as const };
+      if (coupon.usage_limit && coupon.used_count >= coupon.usage_limit) return { label: 'Esgotado', variant: 'destructive' as const };
+      return { label: 'Ativo', variant: 'default' as const };
    };
 
    const copyCouponCode = (code: string) => {
       navigator.clipboard.writeText(code);
-      alert('Coupon code copied to clipboard!');
+      alert('Código do cupom copiado para a área de transferência!');
    };
 
    return [
@@ -73,12 +74,12 @@ const CouponTableColumns = ({ courses }: CouponTableColumnsProps): ColumnDef<Cou
       {
          accessorKey: 'valid_from',
          header: 'Valid From',
-         cell: ({ row }) => (row.original.valid_from ? format(parseISO(row.original.valid_from), 'MMM dd, yyyy HH:mm') : '-'),
+         cell: ({ row }) => (row.original.valid_from ? format(parseISO(row.original.valid_from), 'dd MMM yyyy HH:mm', { locale: ptBR }) : '-'),
       },
       {
          accessorKey: 'valid_to',
          header: 'Valid To',
-         cell: ({ row }) => (row.original.valid_to ? format(parseISO(row.original.valid_to), 'MMM dd, yyyy HH:mm') : '-'),
+         cell: ({ row }) => (row.original.valid_to ? format(parseISO(row.original.valid_to), 'dd MMM yyyy HH:mm', { locale: ptBR }) : '-'),
       },
       {
          accessorKey: 'status',

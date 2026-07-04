@@ -75,7 +75,7 @@ const Index = () => {
                         <div className="flex items-center gap-3">
                            {lang.is_active ? (
                               <Button onClick={() => defaultLanguage(lang)} size="sm" variant="secondary" className="rounded-full">
-                                 Set Default
+                                 Definir como padrão
                               </Button>
                            ) : null}
 

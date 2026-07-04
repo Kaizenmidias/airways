@@ -22,12 +22,13 @@ const MatchingForm = ({ data, setData, errors }: Props) => {
 
    useEffect(() => {
       if (matches.length === 0) {
-         const initialMatches = [
-            { id: 1, question: '', answer: '' },
-            { id: 2, question: '', answer: '' },
-            { id: 3, question: '', answer: '' },
-         ];
-         setData('options', { matches: initialMatches });
+         setData('options', {
+            matches: [
+               { id: 1, question: '', answer: '' },
+               { id: 2, question: '', answer: '' },
+               { id: 3, question: '', answer: '' },
+            ],
+         });
       }
    }, []);
 
@@ -49,10 +50,10 @@ const MatchingForm = ({ data, setData, errors }: Props) => {
    return (
       <div className="space-y-4">
          <div className="flex items-center justify-between">
-            <Label>Matching Pairs *</Label>
+            <Label>Casais correspondentes *</Label>
             <Button type="button" variant="outline" size="sm" onClick={addMatch}>
                <Plus className="h-4 w-4" />
-               Add Pair
+               Adicionar par
             </Button>
          </div>
 
@@ -60,18 +61,22 @@ const MatchingForm = ({ data, setData, errors }: Props) => {
 
          <div className="space-y-3">
             {matches.map((match, index) => (
-               <div key={match.id} className="grid grid-cols-2 gap-3 items-start">
+               <div key={match.id} className="grid grid-cols-2 items-start gap-3">
                   <div>
-                     {index === 0 && <Label className="text-xs text-gray-500 mb-1">Questão/item</Label>}
+                     {index === 0 && <Label className="mb-1 text-xs text-gray-500">Questão/item</Label>}
                      <Input placeholder={`Item ${index + 1}`} value={match.question} onChange={(e) => updateMatch(match.id, 'question', e.target.value)} />
                   </div>
                   <div className="flex gap-2">
                      <div className="flex-1">
-                        {index === 0 && <Label className="text-xs text-gray-500 mb-1">Correspondência correta</Label>}
-                        <Input placeholder={`Match ${index + 1}`} value={match.answer} onChange={(e) => updateMatch(match.id, 'answer', e.target.value)} />
+                        {index === 0 && <Label className="mb-1 text-xs text-gray-500">Correspondência correta</Label>}
+                        <Input
+                           placeholder={`Correspondência ${index + 1}`}
+                           value={match.answer}
+                           onChange={(e) => updateMatch(match.id, 'answer', e.target.value)}
+                        />
                      </div>
                      {matches.length > 2 && (
-                        <Button type="button" variant="ghost" size="sm" onClick={() => removeMatch(match.id)} className="text-red-600 mt-5">
+                        <Button type="button" variant="ghost" size="sm" onClick={() => removeMatch(match.id)} className="mt-5 text-red-600">
                            <Trash2 className="h-4 w-4" />
                         </Button>
                      )}

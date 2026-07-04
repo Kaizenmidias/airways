@@ -107,7 +107,7 @@ const LiveClass = ({ liveClass }: Props) => {
                         {/* Client Secret */}
                         <div className="space-y-2">
                            <Label htmlFor="zoom_client_secret">
-                              Client Secret <span className="text-red-500">*</span>
+                              Segredo do cliente <span className="text-red-500">*</span>
                            </Label>
                            <Input
                               id="zoom_client_secret"
@@ -151,28 +151,28 @@ const LiveClass = ({ liveClass }: Props) => {
 
                               <div className="space-y-2">
                                  <Label>
-                                    Meeting SDK Client ID <span className="text-red-500">*</span>
+                                    ID do cliente do Meeting SDK <span className="text-red-500">*</span>
                                  </Label>
                                  <Input
                                     required
                                     type="text"
                                     value={data.zoom_sdk_client_id}
                                     onChange={(e) => setData('zoom_sdk_client_id', e.target.value)}
-                                    placeholder="Enter your Meeting SDK client ID"
+                                    placeholder="Digite o ID do cliente do Meeting SDK"
                                  />
                                  {errors.zoom_sdk_client_id && <p className="text-sm text-red-500">{errors.zoom_sdk_client_id}</p>}
                               </div>
 
                               <div className="space-y-2">
                                  <Label>
-                                    Meeting SDK Client Secret <span className="text-red-500">*</span>
+                                    Segredo do cliente do Meeting SDK <span className="text-red-500">*</span>
                                  </Label>
                                  <Input
                                     required
                                     type="password"
                                     value={data.zoom_sdk_client_secret}
                                     onChange={(e) => setData('zoom_sdk_client_secret', e.target.value)}
-                                    placeholder="Enter your Meeting SDK client secret"
+                                    placeholder="Digite o segredo do cliente do Meeting SDK"
                                  />
                                  {errors.zoom_sdk_client_secret && <p className="text-sm text-red-500">{errors.zoom_sdk_client_secret}</p>}
                               </div>
@@ -181,7 +181,7 @@ const LiveClass = ({ liveClass }: Props) => {
 
                         {/* Submit Button */}
                         <Button type="submit" disabled={processing} className="w-full sm:w-auto">
-                           {processing ? 'Saving...' : 'Save Changes'}
+                           {processing ? 'Salvando...' : 'Salvar alterações'}
                         </Button>
                      </form>
                   </CardContent>
@@ -202,13 +202,13 @@ const LiveClass = ({ liveClass }: Props) => {
 
                      <div>
                         <h4 className="mb-2 font-medium">Etapa 2: obter credenciais</h4>
-                        <p className="text-muted-foreground text-sm">Copie o Account ID, Client ID e Client Secret nas configurações do aplicativo.</p>
+                        <p className="text-muted-foreground text-sm">Copie o Account ID, o Client ID e o segredo do cliente nas configurações do aplicativo.</p>
                      </div>
 
                      <div>
                         <h4 className="mb-2 font-medium">Etapa 3: Web SDK (opcional)</h4>
                         <p className="text-muted-foreground text-sm">
-                           If you want to embed Zoom meetings directly in your website, enable Web SDK and provide Meeting SDK credentials.
+                           Se você quiser incorporar reuniões do Zoom diretamente no site, ative o Web SDK e forneça as credenciais do Meeting SDK.
                         </p>
                      </div>
                   </CardContent>

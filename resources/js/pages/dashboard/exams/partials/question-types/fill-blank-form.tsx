@@ -41,20 +41,20 @@ const FillBlankForm = ({ data, setData, errors }: Props) => {
       <div className="space-y-4">
          <div>
             <Label>Instruções</Label>
-            <div className="p-3 bg-blue-50 rounded-md text-sm text-blue-900">
-               <p className="font-medium mb-1">Como usar questões de preenchimento de lacunas:</p>
-               <p>1. Write your question in the title field above</p>
-               <p>2. Use underscores (___) or brackets [blank] to mark where students should fill in answers</p>
-               <p>3. Add the correct answer(s) below</p>
+            <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-900">
+               <p className="mb-1 font-medium">Como usar questões de preenchimento de lacunas:</p>
+               <p>1. Escreva a questão no campo de título acima</p>
+               <p>2. Use sublinhados (___) ou colchetes [blank] para marcar onde o aluno deve responder</p>
+               <p>3. Adicione a(s) resposta(s) correta(s) abaixo</p>
             </div>
          </div>
 
          <div className="space-y-3">
             <div className="flex items-center justify-between">
-               <Label>Accepted Answers *</Label>
+               <Label>Respostas aceitas *</Label>
                <Button type="button" variant="outline" size="sm" onClick={addAnswer}>
                   <Plus className="h-4 w-4" />
-                  Add Alternative Answer
+                  Adicionar resposta alternativa
                </Button>
             </div>
 
@@ -63,7 +63,7 @@ const FillBlankForm = ({ data, setData, errors }: Props) => {
             {answers.map((answer, index) => (
                <div key={index} className="flex gap-2">
                   <div className="flex-1">
-                     <Input placeholder={`Correct answer ${index + 1}`} value={answer} onChange={(e) => updateAnswer(index, e.target.value)} />
+                     <Input placeholder={`Resposta correta ${index + 1}`} value={answer} onChange={(e) => updateAnswer(index, e.target.value)} />
                   </div>
                   {answers.length > 1 && (
                      <Button type="button" variant="ghost" size="sm" onClick={() => removeAnswer(index)} className="text-red-600">

@@ -37,7 +37,7 @@ class CourseCouponController extends Controller
 
       return redirect()
          ->route('course-coupons.index')
-         ->with('success', 'Coupon created successfully.');
+         ->with('success', 'Cupom criado com sucesso.');
    }
 
    /**
@@ -49,7 +49,7 @@ class CourseCouponController extends Controller
 
       return redirect()
          ->route('course-coupons.index')
-         ->with('success', 'Coupon updated successfully.');
+         ->with('success', 'Cupom atualizado com sucesso.');
    }
 
    /**
@@ -61,7 +61,7 @@ class CourseCouponController extends Controller
 
       return redirect()
          ->route('course-coupons.index')
-         ->with('success', 'Coupon deleted successfully.');
+         ->with('success', 'Cupom excluído com sucesso.');
    }
 
    /**

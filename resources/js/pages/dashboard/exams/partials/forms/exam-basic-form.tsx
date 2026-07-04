@@ -30,8 +30,8 @@ const ExamBasicForm = ({ data, setData, errors, categories, isEdit = false }: Pr
    return (
       <div className="space-y-4">
          <div>
-            <Label htmlFor="title">Exam Title *</Label>
-            <Input id="title" name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Enter exam title" required />
+            <Label htmlFor="title">Título da prova *</Label>
+            <Input id="title" name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Digite o título da prova" required />
             <InputError message={errors.title} />
          </div>
 
@@ -49,7 +49,7 @@ const ExamBasicForm = ({ data, setData, errors, categories, isEdit = false }: Pr
                onValueChange={(value) => setData('exam_category_id', parseInt(value))}
             >
                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder="Selecione a categoria" />
                </SelectTrigger>
                <SelectContent>
                   {categories.map((category) => (
@@ -66,7 +66,7 @@ const ExamBasicForm = ({ data, setData, errors, categories, isEdit = false }: Pr
             <Label htmlFor="level">Nível de dificuldade</Label>
             <Select name="level" value={data.level || ''} onValueChange={(value) => setData('level', value)}>
                <SelectTrigger>
-                  <SelectValue placeholder="Select level" />
+                  <SelectValue placeholder="Selecione o nível" />
                </SelectTrigger>
                <SelectContent>
                   <SelectItem value="beginner">Iniciante</SelectItem>
@@ -85,7 +85,7 @@ const ExamBasicForm = ({ data, setData, errors, categories, isEdit = false }: Pr
                name="short_description"
                value={data.short_description}
                onChange={(e) => onHandleChange(e, setData)}
-               placeholder="Brief description for exam cards"
+               placeholder="Breve descrição para os cards da prova"
                rows={3}
             />
             <InputError message={errors.short_description} />
@@ -97,8 +97,8 @@ const ExamBasicForm = ({ data, setData, errors, categories, isEdit = false }: Pr
                ssr={true}
                output="html"
                placeholder={{
-                  paragraph: 'Enter detailed exam description...',
-                  imageCaption: 'Type caption for image (optional)',
+                  paragraph: 'Digite a descrição detalhada da prova...',
+                  imageCaption: 'Digite a legenda da imagem (opcional)',
                }}
                contentMinHeight={256}
                contentMaxHeight={640}

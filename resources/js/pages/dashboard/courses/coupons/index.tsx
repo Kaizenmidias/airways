@@ -32,7 +32,7 @@ const CouponsIndex = ({ coupons, courses }: Props) => {
 
    return (
       <>
-         <Head title="Course Coupons" />
+         <Head title="Cupons de cursos" />
 
          <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -41,12 +41,12 @@ const CouponsIndex = ({ coupons, courses }: Props) => {
                   <p className="mt-1 text-sm text-gray-600">Gerencie cupons de desconto para seus cursos</p>
                </div>
                <CouponForm
-                  title="Create Coupon"
+                     title="Criar cupom"
                   courses={courses}
                   handler={
                      <Button>
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Coupon
+                        Adicionar cupom
                      </Button>
                   }
                />
@@ -55,7 +55,7 @@ const CouponsIndex = ({ coupons, courses }: Props) => {
             <Card>
                <TableFilter
                   data={coupons}
-                  title="Coupon List"
+                  title="Lista de cupons"
                   globalSearch={true}
                   tablePageSizes={[10, 15, 20, 25]}
                   routeName="Course-coupons.index"
@@ -76,7 +76,7 @@ const CouponsIndex = ({ coupons, courses }: Props) => {
                      ) : (
                         <TableRow>
                            <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
-                              No coupons found.
+                              Nenhum cupom encontrado.
                            </TableCell>
                         </TableRow>
                      )}

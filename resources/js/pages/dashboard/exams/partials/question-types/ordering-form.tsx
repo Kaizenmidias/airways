@@ -49,25 +49,25 @@ const OrderingForm = ({ data, setData, errors }: Props) => {
       <div className="space-y-4">
          <div>
             <Label>Instruções</Label>
-            <div className="p-3 bg-blue-50 rounded-md text-sm text-blue-900">
-               <p className="font-medium mb-1">Como funcionam as questões de ordenação:</p>
-               <p>1. List the items in the correct order below</p>
-               <p>2. The system will shuffle them for students</p>
-               <p>3. Students must arrange them in the correct order</p>
+            <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-900">
+               <p className="mb-1 font-medium">Como funcionam as questões de ordenação:</p>
+               <p>1. Liste os itens na ordem correta abaixo</p>
+               <p>2. O sistema embaralhará os itens para os alunos</p>
+               <p>3. Os alunos devem organizá-los na ordem correta</p>
             </div>
          </div>
 
          <div className="space-y-3">
             <div className="flex items-center justify-between">
-               <Label>Items (in correct order) *</Label>
+               <Label>Itens (na ordem correta) *</Label>
                <Button type="button" variant="outline" size="sm" onClick={addItem}>
                   <Plus className="h-4 w-4" />
-                  Add Item
+                  Adicionar item
                </Button>
             </div>
 
             {items.map((item, index) => (
-               <div key={index} className="flex gap-2 items-center">
+               <div key={index} className="flex items-center gap-2">
                   <div className="flex flex-col gap-1">
                      <Button
                         type="button"
@@ -93,7 +93,7 @@ const OrderingForm = ({ data, setData, errors }: Props) => {
 
                   <GripVertical className="h-5 w-5 text-gray-400" />
 
-                  <span className="text-sm font-medium text-gray-500 w-8">{index + 1}.</span>
+                  <span className="w-8 text-sm font-medium text-gray-500">{index + 1}.</span>
 
                   <div className="flex-1">
                      <Input placeholder={`Item ${index + 1}`} value={item} onChange={(e) => updateItem(index, e.target.value)} />

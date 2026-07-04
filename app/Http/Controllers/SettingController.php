@@ -59,7 +59,7 @@ class SettingController extends Controller
         $user = $this->studentService->updateProfile($request->validated(), $user->id);
         $this->instructorService->updateInstructor($request->validated(), $user->instructor_id);
 
-        return back()->with('success', 'Profile updated successfully');
+        return back()->with('success', 'Perfil atualizado com sucesso.');
     }
 
     /**
@@ -79,7 +79,7 @@ class SettingController extends Controller
     {
         $this->settingsService->systemUpdate($request->all(), $id);
 
-        return back()->with('success', 'System settings updated successfully');
+        return back()->with('success', 'Configurações do sistema atualizadas com sucesso.');
     }
 
     /**
@@ -106,7 +106,7 @@ class SettingController extends Controller
 
         $this->settingsService->homePagesSelect($validated, $id);
 
-        return back()->with('success', 'Home page has been updated successfully');
+        return back()->with('success', 'A página inicial foi atualizada com sucesso.');
     }
 
     public function system_type_update(Request $request)
@@ -128,7 +128,7 @@ class SettingController extends Controller
             ],
         ]);
 
-        return back()->with('success', 'System type has been updated successfully');
+        return back()->with('success', 'O tipo de sistema foi atualizado com sucesso.');
     }
 
     public function custom_pages_edit(Request $request, string $id)
@@ -142,21 +142,21 @@ class SettingController extends Controller
     {
         $this->settingsService->customPagesCreate($request->validated());
 
-        return back()->with('success', 'Custom page has been created successfully');
+        return back()->with('success', 'A página personalizada foi criada com sucesso.');
     }
 
     public function custom_pages_update(UpdateCustomPageRequest $request, string $id)
     {
         $this->settingsService->customPagesUpdate($request->validated(), $id);
 
-        return back()->with('success', 'Custom page has been updated successfully');
+        return back()->with('success', 'A página personalizada foi atualizada com sucesso.');
     }
 
     public function custom_pages_destroy(string $id)
     {
         $this->settingsService->customPagesDestroy($id);
 
-        return back()->with('success', 'Custom page has been deleted successfully');
+        return back()->with('success', 'A página personalizada foi excluída com sucesso.');
     }
 
     /**
@@ -166,7 +166,7 @@ class SettingController extends Controller
     {
         // $this->settingsService->pagesUpdate($request->all(), $id);
 
-        return back()->with('success', 'Pages settings updated successfully');
+        return back()->with('success', 'As configurações de páginas foram atualizadas com sucesso.');
     }
 
     /**
@@ -187,7 +187,7 @@ class SettingController extends Controller
     {
         $this->settingsService->storageUpdate($request->validated(), $id);
 
-        return back()->with('success', 'Storage settings updated successfully');
+        return back()->with('success', 'As configurações de armazenamento foram atualizadas com sucesso.');
     }
 
     /**
@@ -207,7 +207,7 @@ class SettingController extends Controller
     {
         $this->settingsService->paymentUpdate($request->validated(), $id);
 
-        return back()->with('success', 'Payment gateway settings updated successfully');
+        return back()->with('success', 'As configurações do gateway de pagamento foram atualizadas com sucesso.');
     }
 
     /**
@@ -228,7 +228,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->smtpUpdate($request->validated(), $id);
 
-            return back()->with('success', 'SMTP settings updated successfully. A test email was sent to verify your configuration.');
+            return back()->with('success', 'As configurações de SMTP foram atualizadas com sucesso. Um e-mail de teste foi enviado para verificar a configuração.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -251,7 +251,7 @@ class SettingController extends Controller
     {
         $this->settingsService->authUpdate($request->validated(), $id);
 
-        return back()->with('success', 'Auth settings updated successfully.');
+        return back()->with('success', 'As configurações de autenticação foram atualizadas com sucesso.');
     }
 
     /**
@@ -282,7 +282,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->zoomConfigUpdate($request->validated(), $id);
 
-            return back()->with('success', 'Zoom configuration settings updated successfully.');
+            return back()->with('success', 'As configurações do Zoom foram atualizadas com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -296,7 +296,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->createNavbarItem($navbar, $request->validated());
 
-            return back()->with('success', 'Navbar item created successfully');
+            return back()->with('success', 'Item da barra de navegação criado com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to create navbar item: ' . $e->getMessage());
         }
@@ -310,7 +310,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->updateNavbarItem($item, $request->validated());
 
-            return back()->with('success', 'Navbar item updated successfully');
+            return back()->with('success', 'Item da barra de navegação atualizado com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update navbar item: ' . $e->getMessage());
         }
@@ -324,7 +324,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->deleteNavbarItem($item);
 
-            return back()->with('success', 'Navbar item deleted successfully');
+            return back()->with('success', 'Item da barra de navegação excluído com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete navbar item: ' . $e->getMessage());
         }
@@ -338,7 +338,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->reorderNavbarItems($request->sortedData);
 
-            return back()->with('success', 'Navbar items reordered successfully');
+            return back()->with('success', 'Os itens da barra de navegação foram reordenados com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to reorder navbar items: ' . $e->getMessage());
         }
@@ -352,7 +352,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->createFooterItem($footer, $request->validated());
 
-            return back()->with('success', 'Footer item created successfully');
+            return back()->with('success', 'Item do rodapé criado com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to create footer item: ' . $e->getMessage());
         }
@@ -366,7 +366,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->updateFooterItem($item, $request->validated());
 
-            return back()->with('success', 'Footer item updated successfully');
+            return back()->with('success', 'Item do rodapé atualizado com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update footer item: ' . $e->getMessage());
         }
@@ -380,7 +380,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->deleteFooterItem($item);
 
-            return back()->with('success', 'Footer item deleted successfully');
+            return back()->with('success', 'Item do rodapé excluído com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete footer item: ' . $e->getMessage());
         }
@@ -394,7 +394,7 @@ class SettingController extends Controller
         try {
             $this->settingsService->reorderFooterItems($request->sortedData);
 
-            return back()->with('success', 'Footer items reordered successfully');
+            return back()->with('success', 'Os itens do rodapé foram reordenados com sucesso.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to reorder footer items: ' . $e->getMessage());
         }

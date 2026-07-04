@@ -30,25 +30,25 @@ const Attempts = () => {
          <div className="grid gap-4 md:grid-cols-4">
             <Card className="p-4">
                <div className="space-y-1">
-                  <p className="text-muted-foreground text-sm">Total Attempts</p>
+                  <p className="text-muted-foreground text-sm">Total de tentativas</p>
                   <p className="text-2xl font-bold">{attempts.total}</p>
                </div>
             </Card>
             <Card className="p-4">
                <div className="space-y-1">
-                  <p className="text-muted-foreground text-sm">Completed</p>
+                  <p className="text-muted-foreground text-sm">Concluídas</p>
                   <p className="text-2xl font-bold text-green-600">{attempts.data.filter((a) => a.status === 'completed').length}</p>
                </div>
             </Card>
             <Card className="p-4">
                <div className="space-y-1">
-                  <p className="text-muted-foreground text-sm">In Progress</p>
+                  <p className="text-muted-foreground text-sm">Em andamento</p>
                   <p className="text-2xl font-bold text-blue-600">{attempts.data.filter((a) => a.status === 'in_progress').length}</p>
                </div>
             </Card>
             <Card className="p-4">
                <div className="space-y-1">
-                  <p className="text-muted-foreground text-sm">Pass Rate</p>
+                  <p className="text-muted-foreground text-sm">Taxa de aprovação</p>
                   <p className="text-2xl font-bold text-purple-600">
                      {attempts.data.length > 0
                         ? (
@@ -70,7 +70,7 @@ const Attempts = () => {
             <Card>
                <TableFilter
                   data={attempts}
-                  title="Exam Attempts"
+                  title="Tentativas da prova"
                   globalSearch={true}
                   tablePageSizes={[10, 15, 20, 25]}
                   routeName="exams.edit"
@@ -92,7 +92,7 @@ const Attempts = () => {
                      ) : (
                         <TableRow>
                            <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
-                              No exam attempts found.
+                              Nenhuma tentativa de prova encontrada.
                            </TableCell>
                         </TableRow>
                      )}

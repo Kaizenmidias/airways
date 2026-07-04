@@ -37,7 +37,7 @@ const Courses = (props: Props) => {
 
    return (
       <div>
-         <EnrollmentModal type="course" title="Add New Course Enrollment" handler={<Button>{button.add_new_enrollment}</Button>} />
+         <EnrollmentModal type="course" title="Adicionar nova matrícula em curso" handler={<Button>{button.add_new_enrollment}</Button>} />
 
          <Separator className="my-6" />
 

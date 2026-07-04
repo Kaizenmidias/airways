@@ -34,11 +34,11 @@ const Resources = () => {
 
             <div className="flex items-center gap-2">
                <ResourceForm
-                  title="Add new exam resource"
+                  title="Adicionar novo recurso da prova"
                   handler={
                      <Button>
                         <Plus className="h-4 w-4" />
-                        Add Resource
+                        Adicionar recurso
                      </Button>
                   }
                />
@@ -64,7 +64,7 @@ const Resources = () => {
 
                         <div className="flex items-center justify-end space-x-2">
                            <ResourceForm
-                              title="Update new exam resource"
+                              title="Atualizar recurso da prova"
                               resource={resource}
                               handler={
                                  <Button size="icon" variant="secondary" className="h-7 w-7">

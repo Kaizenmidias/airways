@@ -27,7 +27,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
    return (
       <div className="space-y-4">
          <div>
-            <Label>Pricing Type *</Label>
+            <Label>Tipo de preço *</Label>
             <RadioGroup
                value={data.pricing_type}
                onValueChange={(value) => setData('pricing_type', value)}
@@ -36,13 +36,13 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="free" id="free" />
                   <Label htmlFor="free" className="cursor-pointer font-normal">
-                     Free
+                     Grátis
                   </Label>
                </div>
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="paid" id="paid" />
                   <Label htmlFor="paid" className="cursor-pointer font-normal">
-                     Paid
+                     Pago
                   </Label>
                </div>
             </RadioGroup>
@@ -52,7 +52,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
          {data.pricing_type === 'paid' && (
             <>
                <div>
-                  <Label htmlFor="price">Price (USD) *</Label>
+                  <Label htmlFor="price">Preço (USD) *</Label>
                   <Input
                      id="price"
                      name="price"
@@ -68,7 +68,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
                </div>
 
                <div>
-                  <Label htmlFor="discount">Discount (%)</Label>
+                  <Label htmlFor="discount">Desconto (%)</Label>
                   <Input
                      id="discount"
                      name="discount"
@@ -85,8 +85,8 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
                {data.discount > 0 && (
                   <div className="rounded-lg bg-green-50 p-4">
                      <p className="text-sm text-green-800">
-                        <span className="font-semibold">Final Price:</span> ${data.discount_price} (
-                        {data.discount}% off from ${data.price})
+                        <span className="font-semibold">Preço final:</span> ${data.discount_price} (
+                        {data.discount}% de desconto sobre ${data.price})
                      </p>
                   </div>
                )}
@@ -94,7 +94,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
          )}
 
          <div className="border-t pt-4">
-            <Label>Access Duration *</Label>
+            <Label>Duração de acesso *</Label>
             <RadioGroup
                value={data.expiry_type || 'lifetime'}
                onValueChange={(value) => setData('expiry_type', value)}
@@ -103,13 +103,13 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="lifetime" id="lifetime" />
                   <Label htmlFor="lifetime" className="cursor-pointer font-normal">
-                     Lifetime Access
+                     Acesso vitalício
                   </Label>
                </div>
                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="limited" id="limited" />
                   <Label htmlFor="limited" className="cursor-pointer font-normal">
-                     Limited Access
+                     Acesso limitado
                   </Label>
                </div>
             </RadioGroup>
@@ -118,7 +118,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
 
          {data.expiry_type === 'limited' && (
             <div>
-               <Label htmlFor="expiry_duration">Access Duration (Days) *</Label>
+               <Label htmlFor="expiry_duration">Duração do acesso (dias) *</Label>
                <Input
                   id="expiry_duration"
                   name="expiry_duration"
@@ -129,7 +129,7 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
                   min="1"
                   required
                />
-               <p className="mt-1 text-sm text-gray-500">Students will have access for this many days after enrollment</p>
+               <p className="mt-1 text-sm text-gray-500">Os alunos terão acesso por esse período após a matrícula</p>
                <InputError message={errors.expiry_duration} />
             </div>
          )}
@@ -138,4 +138,3 @@ const ExamPricingForm = ({ data, setData, errors }: Props) => {
 };
 
 export default ExamPricingForm;
-

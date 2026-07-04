@@ -63,7 +63,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
          <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
                <p className="text-sm" style={{ color: template_data.secondaryColor }}>
-                  Student Name
+                  Nome do aluno
                </p>
                <p className="text-lg font-semibold" style={{ color: template_data.primaryColor }}>
                   {studentName}
@@ -71,7 +71,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
             </div>
             <div>
                <p className="text-sm" style={{ color: template_data.secondaryColor }}>
-                  Course
+                  Curso
                </p>
                <p className="text-lg font-semibold" style={{ color: template_data.primaryColor }}>
                   {courseName}
@@ -79,7 +79,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
             </div>
             <div>
                <p className="text-sm" style={{ color: template_data.secondaryColor }}>
-                  Completion Date
+                  Data de conclusão
                </p>
                <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" style={{ color: template_data.secondaryColor }} />
@@ -90,7 +90,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
             </div>
             <div>
                <p className="text-sm" style={{ color: template_data.secondaryColor }}>
-                  Overall Grade
+                  Nota geral
                </p>
                <p className="text-2xl font-bold" style={{ color: template_data.primaryColor }}>
                   {overallGrade} ({overallPercentage}%)
@@ -101,7 +101,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
          {/* Exam Type Section */}
          <div className="mb-6">
             <h3 className="mb-3 text-lg font-semibold" style={{ color: template_data.primaryColor }}>
-               Exam Type
+               Tipo de avaliação
             </h3>
             <div className="overflow-hidden rounded-lg border" style={{ borderColor: template_data.borderColor }}>
                <table className="w-full">
@@ -111,20 +111,20 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
                            className="border-b p-3 text-left font-semibold"
                            style={{ color: template_data.primaryColor, borderColor: template_data.borderColor }}
                         >
-                           Exam Type
+                           Tipo de avaliação
                         </th>
                         <th
                            className="border-b p-3 text-right font-semibold"
                            style={{ color: template_data.primaryColor, borderColor: template_data.borderColor }}
                         >
-                           Total Marks
+                           Nota total
                         </th>
                      </tr>
                   </thead>
                   <tbody>
                      <tr className="border-b" style={{ borderColor: template_data.borderColor }}>
                         <td className="p-3" style={{ color: template_data.secondaryColor }}>
-                           Assignment
+                           Atividade
                         </td>
                         <td className="p-3 text-right font-medium" style={{ color: template_data.primaryColor }}>
                            10/50
@@ -132,7 +132,7 @@ const MarksheetPreview = ({ template, studentName, courseName, completionDate, l
                      </tr>
                      <tr>
                         <td className="p-3" style={{ color: template_data.secondaryColor }}>
-                           Quiz
+                           Questionário
                         </td>
                         <td className="p-3 text-right font-medium" style={{ color: template_data.primaryColor }}>
                            0/0

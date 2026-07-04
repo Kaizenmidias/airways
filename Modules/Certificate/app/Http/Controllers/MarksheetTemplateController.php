@@ -54,7 +54,7 @@ class MarksheetTemplateController extends Controller
             'is_active' => $validated['is_active'] ?? false,
         ]);
 
-        return redirect()->route('marksheet.templates.index')->with('success', 'Marksheet template created successfully!');
+        return redirect()->route('marksheet.templates.index')->with('success', 'Modelo de boletim criado com sucesso!');
     }
 
     /**
@@ -98,7 +98,7 @@ class MarksheetTemplateController extends Controller
             'is_active' => $validated['is_active'] ?? $template->is_active,
         ]);
 
-        return redirect()->route('marksheet.templates.index')->with('success', 'Marksheet template updated successfully!');
+        return redirect()->route('marksheet.templates.index')->with('success', 'Modelo de boletim atualizado com sucesso!');
     }
 
     /**
@@ -114,7 +114,7 @@ class MarksheetTemplateController extends Controller
         // Activate this template
         $template->update(['is_active' => true]);
 
-        return redirect()->back()->with('success', 'Marksheet template activated successfully!');
+        return redirect()->back()->with('success', 'Modelo de boletim ativado com sucesso!');
     }
 
     /**
@@ -131,6 +131,6 @@ class MarksheetTemplateController extends Controller
 
         $template->delete();
 
-        return redirect()->back()->with('success', 'Marksheet template deleted successfully!');
+        return redirect()->back()->with('success', 'Modelo de boletim excluído com sucesso!');
     }
 }

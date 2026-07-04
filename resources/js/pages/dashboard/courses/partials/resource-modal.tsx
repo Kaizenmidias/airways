@@ -33,7 +33,7 @@ const ResourceModal = ({ title, handler, lesson, resource }: Props) => {
                         Resource List
                      </TabsTrigger>
                      <TabsTrigger value="add" className="h-9 w-full">
-                        Add Resource
+                        Adicionar recurso
                      </TabsTrigger>
                   </TabsList>
 

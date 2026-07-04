@@ -70,7 +70,7 @@ const CouponsIndex = ({ coupons, exams }: Props) => {
                      ) : (
                         <TableRow>
                            <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
-                              No coupons found.
+                              Nenhum cupom encontrado.
                            </TableCell>
                         </TableRow>
                      )}

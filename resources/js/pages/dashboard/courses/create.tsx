@@ -41,7 +41,7 @@ const Index = (props: Props) => {
       title: '',
       short_description: '',
       description: '',
-      status: 'draft',
+      status: user.role === 'admin' ? 'approved' : 'draft',
       level: '',
       language: '',
       pricing_type: 'paid',

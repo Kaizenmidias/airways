@@ -193,7 +193,7 @@ const Website = () => {
 
                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                   <div>
-                     <Label>{'Website Direction'}</Label>
+                     <Label>{'Direção do site'}</Label>
                      <Select value={data.direction} onValueChange={(value) => setData('direction', value)}>
                         <SelectTrigger>
                            <SelectValue placeholder={input.select_option} />
@@ -208,7 +208,7 @@ const Website = () => {
                   </div>
 
                   <div>
-                     <Label>{'Default Theme'}</Label>
+                     <Label>{'Tema padrão'}</Label>
                      <Select value={data.theme} onValueChange={(value) => setData('theme', value as Appearance)}>
                         <SelectTrigger>
                            <SelectValue placeholder={input.select_option} />
@@ -223,7 +223,7 @@ const Website = () => {
                   </div>
 
                   <div>
-                     <Label>{'Language Selector'}</Label>
+                     <Label>{'Seletor de idioma'}</Label>
                      <Select value={data.language_selector ? '1' : '0'} onValueChange={(value) => setData('language_selector', value === '1')}>
                         <SelectTrigger>
                            <SelectValue placeholder={input.select_option} />
@@ -237,23 +237,23 @@ const Website = () => {
                   </div>
 
                   <div>
-                     <Label>{`Course Selling Currency (${data.selling_currency})`}</Label>
+                     <Label>{`Moeda de venda dos cursos (${data.selling_currency})`}</Label>
                      <Combobox
                         data={currencies}
                         defaultValue={data.selling_currency || ''}
-                        placeholder="Select a selling currency"
+                        placeholder="Selecione uma moeda"
                         onSelect={(selected) => setData('selling_currency', selected.value)}
                      />
                      <InputError message={errors.selling_currency} />
                   </div>
 
                   <div>
-                     <Label>{'Course Selling Tax (%)'}</Label>
+                     <Label>{'Imposto sobre a venda do curso (%)'}</Label>
                      <Input
                         name="selling_tax"
                         value={data.selling_tax || ''}
                         onChange={(e) => onHandleChange(e, setData)}
-                        placeholder="Enter Course Selling Tax Percentage"
+                        placeholder="Digite a porcentagem do imposto"
                      />
                      <InputError message={errors.selling_tax} />
                   </div>
@@ -261,12 +261,12 @@ const Website = () => {
                   {/* Other Settings */}
                   {airways.marketplace && (
                      <div>
-                        <Label>{'Instructor Revenue (%)'}</Label>
+                        <Label>{'Repasse ao instrutor (%)'}</Label>
                         <Input
                            name="instructor_revenue"
                            value={data.instructor_revenue || ''}
                            onChange={(e) => onHandleChange(e, setData)}
-                           placeholder="Enter Instructor Revenue Percentage"
+                           placeholder="Digite a porcentagem do repasse"
                         />
                         <InputError message={errors.instructor_revenue} />
                      </div>

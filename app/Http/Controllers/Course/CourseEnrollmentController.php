@@ -61,7 +61,7 @@ class CourseEnrollmentController extends Controller
     {
         $this->courseEnrollment->createCourseEnroll($request->validated());
 
-        return redirect(route('course-enrollments.index'))->with('success', 'Enrollment is successfully done in this course');
+        return redirect(route('course-enrollments.index'))->with('success', 'A matrícula neste curso foi concluída com sucesso.');
     }
 
     /**
@@ -71,6 +71,6 @@ class CourseEnrollmentController extends Controller
     {
         $this->courseEnrollment->deleteEnrollment($id);
 
-        return redirect(route('course-enrollments.index'))->with('success', 'Enrollment is successfully deleted');
+        return redirect(route('course-enrollments.index'))->with('success', 'A matrícula foi excluída com sucesso.');
     }
 }

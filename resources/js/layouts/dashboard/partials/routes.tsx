@@ -53,7 +53,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
                },
                {
-                  name: button.course_coupons ?? 'Course Coupons',
+                  name: button.course_coupons ?? 'Cupons de cursos',
                   slug: routeLastSegment(route('course-coupons.index')),
                   path: route('course-coupons.index'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
@@ -75,19 +75,19 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                   access: ['admin', 'collaborative', 'administrative'],
                },
                {
-                  name: button.manage_exams ?? 'Manage Exams',
+                  name: button.manage_exams ?? 'Gerenciar provas',
                   slug: routeLastSegment(route('exams.index')),
                   path: route('exams.index'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
                },
                {
-                  name: button.create_exam ?? 'Create Exam',
+                  name: button.create_exam ?? 'Criar prova',
                   slug: routeLastSegment(route('exams.create')),
                   path: route('exams.create'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
                },
                {
-                  name: button.exam_coupons ?? 'Exam Coupons',
+                  name: button.exam_coupons ?? 'Cupons de provas',
                   slug: routeLastSegment(route('exam-coupons.index')),
                   path: route('exam-coupons.index'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
@@ -103,13 +103,13 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
             access: ['admin', 'instructor', 'collaborative', 'administrative'],
             children: [
                {
-                  name: button.course_enrollments ?? 'Course Enrollments',
+                  name: button.course_enrollments ?? 'Matrículas em cursos',
                   slug: routeLastSegment(route('course-enrollments.index')),
                   path: route('course-enrollments.index'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
                },
                {
-                  name: button.exam_enrollments ?? 'Exam Enrollments',
+                  name: button.exam_enrollments ?? 'Matrículas em provas',
                   slug: routeLastSegment(route('exam-enrollments.index')),
                   path: route('exam-enrollments.index'),
                   access: ['admin', 'instructor', 'collaborative', 'administrative'],
@@ -280,7 +280,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
          },
          {
             Icon: Award,
-            name: button.certificates ?? 'Certificates',
+                    name: button.certificates ?? 'Certificados',
             path: '',
             slug: 'certification',
             active: true,
@@ -293,7 +293,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                   access: ['admin', 'collaborative', 'administrative'],
                },
                {
-                  name: button.marksheet ?? 'Marksheet',
+                    name: button.marksheet ?? 'Boletim',
                   slug: routeLastSegment(route('marksheet.templates.index')),
                   path: route('marksheet.templates.index'),
                   access: ['admin', 'collaborative', 'administrative'],
@@ -357,7 +357,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                   access: ['admin', 'collaborative', 'administrative'],
                },
                {
-                  name: button.translation ?? 'Translation',
+                    name: button.translation ?? 'Tradução',
                   slug: routeLastSegment(route('language.index')),
                   path: route('language.index'),
                   access: ['admin', 'collaborative', 'administrative'],

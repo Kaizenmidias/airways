@@ -50,13 +50,13 @@ type QuestionFormData = {
 };
 
 const questionTypes: { value: ExamQuestionType; label: string }[] = [
-   { value: 'multiple_choice', label: 'Multiple Choice' },
-   { value: 'multiple_select', label: 'Multiple Select' },
-   { value: 'matching', label: 'Matching' },
-   { value: 'fill_blank', label: 'Fill in the Blank' },
-   { value: 'ordering', label: 'Ordering' },
-   { value: 'short_answer', label: 'Short Answer' },
-   { value: 'listening', label: 'Listening' },
+   { value: 'multiple_choice', label: 'Múltipla escolha' },
+   { value: 'multiple_select', label: 'Seleção múltipla' },
+   { value: 'matching', label: 'Relacionar' },
+   { value: 'fill_blank', label: 'Preencher lacunas' },
+   { value: 'ordering', label: 'Ordenação' },
+   { value: 'short_answer', label: 'Resposta curta' },
+   { value: 'listening', label: 'Audição' },
 ];
 
 const QuestionDialog = ({ exam, question, handler }: Props) => {
@@ -182,20 +182,20 @@ const QuestionDialog = ({ exam, question, handler }: Props) => {
          <DialogTrigger>{handler}</DialogTrigger>
          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
             <DialogHeader>
-               <DialogTitle>{question ? 'Edit Question' : 'Create Question'}</DialogTitle>
+               <DialogTitle>{question ? 'Editar questão' : 'Criar questão'}</DialogTitle>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-6">
                <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                     <Label>Question Type *</Label>
+                     <Label>Tipo de questão *</Label>
                      <Select
                         value={data.question_type}
                         onValueChange={(value: ExamQuestionType) => setData('question_type', value)}
                         disabled={question ? true : false}
                      >
                         <SelectTrigger>
-                           <SelectValue placeholder="Select question type" />
+                           <SelectValue placeholder="Selecione o tipo de questão" />
                         </SelectTrigger>
                         <SelectContent>
                            {questionTypes.map((type) => (
@@ -217,15 +217,15 @@ const QuestionDialog = ({ exam, question, handler }: Props) => {
                         name="marks"
                         value={data.marks.toString()}
                         onChange={(e) => setData('marks', parseFloat(e.target.value) || 0)}
-                        placeholder="Enter marks"
+                        placeholder="Digite a nota"
                      />
                      <InputError message={errors.marks} />
                   </div>
                </div>
 
                <div>
-                  <Label>Question Title *</Label>
-                  <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Enter question title" />
+                  <Label>Título da questão *</Label>
+                  <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Digite o título da questão" />
                   <InputError message={errors.title} />
                </div>
 
@@ -235,8 +235,8 @@ const QuestionDialog = ({ exam, question, handler }: Props) => {
                      ssr={true}
                      output="html"
                      placeholder={{
-                        paragraph: 'Add additional context or instructions...',
-                        imageCaption: 'Add additional context or instructions...',
+                        paragraph: 'Adicione contexto ou instruções adicionais...',
+                        imageCaption: 'Adicione contexto ou instruções adicionais...',
                      }}
                      contentMinHeight={150}
                      contentMaxHeight={300}
@@ -255,10 +255,10 @@ const QuestionDialog = ({ exam, question, handler }: Props) => {
 
                <div className="flex justify-end gap-3 border-t pt-4">
                   <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={processing || isSubmit}>
-                     Cancel
+                     Cancelar
                   </Button>
                   <LoadingButton loading={processing || isSubmit} disabled={processing || isSubmit}>
-                     {question ? 'Update Question' : 'Create Question'}
+                     {question ? 'Atualizar questão' : 'Criar questão'}
                   </LoadingButton>
                </div>
             </form>

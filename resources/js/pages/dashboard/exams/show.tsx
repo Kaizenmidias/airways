@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { Head, Link } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { ArrowLeft, Award, BookOpen, Calendar, DollarSign, Edit, Eye, TrendingUp, Users } from 'lucide-react';
 
 interface Props {
@@ -37,13 +38,12 @@ const ShowExam = ({ exam, stats }: Props) => {
          <Head title={exam.title} />
 
          <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                <div className="flex items-center gap-4">
                   <Link href={route('exams.index')}>
                      <Button variant="outline" size="sm">
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back
+                        Voltar
                      </Button>
                   </Link>
                   <div>
@@ -55,24 +55,21 @@ const ShowExam = ({ exam, stats }: Props) => {
                   <Link href={route('exams.edit', exam.id)}>
                      <Button size="sm">
                         <Edit className="mr-2 h-4 w-4" />
-                        Edit
+                        Editar
                      </Button>
                   </Link>
                </div>
             </div>
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-               <ExamStatsCard icon={Users} label="Total Enrollments" value={stats.total_enrollments.toString()} />
-               <ExamStatsCard icon={TrendingUp} label="Active Students" value={stats.active_enrollments.toString()} />
-               <ExamStatsCard icon={Award} label="Pass Rate" value={`${stats.pass_rate.toFixed(1)}%`} />
-               <ExamStatsCard icon={DollarSign} label="Revenue" value={`$${stats.total_revenue.toFixed(2)}`} />
+               <ExamStatsCard icon={Users} label="Matrículas totais" value={stats.total_enrollments.toString()} />
+               <ExamStatsCard icon={TrendingUp} label="Alunos ativos" value={stats.active_enrollments.toString()} />
+               <ExamStatsCard icon={Award} label="Taxa de aprovação" value={`${stats.pass_rate.toFixed(1)}%`} />
+               <ExamStatsCard icon={DollarSign} label="Receita" value={`$${stats.total_revenue.toFixed(2)}`} />
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-               {/* Main Content */}
                <div className="space-y-6 lg:col-span-2">
-                  {/* Exam Details */}
                   <Card>
                      <CardHeader>
                         <CardTitle>Detalhes da prova</CardTitle>
@@ -87,7 +84,7 @@ const ShowExam = ({ exam, stats }: Props) => {
                            </div>
                            <div>
                               <p className="text-sm text-gray-600">Preço</p>
-                              <p className="font-semibold">{exam.pricing_type === 'free' ? 'Free' : `$${exam.discount_price || exam.price}`}</p>
+                              <p className="font-semibold">{exam.pricing_type === 'free' ? 'Grátis' : `$${exam.discount_price || exam.price}`}</p>
                            </div>
                            <div>
                               <p className="text-sm text-gray-600">Total de questões</p>
@@ -114,13 +111,12 @@ const ShowExam = ({ exam, stats }: Props) => {
                            </div>
                            <div>
                               <p className="text-sm text-gray-600">Nível</p>
-                              <p className="font-semibold">{exam.level || 'Not set'}</p>
+                              <p className="font-semibold">{exam.level || 'Não definido'}</p>
                            </div>
                         </div>
                      </CardContent>
                   </Card>
 
-                  {/* Performance Analytics */}
                   <Card>
                      <CardHeader>
                         <CardTitle>Análise de desempenho</CardTitle>
@@ -150,7 +146,6 @@ const ShowExam = ({ exam, stats }: Props) => {
                      </CardContent>
                   </Card>
 
-                  {/* Recent Attempts */}
                   <Card>
                      <CardHeader>
                         <CardTitle>Tentativas recentes</CardTitle>
@@ -162,7 +157,7 @@ const ShowExam = ({ exam, stats }: Props) => {
                                  <div key={attempt.id} className="flex items-center justify-between rounded-lg border p-3">
                                     <div>
                                        <p className="font-semibold">{attempt.user?.name}</p>
-                                       <p className="text-sm text-gray-600">{format(parseISO(attempt.start_time), 'MMM dd, yyyy HH:mm')}</p>
+                                       <p className="text-sm text-gray-600">{format(parseISO(attempt.start_time), 'dd MMM yyyy HH:mm', { locale: ptBR })}</p>
                                     </div>
                                     <div className="text-right">
                                        <Badge
@@ -186,9 +181,7 @@ const ShowExam = ({ exam, stats }: Props) => {
                   </Card>
                </div>
 
-               {/* Sidebar */}
                <div className="space-y-6">
-                  {/* Quick Actions */}
                   <Card>
                      <CardHeader>
                         <CardTitle className="text-base">Ações rápidas</CardTitle>
@@ -197,19 +190,18 @@ const ShowExam = ({ exam, stats }: Props) => {
                         <Link href={route('student.exams.show', exam.slug)} target="_blank">
                            <Button variant="outline" className="w-full justify-start">
                               <Eye className="mr-2 h-4 w-4" />
-                              View as Student
+                              Ver como aluno
                            </Button>
                         </Link>
                         <Link href={route('exams.questions.index', exam.id)}>
                            <Button variant="outline" className="w-full justify-start">
                               <BookOpen className="mr-2 h-4 w-4" />
-                              Manage Questions
+                              Gerenciar questões
                            </Button>
                         </Link>
                      </CardContent>
                   </Card>
 
-                  {/* Recent Enrollments */}
                   <Card>
                      <CardHeader>
                         <CardTitle className="text-base">Matrículas recentes</CardTitle>
@@ -222,7 +214,7 @@ const ShowExam = ({ exam, stats }: Props) => {
                                     <Calendar className="h-4 w-4 text-gray-400" />
                                     <div className="flex-1">
                                        <p className="text-sm font-semibold">{enrollment.user?.name}</p>
-                                       <p className="text-xs text-gray-600">{format(parseISO(enrollment.entry_date), 'MMM dd, yyyy')}</p>
+                                       <p className="text-xs text-gray-600">{format(parseISO(enrollment.entry_date), 'dd MMM yyyy', { locale: ptBR })}</p>
                                     </div>
                                  </div>
                               ))}
@@ -233,7 +225,6 @@ const ShowExam = ({ exam, stats }: Props) => {
                      </CardContent>
                   </Card>
 
-                  {/* Reviews Summary */}
                   {exam.reviews.length > 0 && (
                      <Card>
                         <CardHeader>
@@ -241,10 +232,8 @@ const ShowExam = ({ exam, stats }: Props) => {
                         </CardHeader>
                         <CardContent>
                            <div className="text-center">
-                              <p className="text-3xl font-bold">
-                                 {(exam.reviews.reduce((sum, r) => sum + r.rating, 0) / exam.reviews.length).toFixed(1)}
-                              </p>
-                              <p className="text-sm text-gray-600">{exam.reviews.length} reviews</p>
+                              <p className="text-3xl font-bold">{(exam.reviews.reduce((sum, r) => sum + r.rating, 0) / exam.reviews.length).toFixed(1)}</p>
+                              <p className="text-sm text-gray-600">{exam.reviews.length} avaliações</p>
                            </div>
                         </CardContent>
                      </Card>

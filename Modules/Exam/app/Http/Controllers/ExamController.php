@@ -86,7 +86,7 @@ class ExamController extends Controller
 
         return redirect()
             ->route('exams.index')
-            ->with('success', 'Exam created successfully.');
+            ->with('success', 'Prova criada com sucesso.');
     }
 
     /**
@@ -180,7 +180,7 @@ class ExamController extends Controller
     {
         $this->exam->updateExam($exam, $request->validated());
 
-        return back()->with('success', "Exam " . $request->tab . " updated successfully");
+        return back()->with('success', "A aba " . $request->tab . " da prova foi atualizada com sucesso.");
     }
 
     /**
@@ -192,6 +192,6 @@ class ExamController extends Controller
 
         return redirect()
             ->route('exams.index')
-            ->with('success', 'Exam deleted successfully.');
+            ->with('success', 'Prova excluída com sucesso.');
     }
 }

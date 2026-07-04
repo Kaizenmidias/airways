@@ -154,7 +154,7 @@ class CourseController extends Controller
     {
         $this->courseService->createCourse($request->validated());
 
-        return redirect(route('courses.index'))->with('success', 'Course added successfully');
+        return redirect(route('courses.index'))->with('success', 'Curso adicionado com sucesso.');
     }
 
     public function show(Request $request, $slug, $id)
@@ -276,20 +276,20 @@ class CourseController extends Controller
     {
         $this->courseService->updateCourse($id, $request->validated());
 
-        return back()->with('success', "Course $request->tab updated successfully");
+        return back()->with('success', "A aba $request->tab do curso foi atualizada com sucesso.");
     }
 
     public function status(UpdateCourseStatusRequest $request, $id)
     {
         $this->courseService->updateCourse($id, [...$request->validated(), 'tab' => 'status']);
 
-        return back()->with('success', 'Course status changed successfully');
+        return back()->with('success', 'O status do curso foi alterado com sucesso.');
     }
 
     public function destroy($id)
     {
         $this->courseService->deleteCourse($id);
 
-        return redirect(route('courses.index'))->with('success', 'Course deleted successfully');
+        return redirect(route('courses.index'))->with('success', 'Curso excluído com sucesso.');
     }
 }

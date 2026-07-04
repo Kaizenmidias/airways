@@ -24,19 +24,19 @@ const VideoPlayer = ({ source, translate }: Props) => {
       displayDuration: true,
       tooltips: { controls: true, seek: true },
       i18n: {
-         restart: 'Restart',
-         rewind: 'Rewind {seektime}s',
-         play: 'Play',
-         pause: 'Pause',
-         forward: 'Forward {seektime}s',
-         played: 'Played',
-         buffered: 'Buffered',
-         currentTime: 'Current time',
-         duration: 'Duration',
+         restart: 'Reiniciar',
+         rewind: 'Retroceder {seektime}s',
+         play: 'Reproduzir',
+         pause: 'Pausar',
+         forward: 'Avançar {seektime}s',
+         played: 'Reproduzido',
+         buffered: 'Carregado',
+         currentTime: 'Tempo atual',
+         duration: 'Duração',
          volume: 'Volume',
-         toggleMute: 'Toggle Mute',
-         toggleCaptions: 'Toggle Captions',
-         toggleFullscreen: 'Toggle Fullscreen',
+         toggleMute: 'Alternar som',
+         toggleCaptions: 'Alternar legendas',
+         toggleFullscreen: 'Alternar tela cheia',
       },
    };
 
@@ -73,7 +73,7 @@ const VideoPlayer = ({ source, translate }: Props) => {
    if (!processedSource) {
       return (
          <div className="flex h-full items-center justify-center">
-            <p>{translate?.frontend?.no_video_available || "No video available"}</p>
+            <p>{translate?.frontend?.no_video_available || 'Nenhum vídeo disponível'}</p>
          </div>
       );
    }

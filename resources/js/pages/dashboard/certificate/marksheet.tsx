@@ -16,7 +16,7 @@ const MarksheetIndex = ({ templates }: MarksheetPageProps) => {
 
    return (
       <>
-         <Head title="Certificate & Marksheet Templates" />
+         <Head title="Modelos de certificado e boletim" />
 
          <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -27,7 +27,7 @@ const MarksheetIndex = ({ templates }: MarksheetPageProps) => {
                <Link href={route('marksheet.templates.create')}>
                   <Button>
                      <Plus className="mr-2 h-4 w-4" />
-                     Create Template
+                     Criar modelo
                   </Button>
                </Link>
             </div>
@@ -44,7 +44,7 @@ const MarksheetIndex = ({ templates }: MarksheetPageProps) => {
                         <Link href={route('marksheet.templates.create')}>
                            <Button>
                               <Plus className="mr-2 h-4 w-4" />
-                              Create Your First Template
+                              Criar seu primeiro modelo
                            </Button>
                         </Link>
                      </div>

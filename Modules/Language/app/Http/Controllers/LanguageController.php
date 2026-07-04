@@ -30,14 +30,14 @@ class LanguageController extends Controller
     {
         $this->languageService->storeLanguage($request->validated());
 
-        return back()->with('success', "New language added successfully");
+        return back()->with('success', "Novo idioma adicionado com sucesso.");
     }
 
     public function update(UpdateLanguageRequest $request, string $id)
     {
         $this->languageService->updateLanguage($id, $request->validated());
 
-        return back()->with('success', "Language updated successfully");
+        return back()->with('success', "Idioma atualizado com sucesso.");
     }
 
     public function edit(string $local)
@@ -51,7 +51,7 @@ class LanguageController extends Controller
     {
         $this->languageService->deleteLanguage($id);
 
-        return back()->with('success', "Language deleted successfully");
+        return back()->with('success', "Idioma excluído com sucesso.");
     }
 
     public function edit_property(string $id)
@@ -66,7 +66,7 @@ class LanguageController extends Controller
         $property = LanguageProperty::findOrFail($id);
         $property->update(['properties' => $request->all()]);
 
-        return back()->with('success', $property->name . ' translation successfully updated');
+        return back()->with('success', 'A tradução de ' . $property->name . ' foi atualizada com sucesso.');
     }
 
     public function change_direction(Request $request)
@@ -88,7 +88,7 @@ class LanguageController extends Controller
     {
         $this->languageService->defaultLanguage($id);
 
-        return back()->with('success', "Default language set successfully");
+        return back()->with('success', "Idioma padrão definido com sucesso.");
     }
 
     public function status(Request $request, $local)

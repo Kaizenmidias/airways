@@ -84,8 +84,8 @@ const CreateExam = (props: Props) => {
                {/* Left Column */}
                <div className="space-y-4">
                   <div>
-                     <Label>Exam Title *</Label>
-                     <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Enter exam title" />
+                     <Label>Título da prova *</Label>
+                     <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Digite o título da prova" />
                      <InputError message={errors.title} />
                   </div>
 
@@ -96,7 +96,7 @@ const CreateExam = (props: Props) => {
                         name="short_description"
                         value={data.short_description}
                         onChange={(e) => onHandleChange(e, setData)}
-                        placeholder="Brief description for exam cards"
+                        placeholder="Breve descrição para os cards da prova"
                      />
                      <InputError message={errors.short_description} />
                   </div>
@@ -107,8 +107,8 @@ const CreateExam = (props: Props) => {
                         ssr={true}
                         output="html"
                         placeholder={{
-                           paragraph: 'Enter detailed exam description...',
-                           imageCaption: 'Enter detailed exam description...',
+                           paragraph: 'Digite a descrição detalhada da prova...',
+                           imageCaption: 'Digite a descrição detalhada da prova...',
                         }}
                         contentMinHeight={256}
                         contentMaxHeight={640}
@@ -128,10 +128,10 @@ const CreateExam = (props: Props) => {
                <div className="space-y-4">
                   {showInstructorSelector && (
                      <div>
-                        <Label htmlFor="instructor_id">Exam Instructor *</Label>
+                        <Label htmlFor="instructor_id">Instrutor da prova *</Label>
                         <Combobox
                            data={transformedInstructors || []}
-                           placeholder="Select instructor"
+                           placeholder="Selecione o instrutor"
                            defaultValue={data.instructor_id?.toString() || ''}
                            onSelect={(selected) => setData('instructor_id', selected.value as string)}
                         />
@@ -141,10 +141,10 @@ const CreateExam = (props: Props) => {
 
                   <div className="grid gap-6 md:grid-cols-2">
                      <div>
-                        <Label htmlFor="exam_category_id">Category *</Label>
+                        <Label htmlFor="exam_category_id">Categoria *</Label>
                         <Combobox
                            data={transformedCategories}
-                           placeholder="Select category"
+                           placeholder="Selecione a categoria"
                            onSelect={(selected) => {
                               setData('exam_category_id', selected.value as string);
                            }}
@@ -153,10 +153,10 @@ const CreateExam = (props: Props) => {
                      </div>
 
                      <div>
-                        <Label htmlFor="level">Difficulty Level *</Label>
+                        <Label htmlFor="level">Nível de dificuldade *</Label>
                         <Select value={data.level} onValueChange={(value) => setData('level', value)}>
                            <SelectTrigger>
-                              <SelectValue placeholder="Select level" />
+                              <SelectValue placeholder="Selecione o nível" />
                            </SelectTrigger>
                            <SelectContent>
                               {levels.map((level) => (
@@ -172,7 +172,7 @@ const CreateExam = (props: Props) => {
 
                   <div className="grid gap-6 md:grid-cols-3">
                      <div>
-                        <Label>Duration (Hours) *</Label>
+                        <Label>Duração (horas) *</Label>
                         <Input
                            type="number"
                            name="duration_hours"
@@ -185,7 +185,7 @@ const CreateExam = (props: Props) => {
                      </div>
 
                      <div>
-                        <Label>Duration (Minutes) *</Label>
+                        <Label>Duração (minutos) *</Label>
                         <Input
                            type="number"
                            name="duration_minutes"
@@ -199,7 +199,7 @@ const CreateExam = (props: Props) => {
                      </div>
 
                      <div>
-                        <Label>Pass Mark *</Label>
+                        <Label>Nota mínima *</Label>
                         <Input
                            type="number"
                            name="pass_mark"
@@ -242,7 +242,7 @@ const CreateExam = (props: Props) => {
                   </div>
 
                   <div>
-                     <Label>Pricing Type *</Label>
+                     <Label>Tipo de preço *</Label>
                      <RadioGroup
                         defaultValue={data.pricing_type}
                         className="flex items-center space-x-4 pt-2 pb-1"
@@ -252,7 +252,7 @@ const CreateExam = (props: Props) => {
                            <div key={type} className="flex items-center space-x-2">
                               <RadioGroupItem className="cursor-pointer" id={type} value={type} />
                               <Label htmlFor={type} className="cursor-pointer capitalize">
-                                 {type}
+                                 {type === 'free' ? 'Grátis' : 'Pago'}
                               </Label>
                            </div>
                         ))}
@@ -263,13 +263,13 @@ const CreateExam = (props: Props) => {
                         <AccordionItem value="paid" className="border-none">
                            <AccordionContent className="space-y-4 p-0.5">
                               <div className="pt-3">
-                                 <Label htmlFor="price">Price *</Label>
+                                 <Label htmlFor="price">Preço *</Label>
                                  <Input
                                     type="number"
                                     name="price"
                                     value={data.price.toString()}
                                     onChange={(e) => setData('price', e.target.value)}
-                                    placeholder="Enter your exam price ($0)"
+                                    placeholder="Digite o preço da prova (US$ 0)"
                                  />
                                  <InputError message={errors.price} />
                               </div>
@@ -285,7 +285,7 @@ const CreateExam = (props: Props) => {
                                        }}
                                     />
                                     <Label htmlFor="discount" className="cursor-pointer">
-                                       Exam Discount
+                                       Desconto da prova
                                     </Label>
                                  </div>
 
@@ -296,7 +296,7 @@ const CreateExam = (props: Props) => {
                                           name="discount_price"
                                           value={data.discount_price.toString()}
                                           onChange={(e) => setData('discount_price', e.target.value)}
-                                          placeholder="Enter discount price"
+                                          placeholder="Digite o preço com desconto"
                                        />
                                        <InputError message={errors.discount_price} />
                                     </div>
@@ -318,7 +318,7 @@ const CreateExam = (props: Props) => {
                            <div key={expiry} className="flex items-center space-x-2">
                               <RadioGroupItem className="cursor-pointer" id={expiry} value={expiry} />
                               <Label htmlFor={expiry} className="capitalize">
-                                 {expiry}
+                                 {expiry === 'lifetime' ? 'Vitalício' : 'Tempo limitado'}
                               </Label>
                            </div>
                         ))}
@@ -339,7 +339,7 @@ const CreateExam = (props: Props) => {
                   </div>
 
                   <div>
-                     <Label htmlFor="thumbnail">Thumbnail</Label>
+                     <Label htmlFor="thumbnail">Miniatura</Label>
                      <Input
                         type="file"
                         name="thumbnail"

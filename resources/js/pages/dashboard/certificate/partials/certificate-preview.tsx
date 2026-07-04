@@ -146,7 +146,7 @@ const CertificatePreview = ({ template, studentName, courseName, completionDate,
                      fontFamily: template_data.fontFamily,
                   }}
                >
-                  Completed on: {completionDate}
+                  Concluído em: {completionDate}
                </p>
             </div>
 

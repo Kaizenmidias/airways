@@ -37,14 +37,14 @@ const Exams = (props: Props) => {
 
    return (
       <div>
-         <EnrollmentModal type="exam" title="Add New Exam Enrollment" handler={<Button>{button.add_new_enrollment}</Button>} />
+         <EnrollmentModal type="exam" title="Adicionar nova matrícula em prova" handler={<Button>{button.add_new_enrollment}</Button>} />
 
          <Separator className="my-6" />
 
          <Card>
             <TableFilter
                data={enrollments}
-               title="Exam Enrollments"
+               title="Matrículas em provas"
                globalSearch={true}
                tablePageSizes={[10, 15, 20, 25]}
                routeName="exam-enrollments.index"

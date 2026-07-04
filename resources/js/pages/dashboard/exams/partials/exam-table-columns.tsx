@@ -20,7 +20,7 @@ const ExamTableColumn = (isAdmin: boolean): ColumnDef<Exam>[] => {
             return (
                <div className="flex items-center pl-4">
                   <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                     Instructor
+                     Instrutor
                      <ArrowUpDown />
                   </Button>
                </div>
@@ -35,7 +35,7 @@ const ExamTableColumn = (isAdmin: boolean): ColumnDef<Exam>[] => {
       },
       {
          accessorKey: 'title',
-         header: 'Exam Title',
+         header: 'Título da prova',
          cell: ({ row }) => (
             <div className="py-1">
                <Link href={route('exams.details', { slug: row.original.slug, id: row.original.id })} className="font-medium hover:underline">
@@ -116,7 +116,7 @@ const ExamTableColumn = (isAdmin: boolean): ColumnDef<Exam>[] => {
          header: ({ column }) => (
             <div className="flex items-center justify-center">
                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                  Enrollments
+                  Matrículas
                   <ArrowUpDown />
                </Button>
             </div>
@@ -137,7 +137,7 @@ const ExamTableColumn = (isAdmin: boolean): ColumnDef<Exam>[] => {
                      <span className="font-semibold">${displayPrice.toFixed(2)}</span>
                   ) : (
                      <Badge variant="outline" className="bg-green-50 text-green-600">
-                        Free
+                        Grátis
                      </Badge>
                   )}
                </div>
@@ -168,7 +168,7 @@ const ExamTableColumn = (isAdmin: boolean): ColumnDef<Exam>[] => {
                   {isAdmin && (
                      <DeleteModal
                         routePath={route('exams.destroy', exam.id)}
-                        message={`Are you sure you want to delete "${exam.title}"? This action cannot be undone.`}
+                        message={`Tem certeza de que deseja excluir "${exam.title}"? Esta ação não pode ser desfeita.`}
                         actionComponent={
                            <Button size="icon" variant="ghost" className="bg-destructive/8 hover:bg-destructive/6 h-8 w-8 p-0">
                               <Trash2 className="text-destructive text-sm" />

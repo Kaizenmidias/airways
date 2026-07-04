@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { AlertCircle, CheckCircle, Clock, Eye, MoreVertical, Pencil } from 'lucide-react';
 import AssignmentForm from './forms/assignment-form';
 
@@ -13,7 +14,7 @@ const AssignmentTableColumn = (slug: string, translate: LanguageTranslations, en
    return [
       {
          accessorKey: 'title',
-         header: 'Assignment Details',
+         header: 'Detalhes da atividade',
          cell: ({ row }) => {
             const assignment = row.original;
             return (
@@ -24,8 +25,8 @@ const AssignmentTableColumn = (slug: string, translate: LanguageTranslations, en
                         <CheckCircle className="h-3 w-3" />
                         Total: {assignment.total_mark}
                      </span>
-                     <span className="flex items-center gap-1">Pass: {assignment.pass_mark}</span>
-                     <span className="flex items-center gap-1">Retakes: {assignment.retake}</span>
+                     <span className="flex items-center gap-1">Nota mínima: {assignment.pass_mark}</span>
+                     <span className="flex items-center gap-1">Tentativas: {assignment.retake}</span>
                   </div>
                </div>
             );
@@ -33,7 +34,7 @@ const AssignmentTableColumn = (slug: string, translate: LanguageTranslations, en
       },
       {
          accessorKey: 'deadline',
-         header: 'Deadline',
+         header: 'Prazo final',
          cell: ({ row }) => {
             const deadline = row.getValue('deadline') as string;
             const isExpired = new Date() > new Date(deadline);
@@ -47,13 +48,13 @@ const AssignmentTableColumn = (slug: string, translate: LanguageTranslations, en
                         <Clock className="text-primary h-4 w-4 flex-shrink-0" />
                      )}
                      <div>
-                        <p className={`text-sm font-medium ${isExpired ? 'text-destructive' : ''}`}>{format(new Date(deadline), 'MMM dd, yyyy')}</p>
-                        <p className="text-muted-foreground text-xs">{format(new Date(deadline), 'hh:mm a')}</p>
+                        <p className={`text-sm font-medium ${isExpired ? 'text-destructive' : ''}`}>{format(new Date(deadline), 'dd MMM yyyy', { locale: ptBR })}</p>
+                        <p className="text-muted-foreground text-xs">{format(new Date(deadline), 'HH:mm')}</p>
                      </div>
                   </div>
                   {isExpired && (
                      <Badge variant="destructive" className="mt-1 text-xs">
-                        Expired
+                        Expirado
                      </Badge>
                   )}
                </div>
@@ -69,9 +70,9 @@ const AssignmentTableColumn = (slug: string, translate: LanguageTranslations, en
 
             return (
                <div className="py-2 text-center">
-                  <Badge variant={lateAllowed ? 'default' : 'secondary'}>{lateAllowed ? 'Allowed' : 'Not Allowed'}</Badge>
+                  <Badge variant={lateAllowed ? 'default' : 'secondary'}>{lateAllowed ? 'Permitido' : 'Não permitido'}</Badge>
                   {lateAllowed && assignment.late_deadline && (
-                     <div className="text-muted-foreground mt-1 text-xs">Until: {format(new Date(assignment.late_deadline), 'MMM dd')}</div>
+                     <div className="text-muted-foreground mt-1 text-xs">Até: {format(new Date(assignment.late_deadline), 'dd MMM', { locale: ptBR })}</div>
                   )}
                </div>
             );

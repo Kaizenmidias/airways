@@ -56,8 +56,8 @@ const Basic = () => {
       <Card className="container p-4 sm:p-6">
          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-               <Label>Exam Title *</Label>
-               <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Enter exam title" />
+               <Label>Título da prova *</Label>
+               <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder="Digite o título da prova" />
                <InputError message={errors.title} />
             </div>
 
@@ -68,7 +68,7 @@ const Basic = () => {
                   name="short_description"
                   value={data.short_description}
                   onChange={(e) => onHandleChange(e, setData)}
-                  placeholder="Brief description for exam cards"
+                  placeholder="Breve descrição para os cards da prova"
                />
                <InputError message={errors.short_description} />
             </div>
@@ -79,8 +79,8 @@ const Basic = () => {
                   ssr={true}
                   output="html"
                   placeholder={{
-                     paragraph: 'Enter detailed exam description...',
-                     imageCaption: 'Enter detailed exam description...',
+                     paragraph: 'Digite a descrição detalhada da prova...',
+                     imageCaption: 'Digite a descrição detalhada da prova...',
                   }}
                   contentMinHeight={256}
                   contentMaxHeight={640}
@@ -97,11 +97,11 @@ const Basic = () => {
 
             {showInstructorSelector && (
                <div>
-                  <Label>Exam Instructor *</Label>
+                  <Label>Instrutor da prova *</Label>
                   <Combobox
                      defaultValue={data.instructor_id.toString()}
                      data={transformedInstructors || []}
-                     placeholder="Select instructor"
+                     placeholder="Selecione o instrutor"
                      onSelect={(selected) => setData('instructor_id', selected.value as string)}
                   />
                   <InputError message={errors.instructor_id} />
@@ -110,10 +110,10 @@ const Basic = () => {
 
             <div className="grid gap-6 md:grid-cols-2">
                <div>
-                  <Label>Category *</Label>
+                  <Label>Categoria *</Label>
                   <Combobox
                      data={transformedCategories}
-                     placeholder="Select category"
+                     placeholder="Selecione a categoria"
                      defaultValue={selectedCategory?.title || ''}
                      onSelect={(selected) => {
                         setData('exam_category_id', selected.value as string);
@@ -123,10 +123,10 @@ const Basic = () => {
                </div>
 
                <div>
-                  <Label>Difficulty Level *</Label>
+                  <Label>Nível de dificuldade *</Label>
                   <Select value={data.level} onValueChange={(value) => setData('level', value)}>
                      <SelectTrigger>
-                        <SelectValue placeholder="Select level" />
+                        <SelectValue placeholder="Selecione o nível" />
                      </SelectTrigger>
                      <SelectContent>
                         {levels.map((level) => (
@@ -143,7 +143,7 @@ const Basic = () => {
                   <Label>Status *</Label>
                   <Select value={data.status} onValueChange={(value) => setData('status', value as any)}>
                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue placeholder="Selecione o status" />
                      </SelectTrigger>
                      <SelectContent>
                         {statuses.map((status) => (
