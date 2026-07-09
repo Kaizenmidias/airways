@@ -189,14 +189,14 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       <div className={cn('landing-navbar', isMenuOpen && 'bg-white')}>
          <div
             className={cn(
-               'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-[1440px] -translate-x-1/2 rounded-[22px] border border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl',
-               isSticky && 'shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
+               'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-[1440px] -translate-x-1/2 rounded-[22px] border border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl transition-colors duration-300',
+               isSticky && 'border-white/10 bg-[#060F1B] shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
             )}
          >
             <PublicContainer className={cn('relative flex h-[76px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
-                     <AppLogo className="h-8 w-auto" />
+                     <AppLogo className="h-9 w-auto" />
                   </Link>
                </div>
 
