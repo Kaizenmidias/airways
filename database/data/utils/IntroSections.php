@@ -16,7 +16,7 @@ class IntroSections
             'title' => 'YOUR JOURNEY BEGINS HERE',
             'sub_title' => 'Grow Your Knowledge with Leading Online Courses',
             'description' => "Start learning today with top-rated courses and instructors Take your team's learning and development to new heights Take your team's learning",
-            'thumbnail' => '/assets/aviao.png',
+            'thumbnail' => '/assets/images/intro/home-1/hero-image.png',
             'flags' => [
                'title' => true,
                'sub_title' => true,
@@ -712,7 +712,7 @@ class IntroSections
             'slug' => 'hero',
             'title' => "Mastering Figma A Beginner's Guide to Digital Design",
             'description' => 'Learn with a dedicated instructor guiding you every step of the way. Gain hands-on experience, develop real-world design skills, And achieve your creative goals with confidence.',
-            'thumbnail' => '/assets/images/intro/home-4/hero-image.png',
+            'thumbnail' => '/assets/aviao.png',
             'background_image' => '/assets/images/intro/home-4/hero-bg.png',
             'video_url' => 'https://youtu.be/6nDmtt1I4TY?si=CCMNgBqcFP9HPvaO',
             'flags' => [
