@@ -196,7 +196,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             <PublicContainer className={cn('relative flex h-[76px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
-                     <AppLogo className="h-9 w-auto" />
+                     <AppLogo className="h-12 w-auto" />
                   </Link>
                </div>
 
@@ -215,20 +215,18 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            return <Language key={item.id} />;
                         }
 
-                        if (item.slug === 'notification' && user) {
+                       if (item.slug === 'notification' && user) {
                            return (
-                              <div key={item.id} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                              <div key={item.id} className="inline-flex items-center justify-center rounded-full p-2">
                                  <Notification />
-                                 <span className="text-sm font-medium text-white/90">Notificacoes</span>
                               </div>
                            );
                         }
 
                         if (item.slug === 'cart') {
                            return (
-                              <div key={item.id} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                              <div key={item.id} className="inline-flex items-center justify-center rounded-full p-2">
                                  <CourseCart />
-                                 <span className="text-sm font-medium text-white/90">Carrinho</span>
                               </div>
                            );
                         }
