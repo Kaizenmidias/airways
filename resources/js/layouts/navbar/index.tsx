@@ -157,16 +157,17 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       return (
          <DropdownMenu>
             <DropdownMenuTrigger className="cursor-pointer outline-none">
-               {user.photo ? (
-                  <Avatar className="h-10 w-10 border border-slate-200">
-                     <AvatarImage src={user.photo} alt={user.name ?? ''} className="h-full w-full content-center object-cover" />
-                     <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-               ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white">
-                     <UserCircle className="h-6 w-6 text-slate-500" />
-                  </div>
-               )}
+               <div className="inline-flex h-10 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 text-sm font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white">
+                  {user.photo ? (
+                     <Avatar className="h-6 w-6 border border-white/15">
+                        <AvatarImage src={user.photo} alt={user.name ?? ''} className="h-full w-full content-center object-cover" />
+                        <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                     </Avatar>
+                  ) : (
+                     <UserCircle className="h-5 w-5 text-white/80" />
+                  )}
+                  <span>{translate.button.profile || 'Perfil'}</span>
+               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
                {items.map(({ id, label, icon: Icon, onClick }) => (
@@ -188,11 +189,11 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       <div className={cn('landing-navbar', isMenuOpen && 'bg-white')}>
          <div
             className={cn(
-               'fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-slate-950/45 text-white backdrop-blur-xl',
-               isSticky && 'shadow-[0_14px_40px_rgba(15,23,42,0.28)]',
+               'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-[1440px] -translate-x-1/2 rounded-[22px] border border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl',
+               isSticky && 'shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
             )}
          >
-            <PublicContainer className={cn('relative flex h-[82px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
+            <PublicContainer className={cn('relative flex h-[76px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
                      <AppLogo className="h-8 w-auto" />
@@ -200,7 +201,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                </div>
 
                <div className="hidden flex-1 items-center justify-center gap-6 xl:flex">
-                  {linkItems.length > 0 && <nav className="flex items-center gap-6">{linkItems.map((item) => renderNavItem(item))}</nav>}
+                  {linkItems.length > 0 && <nav className="flex items-center gap-10">{linkItems.map((item) => renderNavItem(item))}</nav>}
                </div>
 
                <div className="flex items-center gap-2">
@@ -215,11 +216,21 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                         }
 
                         if (item.slug === 'notification' && user) {
-                           return <Notification key={item.id} />;
+                           return (
+                              <div key={item.id} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                                 <Notification />
+                                 <span className="text-sm font-medium text-white/90">Notificacoes</span>
+                              </div>
+                           );
                         }
 
                         if (item.slug === 'cart') {
-                           return <CourseCart key={item.id} />;
+                           return (
+                              <div key={item.id} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                                 <CourseCart />
+                                 <span className="text-sm font-medium text-white/90">Carrinho</span>
+                              </div>
+                           );
                         }
 
                         return null;
@@ -227,7 +238,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   </div>
 
                   {customizable && isAdmin && (
-                     <Button asChild variant="outline" className="hidden h-10 rounded-full border-white/20 bg-white/5 px-5 text-white shadow-none hover:bg-white/10 lg:inline-flex">
+                     <Button asChild variant="outline" className="hidden h-10 rounded-full border-white/25 bg-transparent px-5 text-white shadow-none hover:bg-white/10 lg:inline-flex">
                         <Link href={customizeLink}>{props.customize ? translate.button.back || 'Back' : translate.button.edit || 'Customize'}</Link>
                      </Button>
                   )}
@@ -352,7 +363,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             )}
          </div>
 
-         {heightCover && <div className="relative z-20 h-[82px] bg-transparent" />}
+         {heightCover && <div className="relative z-20 h-[88px] bg-transparent" />}
       </div>
    );
 };
