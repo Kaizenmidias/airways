@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Page;
+use App\Models\PageSection;
 use App\Models\Setting;
 use App\Models\User;
+use Database\Data\Sections\IntroSections;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -40,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
                         }])
                         ->first();
 
+                    $this->ensureHome4Sections($page);
+
                     return $page;
                 }
 
@@ -48,6 +52,52 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+    }
+
+    private function ensureHome4Sections(?Page $page): void
+    {
+        if (!$page || $page->slug !== 'home-4') {
+            return;
+        }
+
+        $existingSlugs = $page->sections->pluck('slug')->all();
+
+        if (in_array('who_we_are', $existingSlugs, true)) {
+            return;
+        }
+
+        $sectionTemplate = collect(IntroSections::getHome4Sections())->firstWhere('slug', 'who_we_are');
+
+        if (!$sectionTemplate) {
+            return;
+        }
+
+        $insertAfterSort = (int) ($page->sections->firstWhere('slug', 'testimonials')->sort ?? $page->sections->max('sort') ?? 0);
+
+        PageSection::where('page_id', $page->id)
+            ->where('sort', '>', $insertAfterSort)
+            ->increment('sort');
+
+        $section = new PageSection();
+        $section->name = $sectionTemplate['name'];
+        $section->slug = $sectionTemplate['slug'];
+        $section->title = $sectionTemplate['title'] ?? null;
+        $section->sub_title = $sectionTemplate['sub_title'] ?? null;
+        $section->description = $sectionTemplate['description'] ?? null;
+        $section->thumbnail = $sectionTemplate['thumbnail'] ?? null;
+        $section->background_image = $sectionTemplate['background_image'] ?? null;
+        $section->background_color = $sectionTemplate['background_color'] ?? null;
+        $section->video_url = $sectionTemplate['video_url'] ?? null;
+        $section->flags = $sectionTemplate['flags'] ?? [];
+        $section->properties = $sectionTemplate['properties'] ?? [];
+        $section->active = $sectionTemplate['active'] ?? true;
+        $section->sort = $insertAfterSort + 1;
+        $section->page_id = $page->id;
+        $section->save();
+
+        $page->load(['sections' => function ($query) {
+            $query->orderBy('sort', 'asc');
+        }]);
     }
 
     /**
