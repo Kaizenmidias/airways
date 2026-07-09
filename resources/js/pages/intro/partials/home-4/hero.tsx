@@ -41,9 +41,12 @@ const Hero = () => {
 
                   <div className="mt-8 flex flex-wrap items-center gap-4">
                      {heroSection?.properties?.button_text_1 && (
-                        <Button asChild className="h-12 rounded-full bg-[#FD122E] px-7 text-sm font-semibold text-white shadow-[0_0_22px_rgba(253,18,46,0.8),0_0_48px_rgba(253,18,46,0.4),0_18px_45px_rgba(253,18,46,0.38)] transition-shadow hover:bg-[#e6112b] hover:shadow-[0_0_28px_rgba(253,18,46,0.9),0_0_60px_rgba(253,18,46,0.45),0_22px_55px_rgba(253,18,46,0.45)]">
-                           <Link href={heroSection?.properties?.button_link_1 || '#'}>{heroSection?.properties?.button_text_1}</Link>
-                        </Button>
+                        <div className="relative">
+                           <span className="pointer-events-none absolute -inset-6 rounded-full bg-[#FD122E]/40 blur-3xl" />
+                           <Button asChild className="relative h-12 rounded-full bg-[#FD122E] px-7 text-sm font-semibold text-white shadow-[0_0_22px_rgba(253,18,46,0.8),0_0_48px_rgba(253,18,46,0.4),0_18px_45px_rgba(253,18,46,0.38)] transition-shadow hover:bg-[#e6112b] hover:shadow-[0_0_28px_rgba(253,18,46,0.9),0_0_60px_rgba(253,18,46,0.45),0_22px_55px_rgba(253,18,46,0.45)]">
+                              <Link href={heroSection?.properties?.button_link_1 || '#'}>{heroSection?.properties?.button_text_1}</Link>
+                           </Button>
+                        </div>
                      )}
 
                      {heroSection?.properties?.button_text_2 && (

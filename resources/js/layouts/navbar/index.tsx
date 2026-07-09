@@ -196,7 +196,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             <PublicContainer className={cn('relative flex h-[76px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
-                     <AppLogo className="h-12 w-auto" />
+                     <div className="origin-left scale-[1.55]">
+                        <AppLogo className="h-12 w-auto" />
+                     </div>
                   </Link>
                </div>
 
@@ -217,17 +219,13 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                        if (item.slug === 'notification' && user) {
                            return (
-                              <div key={item.id} className="inline-flex items-center justify-center rounded-full p-2">
-                                 <Notification />
-                              </div>
+                              <Notification key={item.id} iconOnly />
                            );
                         }
 
                         if (item.slug === 'cart') {
                            return (
-                              <div key={item.id} className="inline-flex items-center justify-center rounded-full p-2">
-                                 <CourseCart />
-                              </div>
+                              <CourseCart key={item.id} iconOnly />
                            );
                         }
 

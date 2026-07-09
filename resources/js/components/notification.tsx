@@ -7,21 +7,28 @@ import { Bell } from 'lucide-react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 
-const Notification = () => {
+const Notification = ({ iconOnly = false }: { iconOnly?: boolean }) => {
    const { notifications, translate } = usePage<SharedData>().props;
    const { button, frontend, dashboard } = translate;
 
    return (
          <Popover>
             <PopoverTrigger asChild>
-            <Button variant="outline" size="icon" className="relative h-9 w-9 rounded-full border-white/20 bg-white/10 p-0 text-white shadow-none hover:bg-white/15 hover:text-white">
-               <Bell className="!h-5 !w-5 text-white" />
-               {notifications.length > 0 && (
+               <Button
+                  variant={iconOnly ? 'ghost' : 'outline'}
+                  size="icon"
+                  className={cn(
+                     'relative h-9 w-9 p-0 text-white shadow-none hover:text-white',
+                     iconOnly ? 'rounded-full border-0 bg-transparent hover:bg-white/10' : 'rounded-full border-white/20 bg-white/10 hover:bg-white/15',
+                  )}
+               >
+                  <Bell className="!h-5 !w-5 text-white" />
+                  {notifications.length > 0 && (
                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
                         {notifications.length}
                      </span>
                   )}
-            </Button>
+               </Button>
          </PopoverTrigger>
          <PopoverContent align="end" className="w-80 p-0">
             <div className="flex items-center justify-between border-b px-4 py-2">
