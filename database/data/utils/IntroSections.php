@@ -730,11 +730,12 @@ class IntroSections
                'ratings' => '5.0',
                'subscribers' => 'Mais de 2.000 alunos e profissionais impactados',
                'array' => [
-                  ['image' => ""],
-                  ['image' => '/assets/images/intro/home-4/card-1.png'],
-                  ['image' => '/assets/images/intro/home-4/card-2.png'],
-                  ['image' => '/assets/images/intro/home-4/card-3.png'],
-                  ['image' => '/assets/images/intro/home-4/card-4.png']
+                  ['name' => 'Latam', 'image' => '/assets/logos/logo-1.png'],
+                  ['name' => 'Gol', 'image' => '/assets/logos/logo-2.png'],
+                  ['name' => 'Azul', 'image' => '/assets/logos/logo-3.png'],
+                  ['name' => 'Avianca', 'image' => '/assets/logos/logo-4.png'],
+                  ['name' => 'Embraer', 'image' => '/assets/logos/logo-5.png'],
+                  ['name' => 'Flydubai', 'image' => '/assets/logos/logo-6.png'],
                ],
             ],
          ],
