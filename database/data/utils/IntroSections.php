@@ -710,8 +710,8 @@ class IntroSections
          [
             'name' => 'Hero',
             'slug' => 'hero',
-            'title' => "Mastering Figma A Beginner's Guide to Digital Design",
-            'description' => 'Learn with a dedicated instructor guiding you every step of the way. Gain hands-on experience, develop real-world design skills, And achieve your creative goals with confidence.',
+            'title' => 'Sua Carreira na Aviação Começa Aqui',
+            'description' => 'Aprenda com especialistas da aviação, desenvolva conhecimentos práticos e prepare-se para os desafios do setor aeronáutico com cursos e treinamentos online de alta qualidade.',
             'thumbnail' => '/assets/aviao.png',
             'background_image' => '/assets/images/intro/home-4/hero-bg.png',
             'video_url' => 'https://youtu.be/6nDmtt1I4TY?si=CCMNgBqcFP9HPvaO',
@@ -723,12 +723,12 @@ class IntroSections
                'video_url' => true,
             ],
             'properties' => [
-               'button_text_1' => 'Browse Courses',
+               'button_text_1' => 'Explorar Cursos',
                'button_link_1' => '/courses/all',
-               'button_text_2' => 'Get Started Today',
+               'button_text_2' => 'Comece Agora',
                'button_link_2' => '/login',
                'ratings' => '5.0',
-               'subscribers' => '+2000 readers worldwide',
+               'subscribers' => 'Mais de 2.000 alunos e profissionais impactados',
                'array' => [
                   ['image' => ""],
                   ['image' => '/assets/images/intro/home-4/card-1.png'],
