@@ -14,6 +14,14 @@ const Hero = () => {
    const heroImage = heroSection?.thumbnail || '/assets/aviao.png';
    const backgroundImage = heroSection?.background_image || '/assets/images/intro/home-4/hero-bg.png';
    const backgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
+   const partners = [
+      { name: 'Latam', src: '/assets/logos/logo-1.png' },
+      { name: 'Gol', src: '/assets/logos/logo-2.png' },
+      { name: 'Azul', src: '/assets/logos/logo-3.png' },
+      { name: 'Avianca', src: '/assets/logos/logo-4.png' },
+      { name: 'Embraer', src: '/assets/logos/logo-5.png' },
+      { name: 'Flydubai', src: '/assets/logos/logo-6.png' },
+   ];
 
    return (
       <Section
@@ -26,8 +34,8 @@ const Hero = () => {
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.34),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.18),transparent_16%),linear-gradient(135deg,#050b16_0%,#06101d_44%,#071425_100%)]" />
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
-         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-80px)] max-w-[1600px] grid-cols-1 lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="relative flex items-center px-6 py-14 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-92px)] max-w-[1600px] grid-cols-1 lg:grid-cols-[1.02fr_0.98fr]">
+            <div className="relative order-2 flex items-center px-6 py-10 sm:px-10 sm:py-16 lg:order-1 lg:px-14 lg:py-20">
                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_72%_70%,rgba(253,18,46,0.18),transparent_20%)] blur-2xl" />
 
                <div className="relative max-w-3xl text-white">
@@ -39,18 +47,18 @@ const Hero = () => {
                      {heroSection?.description || 'Aprenda com especialistas da aviação, desenvolva conhecimentos práticos e prepare-se para os desafios do setor aeronáutico com cursos e treinamentos online de alta qualidade.'}
                   </p>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <div className="mt-8 flex flex-nowrap gap-3 sm:flex-wrap sm:gap-4">
                      {heroSection?.properties?.button_text_1 && (
-                        <div className="relative">
+                        <div className="relative flex-1 sm:flex-none">
                            <span className="pointer-events-none absolute -inset-6 rounded-full bg-[#FD122E]/40 blur-3xl" />
-                           <Button asChild className="relative h-12 rounded-full bg-[#FD122E] px-7 text-sm font-semibold text-white shadow-[0_0_22px_rgba(253,18,46,0.8),0_0_48px_rgba(253,18,46,0.4),0_18px_45px_rgba(253,18,46,0.38)] transition-shadow hover:bg-[#e6112b] hover:shadow-[0_0_28px_rgba(253,18,46,0.9),0_0_60px_rgba(253,18,46,0.45),0_22px_55px_rgba(253,18,46,0.45)]">
+                           <Button asChild className="relative h-12 w-full whitespace-nowrap rounded-full bg-[#FD122E] px-4 text-sm font-semibold text-white shadow-[0_0_22px_rgba(253,18,46,0.8),0_0_48px_rgba(253,18,46,0.4),0_18px_45px_rgba(253,18,46,0.38)] transition-shadow hover:bg-[#e6112b] hover:shadow-[0_0_28px_rgba(253,18,46,0.9),0_0_60px_rgba(253,18,46,0.45),0_22px_55px_rgba(253,18,46,0.45)] sm:w-auto sm:px-7">
                               <Link href={heroSection?.properties?.button_link_1 || '#'}>{heroSection?.properties?.button_text_1}</Link>
                            </Button>
                         </div>
                      )}
 
                      {heroSection?.properties?.button_text_2 && (
-                        <Button asChild variant="outline" className="h-12 rounded-full border-white/18 bg-white/10 px-7 text-sm font-semibold text-white shadow-none backdrop-blur-xl hover:bg-white/15 hover:text-white">
+                        <Button asChild variant="outline" className="h-12 flex-1 whitespace-nowrap rounded-full border-white/18 bg-white/10 px-4 text-sm font-semibold text-white shadow-none backdrop-blur-xl hover:bg-white/15 hover:text-white sm:flex-none sm:px-7">
                            <Link href={heroSection?.properties?.button_link_2 || '#'}>
                               {heroSection?.properties?.button_text_2}
                               <ArrowRight className="ml-2 h-4 w-4" />
@@ -71,10 +79,21 @@ const Hero = () => {
                         {heroSection?.properties?.subscribers && <p className="text-sm text-slate-300">{heroSection?.properties?.subscribers}</p>}
                      </div>
                   ) : null}
+
+                  <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 opacity-95 sm:gap-x-7">
+                     {partners.map((partner) => (
+                        <img
+                           key={partner.name}
+                           src={partner.src}
+                           alt={partner.name}
+                           className="h-5 w-auto brightness-0 invert opacity-90 sm:h-6"
+                        />
+                     ))}
+                  </div>
                </div>
             </div>
 
-            <div className="relative flex items-end justify-center px-6 pt-0 pb-6 sm:px-10 sm:pb-8 lg:items-center lg:justify-end lg:px-8 lg:py-10">
+            <div className="relative order-1 flex items-end justify-center px-6 pt-4 pb-0 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:items-center lg:justify-end lg:px-8 lg:py-10">
                <div className="relative w-full max-w-[760px] overflow-hidden rounded-[28px] bg-[#0f1d33] p-2 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
                   <div className="absolute inset-2 rounded-[24px] bg-[radial-gradient(circle_at_20%_80%,rgba(253,18,46,0.35),transparent_16%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_14%)]" />
 

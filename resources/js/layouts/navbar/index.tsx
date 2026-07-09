@@ -193,7 +193,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                isSticky && 'border-white/10 bg-[#060F1B] shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
             )}
          >
-            <PublicContainer className={cn('relative flex h-[76px] items-center justify-between gap-4', customizable && isAdmin && 'section-edit')}>
+            <PublicContainer className={cn('relative flex h-[84px] items-center justify-between gap-4 py-2', customizable && isAdmin && 'section-edit')}>
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
                      <div className="origin-left scale-[1.55]">
@@ -359,7 +359,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             )}
          </div>
 
-         {heightCover && <div className="relative z-20 h-[88px] bg-transparent" />}
+         {heightCover && <div className="relative z-20 h-[92px] bg-transparent" />}
       </div>
    );
 };
