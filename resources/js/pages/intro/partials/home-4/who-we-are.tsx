@@ -33,7 +33,7 @@ const WhoWeAre = () => {
    const cards = stats.length > 0 ? stats : defaultStats;
 
    return (
-      <Section customize={props.customize} pageSection={section} containerClass="py-20 overflow-hidden" contentClass="relative isolate">
+      <Section customize={props.customize} pageSection={section} containerClass="!w-full !max-w-none !px-0 py-24 overflow-hidden" contentClass="relative isolate w-full">
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.18),transparent_22%),radial-gradient(circle_at_100%_10%,rgba(253,18,46,0.28),transparent_18%),linear-gradient(180deg,#02070f_0%,#06101d_48%,#02070f_100%)]" />
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_65%_35%,rgba(255,255,255,0.05),transparent_18%),radial-gradient(circle_at_60%_65%,rgba(255,255,255,0.03),transparent_18%)]" />
 
