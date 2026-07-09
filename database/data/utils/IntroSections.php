@@ -16,7 +16,7 @@ class IntroSections
             'title' => 'YOUR JOURNEY BEGINS HERE',
             'sub_title' => 'Grow Your Knowledge with Leading Online Courses',
             'description' => "Start learning today with top-rated courses and instructors Take your team's learning and development to new heights Take your team's learning",
-            'thumbnail' => '/assets/images/intro/home-1/hero-image.png',
+            'thumbnail' => '/assets/aviao.png',
             'flags' => [
                'title' => true,
                'sub_title' => true,
