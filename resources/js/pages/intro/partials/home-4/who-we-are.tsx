@@ -33,19 +33,19 @@ const WhoWeAre = () => {
    const cards = stats.length > 0 ? stats : defaultStats;
 
    return (
-      <Section customize={props.customize} pageSection={section} containerClass="!w-full !max-w-none !px-0 py-24 overflow-hidden" contentClass="relative isolate w-full">
+      <Section customize={props.customize} pageSection={section} containerClass="!w-full !max-w-none !px-0 overflow-hidden" contentClass="relative isolate w-full">
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.18),transparent_22%),radial-gradient(circle_at_100%_10%,rgba(253,18,46,0.28),transparent_18%),linear-gradient(180deg,#02070f_0%,#06101d_48%,#02070f_100%)]" />
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_65%_35%,rgba(255,255,255,0.05),transparent_18%),radial-gradient(circle_at_60%_65%,rgba(255,255,255,0.03),transparent_18%)]" />
 
-         <div className="mx-auto grid max-w-[1600px] gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
-            <div className="relative z-10 space-y-7 px-6 sm:px-10 lg:px-14">
+         <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16 lg:px-14 lg:py-28">
+            <div className="relative z-10 space-y-7">
                <div className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#FD122E]">
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{section?.title || 'QUEM SOMOS'}</span>
                </div>
 
                <div className="space-y-4">
-                  <h2 className="max-w-xl text-4xl leading-[0.95] font-black tracking-[-0.06em] text-white sm:text-5xl lg:text-[5.25rem]">
+                  <h2 className="max-w-xl text-3xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[4.5rem]">
                      {section?.sub_title || 'Quem somos?'}
                   </h2>
                   <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
@@ -76,7 +76,7 @@ const WhoWeAre = () => {
                </div>
             </div>
 
-            <div className="relative z-10 px-6 pb-6 sm:px-10 lg:px-0 lg:pr-14">
+            <div className="relative z-10 pb-6 lg:pr-14">
                <div className="relative mx-auto min-h-[580px] max-w-[760px] lg:min-h-[760px]">
                   <div className="absolute top-28 right-[14%] hidden h-[46%] w-[42%] rounded-[34px] border border-[#FD122E]/90 lg:block" />
                   <div className="absolute top-[8%] left-[13%] hidden h-[250px] w-[250px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-2xl lg:block" />
