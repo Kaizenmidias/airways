@@ -116,13 +116,10 @@ export const generatePropertyFields = (properties: Record<string, any>): Propert
 
    // Handle array property (static content defined in seeder)
    if ('array' in properties) {
-      // const sampleItem =
-      //    Array.isArray(properties.array) && properties.array.length > 0
-      //       ? isEmptyArrayItem(properties.array[0])
-      //          ? properties.array[1]
-      //          : properties.array[0]
-      //       : {};
-      const sampleItem = Array.isArray(properties.array) && properties.array.length > 0 ? properties.array[0] : {};
+       const sampleItem =
+          Array.isArray(properties.array) && properties.array.length > 0
+             ? properties.array.find((item: Record<string, any>) => !isEmptyArrayItem(item)) || properties.array[0]
+             : {};
       let itemFields: PropertyField[] = [];
 
       // Generate fields based on sample item if available

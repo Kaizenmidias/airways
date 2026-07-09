@@ -963,7 +963,31 @@ class IntroSections
                      'rating' => 5,
                      'description' => 'David is a mobile application developer with expertise in both iOS and Android platforms.'
                   ]
-               ]
+                ]
+             ],
+          ],
+         [
+            'name' => 'Quem Somos',
+            'slug' => 'who_we_are',
+            'title' => 'QUEM SOMOS',
+            'sub_title' => 'Quem somos?',
+            'description' => "O Grupo Bianchi atua na área de ensino aeronáutico desde 1998, contando com editora própria, loja física e portal de formação EAD.\n\nA Airways Academy é um CIAC (Centro de Instrução de Aviação Civil) homologado pela ANAC, tornando-se o braço de Ensino a Distância do nosso grupo. Sendo fundada em 2014, a plataforma de formação utiliza toda nossa didática de ensino que foi refinada ao longo de décadas de experiência.\n\nComo pioneiro do Grupo está Denis Bianchini, Comandante e Instrutor de Boeing 737, que popularizou no mercado a didática focada no estudante que se prepara de modo solo, fora de uma sala de aula física.\n\nAo longo dessa trajetória já tivemos mais de 200.000 livros vendidos e mais de 10.000 alunos já matriculados em nosso portal de ensino.",
+            'thumbnail' => '/assets/images/intro/home-4/hero-image.png',
+            'background_image' => '/assets/images/students-2.jpg',
+            'flags' => [
+               'title' => true,
+               'sub_title' => true,
+               'description' => true,
+               'thumbnail' => true,
+               'background_image' => true,
+            ],
+            'properties' => [
+               'array' => [
+                  ['icon' => "", 'count' => "", 'title' => ""],
+                  ['icon' => 'users', 'count' => '+10.523', 'title' => 'Alunos'],
+                  ['icon' => 'calendar-days', 'count' => '+25', 'title' => 'Anos'],
+                  ['icon' => 'bar-chart-3', 'count' => '+91%', 'title' => 'Aprovação'],
+               ],
             ],
          ],
          [

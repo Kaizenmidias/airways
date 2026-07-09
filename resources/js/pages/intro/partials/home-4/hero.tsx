@@ -37,7 +37,7 @@ const Hero = () => {
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
          <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="relative order-2 flex items-center px-6 py-10 pb-12 sm:px-10 sm:py-16 sm:pb-14 lg:order-1 lg:px-14 lg:py-20 lg:pb-20">
+            <div className="relative flex items-center px-6 py-10 pb-12 sm:px-10 sm:py-16 sm:pb-14 lg:px-14 lg:py-20 lg:pb-20">
                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_72%_70%,rgba(253,18,46,0.18),transparent_20%)] blur-2xl" />
 
                <div className="relative max-w-3xl text-white">
@@ -70,7 +70,7 @@ const Hero = () => {
                   </div>
 
                   {heroSection?.properties?.ratings || heroSection?.properties?.subscribers ? (
-                     <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-200">
+                     <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-200">
                         {heroSection?.properties?.ratings && (
                            <div className="flex items-center gap-2">
                               <RatingStars rating={5} starClass="h-4 w-4" />
@@ -82,7 +82,7 @@ const Hero = () => {
                      </div>
                   ) : null}
 
-                  <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 opacity-95 sm:gap-x-7">
+                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-4 opacity-95 sm:gap-x-7">
                      {logos.map((partner, index) => (
                         <img
                            key={`${partner.name || partner.image || 'partner'}-${index}`}
@@ -95,7 +95,7 @@ const Hero = () => {
                </div>
             </div>
 
-            <div className="relative order-1 flex items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:items-center lg:justify-end lg:px-8 lg:py-10">
+            <div className="relative flex items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:items-center lg:justify-end lg:px-8 lg:py-10">
                <div className="relative w-full max-w-[760px] overflow-hidden rounded-[28px] bg-[#0f1d33] p-2 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
                   <div className="absolute inset-2 rounded-[24px] bg-[radial-gradient(circle_at_20%_80%,rgba(253,18,46,0.35),transparent_16%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_14%)]" />
 
