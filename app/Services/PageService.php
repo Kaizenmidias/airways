@@ -50,6 +50,7 @@ class PageService extends PageSectionService
          'blogs',
          'top_course',
          'top_courses',
+         'selected_courses',
          'new_courses',
          'testimonials',
          'top_instructors',
@@ -64,6 +65,7 @@ class PageService extends PageSectionService
       $sections['instructors'] = $this->getInstructors($data);
 
       $sections['topCourses'] = $this->getTopCourses($idCollection['top_courses']);
+      $sections['selectedCourses'] = $this->getSelectedCourses($idCollection['selected_courses']);
       $sections['topCategories'] = $this->getTopCategories($idCollection['top_categories']);
       $sections['blogs'] = $this->getTopBlogs($idCollection['blogs']);
 

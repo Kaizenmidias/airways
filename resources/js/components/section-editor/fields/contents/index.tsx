@@ -48,6 +48,7 @@ const Contents = ({ field, section_slug, selectedIds = [], onChange }: Props) =>
          case 'hero':
          case 'top_course':
          case 'top_courses':
+         case 'selected_courses':
          case 'new_courses':
             return <Courses courses={courses as Pagination<Course>} selectedIds={selectedIds} onCourseSelect={onSelectChange} />;
          case 'top_categories':

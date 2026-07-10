@@ -42,7 +42,8 @@ class AppServiceProvider extends ServiceProvider
                         }])
                         ->first();
 
-                    $this->ensureHome4Sections($page);
+                    $this->ensureHome4Section($page, 'who_we_are', 'testimonials');
+                    $this->ensureHome4Section($page, 'selected_courses', 'who_we_are');
 
                     return $page;
                 }
@@ -54,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function ensureHome4Sections(?Page $page): void
+    private function ensureHome4Section(?Page $page, string $slug, ?string $afterSlug = null): void
     {
         if (!$page || $page->slug !== 'home-4') {
             return;
@@ -62,17 +63,18 @@ class AppServiceProvider extends ServiceProvider
 
         $existingSlugs = $page->sections->pluck('slug')->all();
 
-        if (in_array('who_we_are', $existingSlugs, true)) {
+        if (in_array($slug, $existingSlugs, true)) {
             return;
         }
 
-        $sectionTemplate = collect(IntroSections::getHome4Sections())->firstWhere('slug', 'who_we_are');
+        $sectionTemplate = collect(IntroSections::getHome4Sections())->firstWhere('slug', $slug);
 
         if (!$sectionTemplate) {
             return;
         }
 
-        $insertAfterSort = (int) ($page->sections->firstWhere('slug', 'testimonials')->sort ?? $page->sections->max('sort') ?? 0);
+        $afterSection = $afterSlug ? $page->sections->firstWhere('slug', $afterSlug) : null;
+        $insertAfterSort = (int) ($afterSection?->sort ?? $page->sections->max('sort') ?? 0);
 
         PageSection::where('page_id', $page->id)
             ->where('sort', '>', $insertAfterSort)

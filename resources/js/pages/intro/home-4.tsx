@@ -8,6 +8,7 @@ import Hero from './partials/home-4/hero';
 import Instructor from './partials/home-4/instructor';
 import Overview from './partials/home-4/overview';
 import Partners from './partials/home-4/partners';
+import SelectedCourses from './partials/home-4/selected-courses';
 import WhoWeAre from './partials/home-4/who-we-are';
 import Testimonials from './partials/home-4/testimonials';
 import TopCategories from './partials/home-4/top-categories';
@@ -53,6 +54,9 @@ const Home3 = ({ page, system, airways }: IntroPageProps) => {
                break;
             case 'who_we_are':
                components.push(WhoWeAre);
+               break;
+            case 'selected_courses':
+               components.push(SelectedCourses);
                break;
             case 'blogs':
                if (!isAirwaysFeatureEnabled(airways, 'blog')) break;

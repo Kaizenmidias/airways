@@ -991,6 +991,21 @@ class IntroSections
             ],
          ],
          [
+            'name' => 'Cursos Selecionados',
+            'slug' => 'selected_courses',
+            'title' => 'Cursos Selecionados',
+            'sub_title' => 'Escolha os cursos que vão aparecer na home',
+            'description' => 'Selecione no Builder os cursos que você quer exibir neste carrossel da página inicial.',
+            'flags' => [
+               'title' => true,
+               'sub_title' => true,
+               'description' => true,
+            ],
+            'properties' => [
+               'contents' => [1, 2, 3, 4]
+            ],
+         ],
+         [
             'name' => 'Blogs',
             'slug' => 'blogs',
             'title' => 'Best Rated Posts',

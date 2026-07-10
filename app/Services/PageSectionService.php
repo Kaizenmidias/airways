@@ -199,6 +199,40 @@ class PageSectionService extends MediaService
          });
    }
 
+   public function getSelectedCourses(array $courseIds)
+   {
+      if (empty($courseIds)) {
+         return collect();
+      }
+
+      $courses = Course::query()
+         ->whereIn('id', $courseIds)
+         ->with([
+            'sections' => function ($query) {
+               $query->select('id', 'course_id')
+                  ->with(['section_lessons' => function ($query) {
+                     $query->select('id', 'course_section_id', 'duration');
+                  }]);
+            },
+            'course_category' => function ($query) {
+               $query->select('id', 'title');
+            }
+         ])
+         ->withCount('enrollments')
+         ->where('status', 'approved')
+         ->get()
+         ->map(function ($course) {
+            $course->average_rating = $course->reviews()->avg('rating') ?? 0;
+            $course->reviews_count = $course->reviews()->count();
+            return $course;
+         });
+
+      return collect($courseIds)
+         ->map(fn ($courseId) => $courses->firstWhere('id', $courseId))
+         ->filter()
+         ->values();
+   }
+
    public function getNewCourses(array $courseIds, int $limit = 8)
    {
       return Course::query()

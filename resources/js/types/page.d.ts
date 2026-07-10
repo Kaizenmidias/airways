@@ -25,6 +25,7 @@ export interface IntroPageProps extends SharedData {
 
    topCourse: Course;
    topCourses: Course[];
+   selectedCourses: Course[];
    newCourses: Course[];
    topReviews: CourseReview[];
 
