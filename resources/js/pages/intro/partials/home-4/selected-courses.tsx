@@ -34,9 +34,9 @@ const SelectedCourses = () => {
    }, [api]);
 
    return (
-      <Section customize={customize} pageSection={selectedCoursesSection} containerClass="!w-full !max-w-none !px-0 overflow-hidden" contentClass="relative isolate w-full">
-         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(253,18,46,0.16),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_18%),linear-gradient(180deg,#02070f_0%,#06101d_48%,#02070f_100%)]" />
-         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:26px_26px] opacity-40" />
+      <Section customize={customize} pageSection={selectedCoursesSection} containerClass="!w-full !max-w-none !px-0 overflow-hidden" contentClass="relative isolate w-full bg-white text-slate-950">
+         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(253,18,46,0.08),transparent_22%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.08),transparent_18%),linear-gradient(180deg,#ffffff_0%,#f7f8fb_100%)]" />
+         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px)] bg-[size:26px_26px] opacity-60" />
 
          <div className="mx-auto max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
             <div className="mx-auto max-w-3xl text-center">
@@ -44,10 +44,10 @@ const SelectedCourses = () => {
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{selectedCoursesSection?.title || 'CURSOS SELECIONADOS'}</span>
                </p>
-               <h2 className="text-3xl leading-[0.98] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[4.5rem]">
+               <h2 className="text-3xl leading-[0.98] font-black tracking-[-0.06em] text-slate-950 sm:text-4xl lg:text-[4.5rem]">
                   {selectedCoursesSection?.sub_title || 'Escolha os cursos que vão aparecer na home'}
                </h2>
-               <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+               <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
                   {selectedCoursesSection?.description || 'Selecione no Builder os cursos que você quer exibir neste carrossel da página inicial.'}
                </p>
             </div>
@@ -75,9 +75,9 @@ const SelectedCourses = () => {
                      </CarouselContent>
                   </Carousel>
                ) : (
-                  <div className="rounded-[32px] border border-white/10 bg-white/[0.03] px-6 py-16 text-center text-slate-200 backdrop-blur-md">
+                  <div className="rounded-[32px] border border-slate-200 bg-white px-6 py-16 text-center text-slate-700 shadow-[0_18px_60px_rgba(15,23,42,0.06)]">
                      <p className="text-lg font-medium">Nenhum curso foi selecionado ainda.</p>
-                     <p className="mt-2 text-sm text-slate-400">Abra o Builder e escolha os cursos deste carrossel no campo Contents.</p>
+                     <p className="mt-2 text-sm text-slate-500">Abra o Builder e escolha os cursos deste carrossel no campo Contents.</p>
                   </div>
                )}
 
@@ -102,7 +102,7 @@ const SelectedCourses = () => {
                         variant="outline"
                         disabled={!api?.canScrollPrev()}
                         onClick={() => api?.scrollPrev()}
-                        className="border-white/12 bg-white/5 text-white hover:border-primary hover:bg-white/10 hover:text-white"
+                        className="border-slate-200 bg-white text-slate-700 hover:border-primary hover:bg-slate-50 hover:text-slate-950"
                      >
                         <ChevronLeft />
                      </Button>
@@ -111,7 +111,7 @@ const SelectedCourses = () => {
                         variant="outline"
                         disabled={!api?.canScrollNext()}
                         onClick={() => api?.scrollNext()}
-                        className="border-white/12 bg-white/5 text-white hover:border-primary hover:bg-white/10 hover:text-white"
+                        className="border-slate-200 bg-white text-slate-700 hover:border-primary hover:bg-slate-50 hover:text-slate-950"
                      >
                         <ChevronRight />
                      </Button>
