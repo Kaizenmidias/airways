@@ -45,15 +45,15 @@ const WhoWeAre = () => {
                </div>
 
                <div className="space-y-4">
-                  <h2 className="max-w-xl text-3xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[4.5rem]">
+                  <h2 className="max-w-xl text-4xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[4.5rem]">
                      {section?.sub_title || 'Quem somos?'}
                   </h2>
                   <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
                </div>
 
-               <div className="space-y-6 max-w-2xl text-lg leading-8 text-slate-200/92">
+               <div className="space-y-6 max-w-2xl text-[14px] leading-6 text-slate-200/92 sm:text-lg sm:leading-8">
                   {descriptionBlocks.map((block, index) => (
-                     <p key={`who-we-are-text-${index}`} className={cn(index === 0 && 'text-xl leading-9 text-slate-100')}>{block}</p>
+                     <p key={`who-we-are-text-${index}`} className={cn(index === 0 && 'text-[14px] leading-6 text-slate-100 sm:text-xl sm:leading-9')}>{block}</p>
                   ))}
                </div>
 

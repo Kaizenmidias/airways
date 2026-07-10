@@ -36,8 +36,8 @@ const Hero = () => {
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.34),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.18),transparent_16%),linear-gradient(135deg,#050b16_0%,#06101d_44%,#071425_100%)]" />
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
-         <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 pt-[140px] sm:pt-[152px] lg:grid-cols-[1.02fr_0.98fr] lg:pt-0">
-            <div className="relative order-1 flex items-center px-6 py-10 pb-12 sm:px-10 sm:py-16 sm:pb-14 lg:order-1 lg:px-14 lg:py-20 lg:pb-20">
+         <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 pt-[118px] sm:pt-[136px] lg:grid-cols-[1.02fr_0.98fr] lg:pt-0">
+            <div className="relative order-1 flex items-center px-6 py-8 pb-12 sm:px-10 sm:py-16 sm:pb-14 lg:order-1 lg:px-14 lg:py-20 lg:pb-20">
                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_72%_70%,rgba(253,18,46,0.18),transparent_20%)] blur-2xl" />
 
                <div className="relative max-w-3xl text-white">
