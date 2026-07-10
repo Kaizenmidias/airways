@@ -1006,6 +1006,63 @@ class IntroSections
             ],
          ],
          [
+            'name' => 'Por que escolher a eBianch',
+            'slug' => 'why_choose_ebianch',
+            'title' => 'Por que escolher a eBianch?',
+            'sub_title' => 'Por que escolher a eBianch?',
+            'flags' => [
+               'title' => true,
+               'sub_title' => true,
+            ],
+            'properties' => [
+               'array' => [
+                  ['icon' => "", 'title' => "", 'description' => "", 'button_text' => "", 'button_link' => ""],
+                  [
+                     'icon' => 'star',
+                     'title' => 'Mais de 25 Anos',
+                     'description' => 'Desde 1998 publicamos conteúdo na área de ensino para aviação. Sabia que somos a maior editora de livros didáticos para aviação do país? São mais de 40 publicações e 200.000 livros vendidos.',
+                  ],
+                  [
+                     'icon' => 'dollar-sign',
+                     'title' => 'Aprovação Garantida',
+                     'description' => 'Temos o exclusivo programa de "Aprovação Garantida – Risco Zero", sistema que garante a devolução do valor pago caso o aluno não tenha sucesso na prova presencial da ANAC após nosso curso teórico.',
+                     'button_text' => 'Saiba mais',
+                     'button_link' => '/courses/all',
+                  ],
+                  [
+                     'icon' => 'graduation-cap',
+                     'title' => 'Professores Pilotos',
+                     'description' => 'Tenha aula com professores experientes, que trabalham há mais de 20 anos em suas áreas de atuação e suporte com pilotos formados e experientes.',
+                  ],
+                  [
+                     'icon' => 'play',
+                     'title' => 'Conteúdo e Vídeos',
+                     'description' => 'Centenas de horas de vídeo aulas para facilitar o seu aprendizado. Nosso curso online de Piloto Privado contém todo o conteúdo programático previsto para a prova teórica da ANAC.',
+                  ],
+                  [
+                     'icon' => 'calendar-days',
+                     'title' => 'Plano de Estudos',
+                     'description' => 'Desenvolvemos um plano de estudos para que você se prepare para a prova de Piloto Privado com bastante eficiência. Além disso pode se aperfeiçoar em nossos outros Cursos de Aviação',
+                  ],
+                  [
+                     'icon' => 'check',
+                     'title' => 'Simulado de Provas',
+                     'description' => 'São diversas questões de Piloto Privado, Piloto Comercial, INV e Comissário de Voo para você treinar seus conhecimentos e chegar preparado na prova da Anac.',
+                  ],
+                  [
+                     'icon' => 'message-square',
+                     'title' => 'Suporte',
+                     'description' => 'Ensinar vai além de disponibilizar o conteúdo para o aluno, é preciso ter uma equipe de professores disponível para dar todo o suporte que o aluno precisa.',
+                  ],
+                  [
+                     'icon' => 'tablet-smartphone',
+                     'title' => 'Plataforma',
+                     'description' => 'Uma plataforma moderna, cheia de funcionalidades e de fácil utilização. Tudo isso para que você se preparar da melhor forma possível.',
+                  ],
+               ],
+            ],
+         ],
+         [
             'name' => 'Blogs',
             'slug' => 'blogs',
             'title' => 'Best Rated Posts',

@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
 
                     $this->ensureHome4Section($page, 'who_we_are', 'testimonials');
                     $this->ensureHome4Section($page, 'selected_courses', 'who_we_are');
+                    $this->ensureHome4Section($page, 'why_choose_ebianch', 'selected_courses');
 
                     return $page;
                 }

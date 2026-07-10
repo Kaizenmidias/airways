@@ -10,6 +10,7 @@ import Overview from './partials/home-4/overview';
 import Partners from './partials/home-4/partners';
 import SelectedCourses from './partials/home-4/selected-courses';
 import WhoWeAre from './partials/home-4/who-we-are';
+import WhyChooseEbianch from './partials/home-4/why-choose-ebianch';
 import Testimonials from './partials/home-4/testimonials';
 import TopCategories from './partials/home-4/top-categories';
 import TopCourse from './partials/home-4/top-course';
@@ -57,6 +58,9 @@ const Home3 = ({ page, system, airways }: IntroPageProps) => {
                break;
             case 'selected_courses':
                components.push(SelectedCourses);
+               break;
+            case 'why_choose_ebianch':
+               components.push(WhyChooseEbianch);
                break;
             case 'blogs':
                if (!isAirwaysFeatureEnabled(airways, 'blog')) break;
