@@ -3,8 +3,8 @@ import { getPageSection, getPropertyArray } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
-import { DynamicIcon } from 'lucide-react/dynamic';
 import { ArrowRight } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
 import Section from '../section';
 
 const fallbackItems = [
@@ -74,13 +74,13 @@ const WhyChooseEbianch = () => {
          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-20" />
 
          <div className="mx-auto max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
-            <div className="mx-auto max-w-4xl text-center">
+            <div className="mx-auto max-w-6xl text-center">
                <p className="mb-4 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#FD122E]">
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{section?.title || 'POR QUE ESCOLHER A EBIANCH?'}</span>
                </p>
 
-               <h2 className="text-3xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[4.25rem]">
+               <h2 className="mx-auto max-w-5xl text-3xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[3.95rem] xl:max-w-6xl xl:text-[4.25rem]">
                   {section?.sub_title || 'Uma estrutura feita para acelerar sua formação'}
                </h2>
 
@@ -90,37 +90,42 @@ const WhyChooseEbianch = () => {
             </div>
 
             <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-               {cards.map((item, index) => (
-                  <Card
-                     key={`why-choose-${index}`}
-                     className={cn(
-                        'group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/[0.03] px-5 py-8 text-center text-white shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md',
-                        'min-h-[300px] transition-transform duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.05]',
-                     )}
-                  >
-                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,18,46,0.12),transparent_38%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                     <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#FD122E]/65 to-transparent" />
+               {cards.map((item, index) => {
+                  const itemTitle = (item.title || fallbackItems[index]?.title || '').toLowerCase();
+                  const hideCta = itemTitle.includes('aprova');
 
-                     <div className="flex justify-center">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#FD122E]/25 bg-[#FD122E]/12 text-[#FD122E] shadow-[0_0_0_1px_rgba(253,18,46,0.04),0_0_28px_rgba(253,18,46,0.2)]">
-                           <DynamicIcon name={item.icon || fallbackItems[index]?.icon || 'star'} className="h-7 w-7" />
+                  return (
+                     <Card
+                        key={`why-choose-${index}`}
+                        className={cn(
+                           'group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/[0.03] px-5 py-8 text-center text-white shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md',
+                           'min-h-[300px] transition-transform duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.05]',
+                        )}
+                     >
+                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,18,46,0.12),transparent_38%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                        <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#FD122E]/65 to-transparent" />
+
+                        <div className="flex justify-center">
+                           <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#FD122E]/25 bg-[#FD122E]/12 text-[#FD122E] shadow-[0_0_0_1px_rgba(253,18,46,0.04),0_0_28px_rgba(253,18,46,0.2)]">
+                              <DynamicIcon name={item.icon || fallbackItems[index]?.icon || 'star'} className="h-7 w-7" />
+                           </div>
                         </div>
-                     </div>
 
-                     <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
-                     <p className="mt-4 text-sm leading-7 text-slate-300">{item.description || fallbackItems[index]?.description}</p>
+                        <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
+                        <p className="mt-4 text-sm leading-7 text-slate-300">{item.description || fallbackItems[index]?.description}</p>
 
-                     {(item.button_text || item.button_link) && (
-                        <a
-                           href={item.button_link || '#'}
-                           className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-[#FD122E]/55 hover:bg-[#FD122E]/18"
-                        >
-                           {item.button_text || 'Saiba mais'}
-                           <ArrowRight className="h-4 w-4" />
-                        </a>
-                     )}
-                  </Card>
-               ))}
+                        {!hideCta && (item.button_text || item.button_link) && (
+                           <a
+                              href={item.button_link || '#'}
+                              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-[#FD122E]/55 hover:bg-[#FD122E]/18"
+                           >
+                              {item.button_text || 'Saiba mais'}
+                              <ArrowRight className="h-4 w-4" />
+                           </a>
+                        )}
+                     </Card>
+                  );
+               })}
             </div>
          </div>
       </Section>
