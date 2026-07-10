@@ -37,8 +37,8 @@ const WhoWeAre = () => {
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.18),transparent_22%),radial-gradient(circle_at_100%_10%,rgba(253,18,46,0.28),transparent_18%),linear-gradient(180deg,#02070f_0%,#06101d_48%,#02070f_100%)]" />
          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_65%_35%,rgba(255,255,255,0.05),transparent_18%),radial-gradient(circle_at_60%_65%,rgba(255,255,255,0.03),transparent_18%)]" />
 
-         <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[0.94fr_1.06fr] lg:items-center lg:gap-16 lg:px-14 lg:py-28">
-            <div className="relative order-1 z-10 space-y-7 lg:order-2">
+         <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16 lg:px-14 lg:py-28">
+            <div className="relative order-2 z-10 space-y-7 lg:order-1">
                <div className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#FD122E]">
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{section?.title || 'QUEM SOMOS'}</span>
@@ -76,7 +76,7 @@ const WhoWeAre = () => {
                </div>
             </div>
 
-            <div className="relative order-2 z-10 pb-6 lg:order-1 lg:pr-14">
+            <div className="relative order-1 z-10 pb-6 lg:order-2 lg:pr-14">
                <div className="relative mx-auto min-h-[540px] max-w-[760px] pb-8 sm:min-h-[640px] lg:min-h-[760px]">
                   <div className="absolute top-24 right-[14%] h-[46%] w-[42%] rounded-[34px] border border-[#FD122E]/90 opacity-0 lg:opacity-100" />
                   <div className="absolute top-[8%] left-[13%] h-[250px] w-[250px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-2xl opacity-70 lg:opacity-100" />
