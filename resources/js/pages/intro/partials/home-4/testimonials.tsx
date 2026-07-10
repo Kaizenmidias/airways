@@ -37,7 +37,7 @@ const Testimonials = () => {
       <div className="overflow-y-hidden">
          <Section customize={customize} pageSection={testimonialsSection} containerClass="py-20 relative">
             <div className="relative z-10 mx-auto max-w-lg text-center">
-               <p className="text-secondary-foreground mb-1 font-medium">{testimonialsSection?.title}</p>
+               <p className="mb-1 font-medium text-[#FD122E]">{testimonialsSection?.title}</p>
                <h2 className="mb-2 text-3xl font-bold sm:text-4xl">{testimonialsSection?.sub_title}</h2>
                <p className="text-muted-foreground">{testimonialsSection?.description}</p>
             </div>
