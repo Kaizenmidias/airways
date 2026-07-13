@@ -7,6 +7,7 @@ use App\Http\Controllers\Course\CourseAssignmentController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseEnrollmentController;
 use App\Http\Controllers\Course\CourseFaqController;
+use App\Http\Controllers\Course\CourseLearningController;
 use App\Http\Controllers\Course\CourseOutcomeController;
 use App\Http\Controllers\Course\CourseRequirementController;
 use App\Http\Controllers\Course\CurriculumController;
@@ -26,6 +27,7 @@ Route::prefix('dashboard')->group(function () {
    Route::put('course/status/{id}', [CourseController::class, 'status'])->name('course.status')->middleware('smtpConfig', 'checkSmtp');
 
    Route::resource('course/faqs', CourseFaqController::class)->only(['store', 'update', 'destroy']);
+   Route::resource('course/learnings', CourseLearningController::class)->only(['store', 'update', 'destroy']);
    Route::resource('course/outcomes', CourseOutcomeController::class)->only(['store', 'update', 'destroy']);
    Route::resource('course/requirements', CourseRequirementController::class)->only(['store', 'update', 'destroy']);
 

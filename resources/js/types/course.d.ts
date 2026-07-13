@@ -55,6 +55,7 @@ interface Course extends TableCommon {
    description?: string;
    requirements?: CourseRequirement[];
    outcomes?: CourseOutcome[];
+   learnings?: CourseLearning[];
    faqs?: CourseFaq[];
    user_id: number | string;
    reviews: CourseReview[];
@@ -410,6 +411,12 @@ interface CourseRequirement extends TableCommon {
 interface CourseOutcome extends TableCommon {
    course_id: number;
    outcome: string | null;
+   sort: number;
+}
+
+interface CourseLearning extends TableCommon {
+   course_id: number;
+   learning: string | null;
    sort: number;
 }
 

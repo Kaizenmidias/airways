@@ -100,6 +100,11 @@ class Course extends Model implements HasMedia
         return $this->hasMany(CourseOutcome::class)->orderBy('sort', 'asc');
     }
 
+    public function learnings(): HasMany
+    {
+        return $this->hasMany(CourseLearning::class)->orderBy('sort', 'asc');
+    }
+
     public function instructor(): BelongsTo
     {
         return $this->belongsTo(Instructor::class);

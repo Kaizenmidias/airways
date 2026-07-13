@@ -166,6 +166,7 @@ class CourseService extends MediaService
    {
       $course = Course::where('id', $id)->with([
          'faqs',
+         'learnings',
          'outcomes',
          'requirements',
          'instructor.user',
@@ -209,6 +210,7 @@ class CourseService extends MediaService
          ->withAvg('reviews as average_rating', 'rating')
          ->with([
             'faqs',
+            'learnings',
             'outcomes',
             'requirements',
             'sections' => function ($query) {

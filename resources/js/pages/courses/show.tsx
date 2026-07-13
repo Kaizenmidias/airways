@@ -5,7 +5,8 @@ import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
 import { Head, usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
-import CourseHeader from './partials/course-header';
+import CourseFaqs from './partials/course-faqs';
+import CourseLearnings from './partials/course-learnings';
 import CoursePreview from './partials/course-preview';
 import CourseReviews from './partials/course-reviews';
 import Curriculum from './partials/curriculum';
@@ -65,6 +66,9 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    const siteName = system.fields?.name;
    const siteUrl = window.location.href;
    const heroDescription = course.short_description || course.description || pageDescription;
+   const hasLearnings = Boolean(course.learnings && course.learnings.length > 0);
+   const hasFaqs = Boolean(course.faqs && course.faqs.length > 0);
+   const hasDescription = Boolean(course.description);
 
    return (
       <>
@@ -163,13 +167,17 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
 
          <div className="container grid grid-cols-1 gap-7 py-10 md:grid-cols-[minmax(0,1fr)_360px] lg:grid-cols-[minmax(0,1fr)_420px]">
             <div className="space-y-7">
-               <SectionShell eyebrow="Informações do curso" title="Visão geral">
-                  <CourseHeader course={course} />
-               </SectionShell>
+               {hasLearnings && (
+                  <SectionShell eyebrow="Aprendizado" title="O que você irá aprender neste curso">
+                     <CourseLearnings learnings={course.learnings} />
+                  </SectionShell>
+               )}
 
-               <SectionShell eyebrow="Conteúdo do curso" title="O que você vai encontrar">
-                  <Overview course={course} />
-               </SectionShell>
+               {hasDescription && (
+                  <SectionShell eyebrow="Descrição do curso" title="Sobre este curso">
+                     <Overview course={course} />
+                  </SectionShell>
+               )}
 
                <SectionShell eyebrow="Programa" title="Estrutura e módulos">
                   <Curriculum course={course} compact />
@@ -188,6 +196,12 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                <SectionShell eyebrow="Avaliações" title="O que os alunos estão dizendo">
                   <CourseReviews compact />
                </SectionShell>
+
+               {hasFaqs && (
+                  <SectionShell eyebrow="Perguntas frequentes" title="Dúvidas sobre o curso">
+                     <CourseFaqs faqs={course.faqs} />
+                  </SectionShell>
+               )}
             </div>
 
             <div className="relative z-20 md:-mt-24 lg:-mt-40">

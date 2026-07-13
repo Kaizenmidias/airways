@@ -5,6 +5,7 @@ import { router, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { CourseUpdateProps } from '../update';
 import FaqForm from './forms/faq-form';
+import LearningForm from './forms/learning-form';
 import OutcomeForm from './forms/outcome-form';
 import RequirementForm from './forms/requirement-form';
 
@@ -12,7 +13,7 @@ const Info = () => {
    const { props } = usePage<CourseUpdateProps>();
    const { translate } = props;
    const { dashboard, button } = translate;
-   const { faqs, requirements, outcomes } = props.course;
+   const { faqs, requirements, outcomes, learnings } = props.course;
 
    return (
       <Card className="space-y-7 p-4 sm:p-6">
@@ -33,6 +34,29 @@ const Info = () => {
                </Button>
                {faqs?.map((faq) => (
                   <FaqForm key={faq.id} faq={faq} />
+               ))}
+            </div>
+         </div>
+
+         <Separator />
+
+         <div className="flex flex-col justify-between gap-3 md:flex-row">
+            <h6 className="w-[200px] font-medium">O que o aluno irá aprender</h6>
+            <div className="w-full space-y-6">
+               <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() =>
+                     router.post(route('learnings.store'), {
+                        course_id: props.course.id,
+                     })
+                  }
+               >
+                  <Plus />
+                  {button.add}
+               </Button>
+               {learnings?.map((learning) => (
+                  <LearningForm key={learning.id} learning={learning} />
                ))}
             </div>
          </div>
