@@ -12,7 +12,7 @@ const BlogFilter = ({ setOpen }: BlogFilterProps) => {
    const page = usePage<BlogsIndexProps>();
    const urlParams = getQueryParams(page.url);
    const { category, categories, translate } = page.props;
-   const { frontend, common } = translate;
+   const { common } = translate;
 
    const getQueryRoute = (newParams: Record<string, string>, category: string, category_child?: string) => {
       const updatedParams = { ...urlParams };
@@ -31,7 +31,7 @@ const BlogFilter = ({ setOpen }: BlogFilterProps) => {
 
    return (
       <div className="space-y-6">
-         <SearchInput onChangeValue={(value) => router.get(route('blogs.guest', { category: 'all', search: value }))} />
+         <SearchInput placeholder="Pesquisar" onChangeValue={(value) => router.get(route('blogs.guest', { category: 'all', search: value }))} />
 
          {/* Categories Section */}
          <div>
@@ -40,7 +40,7 @@ const BlogFilter = ({ setOpen }: BlogFilterProps) => {
                <Link className="flex items-center" href={getQueryRoute({}, 'all')}>
                   <RadioGroupItem className="cursor-pointer" id="category" value="all" />
                   <label htmlFor="category" className="cursor-pointer pl-2">
-                     {frontend.all_blogs}
+                     Todos os artigos
                   </label>
                </Link>
 
