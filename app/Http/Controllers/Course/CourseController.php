@@ -22,6 +22,7 @@ use App\Services\Course\CourseReviewService;
 use App\Services\LiveClass\ZoomLiveService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Page;
 
 class CourseController extends Controller
 {
@@ -57,6 +58,12 @@ class CourseController extends Controller
         $categories = $this->categoryService->getCategories()['categories'];
         $wishlists = $this->wishlistService->getWishlists(['user_id' => $user ? $user->id : null]);
         $courses = $this->courseService->getCourses($query, null, true);
+        $catalogPage = app('catalog_page')
+            ?? Page::where('slug', 'courses-all')
+                ->with(['sections' => function ($query) {
+                    $query->orderBy('sort', 'asc');
+                }])
+                ->first();
 
         // Generate meta tags for SEO and social sharing
         $system = app('system_settings');
@@ -109,15 +116,16 @@ class CourseController extends Controller
         // Prioritize first course image over category image, then fallback to system banner
         $ogImage = $firstCourseImage ?? $categoryImage ?? $system->fields['banner'] ?? '';
 
-        return Inertia::render('courses/index', compact(
-            'levels',
-            'prices',
-            'courses',
-            'categories',
-            'category',
-            'categoryChild',
-            'wishlists'
-        ))->withViewData([
+        return Inertia::render('courses/index', [
+            'page' => $catalogPage,
+            'levels' => $levels,
+            'prices' => $prices,
+            'courses' => $courses,
+            'categories' => $categories,
+            'category' => $category,
+            'categoryChild' => $categoryChild,
+            'wishlists' => $wishlists,
+        ])->withViewData([
             'metaTitle' => $fullTitle,
             'metaDescription' => $pageDescription,
             'metaKeywords' => $pageKeywords,

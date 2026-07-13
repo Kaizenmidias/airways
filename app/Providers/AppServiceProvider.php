@@ -54,6 +54,63 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+
+        $this->app->singleton('catalog_page', function (): ?Page {
+            try {
+                if (!isDBConnected() || !Schema::hasTable('pages') || !Schema::hasTable('page_sections')) {
+                    return null;
+                }
+
+                $page = Page::firstOrCreate(
+                    ['slug' => 'courses-all'],
+                    [
+                        'name' => 'Course Catalog',
+                        'title' => 'Course Catalog',
+                        'description' => 'Browse the full course catalog.',
+                        'meta_description' => 'Browse the full course catalog.',
+                        'meta_keywords' => 'courses, catalog, online learning, aviation courses',
+                    ]
+                );
+
+                $heroSection = PageSection::firstOrCreate(
+                    [
+                        'page_id' => $page->id,
+                        'slug' => 'hero',
+                    ],
+                    [
+                        'name' => 'Hero',
+                        'title' => 'Sua carreira na aviação começa aqui',
+                        'description' => 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.',
+                        'flags' => [
+                            'title' => true,
+                            'description' => true,
+                        ],
+                        'properties' => [
+                            'button_text' => 'Pesquisar cursos',
+                            'button_link' => '/courses/all',
+                        ],
+                        'active' => true,
+                        'sort' => 1,
+                    ]
+                );
+
+                if (!$page->relationLoaded('sections')) {
+                    $page->load(['sections' => function ($query) {
+                        $query->orderBy('sort', 'asc');
+                    }]);
+                }
+
+                if ($page->sections->isEmpty() || $page->sections->doesntContain('id', $heroSection->id)) {
+                    $page->load(['sections' => function ($query) {
+                        $query->orderBy('sort', 'asc');
+                    }]);
+                }
+
+                return $page;
+            } catch (\Throwable $th) {
+                return null;
+            }
+        });
     }
 
     private function ensureHome4Section(?Page $page, string $slug, ?string $afterSlug = null): void

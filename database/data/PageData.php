@@ -89,6 +89,34 @@ class PageData
    public static function getInnerPages(): array
    {
       return [
+         // Courses catalog page
+         [
+            'name' => 'Course Catalog',
+            'slug' => 'courses-all',
+            'type' => 'inner_page',
+            'title' => 'Course Catalog - Airways',
+            'description' => 'Browse the full course catalog.',
+            'meta_description' => 'Browse the full catalog of aviation courses.',
+            'meta_keywords' => 'courses, catalog, aviation courses, online learning',
+            'sections' => [
+               [
+                  'name' => 'Hero',
+                  'slug' => 'hero',
+                  'title' => 'Sua carreira na aviação começa aqui',
+                  'description' => 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.',
+                  'flags' => [
+                     'title' => true,
+                     'description' => true,
+                  ],
+                  'properties' => [
+                     'button_text' => 'Pesquisar cursos',
+                     'button_link' => '/courses/all',
+                  ],
+                  'active' => true,
+                  'sort' => 1,
+               ],
+            ],
+         ],
          // About Us page
          [
             'name' => 'About Us',

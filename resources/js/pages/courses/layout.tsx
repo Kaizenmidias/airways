@@ -13,39 +13,34 @@ import { CoursesIndexProps } from './index';
 
 const Layout = ({ children }: { children: ReactNode }) => {
    const { url, props } = usePage<CoursesIndexProps>();
-   const { category, categoryChild, categories, levels, courses, page, customize } = props;
+   const { category, categoryChild, categories, levels, courses, page, customize, catalogPage } = props;
    const urlParams = getQueryParams(url);
    const viewType = urlParams['view'] ?? 'grid';
    const selectedCategory = categoryChild ? `${category?.slug || 'all'}::${categoryChild.slug}` : category?.slug || 'all';
    const [search, setSearch] = useState(urlParams['search'] || '');
    const [courseCategory, setCourseCategory] = useState(selectedCategory);
-   const [minPrice, setMinPrice] = useState(urlParams['min_price'] || '');
-   const [maxPrice, setMaxPrice] = useState(urlParams['max_price'] || '');
+   const [minPrice, setMinPrice] = useState((urlParams['min_price'] || '').replace(/\D/g, ''));
+   const [maxPrice, setMaxPrice] = useState((urlParams['max_price'] || '').replace(/\D/g, ''));
    const [level, setLevel] = useState(urlParams['level'] || 'all');
-   const heroSection = getPageSection(page, 'category_courses');
-   const editableHeroSection = heroSection || getPageSection(page, 'hero');
+   const catalogPageData = catalogPage || page;
+   const heroSection = getPageSection(catalogPageData, 'hero');
 
-   const heroTitle =
-      editableHeroSection?.title && editableHeroSection.title !== 'Everything you need to know in one place'
-         ? editableHeroSection.title
-         : 'Encontre sua próxima formação';
-   const heroDescription =
-      editableHeroSection?.description && !editableHeroSection.description.includes('Your professional development is supported by Mentor')
-         ? editableHeroSection.description
-         : 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
+   const heroTitle = heroSection?.title || 'Encontre sua próxima formação';
+   const heroDescription = heroSection?.description || 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
 
    const formatCurrencyInput = (value: string) => {
-      const digits = value.replace(/\D/g, '');
-
-      if (!digits) {
+      if (!value) {
          return '';
       }
 
       return new Intl.NumberFormat('pt-BR', {
          style: 'currency',
          currency: 'BRL',
-      }).format(Number(digits));
+         maximumFractionDigits: 0,
+      }).format(Number(value));
    };
+
+   const normalizeCurrencyInput = (value: string) => value.replace(/\D/g, '');
 
    const levelLabel = (value: string) => {
       const labels: Record<string, string> = {
@@ -83,8 +78,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
       const query: Record<string, string> = {};
 
       if (search) query.search = search;
-      if (minPrice) query.min_price = minPrice.replace(/[^\d,]/g, '').replace(',', '.');
-      if (maxPrice) query.max_price = maxPrice.replace(/[^\d,]/g, '').replace(',', '.');
+      if (minPrice) query.min_price = minPrice;
+      if (maxPrice) query.max_price = maxPrice;
       if (level !== 'all') query.level = level;
       if (viewType) query.view = viewType;
 
@@ -102,14 +97,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
          <section className="bg-slate-950 pt-32 pb-14 text-white lg:pt-40 lg:pb-20">
             <Section
                customize={Boolean(customize)}
-               pageSection={editableHeroSection}
+               pageSection={heroSection}
                containerClass="!max-w-none"
                contentClass="relative"
                editorButtonClassName="top-4 right-4 bg-emerald-600 text-white hover:bg-emerald-700"
             >
-               <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
+               <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
                   <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Catálogo Airways</p>
-                  <h1 className="mt-4 text-4xl leading-tight font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.9rem] lg:whitespace-nowrap xl:text-[4.4rem]">
+                  <h1 className="mx-auto mt-4 max-w-4xl text-4xl leading-[1.05] font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.9rem] xl:text-[4.4rem]">
                      {heroTitle}
                   </h1>
                   <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroDescription}</p>
@@ -162,17 +157,17 @@ const Layout = ({ children }: { children: ReactNode }) => {
                         <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Preço</span>
                         <div className="grid grid-cols-2 gap-2">
                            <Input
-                              value={minPrice}
-                              onChange={(event) => setMinPrice(formatCurrencyInput(event.target.value))}
+                              value={formatCurrencyInput(minPrice)}
+                              onChange={(event) => setMinPrice(normalizeCurrencyInput(event.target.value))}
                               inputMode="numeric"
-                              placeholder="De R$ 0,00"
+                              placeholder="De R$ 0"
                               className="h-12 rounded-2xl border-white/10 bg-white text-slate-950 placeholder:text-slate-500"
                            />
                            <Input
-                              value={maxPrice}
-                              onChange={(event) => setMaxPrice(formatCurrencyInput(event.target.value))}
+                              value={formatCurrencyInput(maxPrice)}
+                              onChange={(event) => setMaxPrice(normalizeCurrencyInput(event.target.value))}
                               inputMode="numeric"
-                              placeholder="Até R$ 0,00"
+                              placeholder="Até R$ 0"
                               className="h-12 rounded-2xl border-white/10 bg-white text-slate-950 placeholder:text-slate-500"
                            />
                         </div>
@@ -195,10 +190,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
                         </Select>
                      </label>
 
-                     <Button type="submit" className="h-12 rounded-2xl bg-[#FD122E] px-7 font-semibold text-white shadow-none hover:bg-[#d90f26]">
-                        <Search className="h-5 w-5" />
-                        Pesquisar
-                     </Button>
+                     <div className="flex items-end">
+                        <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FD122E] px-7 font-semibold text-white shadow-none hover:bg-[#d90f26] lg:w-auto">
+                           <Search className="h-5 w-5" />
+                           Pesquisar
+                        </Button>
+                     </div>
                   </div>
 
                   <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

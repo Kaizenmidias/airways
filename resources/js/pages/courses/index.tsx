@@ -16,6 +16,7 @@ export interface CoursesIndexProps extends SharedData {
    courses: Pagination<Course>;
    categories: CourseCategory[];
    wishlists: CourseWishlist[];
+   catalogPage?: Page;
 }
 
 const Index = (props: CoursesIndexProps) => {
