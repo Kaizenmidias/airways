@@ -169,7 +169,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                </SectionShell>
             </div>
 
-            <div className="relative z-20 order-first md:order-none md:-mt-24 lg:-mt-40">
+            <div className="relative z-20 order-first self-start md:sticky md:top-28 md:order-none md:-mt-24 lg:-mt-40">
                <CoursePreview />
             </div>
          </div>
