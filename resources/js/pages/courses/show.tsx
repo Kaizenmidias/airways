@@ -1,5 +1,4 @@
 import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import LandingLayout from '@/layouts/landing-layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
@@ -22,19 +21,10 @@ export interface CourseDetailsProps extends SharedData {
    totalReviews: CourseTotalReview;
 }
 
-const SectionShell = ({ eyebrow, title, children }: { eyebrow: string; title: string; children: ReactNode }) => {
+const SectionShell = ({ title, children }: { title: string; children: ReactNode }) => {
    return (
       <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8">
-         <div className="space-y-4">
-            <div className="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.22em] text-[#FD122E] uppercase">
-               <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
-               <span>{eyebrow}</span>
-            </div>
-            <div className="space-y-3">
-               <h2 className="text-2xl font-black tracking-[-0.04em] text-slate-950 sm:text-3xl">{title}</h2>
-               <Separator className="h-[2px] w-16 bg-[#FD122E]" />
-            </div>
-         </div>
+         <h2 className="text-2xl font-black tracking-[-0.04em] text-[#020618] sm:text-3xl">{title}</h2>
 
          <div className="mt-6">{children}</div>
       </Card>
@@ -153,28 +143,28 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
          <div className="container grid grid-cols-1 gap-7 py-10 md:grid-cols-[minmax(0,1fr)_360px] lg:grid-cols-[minmax(0,1fr)_420px]">
             <div className="space-y-7">
                {hasDescription && (
-                  <SectionShell eyebrow="Descrição do curso" title="Sobre este curso">
+                  <SectionShell title="Sobre este curso">
                      <Overview course={course} />
                   </SectionShell>
                )}
 
                {hasLearnings && (
-                  <SectionShell eyebrow="Aprendizado" title="O que você irá aprender neste curso">
+                  <SectionShell title="O que você irá aprender neste curso">
                      <CourseLearnings learnings={course.learnings} />
                   </SectionShell>
                )}
 
-               <SectionShell eyebrow="Programa" title="Estrutura e módulos">
+               <SectionShell title="Estrutura e módulos">
                   <Curriculum course={course} compact />
                </SectionShell>
 
                {showInstructorTab && (
-                  <SectionShell eyebrow="Professor do curso" title="Quem vai te acompanhar">
+                  <SectionShell title="Quem vai te acompanhar">
                      <Instructor course={course} compact />
                   </SectionShell>
                )}
 
-               <SectionShell eyebrow="Avaliações" title="O que os alunos estão dizendo">
+               <SectionShell title="O que os alunos estão dizendo">
                   <CourseReviews compact />
                </SectionShell>
             </div>
