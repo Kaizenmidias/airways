@@ -23,13 +23,29 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const [maxPrice, setMaxPrice] = useState(urlParams['max_price'] || '');
    const [level, setLevel] = useState(urlParams['level'] || 'all');
    const heroSection = getPageSection(page, 'category_courses');
+   const editableHeroSection = getPageSection(page, 'hero') || heroSection;
 
    const heroTitle =
-      heroSection?.title && heroSection.title !== 'Everything you need to know in one place' ? heroSection.title : 'Encontre sua próxima formação';
+      editableHeroSection?.title && editableHeroSection.title !== 'Everything you need to know in one place'
+         ? editableHeroSection.title
+         : 'Encontre sua próxima formação';
    const heroDescription =
-      heroSection?.description && !heroSection.description.includes('Your professional development is supported by Mentor')
-         ? heroSection.description
+      editableHeroSection?.description && !editableHeroSection.description.includes('Your professional development is supported by Mentor')
+         ? editableHeroSection.description
          : 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
+
+   const formatCurrencyInput = (value: string) => {
+      const digits = value.replace(/\D/g, '');
+
+      if (!digits) {
+         return '';
+      }
+
+      return new Intl.NumberFormat('pt-BR', {
+         style: 'currency',
+         currency: 'BRL',
+      }).format(Number(digits) / 100);
+   };
 
    const levelLabel = (value: string) => {
       const labels: Record<string, string> = {
@@ -65,11 +81,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
       const [routeCategory, routeCategoryChild] = courseCategory.split('::');
       const query: Record<string, string> = {};
-      const normalizePrice = (value: string) => value.replace(/[^\d,.]/g, '').replace(',', '.');
 
       if (search) query.search = search;
-      if (minPrice) query.min_price = normalizePrice(minPrice);
-      if (maxPrice) query.max_price = normalizePrice(maxPrice);
+      if (minPrice) query.min_price = minPrice.replace(/[^\d,]/g, '').replace(',', '.');
+      if (maxPrice) query.max_price = maxPrice.replace(/[^\d,]/g, '').replace(',', '.');
       if (level !== 'all') query.level = level;
       if (viewType) query.view = viewType;
 
@@ -85,10 +100,18 @@ const Layout = ({ children }: { children: ReactNode }) => {
    return (
       <LandingLayout customizable navbarHeight={false}>
          <section className="bg-slate-950 pt-32 pb-14 text-white lg:pt-40 lg:pb-20">
-            <Section customize={Boolean(customize)} pageSection={heroSection} containerClass="!max-w-none" contentClass="relative">
+            <Section
+               customize={Boolean(customize)}
+               pageSection={editableHeroSection}
+               containerClass="!max-w-none"
+               contentClass="relative"
+               editorButtonClassName="top-4 right-4 bg-emerald-600 text-white hover:bg-emerald-700"
+            >
                <div className="mx-auto max-w-4xl text-center">
                   <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Catálogo Airways</p>
-                  <h1 className="mt-4 text-4xl leading-tight font-black text-white sm:text-5xl lg:text-6xl lg:whitespace-nowrap">{heroTitle}</h1>
+                  <h1 className="mt-4 text-4xl leading-tight font-black text-white sm:text-5xl lg:text-[4.1rem] lg:whitespace-nowrap xl:text-[4.7rem]">
+                     {heroTitle}
+                  </h1>
                   <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroDescription}</p>
                </div>
 
@@ -97,7 +120,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   className="mx-auto mt-10 max-w-6xl rounded-[28px] border border-white/15 bg-white/[0.06] p-5 shadow-[0_30px_90px_rgba(0,0,0,0.28)] backdrop-blur-md lg:p-7"
                >
                   <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-end">
-                     <label className="flex flex-col gap-2">
+                     <label className="flex flex-col gap-2 self-end">
                         <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Buscar curso</span>
                         <Input
                            value={search}
@@ -140,15 +163,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
                         <div className="grid grid-cols-2 gap-2">
                            <Input
                               value={minPrice}
-                              onChange={(event) => setMinPrice(event.target.value)}
-                              inputMode="decimal"
+                              onChange={(event) => setMinPrice(formatCurrencyInput(event.target.value))}
+                              inputMode="numeric"
                               placeholder="De R$ 0,00"
                               className="h-12 rounded-2xl border-white/10 bg-white text-slate-950 placeholder:text-slate-500"
                            />
                            <Input
                               value={maxPrice}
-                              onChange={(event) => setMaxPrice(event.target.value)}
-                              inputMode="decimal"
+                              onChange={(event) => setMaxPrice(formatCurrencyInput(event.target.value))}
+                              inputMode="numeric"
                               placeholder="Até R$ 0,00"
                               className="h-12 rounded-2xl border-white/10 bg-white text-slate-950 placeholder:text-slate-500"
                            />
