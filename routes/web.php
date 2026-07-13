@@ -13,7 +13,7 @@ Route::get('job-circulars/{job_circular}', [JobCircularController::class, 'show'
 
 // course page
 Route::controller(CourseController::class)->group(function () {
-    Route::get('courses/{category}/{category_child?}', 'category_courses')->name('category.courses');
+    Route::get('courses/{category}/{category_child?}', 'category_courses')->name('category.courses')->middleware('customize');
     Route::get('courses/details/{slug}/{id}', 'show')->name('course.details');
 });
 
