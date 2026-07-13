@@ -71,8 +71,8 @@ const Footer = () => {
          <div className="border-b border-white/10">
             <PublicContainer className="grid gap-10 py-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
                <div className="space-y-6">
-                  <Link href="/" className="inline-flex items-center">
-                     <AppLogo theme="light" className="h-8 w-auto" />
+                  <Link href="/" className="inline-flex w-full max-w-[240px] items-center sm:max-w-[280px] lg:max-w-[340px]">
+                     <AppLogo theme="light" className="!h-auto !w-full max-w-none" />
                   </Link>
 
                   <p className="max-w-xl text-sm leading-7 text-slate-300">{system.fields.description || system.fields.slogan || system.fields.footer_text}</p>
