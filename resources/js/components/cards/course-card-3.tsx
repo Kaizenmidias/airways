@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { cn, systemCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { BadgeCheck, Clock, VideoIcon } from 'lucide-react';
@@ -15,7 +15,8 @@ const CourseCard3 = ({ course, className }: Props) => {
    const { user } = props.auth;
    const { translate } = props;
    const { frontend, common, button } = translate;
-   const currency = systemCurrency(props.system.fields['selling_currency']);
+   const currency = props.system.fields['selling_currency'] || 'BRL';
+   const coursePrice = formatCurrency(course.discount ? course.discount_price : course.price, currency);
 
    // Enrollment/Buy button component
    const enrollmentHandler = (course: Course) => {
@@ -69,7 +70,7 @@ const CourseCard3 = ({ course, className }: Props) => {
 
             <div className="flex items-center gap-3">
                <Button className="px-5" onClick={() => enrollmentHandler(course)}>
-                  <Clock /> {course.pricing_type === 'free' ? common.free : `${currency?.symbol}${course.price}`} | {button.enroll_now}
+                  <Clock /> {course.pricing_type === 'free' ? common.free : coursePrice} | {button.enroll_now}
                </Button>
                <Button
                   variant="outline"

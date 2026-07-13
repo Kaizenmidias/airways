@@ -13,6 +13,16 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
    const urlParams = getQueryParams(page.url);
    const { levels, prices, categories, category, categoryChild, translate } = page.props;
    const { frontend, common } = translate;
+   const coursePricingLabels: Record<string, string> = {
+      free: 'Grátis',
+      paid: 'Pago',
+   };
+   const courseLevelLabels: Record<string, string> = {
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
+      expert: 'Especialista',
+   };
 
    const getQueryRoute = (newParams: Record<string, string>, category: string, category_child?: string) => {
       const updatedParams = { ...urlParams };
@@ -107,7 +117,7 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
                   >
                      <RadioGroupItem className="cursor-pointer" value={price} id={price} />
                      <label htmlFor={price} className="cursor-pointer pl-2">
-                        {price}
+                        {coursePricingLabels[price] ?? price}
                      </label>
                   </Link>
                ))}
@@ -137,7 +147,7 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
                   >
                      <RadioGroupItem className="cursor-pointer" value={level} id={level} />
                      <label htmlFor={level} className="cursor-pointer pl-2">
-                        {level}
+                        {courseLevelLabels[level] ?? level}
                      </label>
                   </Link>
                ))}

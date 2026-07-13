@@ -18,6 +18,15 @@ const Pricing = () => {
    const { translate } = props;
    const { dashboard, input, button } = translate;
    const { tab, prices, expiries, course } = props;
+   const coursePricingLabels: Record<string, string> = {
+      free: 'Grátis',
+      paid: 'Pago',
+   };
+
+   const courseExpiryLabels: Record<string, string> = {
+      lifetime: 'Vitalício',
+      limited_time: 'Tempo limitado',
+   };
 
    const { data, setData, post, errors, processing } = useForm({
       tab: tab,
@@ -51,7 +60,7 @@ const Pricing = () => {
                         <div key={price} className="flex items-center space-x-2">
                            <RadioGroupItem className="cursor-pointer" id={price} value={price} />
                            <Label htmlFor={price} className="capitalize">
-                              {price}
+                              {coursePricingLabels[price] ?? price}
                            </Label>
                         </div>
                      ))}
@@ -65,6 +74,9 @@ const Pricing = () => {
                         <Label>{dashboard.price} *</Label>
                         <Input
                            type="number"
+                           inputMode="decimal"
+                           min="0"
+                           step="0.01"
                            name="price"
                            value={data.price}
                            onChange={(e) => onHandleChange(e, setData)}
@@ -90,6 +102,9 @@ const Pricing = () => {
                            <div>
                               <Input
                                  type="number"
+                                 inputMode="decimal"
+                                 min="0"
+                                 step="0.01"
                                  name="discount_price"
                                  value={data.discount_price}
                                  onChange={(e) => onHandleChange(e, setData)}
@@ -115,7 +130,7 @@ const Pricing = () => {
                         <div key={expiry} className="flex items-center space-x-2">
                            <RadioGroupItem className="cursor-pointer" id={expiry} value={expiry} />
                            <Label htmlFor={expiry} className="capitalize">
-                              {expiry}
+                              {courseExpiryLabels[expiry] ?? expiry}
                            </Label>
                         </div>
                      ))}

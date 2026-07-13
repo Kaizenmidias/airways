@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn, getCourseDuration, systemCurrency } from '@/lib/utils';
+import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Clock, Heart, Star, TrendingUp, Users } from 'lucide-react';
@@ -19,7 +19,9 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
    const { button, common, frontend } = props.translate;
 
    const isWishlisted = wishlists?.find((wishlist) => wishlist.course_id === course.id);
-   const currency = systemCurrency(props.system.fields['selling_currency']);
+   const currency = props.system.fields['selling_currency'] || 'BRL';
+   const coursePrice = formatCurrency(course.price, currency);
+   const discountPrice = formatCurrency(course.discount_price, currency);
 
    const handleWishlist = () => {
       if (isWishlisted) {
@@ -77,8 +79,7 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
                   <div className="flex items-center gap-2">
                      {course.discount ? (
                         <p className="pt-1 text-gray-300 line-through">
-                           {currency?.symbol}
-                           {course.discount_price}
+                           {coursePrice}
                         </p>
                      ) : (
                         ''
@@ -87,10 +88,7 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
                      {course.pricing_type === 'free' ? (
                         <p className="text-lg font-semibold">{common.free}</p>
                      ) : (
-                        <p className="text-lg font-semibold">
-                           {currency?.symbol}
-                           {course.price}
-                        </p>
+                        <p className="text-lg font-semibold">{course.discount ? discountPrice : coursePrice}</p>
                      )}
                   </div>
                </div>

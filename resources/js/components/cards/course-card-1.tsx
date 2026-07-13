@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn, getCourseDuration, systemCurrency } from '@/lib/utils';
+import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Clock, Heart, Star, Users } from 'lucide-react';
@@ -20,7 +20,9 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
    const { button, frontend, common } = translate;
 
    const isWishlisted = wishlists?.find((wishlist) => wishlist.course_id === course.id);
-   const currency = systemCurrency(props.system.fields['selling_currency']);
+   const currency = props.system.fields['selling_currency'] || 'BRL';
+   const coursePrice = formatCurrency(course.price, currency);
+   const discountPrice = formatCurrency(course.discount_price, currency);
 
    const handleWishlist = () => {
       if (isWishlisted) {
@@ -110,20 +112,15 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
                   ) : course.discount ? (
                      <>
                         <span className="font-semibold">
-                           {currency?.symbol}
-                           {course.discount_price}
+                           {discountPrice}
                         </span>
                         <span className="text-muted-foreground ml-2 text-sm font-medium line-through">
-                           {currency?.symbol}
-                           {course.price}
+                           {coursePrice}
                         </span>
                      </>
                   ) : (
                      <>
-                        <span className="font-semibold">
-                           {currency?.symbol}
-                           {course.price}
-                        </span>
+                        <span className="font-semibold">{coursePrice}</span>
                      </>
                   )}
                </p>

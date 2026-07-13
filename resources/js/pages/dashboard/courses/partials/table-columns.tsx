@@ -1,5 +1,6 @@
 import DeleteModal from '@/components/inertia/delete-modal';
 import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
@@ -94,7 +95,7 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
       ),
       cell: ({ row }) => (
          <div className="py-1 text-center capitalize">
-            <p>{row.original.price ?? table.free}</p>
+            <p>{row.original.pricing_type === 'free' ? table.free : formatCurrency(row.original.price, 'BRL')}</p>
          </div>
       ),
    },

@@ -238,6 +238,9 @@ const Index = (props: Props) => {
                                  <Label htmlFor="price">{input.price} *</Label>
                                  <Input
                                     type="number"
+                                    inputMode="decimal"
+                                    min="0"
+                                    step="0.01"
                                     name="price"
                                     value={data.price}
                                     onChange={(e) => onHandleChange(e, setData)}
@@ -263,6 +266,9 @@ const Index = (props: Props) => {
                                     <div>
                                        <Input
                                           type="number"
+                                          inputMode="decimal"
+                                          min="0"
+                                          step="0.01"
                                           name="discount_price"
                                           value={data.discount_price}
                                           onChange={(e) => onHandleChange(e, setData)}

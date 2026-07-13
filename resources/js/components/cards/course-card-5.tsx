@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { cn, getCourseDuration, systemCurrency } from '@/lib/utils';
+import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, usePage } from '@inertiajs/react';
 import { Clock, Star, TrendingUp, Users } from 'lucide-react';
@@ -13,7 +13,9 @@ interface Props {
 const CourseCard5 = ({ course, className }: Props) => {
    const { props } = usePage<SharedData>();
    const { common, frontend } = props.translate;
-   const currency = systemCurrency(props.system.fields['selling_currency']);
+   const currency = props.system.fields['selling_currency'] || 'BRL';
+   const coursePrice = formatCurrency(course.price, currency);
+   const discountPrice = formatCurrency(course.discount_price, currency);
 
    return (
       <Card className={cn('flex items-center', className)}>
@@ -46,8 +48,7 @@ const CourseCard5 = ({ course, className }: Props) => {
                   <div className="flex items-center gap-2">
                      {course.discount ? (
                         <p className="pt-1 text-gray-300 line-through">
-                           {currency?.symbol}
-                           {course.discount_price}
+                           {coursePrice}
                         </p>
                      ) : (
                         ''
@@ -56,10 +57,7 @@ const CourseCard5 = ({ course, className }: Props) => {
                      {course.pricing_type === 'free' ? (
                         <p className="text-lg font-semibold">{common.free}</p>
                      ) : (
-                        <p className="text-lg font-semibold">
-                           {currency?.symbol}
-                           {course.price}
-                        </p>
+                        <p className="text-lg font-semibold">{course.discount ? discountPrice : coursePrice}</p>
                      )}
                   </div>
                </div>

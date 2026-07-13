@@ -148,6 +148,17 @@ export const systemCurrency = (currency: string) => {
    return currencies.find((item) => item.value == currency);
 };
 
+export const formatCurrency = (amount: number | string | null | undefined, currency = 'BRL', locale = 'pt-BR') => {
+   const numericAmount = Number(amount ?? 0);
+
+   return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+   }).format(Number.isFinite(numericAmount) ? numericAmount : 0);
+};
+
 export function getReadingTime(description: string): string {
    // Remove HTML tags
    const plainText = description.replace(/<[^>]*>/g, '');

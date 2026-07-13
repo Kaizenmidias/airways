@@ -47,6 +47,10 @@ const LessonForm = ({ title, handler, lesson, sectionId }: Props) => {
    const { props } = usePage<CourseUpdateProps>();
    const { translate } = props;
    const { dashboard, input, button } = translate;
+   const lessonPricingLabels: Record<string, string> = {
+      free: 'Grátis',
+      paid: 'Pago',
+   };
 
    const lessonTypes = getLessonTypes(translate);
 
@@ -331,7 +335,7 @@ const LessonForm = ({ title, handler, lesson, sectionId }: Props) => {
                                  <div key={price} className="flex items-center space-x-2">
                                     <RadioGroupItem className="cursor-pointer" id={price} value={price} />
                                     <Label htmlFor={price} className="capitalize">
-                                       {price}
+                                       {lessonPricingLabels[price] ?? price}
                                     </Label>
                                  </div>
                               ))}
@@ -362,7 +366,7 @@ const LessonForm = ({ title, handler, lesson, sectionId }: Props) => {
 
                         {(lesson || lessonType === 'form') && (
                            <LoadingButton loading={processing || isSubmit} disabled={processing || isSubmit}>
-                              {isSubmit ? 'Uploading...' : button.submit}
+                              {isSubmit ? 'Enviando...' : button.submit}
                            </LoadingButton>
                         )}
                      </DialogFooter>

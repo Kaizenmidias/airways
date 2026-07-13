@@ -1,17 +1,38 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/video-player';
 import courseLanguages from '@/data/course-languages';
-import { getCourseDuration, systemCurrency } from '@/lib/utils';
+import { formatCurrency, getCourseDuration } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 import { BarChart3, Calendar, Clock, Languages, Mail, Play, Users } from 'lucide-react';
 import { CourseDetailsProps } from '../show';
 import EnrollOrPlayerButton from './course-player-button';
 
+const courseLevelLabels: Record<string, string> = {
+   beginner: 'Iniciante',
+   intermediate: 'Intermediário',
+   advanced: 'Avançado',
+   expert: 'Especialista',
+};
+
+const courseExpiryLabels: Record<string, string> = {
+   lifetime: 'Vitalício',
+   limited_time: 'Tempo limitado',
+};
+
+const languageLabels: Record<string, string> = {
+   en: 'Inglês',
+   es: 'Espanhol',
+   pt: 'Português',
+};
+
 const CoursePreview = () => {
    const { course, system, translate } = usePage<CourseDetailsProps>().props;
    const { frontend } = translate;
-   const currency = systemCurrency(system.fields['selling_currency']);
+   const currency = system.fields['selling_currency'] || 'BRL';
    const courseLanguage = courseLanguages.find((language) => language.value === course.language);
+   const coursePrice = formatCurrency(course.price, currency);
+   const discountPrice = formatCurrency(course.discount_price, currency);
+   const languageLabel = languageLabels[course.language || ''] ?? courseLanguage?.label ?? 'Português';
 
    return (
       <div className="bg-card space-y-5 rounded-lg border p-5 shadow">
@@ -46,24 +67,19 @@ const CoursePreview = () => {
 
             <h2 className="text-4xl font-bold capitalize">
                {course.pricing_type === 'free' ? (
-                  course.pricing_type
+                  'Grátis'
                ) : course.discount ? (
                   <>
                      <span className="font-semibold">
-                        {currency?.symbol}
-                        {course.discount_price}
+                        {discountPrice}
                      </span>
                      <span className="text-muted-foreground ml-2 text-base font-medium line-through">
-                        {currency?.symbol}
-                        {course.price}
+                        {coursePrice}
                      </span>
                   </>
                ) : (
                   <>
-                     <span className="font-semibold">
-                        {currency?.symbol}
-                        {course.price}
-                     </span>
+                     <span className="font-semibold">{coursePrice}</span>
                   </>
                )}
             </h2>
@@ -85,7 +101,7 @@ const CoursePreview = () => {
                   <Languages className="h-5 w-5" />
                   {frontend.language}
                </span>
-               <span>{courseLanguage?.label}</span>
+               <span>{languageLabel}</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -101,7 +117,7 @@ const CoursePreview = () => {
                   <BarChart3 className="h-5 w-5" />
                   {frontend.level}
                </span>
-               <span className="capitalize">{course.level}</span>
+               <span>{courseLevelLabels[course.level] ?? course.level}</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -109,7 +125,7 @@ const CoursePreview = () => {
                   <Calendar className="h-5 w-5" />
                   {frontend.expiry_period}
                </span>
-               <span className="capitalize">{course.expiry_type}</span>
+               <span>{courseExpiryLabels[course.expiry_type || ''] ?? course.expiry_type}</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -117,7 +133,7 @@ const CoursePreview = () => {
                   <Mail className="h-5 w-5" />
                   {frontend.certificate_included}
                </span>
-               <span>Yes</span>
+               <span>Sim</span>
             </div>
          </div>
       </div>
