@@ -16,10 +16,10 @@ const Footer = () => {
       <div className="text-primary-foreground dark:text-primary bg-primary dark:bg-primary-dark relative pt-20">
          <div className="container space-y-9 pb-5">
             <div className="flex flex-col items-start justify-between gap-10 md:flex-row">
-               <div className="w-full space-y-5 md:max-w-[420px]">
+               <div className="w-full space-y-5 md:max-w-[520px]">
                   <div>
                      <Link href="/">
-                        <AppLogo className="!h-14 md:!h-16" theme="light" />
+                        <AppLogo className="!h-auto !w-[220px] sm:!w-[260px] md:!w-[320px] max-w-none" theme="light" />
                      </Link>
                   </div>
 
