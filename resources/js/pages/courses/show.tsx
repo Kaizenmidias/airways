@@ -207,6 +207,6 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    );
 };
 
-Show.layout = (page: ReactNode) => <LandingLayout children={page} customizable={false} />;
+Show.layout = (page: ReactNode) => <LandingLayout children={page} customizable={false} navbarHeight={false} />;
 
 export default Show;
