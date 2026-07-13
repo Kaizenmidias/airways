@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { Star } from 'lucide-react';
 import { CourseDetailsProps } from '../show';
 
-const CourseReviews = () => {
+const CourseReviews = ({ compact = false }: { compact?: boolean }) => {
    const { props } = usePage<CourseDetailsProps>();
    const { translate } = props;
    const { frontend } = translate;
@@ -16,8 +16,8 @@ const CourseReviews = () => {
       <>
          <StudentFeedback totalReviews={props.totalReviews} />
 
-         <div className="mt-6 border-t pt-6">
-            <h3 className="mb-6 text-xl font-semibold">{frontend.student_reviews}</h3>
+         <div className={compact ? 'mt-0' : 'mt-6 border-t pt-6'}>
+            {!compact && <h3 className="mb-6 text-xl font-semibold">{frontend.student_reviews}</h3>}
 
             <div className="space-y-6">
                {props.reviews.data.length > 0 ? (

@@ -6,7 +6,7 @@ import { SharedData } from '@/types/global';
 import { Link, usePage } from '@inertiajs/react';
 import { Book, Star, Users } from 'lucide-react';
 
-const Instructor = ({ course }: { course: Course }) => {
+const Instructor = ({ course, compact = false }: { course: Course; compact?: boolean }) => {
    const { props } = usePage<SharedData>();
    const { translate } = props;
    const { frontend } = translate;
@@ -16,8 +16,8 @@ const Instructor = ({ course }: { course: Course }) => {
 
    return (
       <div>
-         <h6 className="mb-4 text-xl font-semibold">{frontend.instructor}</h6>
-         <Separator className="my-4" />
+         {!compact && <h6 className="mb-4 text-xl font-semibold">{frontend.instructor}</h6>}
+         {!compact && <Separator className="my-4" />}
 
          <div className="flex items-center gap-4">
             <Link href={route('instructors.show', instructor.id)}>

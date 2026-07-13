@@ -1,6 +1,5 @@
-import Tabs from '@/components/tabs';
+import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LandingLayout from '@/layouts/landing-layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
@@ -24,44 +23,37 @@ export interface CourseDetailsProps extends SharedData {
    totalReviews: CourseTotalReview;
 }
 
+const SectionShell = ({
+   eyebrow,
+   title,
+   children,
+}: {
+   eyebrow: string;
+   title: string;
+   children: ReactNode;
+}) => {
+   return (
+      <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8">
+         <div className="space-y-4">
+            <div className="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.22em] text-[#FD122E] uppercase">
+               <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
+               <span>{eyebrow}</span>
+            </div>
+            <div className="space-y-3">
+               <h2 className="text-2xl font-black tracking-[-0.04em] text-slate-950 sm:text-3xl">{title}</h2>
+               <Separator className="h-[2px] w-16 bg-[#FD122E]" />
+            </div>
+         </div>
+
+         <div className="mt-6">{children}</div>
+      </Card>
+   );
+};
+
 const Show = ({ course, system, translate }: CourseDetailsProps & { translate: any }) => {
-   const { button, frontend } = translate;
+   const { frontend } = translate;
    const { props } = usePage<CourseDetailsProps>();
    const showInstructorTab = shouldShowCollaborativeUi(props.airways, system.sub_type);
-
-   const tabs = [
-      {
-         value: 'overview',
-         label: button.overview,
-         Component: <Overview course={course} />,
-      },
-      {
-         value: 'curriculum',
-         label: button.curriculum,
-         Component: <Curriculum course={course} />,
-      },
-      {
-         value: 'details',
-         label: button.details,
-         Component: <Details course={course} />,
-      },
-      {
-         value: 'instructor',
-         label: button.instructor,
-         Component: <Instructor course={course} />,
-      },
-      {
-         value: 'reviews',
-         label: button.reviews,
-         Component: <CourseReviews />,
-      },
-   ].filter((tab) => {
-         if (tab.value === 'instructor') {
-         return showInstructorTab;
-      }
-
-      return true;
-   });
 
    // Generate meta information for the course
    const pageTitle = course.meta_title || `${course.title} | ${system.fields?.name}`;
@@ -82,26 +74,22 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
             <meta name="keywords" content={pageKeywords} />
             <meta name="author" content={system.fields?.author || frontend.default_author} />
 
-            {/* Open Graph Tags */}
             <meta property="og:type" content="article" />
             <meta property="og:url" content={siteUrl} />
             <meta property="og:title" content={ogTitle} />
             <meta property="og:description" content={ogDescription} />
             <meta property="og:site_name" content={siteName} />
 
-            {/* Open Graph Image */}
             <meta property="og:image" content={courseImage} />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="630" />
             <meta property="og:image:alt" content={course.title} />
 
-            {/* Twitter Card Tags */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:title" content={ogTitle} />
             <meta name="twitter:description" content={ogDescription} />
             {courseImage && <meta name="twitter:image" content={courseImage} />}
 
-            {/* Course-specific meta */}
             <meta name="course:title" content={course.title} />
             <meta name="course:level" content={course.level} />
             <meta name="course:language" content={course.language} />
@@ -109,7 +97,6 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
             <meta name="course:pricing_type" content={course.pricing_type} />
             {course.instructor && <meta name="course:instructor" content={course.instructor.user?.name || ''} />}
 
-            {/* Schema.org structured data */}
             <script type="application/ld+json">
                {JSON.stringify({
                   '@context': 'https://schema.org',
@@ -175,31 +162,35 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
          </section>
 
          <div className="container grid grid-cols-1 gap-7 py-10 md:grid-cols-[minmax(0,1fr)_360px] lg:grid-cols-[minmax(0,1fr)_420px]">
-            <div className="space-y-8">
-               <CourseHeader course={course} />
+            <div className="space-y-7">
+               <SectionShell eyebrow="Informações do curso" title="Visão geral">
+                  <CourseHeader course={course} />
+               </SectionShell>
 
-               <Tabs defaultValue="overview" className="bg-card overflow-hidden rounded-md border shadow">
-                  <div className="overflow-x-auto overflow-y-hidden">
-                     <TabsList className="vertical-tabs-list">
-                        {tabs.map(({ label, value }) => (
-                           <TabsTrigger key={value} value={value} className="vertical-tabs-trigger">
-                              <span>{label}</span>
-                           </TabsTrigger>
-                        ))}
-                     </TabsList>
-                  </div>
+               <SectionShell eyebrow="Conteúdo do curso" title="O que você vai encontrar">
+                  <Overview course={course} />
+               </SectionShell>
 
-                  <Separator className="mt-[1px]" />
+               <SectionShell eyebrow="Programa" title="Estrutura e módulos">
+                  <Curriculum course={course} compact />
+               </SectionShell>
 
-                  {tabs.map(({ value, Component }) => (
-                     <TabsContent key={value} value={value} className="m-0 p-5">
-                        {Component}
-                     </TabsContent>
-                  ))}
-               </Tabs>
+               <SectionShell eyebrow="Aprendizado" title="O que você vai aprender">
+                  <Details course={course} compact />
+               </SectionShell>
+
+               {showInstructorTab && (
+                  <SectionShell eyebrow="Professor do curso" title="Quem vai te acompanhar">
+                     <Instructor course={course} compact />
+                  </SectionShell>
+               )}
+
+               <SectionShell eyebrow="Avaliações" title="O que os alunos estão dizendo">
+                  <CourseReviews compact />
+               </SectionShell>
             </div>
 
-            <div className="relative z-20 md:-mt-24 lg:-mt-40 md:col-span-1">
+            <div className="relative z-20 md:-mt-24 lg:-mt-40">
                <CoursePreview />
             </div>
          </div>

@@ -3,16 +3,15 @@ import { SharedData } from '@/types/global';
 import { usePage } from '@inertiajs/react';
 import { Check } from 'lucide-react';
 
-const Details = ({ course }: { course: Course }) => {
+const Details = ({ course, compact = false }: { course: Course; compact?: boolean }) => {
    const { props } = usePage<SharedData>();
    const { translate } = props;
    const { frontend } = translate;
    return (
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
          <div>
-            <h6 className="mb-4 text-xl font-semibold">{frontend.requirements}</h6>
-
-            <Separator className="my-4" />
+            {!compact && <h6 className="mb-4 text-xl font-semibold">{frontend.requirements}</h6>}
+            {!compact && <Separator className="my-4" />}
 
             <div className="space-y-4">
                {course.requirements?.map(({ id, requirement }) => (
@@ -27,9 +26,8 @@ const Details = ({ course }: { course: Course }) => {
          </div>
 
          <div>
-            <h6 className="mb-4 text-xl font-semibold">{frontend.outcomes}</h6>
-
-            <Separator className="my-4" />
+            {!compact && <h6 className="mb-4 text-xl font-semibold">{frontend.outcomes}</h6>}
+            {!compact && <Separator className="my-4" />}
 
             <div className="space-y-4">
                {course.outcomes?.map(({ id, outcome }) => (

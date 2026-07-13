@@ -1,10 +1,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Separator } from '@/components/ui/separator';
 import { SharedData } from '@/types/global';
 import { usePage } from '@inertiajs/react';
 import { File, FileQuestion, FileText, Image, Video } from 'lucide-react';
 
-const Curriculum = ({ course }: { course: Course }) => {
+const Curriculum = ({ course, compact = false }: { course: Course; compact?: boolean }) => {
    const { props } = usePage<SharedData>();
    const { translate } = props;
    const { frontend } = translate;
@@ -12,16 +11,7 @@ const Curriculum = ({ course }: { course: Course }) => {
 
    return (
       <>
-         <h6 className="mb-4 text-xl font-semibold">{frontend.course_curriculum}</h6>
-
-         <Separator className="my-6" />
-
-         <Accordion
-            type="single"
-            collapsible
-            className="space-y-4"
-            defaultValue={course.sections.length > 0 ? (course.sections[0].id as string) : ''}
-         >
+         <Accordion type="single" collapsible className={compact ? 'space-y-4' : 'space-y-4'} defaultValue={course.sections.length > 0 ? (course.sections[0].id as string) : ''}>
             {course.sections.map((section, index) => (
                <AccordionItem key={section.id} value={section.id as string} className="overflow-hidden rounded-lg border">
                   <AccordionTrigger className="[&[data-state=open]]:!bg-muted px-4 py-3 text-base hover:no-underline">
