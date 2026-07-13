@@ -154,7 +154,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_22%),radial-gradient(circle_at_80%_30%,rgba(37,99,235,0.18),transparent_26%),linear-gradient(180deg,#02070f_0%,#04101f_55%,#02070f_100%)]" />
                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/92 via-slate-950/80 to-slate-950/92" />
 
-               <div className="container relative mx-auto max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
+               <div className="container relative mx-auto max-w-[1600px] px-6 pt-28 pb-16 sm:px-10 sm:pt-32 sm:pb-[4.5rem] lg:px-14 lg:pt-36 lg:pb-16">
                   <div className="max-w-4xl space-y-7">
                      <div className="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">
                         <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
