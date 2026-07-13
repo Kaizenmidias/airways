@@ -23,7 +23,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const [maxPrice, setMaxPrice] = useState(urlParams['max_price'] || '');
    const [level, setLevel] = useState(urlParams['level'] || 'all');
    const heroSection = getPageSection(page, 'category_courses');
-   const editableHeroSection = getPageSection(page, 'hero') || heroSection;
+   const editableHeroSection = heroSection || getPageSection(page, 'hero');
 
    const heroTitle =
       editableHeroSection?.title && editableHeroSection.title !== 'Everything you need to know in one place'
@@ -44,7 +44,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       return new Intl.NumberFormat('pt-BR', {
          style: 'currency',
          currency: 'BRL',
-      }).format(Number(digits) / 100);
+      }).format(Number(digits));
    };
 
    const levelLabel = (value: string) => {
@@ -107,9 +107,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
                contentClass="relative"
                editorButtonClassName="top-4 right-4 bg-emerald-600 text-white hover:bg-emerald-700"
             >
-               <div className="mx-auto max-w-4xl text-center">
+               <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
                   <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Catálogo Airways</p>
-                  <h1 className="mt-4 text-4xl leading-tight font-black text-white sm:text-5xl lg:text-[4.1rem] lg:whitespace-nowrap xl:text-[4.7rem]">
+                  <h1 className="mt-4 text-4xl leading-tight font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.9rem] lg:whitespace-nowrap xl:text-[4.4rem]">
                      {heroTitle}
                   </h1>
                   <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroDescription}</p>
@@ -119,8 +119,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   onSubmit={searchHandler}
                   className="mx-auto mt-10 max-w-6xl rounded-[28px] border border-white/15 bg-white/[0.06] p-5 shadow-[0_30px_90px_rgba(0,0,0,0.28)] backdrop-blur-md lg:p-7"
                >
-                  <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-end">
-                     <label className="flex flex-col gap-2 self-end">
+                  <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-start">
+                     <label className="flex flex-col gap-2">
                         <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Buscar curso</span>
                         <Input
                            value={search}

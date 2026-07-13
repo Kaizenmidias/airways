@@ -134,12 +134,18 @@ class CourseService extends MediaService
          ->when(array_key_exists('min_price', $data) && $data['min_price'] !== null && $data['min_price'] !== '', function ($query) use ($data) {
             $minPrice = str_replace(',', '.', preg_replace('/[^\d,.]/', '', (string) $data['min_price']));
 
-            return $query->where('price', '>=', floatval($minPrice));
+            return $query->whereRaw(
+               '(CASE WHEN discount = 1 AND discount_price IS NOT NULL THEN discount_price ELSE price END) >= ?',
+               [floatval($minPrice)],
+            );
          })
          ->when(array_key_exists('max_price', $data) && $data['max_price'] !== null && $data['max_price'] !== '', function ($query) use ($data) {
             $maxPrice = str_replace(',', '.', preg_replace('/[^\d,.]/', '', (string) $data['max_price']));
 
-            return $query->where('price', '<=', floatval($maxPrice));
+            return $query->whereRaw(
+               '(CASE WHEN discount = 1 AND discount_price IS NOT NULL THEN discount_price ELSE price END) <= ?',
+               [floatval($maxPrice)],
+            );
          })
          ->when(array_key_exists('language', $data) && $data['language'] !== 'all', function ($query) use ($data) {
             return $query->where('language', $data['language']);
