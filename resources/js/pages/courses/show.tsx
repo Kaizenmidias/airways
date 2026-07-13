@@ -72,6 +72,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    const courseImage = course.thumbnail || '';
    const siteName = system.fields?.name;
    const siteUrl = window.location.href;
+   const heroDescription = course.short_description || course.description || pageDescription;
 
    return (
       <>
@@ -147,6 +148,41 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                })}
             </script>
          </Head>
+
+         <section className="overflow-hidden bg-slate-950 text-white">
+            <div className="relative isolate overflow-hidden">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_22%),radial-gradient(circle_at_80%_30%,rgba(37,99,235,0.18),transparent_26%),linear-gradient(180deg,#02070f_0%,#04101f_55%,#02070f_100%)]" />
+               <div className="absolute inset-0 bg-gradient-to-r from-slate-950/92 via-slate-950/80 to-slate-950/92" />
+
+               <div className="container relative mx-auto grid max-w-[1600px] gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16 lg:px-14 lg:py-28">
+                  <div className="relative z-10 space-y-7">
+                     <div className="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">
+                        <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
+                        <span>Detalhes do curso</span>
+                     </div>
+
+                     <div className="space-y-4">
+                        <h1 className="max-w-3xl text-4xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.5rem]">
+                           {course.title}
+                        </h1>
+                        <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
+                     </div>
+
+                     <p className="max-w-2xl text-base leading-8 text-slate-100 sm:text-lg">{heroDescription}</p>
+                  </div>
+
+                  <div className="relative z-10 mx-auto w-full max-w-[420px]">
+                     <div className="rounded-[34px] border border-white/10 bg-white/[0.04] p-2 shadow-[0_30px_100px_rgba(0,0,0,0.45)] backdrop-blur-md">
+                        <img
+                           className="h-[320px] w-full rounded-[28px] object-cover object-center sm:h-[420px] lg:h-[520px]"
+                           src={course.thumbnail ?? '/assets/images/blank-image.jpg'}
+                           alt={course.title}
+                        />
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
 
          <div className="container grid grid-cols-1 gap-7 py-10 md:grid-cols-3">
             <div className="space-y-8 md:col-span-2">

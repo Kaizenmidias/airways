@@ -10,15 +10,11 @@ const CourseHeader = ({ course }: { course: Course }) => {
    const { props } = usePage<SharedData>();
    const { translate } = props;
    const { frontend } = translate;
-   const { title, short_description, instructor, average_rating } = course;
+   const { instructor, average_rating } = course;
    const courseLanguage = courseLanguages.find((language) => language.value === course.language);
 
    return (
       <div className="space-y-7">
-         <h1 className="text-3xl font-semibold md:text-4xl">{title}</h1>
-
-         <p>{short_description}</p>
-
          <div className="grid grid-cols-2 gap-y-4 lg:grid-cols-3">
             {/* Instructor Info */}
             <Link href={route('instructors.show', instructor.id)}>
