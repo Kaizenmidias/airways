@@ -59,6 +59,9 @@ Route::prefix('dashboard')->group(function () {
 
     // contact messages
     Route::get('contact-messages', [ContactMessageController::class, 'index'])->name('contact-messages.index');
+    Route::post('contact-messages/{contactMessage}/reply', [ContactMessageController::class, 'sendReply'])
+        ->name('contact-messages.reply')
+        ->middleware('smtpConfig', 'checkSmtp');
 
     // payout
     Route::middleware('checkCourseCreation')->prefix('payouts')->group(function () {

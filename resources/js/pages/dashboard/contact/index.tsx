@@ -1,17 +1,22 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
+import LoadingButton from '@/components/loading-button';
 import TableFooter from '@/components/table/table-footer';
 import TableHeader from '@/components/table/table-header';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { SharedData } from '@/types/global';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Mail, MessageCircle, MessageSquareText, Phone, User, Clock3, ShieldCheck, Copy, ExternalLink } from 'lucide-react';
-import { ReactNode, useMemo, useState } from 'react';
+import { Clock3, Copy, Mail, MessageCircle, MessageSquareText, Phone, ShieldCheck, User } from 'lucide-react';
+import { FormEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 import ContactMessagesTableColumns from './partials/contact-messages-table-columns';
 
 interface ContactMessagesProps extends SharedData {
@@ -21,6 +26,10 @@ interface ContactMessagesProps extends SharedData {
 const ContactMessages = ({ messages }: ContactMessagesProps) => {
    const columns = useMemo(() => ContactMessagesTableColumns(), []);
    const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+   const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
+      reply_subject: '',
+      reply_body: '',
+   });
 
    const table = useReactTable({
       data: messages.data || [],
@@ -32,7 +41,10 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
 
    const openWhatsappUrl = (phone?: string | null, message?: string | null, name?: string | null) => {
       const digits = formatPhoneDigits(phone);
-      if (!digits) return '#';
+
+      if (!digits) {
+         return '#';
+      }
 
       const normalized = digits.startsWith('55') ? digits : `55${digits}`;
       const text = encodeURIComponent(
@@ -42,15 +54,34 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
       return `https://wa.me/${normalized}?text=${text}`;
    };
 
-   const openMailtoUrl = (email?: string | null, message?: string | null, name?: string | null) => {
-      if (!email) return '#';
+   useEffect(() => {
+      if (!selectedMessage) {
+         reset();
+         clearErrors();
+         return;
+      }
 
-      const subject = encodeURIComponent(`Resposta à sua mensagem, ${name || 'Airways'}`);
-      const body = encodeURIComponent(
-         `Olá, ${name || ''}\n\nRecebemos sua mensagem pelo formulário do site da Airways.\n\nMensagem recebida:\n${message || ''}\n\nAtenciosamente,\nEquipe Airways`,
-      );
+      setData({
+         reply_subject: `Resposta à sua mensagem, ${selectedMessage.name}`,
+         reply_body: `Olá, ${selectedMessage.name}.\n\nObrigado pelo seu contato. Recebemos sua mensagem e retornaremos com as próximas orientações.\n\nAtenciosamente,\nEquipe Airways`,
+      });
+      clearErrors();
+   }, [clearErrors, reset, selectedMessage, setData]);
 
-      return `mailto:${email}?subject=${subject}&body=${body}`;
+   const handleEmailReplySubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!selectedMessage) {
+         return;
+      }
+
+      post(route('contact-messages.reply', { contactMessage: selectedMessage.id }), {
+         preserveScroll: true,
+         onSuccess: () => {
+            reset();
+            clearErrors();
+         },
+      });
    };
 
    return (
@@ -104,9 +135,7 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                   <>
                      <DialogHeader className="space-y-2 text-left">
                         <DialogTitle className="text-2xl">Mensagem de {selectedMessage.name}</DialogTitle>
-                        <DialogDescription>
-                           Detalhes completos do lead, com atalhos para responder por WhatsApp ou e-mail.
-                        </DialogDescription>
+                        <DialogDescription>Detalhes completos do lead, com atalhos para responder por WhatsApp ou e-mail.</DialogDescription>
                      </DialogHeader>
 
                      <Tabs defaultValue="details" className="w-full">
@@ -176,9 +205,7 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                            <div className="rounded-2xl border bg-green-50 p-5">
                               <p className="text-sm font-medium text-green-900">Telefone informado pelo lead</p>
                               <p className="mt-1 text-lg font-semibold text-green-950">{selectedMessage.phone || 'Sem telefone informado'}</p>
-                              <p className="mt-2 text-sm text-green-800">
-                                 O botão abaixo abre uma conversa no WhatsApp com a mensagem preenchida automaticamente.
-                              </p>
+                              <p className="mt-2 text-sm text-green-800">O botão abaixo abre uma conversa no WhatsApp com a mensagem preenchida automaticamente.</p>
                            </div>
 
                            <div className="flex flex-wrap gap-3">
@@ -205,33 +232,45 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                            <div className="rounded-2xl border bg-slate-50 p-5">
                               <p className="text-sm font-medium text-slate-900">E-mail do lead</p>
                               <p className="mt-1 text-lg font-semibold text-slate-950">{selectedMessage.email}</p>
-                              <p className="mt-2 text-sm text-slate-600">
-                                 O botão abaixo abre o seu cliente de e-mail com destinatário e texto pré-preenchidos.
-                              </p>
+                              <p className="mt-2 text-sm text-slate-600">A mensagem abaixo será enviada diretamente pelo sistema usando o SMTP configurado.</p>
                            </div>
 
-                           <div className="flex flex-wrap gap-3">
-                              <Button asChild disabled={!selectedMessage.email} className="bg-[#FD122E] text-white hover:bg-[#d90f26]">
-                                 <a href={openMailtoUrl(selectedMessage.email, selectedMessage.message, selectedMessage.name)}>
+                           <form onSubmit={handleEmailReplySubmit} className="space-y-4 rounded-2xl border bg-white p-5">
+                              <div className="space-y-2">
+                                 <Label htmlFor="reply_subject">Assunto</Label>
+                                 <Input
+                                    id="reply_subject"
+                                    value={data.reply_subject}
+                                    onChange={(e) => setData('reply_subject', e.target.value)}
+                                    placeholder="Assunto do e-mail"
+                                 />
+                                 <InputError message={errors.reply_subject} />
+                              </div>
+
+                              <div className="space-y-2">
+                                 <Label htmlFor="reply_body">Mensagem</Label>
+                                 <Textarea
+                                    id="reply_body"
+                                    rows={8}
+                                    value={data.reply_body}
+                                    onChange={(e) => setData('reply_body', e.target.value)}
+                                    placeholder="Escreva a resposta ao lead"
+                                 />
+                                 <InputError message={errors.reply_body} />
+                              </div>
+
+                              <div className="flex flex-wrap gap-3">
+                                 <LoadingButton type="submit" loading={processing} className="bg-[#FD122E] text-white hover:bg-[#d90f26]">
                                     <Mail className="h-4 w-4" />
-                                    Responder no e-mail
-                                 </a>
-                              </Button>
+                                    Enviar e-mail
+                                 </LoadingButton>
 
-                              <Button
-                                 type="button"
-                                 variant="outline"
-                                 onClick={() => navigator.clipboard?.writeText(selectedMessage.email || '')}
-                                 disabled={!selectedMessage.email}
-                              >
-                                 <Copy className="h-4 w-4" />
-                                 Copiar e-mail
-                              </Button>
-                           </div>
-
-                           <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-4 text-sm text-slate-600">
-                              Se preferirmos, depois podemos evoluir esta aba para um envio direto pelo sistema via SMTP.
-                           </div>
+                                 <Button type="button" variant="outline" onClick={() => navigator.clipboard?.writeText(selectedMessage.email || '')} disabled={!selectedMessage.email}>
+                                    <Copy className="h-4 w-4" />
+                                    Copiar e-mail do lead
+                                 </Button>
+                              </div>
+                           </form>
                         </TabsContent>
                      </Tabs>
                   </>
