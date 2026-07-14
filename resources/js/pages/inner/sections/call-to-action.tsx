@@ -19,8 +19,6 @@ const CallToAction = () => {
             <h1 className="text-2xl leading-tight font-bold md:text-3xl md:leading-9">{ctaSection?.sub_title}</h1>
 
             <div className="mx-auto w-full max-w-[420px] text-center">
-               <p className="mb-8">{ctaSection?.description}</p>
-
                <SubscribeInput />
             </div>
          </Section>
