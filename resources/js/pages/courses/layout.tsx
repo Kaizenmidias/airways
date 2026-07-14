@@ -102,9 +102,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
                contentClass="relative"
                editorButtonClassName="top-4 right-4 bg-emerald-600 text-white hover:bg-emerald-700"
             >
-               <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+               <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
                   <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Catálogo Airways</p>
-                  <h1 className="mx-auto mt-4 max-w-4xl text-4xl leading-[1.05] font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.9rem] xl:text-[4.4rem]">
+                  <h1 className="mx-auto mt-4 max-w-5xl text-4xl leading-[0.95] font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.7rem] xl:whitespace-nowrap xl:text-[4rem]">
                      {heroTitle}
                   </h1>
                   <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroDescription}</p>
@@ -114,7 +114,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   onSubmit={searchHandler}
                   className="mx-auto mt-10 max-w-6xl rounded-[28px] border border-white/15 bg-white/[0.06] p-5 shadow-[0_30px_90px_rgba(0,0,0,0.28)] backdrop-blur-md lg:p-7"
                >
-                  <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-start">
+                  <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-end">
                      <label className="flex flex-col gap-2">
                         <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Buscar curso</span>
                         <Input
@@ -190,7 +190,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                         </Select>
                      </label>
 
-                     <div className="flex items-end">
+                     <div className="flex lg:h-full lg:items-end">
                         <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FD122E] px-7 font-semibold text-white shadow-none hover:bg-[#d90f26] lg:w-auto">
                            <Search className="h-5 w-5" />
                            Pesquisar
