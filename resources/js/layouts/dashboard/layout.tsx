@@ -8,10 +8,11 @@ import DashboardSidebar from './sidebar';
 
 interface Props {
    headTitle?: string;
+   breadcrumbs?: BreadcrumbItem[];
 }
 
 const DashboardLayout = (props: PropsWithChildren<Props>) => {
-   const { children, headTitle } = props;
+   const { children, headTitle, breadcrumbs = [] } = props;
 
    return (
       <Main>
@@ -21,7 +22,7 @@ const DashboardLayout = (props: PropsWithChildren<Props>) => {
             <AppContent variant="sidebar">
                {headTitle && <Head title={headTitle} />}
 
-               <DashboardHeader />
+               <DashboardHeader breadcrumbs={breadcrumbs} />
 
                <div className="container py-6">{children}</div>
             </AppContent>
