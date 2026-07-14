@@ -275,7 +275,7 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
             path: route('contact-messages.index'),
             slug: routeLastSegment(route('contact-messages.index')),
             active: true,
-            access: ['admin'],
+            access: ['admin', 'instructor', 'collaborative', 'administrative'],
             children: [],
          },
          {
