@@ -130,53 +130,61 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
          </Card>
 
          <Dialog open={Boolean(selectedMessage)} onOpenChange={(open) => !open && setSelectedMessage(null)}>
-            <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+            <DialogContent className="max-h-[90vh] w-[min(96vw,72rem)] !max-w-[72rem] overflow-y-auto p-8">
                {selectedMessage && (
                   <>
                      <DialogHeader className="space-y-2 text-left">
-                        <DialogTitle className="text-2xl">Mensagem de {selectedMessage.name}</DialogTitle>
-                        <DialogDescription>Detalhes completos do lead, com atalhos para responder por WhatsApp ou e-mail.</DialogDescription>
+                        <DialogTitle className="text-3xl">Mensagem de {selectedMessage.name}</DialogTitle>
+                        <DialogDescription className="max-w-3xl text-base leading-6">
+                           Detalhes completos do lead, com atalhos para responder por WhatsApp ou e-mail.
+                        </DialogDescription>
                      </DialogHeader>
 
                      <Tabs defaultValue="details" className="w-full">
-                        <TabsList className="grid h-auto w-full grid-cols-3">
-                           <TabsTrigger value="details">Detalhes</TabsTrigger>
-                           <TabsTrigger value="whatsapp">Responder no WhatsApp</TabsTrigger>
-                           <TabsTrigger value="email">Responder no e-mail</TabsTrigger>
+                        <TabsList className="grid h-auto w-full grid-cols-1 gap-1 rounded-2xl bg-slate-100 p-1 sm:grid-cols-3">
+                           <TabsTrigger value="details" className="h-auto whitespace-normal py-3 text-center leading-tight">
+                              Detalhes
+                           </TabsTrigger>
+                           <TabsTrigger value="whatsapp" className="h-auto whitespace-normal py-3 text-center leading-tight">
+                              Responder no WhatsApp
+                           </TabsTrigger>
+                           <TabsTrigger value="email" className="h-auto whitespace-normal py-3 text-center leading-tight">
+                              Responder no e-mail
+                           </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="details" className="mt-6 space-y-5">
-                           <div className="grid gap-4 md:grid-cols-2">
-                              <div className="rounded-2xl border bg-slate-50 p-4">
+                           <div className="grid gap-5 md:grid-cols-2">
+                              <div className="min-h-[108px] rounded-3xl border bg-slate-50 p-5 shadow-sm">
                                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                     <User className="h-4 w-4" />
                                     Nome
                                  </div>
-                                 <p className="mt-2 text-base font-medium text-slate-950">{selectedMessage.name}</p>
+                                 <p className="mt-3 text-lg font-semibold text-slate-950">{selectedMessage.name}</p>
                               </div>
 
-                              <div className="rounded-2xl border bg-slate-50 p-4">
+                              <div className="min-h-[108px] rounded-3xl border bg-slate-50 p-5 shadow-sm">
                                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                     <Mail className="h-4 w-4" />
                                     E-mail
                                  </div>
-                                 <p className="mt-2 break-all text-base font-medium text-slate-950">{selectedMessage.email}</p>
+                                 <p className="mt-3 break-all text-lg font-semibold text-slate-950">{selectedMessage.email}</p>
                               </div>
 
-                              <div className="rounded-2xl border bg-slate-50 p-4">
+                              <div className="min-h-[108px] rounded-3xl border bg-slate-50 p-5 shadow-sm">
                                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                     <Phone className="h-4 w-4" />
                                     Telefone
                                  </div>
-                                 <p className="mt-2 text-base font-medium text-slate-950">{selectedMessage.phone || '--'}</p>
+                                 <p className="mt-3 text-lg font-semibold text-slate-950">{selectedMessage.phone || '--'}</p>
                               </div>
 
-                              <div className="rounded-2xl border bg-slate-50 p-4">
+                              <div className="min-h-[108px] rounded-3xl border bg-slate-50 p-5 shadow-sm">
                                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                     <Clock3 className="h-4 w-4" />
                                     Recebido em
                                  </div>
-                                 <p className="mt-2 text-base font-medium text-slate-950">
+                                 <p className="mt-3 text-lg font-semibold text-slate-950">
                                     {new Date(selectedMessage.created_at).toLocaleString('pt-BR', {
                                        dateStyle: 'short',
                                        timeStyle: 'short',
@@ -185,12 +193,12 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                               </div>
                            </div>
 
-                           <div className="rounded-2xl border bg-white p-4">
+                           <div className="rounded-3xl border bg-white p-6 shadow-sm">
                               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                  <MessageSquareText className="h-4 w-4" />
                                  Mensagem
                               </div>
-                              <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">{selectedMessage.message}</p>
+                              <p className="mt-4 whitespace-pre-wrap text-base leading-7 text-slate-700">{selectedMessage.message}</p>
                            </div>
 
                            <div className="flex flex-wrap gap-2">
@@ -202,10 +210,12 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                         </TabsContent>
 
                         <TabsContent value="whatsapp" className="mt-6 space-y-4">
-                           <div className="rounded-2xl border bg-green-50 p-5">
+                           <div className="rounded-3xl border bg-green-50 p-6 shadow-sm">
                               <p className="text-sm font-medium text-green-900">Telefone informado pelo lead</p>
-                              <p className="mt-1 text-lg font-semibold text-green-950">{selectedMessage.phone || 'Sem telefone informado'}</p>
-                              <p className="mt-2 text-sm text-green-800">O botão abaixo abre uma conversa no WhatsApp com a mensagem preenchida automaticamente.</p>
+                              <p className="mt-2 text-xl font-semibold text-green-950">{selectedMessage.phone || 'Sem telefone informado'}</p>
+                              <p className="mt-3 max-w-2xl text-sm leading-6 text-green-800">
+                                 O botão abaixo abre uma conversa no WhatsApp com a mensagem preenchida automaticamente.
+                              </p>
                            </div>
 
                            <div className="flex flex-wrap gap-3">
@@ -229,13 +239,15 @@ const ContactMessages = ({ messages }: ContactMessagesProps) => {
                         </TabsContent>
 
                         <TabsContent value="email" className="mt-6 space-y-4">
-                           <div className="rounded-2xl border bg-slate-50 p-5">
+                           <div className="rounded-3xl border bg-slate-50 p-6 shadow-sm">
                               <p className="text-sm font-medium text-slate-900">E-mail do lead</p>
-                              <p className="mt-1 text-lg font-semibold text-slate-950">{selectedMessage.email}</p>
-                              <p className="mt-2 text-sm text-slate-600">A mensagem abaixo será enviada diretamente pelo sistema usando o SMTP configurado.</p>
+                              <p className="mt-2 text-xl font-semibold text-slate-950">{selectedMessage.email}</p>
+                              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                                 A mensagem abaixo será enviada diretamente pelo sistema usando o SMTP configurado.
+                              </p>
                            </div>
 
-                           <form onSubmit={handleEmailReplySubmit} className="space-y-4 rounded-2xl border bg-white p-5">
+                           <form onSubmit={handleEmailReplySubmit} className="space-y-5 rounded-3xl border bg-white p-6 shadow-sm">
                               <div className="space-y-2">
                                  <Label htmlFor="reply_subject">Assunto</Label>
                                  <Input
