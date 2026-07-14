@@ -31,7 +31,7 @@ const Index = ({ innerPage, jobCirculars }: InnerPageProps) => {
             <ContactUs />
          ) : (
             <div className="container">
-               {innerPage.description && (
+               {innerPage.slug !== 'about-us' && innerPage.description && (
                   <div className="bg-muted mx-auto my-20 max-w-3xl rounded-2xl px-6 py-10 md:px-20">
                      <TiptapRenderer>{innerPage.description}</TiptapRenderer>
                   </div>
