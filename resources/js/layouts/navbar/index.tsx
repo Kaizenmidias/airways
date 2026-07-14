@@ -286,7 +286,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            if (item.slug === 'cart') {
                               return (
                                  <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-white/10 px-4 py-3">
-                                    <span className="text-sm font-medium text-white/90">{translate.button.cart || 'Cart'}</span>
+                                    <span className="text-sm font-medium text-white/90">{translate.button.cart || 'Carrinho'}</span>
                                     <CourseCart />
                                  </div>
                               );
