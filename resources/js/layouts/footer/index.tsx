@@ -69,9 +69,9 @@ const Footer = () => {
          )}
 
          <div className="border-b border-white/10">
-            <PublicContainer className="grid gap-10 py-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+            <PublicContainer className="grid gap-10 py-14 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
                <div className="space-y-6">
-                  <Link href="/" className="inline-flex w-full max-w-[240px] items-center sm:max-w-[280px] lg:max-w-[340px]">
+                  <Link href="/" className="inline-flex w-full max-w-[210px] items-center sm:max-w-[240px] lg:max-w-[280px]">
                      <AppLogo theme="light" className="!h-auto !w-full max-w-none" />
                   </Link>
 
@@ -119,7 +119,7 @@ const Footer = () => {
                <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
                   {listItems.map((section) => (
                      <div key={section.id} className="space-y-4">
-                        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-300">{section.title}</p>
+                        <p className="text-sm font-semibold tracking-[0.08em] text-slate-100 uppercase">{section.title}</p>
                         <ul className="space-y-3 text-sm text-slate-300">
                            {section.items?.map((item, index) => {
                               const href = item?.url || '';
@@ -150,7 +150,7 @@ const Footer = () => {
          {paymentMethodsItem?.items?.length ? (
             <div className="border-b border-white/10">
                <PublicContainer className="py-7">
-                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-300">{paymentMethodsItem.title}</p>
+                  <p className="text-sm font-semibold tracking-[0.08em] text-slate-100 uppercase">{paymentMethodsItem.title}</p>
                   <div className="mt-4 flex flex-wrap gap-3">
                      {paymentMethodsItem.items.map((paymentItem, idx) => (
                         <div key={`${paymentItem.image || 'payment'}-${idx}`} className="flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4">
