@@ -54,7 +54,7 @@ const ShowBlog = ({ blog }: BlogShowProps) => {
    const readingTime = blog.reading_time || '';
 
    return (
-      <LandingLayout customizable={false}>
+      <LandingLayout customizable={false} navbarHeight={false}>
          <Head>
             <title>{pageTitle}</title>
             {pageDescription && <meta name="description" content={pageDescription} />}
