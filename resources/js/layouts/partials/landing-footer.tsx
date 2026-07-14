@@ -29,7 +29,7 @@ const LandingFooter = () => {
    };
 
    return (
-      <div className="text-primary-foreground dark:text-primary relative bg-gray-900 pt-20 pb-10 dark:bg-gray-800">
+      <div className="text-primary-foreground dark:text-primary relative bg-gray-900 pt-16 pb-8 dark:bg-gray-800 md:pt-20 md:pb-10">
          {customize && page && (
             <div className="absolute top-6 right-6 z-20">
                <DataSortModal
@@ -64,10 +64,10 @@ const LandingFooter = () => {
          )}
 
          <div className="container">
-            <div className="mb-11 flex flex-col items-start justify-between gap-10 md:flex-row">
-               <div className="w-full md:max-w-[300px]">
+            <div className="mb-11 flex flex-col items-start justify-between gap-10 md:flex-row md:gap-12">
+               <div className="w-full md:max-w-[280px]">
                   <Link href="/">
-                     <AppLogo theme="light" />
+                     <AppLogo theme="light" className="h-5 w-auto md:h-6" />
                   </Link>
 
                   <p className="mt-5 text-sm">{system.fields.description}</p>
@@ -78,7 +78,7 @@ const LandingFooter = () => {
                      (section) =>
                         section.active && (
                            <div className={cn('relative w-full', customize && 'section-edit')}>
-                              <p className="mb-3 text-lg font-semibold">{section?.title}</p>
+                              <p className="mb-3 text-base font-semibold tracking-[-0.03em] text-white">{section?.title}</p>
                               <ul className="flex flex-col gap-2 text-sm">
                                  {section?.properties.array.map((item, itemIndex) =>
                                     section.slug === 'footer_list_3' ? (
