@@ -27,7 +27,7 @@ class UpdateCustomPageRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'meta_description' => 'nullable|string|max:1000',
-            'meta_keywords' => 'nullable|string|max:255',
+            'meta_keywords' => 'nullable|string|max:2000',
             'active' => 'boolean',
         ];
     }

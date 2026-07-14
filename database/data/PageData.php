@@ -149,14 +149,14 @@ class PageData
          ],
          // Contact Us page
          [
-            'name' => 'Address',
+            'name' => 'Contact Us',
             'slug' => 'contact-us',
             'type' => 'inner_page',
             'title' => 'Contact Us - Get in Touch with Mentor',
             'description' => InnerSections::getContactUsDescription(),
             'meta_description' => 'Contact Mentor for support, partnerships, careers, or general inquiries. Find all our contact information and office details.',
             'meta_keywords' => 'contact us, support, help, contact information, customer service, partnerships, feedback',
-            'sections' => []
+            'sections' => InnerSections::getContactUsSections()
          ],
          // Cookie Policy page
          [

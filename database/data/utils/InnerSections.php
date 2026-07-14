@@ -190,9 +190,36 @@ class InnerSections
    /**
     * Get Contact Us sections data
     */
+   public static function getContactUsSections(): array
+   {
+      $sections = [
+         [
+            'name' => 'Contact Content',
+            'slug' => 'contact_content',
+            'title' => 'Fale com a Airways',
+            'description' => 'Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.',
+            'flags' => [
+               'title' => true,
+               'description' => true,
+            ],
+            'properties' => [],
+         ],
+      ];
+
+      foreach ($sections as $key => &$section) {
+         $section['active'] = true;
+         $section['sort'] = $key + 1;
+      }
+
+      return $sections;
+   }
+
+   /**
+    * Get Contact Us description
+    */
    public static function getContactUsDescription(): string
    {
-      return '<h1 style="text-align: center;"><strong>Contact Us</strong></h1><p style="text-align: center;">We\'re here to help! Whether you have questions about our courses, need technical support, or want to provide feedback, we\'d love to hear from you. Here are the best ways to get in touch with our team.</p><h2><strong>General Inquiries</strong></h2><p>For general questions about Mentor, our courses, or our platform, please email us at:</p><p><strong>Email: info@example.com</strong></p><h2><strong>Technical Support</strong></h2><p>If you\'re experiencing technical issues or need help with your account, our support team is ready to assist you:</p><p><strong>Email: support@uilib.com</strong></p><p>Response Time: We typically respond to support requests within 24 hours.</p><h2><strong>Partnership &amp; Business Inquiries</strong></h2><p>Interested in partnering with Mentor or have business-related questions? Contact our business development team:</p><p><strong>Email: partnerships@example.com</strong></p><h2><strong>Career Opportunities</strong></h2><p>Looking to join our team? Visit our Careers page or send your resume to:</p><p><strong>Email: careers@example.com</strong></p><h2><strong>Feedback &amp; Suggestions</strong></h2><p>We value your feedback and are always looking for ways to improve. Share your thoughts and suggestions with us:</p><p><strong>Email: feedback@example.com</strong></p><h2><strong>Office Address</strong></h2><p><strong>Mentor Headquarters</strong></p><p>123 Education Street Learning City, LC 12345 United States</p><p style="text-align: center;">Thank you for choosing Mentor. We look forward to hearing from you!</p>';
+      return '<h2><strong>Fale com a Airways</strong></h2><p>Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.</p><h3><strong>Atendimento geral</strong></h3><p><strong>E-mail:</strong> contato@airways.com</p><p><strong>Telefone:</strong> +55 (11) 0000-0000</p><h3><strong>Horário de atendimento</strong></h3><p>Segunda a sexta, das 8h às 18h.</p><h3><strong>Endereço</strong></h3><p>Av. Paulista, 1000 - São Paulo, SP</p><p>Você pode editar este conteúdo diretamente no CMS para ajustar os canais e horários de contato conforme a necessidade da operação.</p>';
    }
 
    /**

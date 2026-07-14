@@ -20,7 +20,7 @@ const Layout = ({ page: innerPage, navbarHeight = true, children }: PageProps) =
    const { customize } = props;
    const page = innerPage || props.page;
    const slug = page.slug;
-   const customizable = slug === 'about-us' || slug === 'our-team' || page.type !== 'inner_page';
+   const customizable = slug === 'about-us' || slug === 'our-team' || slug === 'contact-us' || page.type !== 'inner_page';
 
    const sections = page.sections.filter(
       (section) => section.slug !== 'footer_list_1' && section.slug !== 'footer_list_2' && section.slug !== 'footer_list_3',

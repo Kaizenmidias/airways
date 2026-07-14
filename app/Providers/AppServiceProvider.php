@@ -7,6 +7,7 @@ use App\Models\PageSection;
 use App\Models\Setting;
 use App\Models\User;
 use Database\Data\Sections\IntroSections;
+use Database\Data\Sections\InnerSections;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -101,6 +102,60 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 if ($page->sections->isEmpty() || $page->sections->doesntContain('id', $heroSection->id)) {
+                    $page->load(['sections' => function ($query) {
+                        $query->orderBy('sort', 'asc');
+                    }]);
+                }
+
+                return $page;
+            } catch (\Throwable $th) {
+                return null;
+            }
+        });
+
+        $this->app->singleton('contact_page', function (): ?Page {
+            try {
+                if (!isDBConnected() || !Schema::hasTable('pages') || !Schema::hasTable('page_sections')) {
+                    return null;
+                }
+
+                $page = Page::firstOrCreate(
+                    ['slug' => 'contact-us'],
+                    [
+                        'name' => 'Contact Us',
+                        'title' => 'Contact Us - Get in Touch with Mentor',
+                        'description' => InnerSections::getContactUsDescription(),
+                        'meta_description' => 'Contact Mentor for support, partnerships, careers, or general inquiries. Find all our contact information and office details.',
+                        'meta_keywords' => 'contact us, support, help, contact information, customer service, partnerships, feedback',
+                    ]
+                );
+
+                $contactSection = PageSection::firstOrCreate(
+                    [
+                        'page_id' => $page->id,
+                        'slug' => 'contact_content',
+                    ],
+                    [
+                        'name' => 'Contact Content',
+                        'title' => 'Fale com a Airways',
+                        'description' => 'Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.',
+                        'flags' => [
+                            'title' => true,
+                            'description' => true,
+                        ],
+                        'properties' => [],
+                        'active' => true,
+                        'sort' => 1,
+                    ]
+                );
+
+                if (!$page->relationLoaded('sections')) {
+                    $page->load(['sections' => function ($query) {
+                        $query->orderBy('sort', 'asc');
+                    }]);
+                }
+
+                if ($page->sections->isEmpty() || $page->sections->doesntContain('id', $contactSection->id)) {
                     $page->load(['sections' => function ($query) {
                         $query->orderBy('sort', 'asc');
                     }]);
