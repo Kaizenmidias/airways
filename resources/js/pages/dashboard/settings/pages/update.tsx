@@ -48,6 +48,18 @@ const Update = ({ page }: Props) => {
             <Card className="p-4 sm:p-6">
                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
+                     <Label>{common.name}</Label>
+                     <Input name="name" value={data.name} onChange={(e) => onHandleChange(e, setData)} placeholder={input.page_name_placeholder} />
+                     <InputError message={errors.name} />
+                  </div>
+
+                  <div>
+                     <Label>{input.slug}</Label>
+                     <Input name="slug" value={data.slug} onChange={(e) => onHandleChange(e, setData)} placeholder={input.page_slug_placeholder} />
+                     <InputError message={errors.slug} />
+                  </div>
+
+                  <div>
                      <Label>{common.title}</Label>
                      <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder={input.page_title_placeholder} />
                      <InputError message={errors.title} />
