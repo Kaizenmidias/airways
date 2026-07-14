@@ -3,11 +3,6 @@ interface Auth {
    user: User;
 }
 
-interface BreadcrumbItem {
-   title: string;
-   href: string;
-}
-
 // User related types
 interface User extends TableCommon {
    name: string;
