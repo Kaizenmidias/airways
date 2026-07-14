@@ -106,7 +106,7 @@ const ShowBlog = ({ blog }: BlogShowProps) => {
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.14),transparent_26%),linear-gradient(180deg,#02070f_0%,#08111f_100%)]" />
                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_20%)]" />
 
-               <div className="relative mx-auto max-w-6xl px-4 pt-14 pb-12 sm:px-6 sm:pt-16 sm:pb-16 lg:px-8 lg:pt-20 lg:pb-20">
+               <div className="relative mx-auto max-w-6xl px-4 pt-28 pb-12 sm:px-6 sm:pt-32 sm:pb-16 lg:px-8 lg:pt-36 lg:pb-20">
                   <div className="max-w-4xl space-y-6">
                      <div className="flex flex-wrap items-center gap-2">
                         <Badge className="border-white/15 bg-white/10 text-white hover:bg-white/15">{blog.category?.name || 'Blog'}</Badge>
