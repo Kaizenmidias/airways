@@ -1,7 +1,7 @@
 import { isAirwaysFeatureEnabled, isMarketplaceEnabled } from '@/lib/airways';
 import { routeLastSegment } from '@/lib/route';
 import { SharedData } from '@/types/global';
-import { Award, Book, Briefcase, CassetteTape, LayoutDashboard, Newspaper, Receipt, School, Settings, Users } from 'lucide-react';
+import { Award, Book, Briefcase, CassetteTape, LayoutDashboard, Mail, Newspaper, Receipt, School, Settings, Users } from 'lucide-react';
 
 export const getDashboardRoutes = (translate: LanguageTranslations, airways: SharedData['airways']): DashboardRoute[] => {
    const { button } = translate;
@@ -269,6 +269,15 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                  },
               ]
             : []),
+         {
+            Icon: Mail,
+            name: 'Contato',
+            path: route('contact-messages.index'),
+            slug: routeLastSegment(route('contact-messages.index')),
+            active: true,
+            access: ['admin'],
+            children: [],
+         },
          {
             Icon: Users,
             name: button.all_users ?? 'All Users',

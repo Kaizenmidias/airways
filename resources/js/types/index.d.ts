@@ -55,6 +55,14 @@ interface Notification extends TableCommon {
    notifiable_type: string;
 }
 
+interface ContactMessage extends TableCommon {
+   name: string;
+   email: string;
+   phone: string | null;
+   message: string;
+   accepted_privacy: boolean;
+}
+
 interface Newsletter extends TableCommon {
    subject: string;
    description: string;

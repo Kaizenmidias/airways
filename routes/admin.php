@@ -8,6 +8,7 @@ use App\Http\Controllers\Course\CourseCategoryController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseCouponController;
 use App\Http\Controllers\Course\CourseEnrollmentController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobCircularController;
 use App\Http\Controllers\NewsletterController;
@@ -55,6 +56,9 @@ Route::prefix('dashboard')->group(function () {
     // notification
     Route::resource('newsletters', NewsletterController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::post('newsletters/send', [NewsletterController::class, 'newsletter_send'])->name('newsletters.send')->middleware('smtpConfig', 'checkSmtp');
+
+    // contact messages
+    Route::get('contact-messages', [ContactMessageController::class, 'index'])->name('contact-messages.index');
 
     // payout
     Route::middleware('checkCourseCreation')->prefix('payouts')->group(function () {

@@ -140,14 +140,28 @@ class AppServiceProvider extends ServiceProvider
                         'title' => 'Fale com a Airways',
                         'description' => 'Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.',
                         'flags' => [
-                            'title' => true,
-                            'description' => true,
+                           'title' => true,
+                           'description' => true,
                         ],
-                        'properties' => [],
+                        'properties' => [
+                           'email' => 'contato@airways.com',
+                           'phone' => '(11)99999-9999',
+                           'address' => 'Av. Paulista, 1000, São Paulo - SP',
+                        ],
                         'active' => true,
                         'sort' => 1,
                     ]
                 );
+
+                if (empty($contactSection->properties['email'] ?? null) || empty($contactSection->properties['phone'] ?? null) || empty($contactSection->properties['address'] ?? null)) {
+                    $contactSection->update([
+                            'properties' => [
+                            'email' => $contactSection->properties['email'] ?? 'contato@airways.com',
+                            'phone' => $contactSection->properties['phone'] ?? '(11)99999-9999',
+                            'address' => $contactSection->properties['address'] ?? 'Av. Paulista, 1000, São Paulo - SP',
+                        ],
+                    ]);
+                }
 
                 if (!$page->relationLoaded('sections')) {
                     $page->load(['sections' => function ($query) {

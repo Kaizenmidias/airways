@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\JobCircularController;
@@ -19,3 +20,4 @@ Route::controller(CourseController::class)->group(function () {
 
 Route::get('instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
 Route::resource('subscribes', SubscribeController::class)->only(['index', 'store']);
+Route::post('contact-us', [ContactMessageController::class, 'store'])->name('contact-messages.store');

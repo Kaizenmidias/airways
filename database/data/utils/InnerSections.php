@@ -202,7 +202,11 @@ class InnerSections
                'title' => true,
                'description' => true,
             ],
-            'properties' => [],
+            'properties' => [
+               'email' => 'contato@airways.com',
+               'phone' => '(11)99999-9999',
+               'address' => 'Av. Paulista, 1000, São Paulo - SP',
+            ],
          ],
       ];
 
@@ -219,7 +223,7 @@ class InnerSections
     */
    public static function getContactUsDescription(): string
    {
-      return '<h2><strong>Fale com a Airways</strong></h2><p>Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.</p><h3><strong>Atendimento geral</strong></h3><p><strong>E-mail:</strong> contato@airways.com</p><p><strong>Telefone:</strong> +55 (11) 0000-0000</p><h3><strong>Horário de atendimento</strong></h3><p>Segunda a sexta, das 8h às 18h.</p><h3><strong>Endereço</strong></h3><p>Av. Paulista, 1000 - São Paulo, SP</p><p>Você pode editar este conteúdo diretamente no CMS para ajustar os canais e horários de contato conforme a necessidade da operação.</p>';
+      return '<h2><strong>Fale com a Airways</strong></h2><p>Se você precisa de informações sobre cursos, suporte técnico, parcerias ou dúvidas gerais, fale com a nossa equipe. Estamos prontos para ajudar você a encontrar o melhor caminho na sua formação.</p><h3><strong>Atendimento geral</strong></h3><p><strong>E-mail:</strong> contato@airways.com</p><p><strong>Telefone:</strong> (11)99999-9999</p><h3><strong>Horário de atendimento</strong></h3><p>Segunda a sexta, das 8h às 18h.</p><h3><strong>Endereço</strong></h3><p>Av. Paulista, 1000 - São Paulo, SP</p><p>Você pode editar este conteúdo diretamente no CMS para ajustar os canais e horários de contato conforme a necessidade da operação.</p>';
    }
 
    /**
