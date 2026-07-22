@@ -3,11 +3,19 @@ import Appearance from '@/components/appearance';
 import Notification from '@/components/notification';
 import ProfileToggle from '@/components/profile-toggle';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuSub,
+   DropdownMenuSubContent,
+   DropdownMenuSubTrigger,
+   DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { buildNavbarTree, type NavbarTreeNode } from '@/lib/navbar-tree';
 import { Link } from '@inertiajs/react';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface NavbarPreviewProps {
@@ -30,36 +38,96 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       </span>
    );
 
+   const renderCourseItems = (courses: Course[]) =>
+      courses.map((course) => (
+         <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-5">
+            <Link href={resolveCourseHref(course)}>{course.title}</Link>
+         </DropdownMenuItem>
+      ));
+
+   const renderCategoryNode = (item: NavbarItem, keySuffix = '') => {
+      const courses = item.course_category?.courses ?? [];
+      const categoryHref = route('category.courses', { category: item.course_category?.slug || item.slug });
+
+      if (keySuffix) {
+         return (
+            <DropdownMenuSub key={`${item.id}${keySuffix}`}>
+               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm">
+                  {renderNavLabel(item)}
+                  <ChevronRight className="ml-auto h-4 w-4" />
+               </DropdownMenuSubTrigger>
+               <DropdownMenuSubContent className="min-w-20">
+                  {courses.length > 0 ? renderCourseItems(courses) : null}
+               </DropdownMenuSubContent>
+            </DropdownMenuSub>
+         );
+      }
+
+      return (
+         <DropdownMenu key={item.id}>
+            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm">
+               {renderNavLabel(item)}
+               <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="min-w-20">
+               {courses.length > 0 ? renderCourseItems(courses) : null}
+               {courses.length === 0 ? (
+                  <DropdownMenuItem asChild className="cursor-pointer px-5">
+                     <Link href={categoryHref}>{renderNavLabel(item)}</Link>
+                  </DropdownMenuItem>
+               ) : null}
+            </DropdownMenuContent>
+         </DropdownMenu>
+      );
+   };
+
+   const renderChildren = (children: NavbarTreeNode[], parentKey: string | number) =>
+      children
+         .filter((subNode) => subNode.item.active !== false)
+         .map((subNode, idx) => {
+            const subItem = subNode.item;
+
+            if (subItem.type === 'category') {
+               return renderCategoryNode(subItem, `-${parentKey}-${idx}`);
+            }
+
+            if (subNode.children.length > 0) {
+               return (
+                  <DropdownMenuSub key={`${parentKey}-${idx}`}>
+                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm">
+                        {renderNavLabel(subItem)}
+                        <ChevronRight className="ml-auto h-4 w-4" />
+                     </DropdownMenuSubTrigger>
+                     <DropdownMenuSubContent className="min-w-20">
+                        {renderChildren(subNode.children, `${parentKey}-${idx}`)}
+                     </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+               );
+            }
+
+            const subHref = subItem.value || '';
+
+            if (!subHref) {
+               return (
+                  <DropdownMenuItem key={`${parentKey}-${idx}`} className="cursor-default px-5">
+                     {renderNavLabel(subItem)}
+                  </DropdownMenuItem>
+               );
+            }
+
+            return (
+               <DropdownMenuItem key={`${parentKey}-${idx}`} asChild className="cursor-pointer px-5">
+                  <Link href={subHref}>{renderNavLabel(subItem)}</Link>
+               </DropdownMenuItem>
+            );
+         });
+
    const renderNode = (node: NavbarTreeNode) => {
       const { item } = node;
       const href = item.value || '';
 
       if (item.type === 'category') {
-         const courses = item.course_category?.courses ?? [];
-
-         if (courses.length > 0) {
-            return (
-               <DropdownMenu key={item.id}>
-                  <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm">
-                     {renderNavLabel(item)}
-                     <ChevronDown className="ml-1 h-4 w-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="min-w-20">
-                     {courses.map((course) => (
-                        <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-5">
-                           <Link href={resolveCourseHref(course)}>{course.title}</Link>
-                        </DropdownMenuItem>
-                     ))}
-                  </DropdownMenuContent>
-               </DropdownMenu>
-            );
-         }
-
-         return (
-            <Link key={item.id} href={route('category.courses', { category: item.course_category?.slug || item.slug })} className="py-1 text-sm font-normal">
-               {renderNavLabel(item)}
-            </Link>
-         );
+         return renderCategoryNode(item);
       }
 
       if (node.children.length > 0) {
@@ -70,23 +138,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                   <ChevronDown className="ml-1 h-4 w-4" />
                </DropdownMenuTrigger>
                <DropdownMenuContent align="start" className="min-w-20">
-                  {node.children.map((subNode, idx) => {
-                     const subHref = subNode.item.value || '';
-
-                     if (!subHref) {
-                        return (
-                           <DropdownMenuItem key={`${item.id}-${idx}`} className="cursor-default px-5">
-                              {renderNavLabel(subNode.item)}
-                           </DropdownMenuItem>
-                        );
-                     }
-
-                     return (
-                        <DropdownMenuItem key={`${item.id}-${idx}`} asChild className="cursor-pointer px-5">
-                           <Link href={subHref}>{renderNavLabel(subNode.item)}</Link>
-                        </DropdownMenuItem>
-                     );
-                  })}
+                  {renderChildren(node.children, item.id)}
                </DropdownMenuContent>
             </DropdownMenu>
          );
