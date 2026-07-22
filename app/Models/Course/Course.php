@@ -15,6 +15,10 @@ class Course extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
+    protected $casts = [
+        'is_development' => 'boolean',
+    ];
+
     protected $fillable = [
         'title',
         'sub_title',
@@ -49,6 +53,7 @@ class Course extends Model implements HasMedia
         'instructor_id',
         'course_category_id',
         'course_category_child_id',
+        'is_development',
     ];
 
     public function course_category(): BelongsTo

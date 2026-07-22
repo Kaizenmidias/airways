@@ -76,17 +76,17 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const renderNavLabel = (item: NavbarItem, className = '') => (
       <span className={cn('flex flex-col leading-tight', className)}>
          {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{item.subtitle}</span> : null}
-         <span className="text-white group-hover:text-primary">{item.title}</span>
+         <span className="text-inherit group-hover:text-primary">{item.title}</span>
       </span>
    );
 
    const renderCourseMenuItems = (courses: Course[]) =>
       courses.map((course) => (
          <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-0 py-0">
-               <Link href={resolveCourseHref(course)} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+               <Link href={resolveCourseHref(course)} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                <span className="flex flex-col leading-tight">
                   {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
-                  <span className="text-white">{course.title}</span>
+                  <span className="text-inherit">{course.title}</span>
                </span>
             </Link>
          </DropdownMenuItem>
@@ -100,7 +100,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          if (childCourses.length > 0) {
             return (
                <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                      <span className="flex flex-col leading-tight">
                         <span>{child.title}</span>
                      </span>
@@ -114,7 +114,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
          return (
             <DropdownMenuItem key={child.id} asChild className="cursor-pointer px-0 py-0">
-               <Link href={childHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+               <Link href={childHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                   <span className="flex flex-col leading-tight">
                      <span>{child.title}</span>
                   </span>
@@ -132,7 +132,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (keySuffix) {
          return (
            <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                      {renderNavLabel(item)}
                   </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
@@ -145,7 +145,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary')}>
+            <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}>
                {renderNavLabel(item)}
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -154,7 +154,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                {childCategories.length > 0 ? renderSubCategoryMenuItems(category as CourseCategory, childCategories) : null}
                {childCategories.length === 0 && courses.length === 0 ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-0 py-0">
-                     <Link href={categoryHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                     <Link href={categoryHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(item)}
                      </Link>
                   </DropdownMenuItem>
@@ -177,7 +177,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             if (subNode.children.length > 0) {
                return (
                  <DropdownMenuSub key={`${parentKey}-${index}`}>
-                     <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                     <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
@@ -201,11 +201,11 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             return (
                <DropdownMenuItem key={`${parentKey}-${index}`} className="cursor-pointer px-0 py-0" asChild>
                   {isExternal(subHref) ? (
-                     <a href={subHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                     <a href={subHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(subItem)}
                      </a>
                   ) : (
-                     <Link href={subHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                     <Link href={subHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(subItem)}
                      </Link>
                   )}
@@ -223,7 +223,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          >
             <span className="flex flex-col leading-tight">
                {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{course.sub_title}</span> : null}
-               <span className="text-white group-hover:text-primary">{course.title}</span>
+               <span className="text-inherit group-hover:text-primary">{course.title}</span>
             </span>
          </Link>
       ));
@@ -241,13 +241,13 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   <button
                      type="button"
                      onClick={() => toggleMobileItem(childKey)}
-                     className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
-                  >
-                     <span className="flex flex-col leading-tight">
-                        <span className="text-white group-hover:text-primary">{child.title}</span>
-                     </span>
-                     <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', childOpen && 'rotate-180')} />
-                  </button>
+                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+               >
+                  <span className="flex flex-col leading-tight">
+                        <span className="text-inherit group-hover:text-primary">{child.title}</span>
+                  </span>
+                  <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', childOpen && 'rotate-180')} />
+               </button>
 
                   {childOpen ? <div className="space-y-2 pl-4">{renderMobileCourseItems(childCourses)}</div> : null}
                </div>
@@ -262,7 +262,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
             >
                <span className="flex flex-col leading-tight">
-                  <span className="text-white group-hover:text-primary">{child.title}</span>
+                  <span className="text-inherit group-hover:text-primary">{child.title}</span>
                </span>
             </Link>
          );

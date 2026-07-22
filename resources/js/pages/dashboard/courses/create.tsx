@@ -52,6 +52,7 @@ const Index = (props: Props) => {
       expiry_type: 'lifetime',
       expiry_duration: new Date(),
       drip_content: false as boolean,
+      is_development: false as boolean,
       thumbnail: null,
       instructor_id: showInstructorSelector ? '' : defaultInstructorId,
       course_category_id: '',
@@ -148,6 +149,16 @@ const Index = (props: Props) => {
                         }
                      />
                      <InputError message={errors.description} />
+                  </div>
+
+                  <div className="flex items-center gap-3 rounded-2xl border border-border bg-background px-4 py-3">
+                     <Checkbox id="is_development" checked={Boolean(data.is_development)} onCheckedChange={(checked) => setData('is_development', checked === true)} />
+                     <div className="space-y-0.5">
+                        <Label htmlFor="is_development" className="cursor-pointer">
+                           Em desenvolvimento
+                        </Label>
+                        <p className="text-xs text-muted-foreground">Ao ativar, o curso exibirá uma página de aviso em vez da página normal.</p>
+                     </div>
                   </div>
                </div>
 

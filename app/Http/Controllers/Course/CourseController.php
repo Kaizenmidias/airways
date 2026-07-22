@@ -188,6 +188,29 @@ class CourseController extends Controller
             // Generate meta tags for SEO and social sharing
             $system = app('system_settings');
             $siteName = $system->fields['name'] ?? 'Mentor Learning Management System';
+
+            if ($course->is_development) {
+                return Inertia::render(
+                    'courses/development',
+                    [
+                        'course' => $course,
+                    ]
+                )->withViewData([
+                    'metaTitle' => $course->title . ' | ' . $siteName,
+                    'metaDescription' => 'Este curso está em desenvolvimento, em breve estará disponível.',
+                    'metaKeywords' => $course->title . ', curso em desenvolvimento',
+                    'ogTitle' => $course->title,
+                    'ogDescription' => 'Este curso está em desenvolvimento, em breve estará disponível.',
+                    'ogImage' => $course->thumbnail ?? $course->banner ?? $system->fields['banner'] ?? '',
+                    'ogUrl' => request()->url(),
+                    'ogType' => 'article',
+                    'twitterCard' => 'summary_large_image',
+                    'twitterTitle' => $course->title,
+                    'twitterDescription' => 'Este curso está em desenvolvimento, em breve estará disponível.',
+                    'twitterImage' => $course->thumbnail ?? $course->banner ?? $system->fields['banner'] ?? '',
+                ]);
+            }
+
             $pageTitle = $course->meta_title ?? ($course->title . ' | ' . $siteName);
             $pageDescription = $course->meta_description ?? $course->short_description ?? $course->description ?? 'Learn with our comprehensive course';
             $pageKeywords = $course->meta_keywords ?? ($course->title . ', online course, learning, ' . ($system->fields['keywords'] ?? 'LMS'));

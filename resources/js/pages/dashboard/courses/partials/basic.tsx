@@ -3,6 +3,7 @@ import InputError from '@/components/input-error';
 import LoadingButton from '@/components/loading-button';
 import TiptapEditor from '@/components/text-editor/tiptap-editor';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -33,6 +34,7 @@ const Basic = () => {
       language: course.language,
       instructor_id: course.instructor_id,
       drip_content: Boolean(course.drip_content),
+      is_development: Boolean(course.is_development),
       course_category_id: course.course_category_id,
       course_category_child_id: course.course_category_child_id,
    });
@@ -114,6 +116,16 @@ const Basic = () => {
                   }
                />
                <InputError message={errors.description} />
+            </div>
+
+            <div className="flex items-center gap-3 rounded-2xl border border-border bg-background px-4 py-3">
+               <Checkbox id="is_development" checked={Boolean(data.is_development)} onCheckedChange={(checked) => setData('is_development', checked === true)} />
+               <div className="space-y-0.5">
+                  <Label htmlFor="is_development" className="cursor-pointer">
+                     Em desenvolvimento
+                  </Label>
+                  <p className="text-xs text-muted-foreground">Ao ativar, o curso exibirá uma página de aviso em vez da página normal.</p>
+               </div>
             </div>
 
             {showInstructorSelector && (

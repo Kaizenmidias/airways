@@ -15,6 +15,7 @@ class UpdateCourseRequest extends FormRequest
             'price' => request('price') ? (float) request('price') : null,
             'discount' => filter_var(request('discount'), FILTER_VALIDATE_BOOLEAN),
             'discount_price' => request('discount_price') ? (float) request('discount_price') : null,
+            'is_development' => filter_var(request('is_development'), FILTER_VALIDATE_BOOLEAN),
             'course_category_id' => (int) request('course_category_id', 0),
             'course_category_child_id' => request('course_category_child_id') ? (int) request('course_category_child_id') : null,
         ]);
@@ -73,6 +74,7 @@ class UpdateCourseRequest extends FormRequest
             'level' => 'required|string',
             'language' => 'required|string|max:255',
             'drip_content' => 'required|boolean',
+            'is_development' => 'boolean',
             'course_category_id' => 'required|exists:course_categories,id',
             'course_category_child_id' => 'nullable|exists:course_category_children,id',
         ];

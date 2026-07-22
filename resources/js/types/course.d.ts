@@ -50,6 +50,7 @@ interface Course extends TableCommon {
    thumbnail?: string;
    banner?: string;
    preview?: string;
+   is_development?: boolean;
    reviews_count?: number;
    average_rating?: number;
    expiry_type?: 'lifetime' | 'limited_time';

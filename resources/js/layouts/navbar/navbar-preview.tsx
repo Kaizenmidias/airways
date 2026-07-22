@@ -35,7 +35,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const renderNavLabel = (item: NavbarItem) => (
       <span className="flex flex-col leading-tight">
          {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
-         <span className="text-white">{item.title}</span>
+         <span className="text-inherit">{item.title}</span>
       </span>
    );
 
@@ -45,7 +45,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             <Link href={resolveCourseHref(course)} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
                <span className="flex flex-col leading-tight">
                   {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
-                  <span className="text-white">{course.title}</span>
+                  <span className="text-inherit">{course.title}</span>
                </span>
             </Link>
          </DropdownMenuItem>
@@ -59,7 +59,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          if (childCourses.length > 0) {
             return (
                <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                      <span className="flex flex-col leading-tight">
                         <span>{child.title}</span>
                      </span>
@@ -74,7 +74,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
          return (
             <DropdownMenuItem key={child.id} asChild className="cursor-pointer px-5">
-               <Link href={childHref} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+               <Link href={childHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                   <span className="flex flex-col leading-tight">
                      <span>{child.title}</span>
                   </span>
@@ -92,7 +92,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       if (keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                   {renderNavLabel(item)}
                   <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
@@ -106,7 +106,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                {renderNavLabel(item)}
                <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
@@ -115,7 +115,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
                {childCategories.length === 0 && courses.length === 0 ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-5">
-                     <Link href={categoryHref} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                     <Link href={categoryHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(item)}
                      </Link>
                   </DropdownMenuItem>
@@ -138,7 +138,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             if (subNode.children.length > 0) {
                return (
                   <DropdownMenuSub key={`${parentKey}-${idx}`}>
-                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
@@ -161,7 +161,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
             return (
                <DropdownMenuItem key={`${parentKey}-${idx}`} asChild className="cursor-pointer px-5">
-                  <Link href={subHref} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                  <Link href={subHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                      {renderNavLabel(subItem)}
                   </Link>
                </DropdownMenuItem>
@@ -178,7 +178,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          >
             <span className="flex flex-col leading-tight">
                {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
-               <span className="text-white">{course.title}</span>
+                  <span className="text-inherit">{course.title}</span>
             </span>
          </Link>
       ));
@@ -194,7 +194,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                   <AccordionItem key={child.id} value={`child-${child.id}`} className="border-b-0">
                      <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
                         <span className="flex flex-col leading-tight">
-                           <span className="text-white">{child.title}</span>
+                           <span className="text-inherit">{child.title}</span>
                         </span>
                      </AccordionTrigger>
                      <AccordionContent className="pb-0 pt-2">
@@ -212,7 +212,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                   className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
                >
                   <span className="flex flex-col leading-tight">
-                     <span className="text-white">{child.title}</span>
+                     <span className="text-inherit">{child.title}</span>
                   </span>
                </Link>
             );
@@ -276,7 +276,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             <div key={item.id} className="rounded-xl border border-border px-3 py-2">
                <span className="flex flex-col leading-tight text-muted-foreground">
                   {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
-                  <span className="text-white">{item.title}</span>
+                  <span className="text-inherit">{item.title}</span>
                </span>
             </div>
          );
