@@ -14,6 +14,7 @@ interface ButtonLang {
    remove: string;
    previous: string;
    apply: string;
+   duplicate: string;
    view_all: string;
    reply: string;
    reapply: string;

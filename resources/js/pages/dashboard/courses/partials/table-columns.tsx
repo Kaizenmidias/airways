@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
+import { ArrowUpDown, Copy, Pencil, Trash2 } from 'lucide-react';
 import CourseStatusFilter from './course-status-filter';
 
 const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnDef<Course>[] => {
-   const { table } = translate;
+   const { button, table } = translate;
    const statusLabels: Record<string, string> = {
       draft: 'Rascunho',
       upcoming: 'Próximo',
@@ -18,34 +18,17 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
    
    return [
    {
-      accessorKey: 'name',
-      header: ({ column }) => {
-         return (
-            <div className="flex items-center pl-4">
-               <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                  {table.instructor}
-                  <ArrowUpDown />
-               </Button>
-            </div>
-         );
-      },
-      cell: ({ row }) => (
-         <div className="pl-4">
-            <p className="mb-0.5 text-base font-medium">{row.original.instructor.user.name}</p>
-            <p className="text-muted-foreground text-xs">{row.original.instructor.user.email}</p>
-         </div>
-      ),
-   },
-   {
       accessorKey: 'title',
       header: table.course_title,
       cell: ({ row }) => (
-         <div className="py-1 capitalize">
+         <div className="py-1">
             <Link
                href={route('courses.edit', {
                   course: row.original.id,
                })}
+               className="flex flex-col leading-tight"
             >
+               {row.original.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{row.original.sub_title}</span> : null}
                {row.getValue('title')}
             </Link>
          </div>
@@ -118,6 +101,7 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
                   size="icon"
                   variant="secondary"
                   className="h-8 w-8"
+                  title={table.edit_page || button.edit}
                   onClick={() =>
                      router.get(
                         route('courses.edit', {
@@ -127,6 +111,16 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
                   }
                >
                   <Pencil />
+               </Button>
+
+               <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8"
+                  title={button.duplicate}
+                  onClick={() => router.post(route('courses.duplicate', { id: course.id }))}
+               >
+                  <Copy className="h-4 w-4" />
                </Button>
 
                {isAdmin && (

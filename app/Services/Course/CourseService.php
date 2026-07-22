@@ -38,6 +38,22 @@ class CourseService extends MediaService
       return $course;
    }
 
+   function duplicateCourse(string $id): Course
+   {
+      return \DB::transaction(function () use ($id) {
+         $course = Course::findOrFail($id);
+         $duplicate = $course->replicate();
+
+         $duplicate->title = $course->title . ' (Copy)';
+         $duplicate->slug = Str::slug($course->title . ' copy ' . now()->timestamp);
+         $duplicate->status = 'draft';
+         $duplicate->user_id = Auth::user()->id;
+         $duplicate->save();
+
+         return $duplicate;
+      }, 5);
+   }
+
    function updateCourse(string $id, array $data): Course
    {
       $course = Course::find($id);
@@ -113,8 +129,12 @@ class CourseService extends MediaService
             return $query->where('title', 'LIKE', '%' . $data['search'] . '%');
          })
          ->when(array_key_exists('category', $data) && $data['category'] !== 'all', function ($query) use ($data) {
-            return $query->whereHas('course_category', function ($category) use ($data) {
-               $category->where('slug', $data['category']);
+            return $query->where(function ($categoryQuery) use ($data) {
+               $categoryQuery->whereHas('course_category', function ($category) use ($data) {
+                  $category->where('slug', $data['category']);
+               })->orWhereHas('course_category_child', function ($child) use ($data) {
+                  $child->where('slug', $data['category']);
+               });
             });
          })
          ->when(array_key_exists('category_child', $data) && $data['category_child'] && $data['category_child'] !== 'all', function ($query) use ($data) {

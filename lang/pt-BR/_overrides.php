@@ -44,7 +44,7 @@ return [
         'view_all' => 'Ver todos', 'reply' => 'Responder', 'light' => 'Claro', 'dark' => 'Escuro',
         'true' => 'Verdadeiro', 'false' => 'Falso', 'free' => 'Grátis', 'list' => 'Lista',
         'search' => 'Pesquisar', 'filter' => 'Filtrar', 'sort' => 'Ordenar', 'refresh' => 'Atualizar',
-        'upload' => 'Enviar arquivo', 'download' => 'Baixar', 'send' => 'Enviar', 'add_item' => 'Adicionar item', 'assignment' => 'Atividade',
+        'upload' => 'Enviar arquivo', 'download' => 'Baixar', 'send' => 'Enviar', 'add_item' => 'Adicionar item', 'duplicate' => 'Duplicar', 'assignment' => 'Atividade',
         'active' => 'Ativar', 'inactive' => 'Inativo', 'lessons' => 'Aulas', 'live_classes' => 'Aulas ao Vivo',
         'join_class' => 'Entrar na aula', 'add_language' => 'Adicionar idioma', 'save_changes' => 'Salvar alterações',
         'schedule_class' => 'Agendar aula', 'add_newsletter' => 'Adicionar newsletter', 'backup_now' => 'Fazer backup agora',

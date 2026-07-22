@@ -14,6 +14,7 @@ interface Props {
    title: string;
    Icon?: ReactNode;
    component?: ReactNode;
+   filters?: ReactNode;
    globalSearch: boolean;
    tablePageSizes: number[];
    routeName?: string;
@@ -23,7 +24,7 @@ interface Props {
 }
 
 const TableFilter = (props: Props) => {
-   const { Icon, data, title, component, globalSearch, tablePageSizes, routeName, routeParams, exportPath, className } = props;
+   const { Icon, data, title, component, filters, globalSearch, tablePageSizes, routeName, routeParams, exportPath, className } = props;
    const { common } = useLang();
    const page = usePage<SharedData>();
    const urlParams = getQueryParams(page.url);
@@ -73,6 +74,8 @@ const TableFilter = (props: Props) => {
                   <Search className="text-muted-foreground absolute top-1/2 left-4 z-10 h-4 w-4 -translate-y-1/2" />
                </div>
             )}
+
+            {filters}
 
             {routeName && <TablePageSize routeParams={routeParams} routeName={routeName} pageData={data} dropdownList={tablePageSizes} />}
 

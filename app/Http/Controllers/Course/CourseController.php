@@ -42,8 +42,9 @@ class CourseController extends Controller
     {
         $statuses = CourseStatusType::cases();
         $courses = $this->courseService->getCourses($request->all(), Auth::user(), true);
+        $categories = $this->categoryService->getCategories()['categories'];
 
-        return Inertia::render('dashboard/courses/index', compact('courses', 'statuses'));
+        return Inertia::render('dashboard/courses/index', compact('courses', 'statuses', 'categories'));
     }
 
     public function category_courses(Request $request, string $category, ?string $category_child = null)
@@ -299,5 +300,14 @@ class CourseController extends Controller
         $this->courseService->deleteCourse($id);
 
         return redirect(route('courses.index'))->with('success', 'Curso excluído com sucesso.');
+    }
+
+    public function duplicate(string $id)
+    {
+        $course = $this->courseService->duplicateCourse($id);
+
+        return redirect()
+            ->route('courses.edit', ['course' => $course->id])
+            ->with('success', 'Curso duplicado com sucesso.');
     }
 }

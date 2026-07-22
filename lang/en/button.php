@@ -16,6 +16,7 @@ return [
     'remove' => 'Remove',
     'previous' => 'Previous',
     'apply' => 'Apply',
+    'duplicate' => 'Duplicate',
     'view_all' => 'View All',
     'reply' => 'Reply',
     'reapply' => 'Reapply',
