@@ -46,7 +46,7 @@ class CourseService extends MediaService
 
          $duplicate->title = $course->title . ' (Copy)';
          $duplicate->slug = Str::slug($course->title . ' copy ' . now()->timestamp);
-         $duplicate->status = 'draft';
+         $duplicate->status = 'approved';
          $duplicate->save();
 
          return $duplicate;
