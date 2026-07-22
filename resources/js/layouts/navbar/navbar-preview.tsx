@@ -2,6 +2,7 @@ import AppLogo from '@/components/app-logo';
 import Appearance from '@/components/appearance';
 import Notification from '@/components/notification';
 import ProfileToggle from '@/components/profile-toggle';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import {
    DropdownMenu,
@@ -33,8 +34,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderNavLabel = (item: NavbarItem) => (
       <span className="flex flex-col leading-tight">
-         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-rose-300/80">{item.subtitle}</span> : null}
-         <span>{item.title}</span>
+         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
+         <span className="text-white">{item.title}</span>
       </span>
    );
 
@@ -43,8 +44,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-5">
             <Link href={resolveCourseHref(course)} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
                <span className="flex flex-col leading-tight">
-                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white">{course.sub_title}</span> : null}
-                  <span>{course.title}</span>
+                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
+                  <span className="text-white">{course.title}</span>
                </span>
             </Link>
          </DropdownMenuItem>
@@ -167,6 +168,132 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             );
          });
 
+   const renderMobileCourseItems = (courses: Course[]) =>
+      courses.map((course) => (
+         <Link
+            key={course.id}
+            href={resolveCourseHref(course)}
+            onClick={() => setIsMenuOpen(false)}
+            className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+         >
+            <span className="flex flex-col leading-tight">
+               {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
+               <span className="text-white">{course.title}</span>
+            </span>
+         </Link>
+      ));
+
+   const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[]) => (
+      <Accordion type="single" collapsible className="space-y-2">
+         {childCategories.map((child) => {
+            const childCourses = child.courses ?? [];
+            const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
+
+            if (childCourses.length > 0) {
+               return (
+                  <AccordionItem key={child.id} value={`child-${child.id}`} className="border-b-0">
+                     <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
+                        <span className="flex flex-col leading-tight">
+                           <span className="text-white">{child.title}</span>
+                        </span>
+                     </AccordionTrigger>
+                     <AccordionContent className="pb-0 pt-2">
+                        <div className="space-y-2 pl-3">{renderMobileCourseItems(childCourses)}</div>
+                     </AccordionContent>
+                  </AccordionItem>
+               );
+            }
+
+            return (
+               <Link
+                  key={child.id}
+                  href={childHref}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+               >
+                  <span className="flex flex-col leading-tight">
+                     <span className="text-white">{child.title}</span>
+                  </span>
+               </Link>
+            );
+         })}
+      </Accordion>
+   );
+
+   const renderMobileNode = (node: NavbarTreeNode, parentKey: string | number) => {
+      const { item } = node;
+      const href = item.value || '';
+
+      if (item.type === 'category') {
+         const category = item.course_category;
+         const courses = category?.courses ?? [];
+         const childCategories = category?.category_children ?? [];
+         const hasContent = courses.length > 0 || childCategories.length > 0;
+
+         if (!hasContent) {
+            return (
+               <Link
+                  key={item.id}
+                  href={route('category.courses', { category: category?.slug || item.slug })}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+               >
+                  {renderNavLabel(item)}
+               </Link>
+            );
+         }
+
+         return (
+            <AccordionItem key={item.id} value={`cat-${parentKey}-${item.id}`} className="border-b-0">
+               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
+                  {renderNavLabel(item)}
+               </AccordionTrigger>
+               <AccordionContent className="pb-0 pt-2">
+                  <div className="space-y-3 pl-3">
+                     {courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
+                     {childCategories.length > 0 ? renderMobileSubCategories(category as CourseCategory, childCategories) : null}
+                  </div>
+               </AccordionContent>
+            </AccordionItem>
+         );
+      }
+
+      if (node.children.length > 0) {
+         return (
+            <AccordionItem key={item.id} value={`node-${parentKey}-${item.id}`} className="border-b-0">
+               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
+                  {renderNavLabel(item)}
+               </AccordionTrigger>
+               <AccordionContent className="pb-0 pt-2">
+                  <div className="space-y-2 pl-3">{node.children.map((childNode, index) => renderMobileNode(childNode, `${parentKey}-${index}`))}</div>
+               </AccordionContent>
+            </AccordionItem>
+         );
+      }
+
+      if (!href) {
+         return (
+            <div key={item.id} className="rounded-xl border border-border px-3 py-2">
+               <span className="flex flex-col leading-tight text-muted-foreground">
+                  {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
+                  <span className="text-white">{item.title}</span>
+               </span>
+            </div>
+         );
+      }
+
+      return (
+         <Link
+            key={item.id}
+            href={href}
+            onClick={() => setIsMenuOpen(false)}
+            className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+         >
+            {renderNavLabel(item)}
+         </Link>
+      );
+   };
+
    const renderNode = (node: NavbarTreeNode) => {
       const { item } = node;
       const href = item.value || '';
@@ -262,8 +389,10 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          {/* Mobile Menu */}
          {isMenuOpen && (
             <ScrollArea className="animate-fade-in h-[calc(100vh-72px)] border-t md:hidden">
-               <div className="flex flex-col space-y-4 py-4">
-                  {linkTree.map((node) => renderNode(node))}
+               <div className="space-y-4 py-4">
+                  <Accordion type="single" collapsible className="space-y-3">
+                     {linkTree.map((node, index) => renderMobileNode(node, index))}
+                  </Accordion>
                </div>
             </ScrollArea>
          )}
