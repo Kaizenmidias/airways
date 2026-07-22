@@ -4,7 +4,6 @@ import AppearanceToggleTab from '@/components/appearance-tabs';
 import CourseCart from '@/components/course-cart';
 import Language from '@/components/language';
 import Notification from '@/components/notification';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,6 +36,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const isAdmin = auth?.user?.role === 'admin';
    const [isSticky, setIsSticky] = useState(false);
    const [isMenuOpen, setIsMenuOpen] = useState(false);
+   const [mobileOpenItems, setMobileOpenItems] = useState<Record<string, boolean>>({});
 
    const sortedItems = useMemo(() => {
       return Array.isArray(navbar?.navbar_items) ? [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)) : [];
@@ -66,10 +66,17 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
    const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
 
+   const toggleMobileItem = (key: string) => {
+      setMobileOpenItems((current) => ({
+         ...current,
+         [key]: !current[key],
+      }));
+   };
+
    const renderNavLabel = (item: NavbarItem, className = '') => (
       <span className={cn('flex flex-col leading-tight', className)}>
-         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
-         <span className="text-white">{item.title}</span>
+         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{item.subtitle}</span> : null}
+         <span className="text-white group-hover:text-primary">{item.title}</span>
       </span>
    );
 
@@ -93,7 +100,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          if (childCourses.length > 0) {
             return (
                <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
                      <span className="flex flex-col leading-tight">
                         <span>{child.title}</span>
                      </span>
@@ -125,7 +132,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (keySuffix) {
          return (
            <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                  <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
                      {renderNavLabel(item)}
                   </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
@@ -138,7 +145,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary')}>
+            <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary')}>
                {renderNavLabel(item)}
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -170,7 +177,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             if (subNode.children.length > 0) {
                return (
                  <DropdownMenuSub key={`${parentKey}-${index}`}>
-                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                     <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
@@ -212,61 +219,66 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             key={course.id}
             href={resolveCourseHref(course)}
             onClick={() => setIsMenuOpen(false)}
-            className="block rounded-xl border border-white/10 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary"
+            className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
          >
             <span className="flex flex-col leading-tight">
-               {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
-               <span className="text-white">{course.title}</span>
+               {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{course.sub_title}</span> : null}
+               <span className="text-white group-hover:text-primary">{course.title}</span>
             </span>
          </Link>
       ));
 
-   const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[]) => (
-      <Accordion type="single" collapsible className="space-y-2">
-         {childCategories.map((child) => {
-            const childCourses = child.courses ?? [];
-            const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
+   const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[], parentKey: string) =>
+      childCategories.map((child) => {
+         const childCourses = child.courses ?? [];
+         const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
+         const childKey = `child-${parentKey}-${child.id}`;
+         const childOpen = Boolean(mobileOpenItems[childKey]);
 
-            if (childCourses.length > 0) {
-               return (
-                  <AccordionItem key={child.id} value={`child-${child.id}`} className="border-b-0">
-                     <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-white hover:no-underline [&>svg]:text-[#ccccccb8]">
-                        <span className="flex flex-col leading-tight">
-                           <span className="text-white">{child.title}</span>
-                        </span>
-                     </AccordionTrigger>
-                     <AccordionContent className="pb-0 pt-2">
-                        <div className="space-y-2 pl-3">{renderMobileCourseItems(childCourses)}</div>
-                     </AccordionContent>
-                  </AccordionItem>
-               );
-            }
-
+         if (childCourses.length > 0) {
             return (
-               <Link
-                  key={child.id}
-                  href={childHref}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl border border-white/10 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary"
-               >
-                  <span className="flex flex-col leading-tight">
-                     <span className="text-white">{child.title}</span>
-                  </span>
-               </Link>
+               <div key={child.id} className="space-y-2">
+                  <button
+                     type="button"
+                     onClick={() => toggleMobileItem(childKey)}
+                     className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+                  >
+                     <span className="flex flex-col leading-tight">
+                        <span className="text-white group-hover:text-primary">{child.title}</span>
+                     </span>
+                     <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', childOpen && 'rotate-180')} />
+                  </button>
+
+                  {childOpen ? <div className="space-y-2 pl-4">{renderMobileCourseItems(childCourses)}</div> : null}
+               </div>
             );
-         })}
-      </Accordion>
-   );
+         }
+
+         return (
+            <Link
+               key={child.id}
+               href={childHref}
+               onClick={() => setIsMenuOpen(false)}
+               className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+            >
+               <span className="flex flex-col leading-tight">
+                  <span className="text-white group-hover:text-primary">{child.title}</span>
+               </span>
+            </Link>
+         );
+      });
 
    const renderMobileNode = (node: NavbarTreeNode, parentKey: string | number) => {
       const { item } = node;
       const href = resolveHref(item);
+      const mobileKey = `${parentKey}-${item.id}`;
 
       if (item.type === 'category') {
          const category = item.course_category;
          const courses = category?.courses ?? [];
          const childCategories = category?.category_children ?? [];
          const hasContent = courses.length > 0 || childCategories.length > 0;
+         const isOpen = Boolean(mobileOpenItems[mobileKey]);
 
          if (!hasContent) {
             return (
@@ -274,7 +286,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   key={item.id}
                   href={route('category.courses', { category: category?.slug || item.slug })}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl border border-white/10 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary"
+                  className="block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
                >
                   {renderNavLabel(item)}
                </Link>
@@ -282,35 +294,47 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          }
 
          return (
-            <AccordionItem key={item.id} value={`cat-${parentKey}-${item.id}`} className="border-b-0">
-               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-white hover:no-underline [&>svg]:text-[#ccccccb8]">
+            <div key={item.id} className="space-y-2">
+               <button
+                  type="button"
+                  onClick={() => toggleMobileItem(mobileKey)}
+                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+               >
                   {renderNavLabel(item)}
-               </AccordionTrigger>
-               <AccordionContent className="pb-0 pt-2">
+                  <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', isOpen && 'rotate-180')} />
+               </button>
+
+               {isOpen ? (
                   <div className="space-y-3 pl-3">
                      {courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
-                     {childCategories.length > 0 ? renderMobileSubCategories(category as CourseCategory, childCategories) : null}
+                     {childCategories.length > 0 ? <div className="space-y-3">{renderMobileSubCategories(category as CourseCategory, childCategories, mobileKey)}</div> : null}
                   </div>
-               </AccordionContent>
-            </AccordionItem>
+               ) : null}
+            </div>
          );
       }
 
       if (node.children.length > 0) {
+         const isOpen = Boolean(mobileOpenItems[mobileKey]);
+
          return (
-            <AccordionItem key={item.id} value={`node-${parentKey}-${item.id}`} className="border-b-0">
-               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-white hover:no-underline [&>svg]:text-[#ccccccb8]">
+            <div key={item.id} className="space-y-2">
+               <button
+                  type="button"
+                  onClick={() => toggleMobileItem(mobileKey)}
+                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+               >
                   {renderNavLabel(item)}
-               </AccordionTrigger>
-               <AccordionContent className="pb-0 pt-2">
-                  <div className="space-y-2 pl-3">{node.children.map((childNode, index) => renderMobileNode(childNode, `${parentKey}-${index}`))}</div>
-               </AccordionContent>
-            </AccordionItem>
+                  <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', isOpen && 'rotate-180')} />
+               </button>
+
+               {isOpen ? <div className="space-y-2 pl-3">{node.children.map((childNode, index) => renderMobileNode(childNode, `${mobileKey}-${index}`))}</div> : null}
+            </div>
          );
       }
 
       if (!href) {
-         return <div key={item.id} className="rounded-xl border border-white/10 px-3 py-2">{renderNavLabel(item, 'text-white/80')}</div>;
+         return <div key={item.id} className="rounded-xl border border-white/10 bg-[#050b14] px-3 py-2">{renderNavLabel(item, 'text-white/80')}</div>;
       }
 
       return (
@@ -318,7 +342,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             key={item.id}
             href={href}
             onClick={() => setIsMenuOpen(false)}
-            className="block rounded-xl border border-white/10 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary"
+            className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
          >
             {renderNavLabel(item)}
          </Link>
@@ -337,7 +361,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (node.children.length > 0) {
          return (
             <DropdownMenu key={item.id}>
-               <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', linkClass)}>
+               <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', linkClass)}>
                   {renderNavLabel(item)}
                   <ChevronDown className="h-4 w-4" />
                </DropdownMenuTrigger>
@@ -436,7 +460,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       <div className={cn('landing-navbar', isMenuOpen && 'bg-white')}>
          <div
             className={cn(
-               'fixed top-3 inset-x-0 z-50 w-full rounded-none border-x-0 border-y border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl transition-colors duration-300',
+               'fixed top-0 inset-x-0 z-50 w-full rounded-none border-x-0 border-b border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl transition-colors duration-300',
                isSticky && 'border-white/10 bg-[#060F1B] shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
             )}
          >
@@ -513,11 +537,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             {isMenuOpen && (
                <ScrollArea className="border-t border-white/10 bg-slate-950/95 text-white lg:hidden">
                   <div className="space-y-6 px-5 py-6">
-                     {linkTree.length > 0 ? (
-                        <Accordion type="single" collapsible className="space-y-3">
-                           {linkTree.map((node, index) => renderMobileNode(node, index))}
-                        </Accordion>
-                     ) : null}
+                     {linkTree.length > 0 ? <div className="space-y-3">{linkTree.map((node, index) => renderMobileNode(node, index))}</div> : null}
 
                      <div className="grid gap-3 sm:grid-cols-2">
                         {actionItems.map((item) => {
