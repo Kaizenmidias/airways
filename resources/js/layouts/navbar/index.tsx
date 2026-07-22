@@ -90,7 +90,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 focus:bg-white/10 focus:text-white">
+               <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary">
                   {renderNavLabel(item)}
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
@@ -102,7 +102,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:text-white')}>
+            <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary')}>
                {renderNavLabel(item)}
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -133,7 +133,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             if (subNode.children.length > 0) {
                return (
                   <DropdownMenuSub key={`${parentKey}-${index}`}>
-                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 focus:bg-white/10 focus:text-white">
+                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>

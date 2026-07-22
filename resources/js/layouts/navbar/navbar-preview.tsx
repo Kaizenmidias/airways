@@ -52,7 +52,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       if (keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm">
+               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary">
                   {renderNavLabel(item)}
                   <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
@@ -65,7 +65,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm">
+            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary">
                {renderNavLabel(item)}
                <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
@@ -94,7 +94,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             if (subNode.children.length > 0) {
                return (
                   <DropdownMenuSub key={`${parentKey}-${idx}`}>
-                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm">
+                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground hover:bg-white/10 hover:text-primary focus:bg-white/10 focus:text-primary data-[state=open]:bg-white/10 data-[state=open]:text-primary">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>

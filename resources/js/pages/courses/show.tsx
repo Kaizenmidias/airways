@@ -130,6 +130,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                      </div>
 
                      <div className="space-y-4">
+                        {course.sub_title ? <p className="text-lg font-semibold tracking-[0.02em] text-[#FD122E] sm:text-xl">{course.sub_title}</p> : null}
                         <h1 className="max-w-3xl text-4xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.5rem]">
                            {course.title}
                         </h1>

@@ -29,6 +29,7 @@ interface CourseCategoryChild extends TableCommon {
 // courses.ts
 interface Course extends TableCommon {
    title: string;
+   sub_title?: string;
    slug: string;
    short_description: string;
    course_type: string;

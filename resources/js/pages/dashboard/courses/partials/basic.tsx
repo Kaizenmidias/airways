@@ -25,6 +25,7 @@ const Basic = () => {
    const { data, setData, post, errors, processing } = useForm({
       tab: tab,
       title: course.title,
+      sub_title: course.sub_title ?? '',
       short_description: course.short_description,
       description: course.description,
       status: course.status,
@@ -98,6 +99,12 @@ const Basic = () => {
    return (
       <Card className="container p-4 sm:p-6">
          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+               <Label>{input.sub_title}</Label>
+               <Input name="sub_title" value={data.sub_title} onChange={(e) => onHandleChange(e, setData)} placeholder="Ex.: Grand School" />
+               <InputError message={errors.sub_title} />
+            </div>
+
             <div>
                <Label>{input.title} *</Label>
                <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder={input.title_placeholder} />
