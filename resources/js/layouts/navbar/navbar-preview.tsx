@@ -50,9 +50,43 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          </DropdownMenuItem>
       ));
 
+   const renderSubCategoryItems = (category: CourseCategory, childCategories: CourseCategoryChild[]) =>
+      childCategories.map((child) => {
+         const childCourses = child.courses ?? [];
+         const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
+
+         if (childCourses.length > 0) {
+            return (
+               <DropdownMenuSub key={child.id}>
+                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[state=open]:bg-white data-[state=open]:text-primary">
+                     <span className="flex flex-col leading-tight">
+                        <span>{child.title}</span>
+                     </span>
+                     <ChevronRight className="ml-auto h-4 w-4" />
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="min-w-20">
+                     {renderCourseItems(childCourses)}
+                  </DropdownMenuSubContent>
+               </DropdownMenuSub>
+            );
+         }
+
+         return (
+            <DropdownMenuItem key={child.id} asChild className="cursor-pointer px-5">
+               <Link href={childHref} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+                  <span className="flex flex-col leading-tight">
+                     <span>{child.title}</span>
+                  </span>
+               </Link>
+            </DropdownMenuItem>
+         );
+      });
+
    const renderCategoryNode = (item: NavbarItem, keySuffix = '') => {
-      const courses = item.course_category?.courses ?? [];
-      const categoryHref = route('category.courses', { category: item.course_category?.slug || item.slug });
+      const category = item.course_category;
+      const courses = category?.courses ?? [];
+      const childCategories = category?.category_children ?? [];
+      const categoryHref = route('category.courses', { category: category?.slug || item.slug });
 
       if (keySuffix) {
          return (
@@ -63,6 +97,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-20">
                   {courses.length > 0 ? renderCourseItems(courses) : null}
+                  {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
                </DropdownMenuSubContent>
             </DropdownMenuSub>
          );
@@ -76,7 +111,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="min-w-20">
                {courses.length > 0 ? renderCourseItems(courses) : null}
-               {courses.length === 0 ? (
+               {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
+               {childCategories.length === 0 && courses.length === 0 ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-5">
                      <Link href={categoryHref} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
                         {renderNavLabel(item)}

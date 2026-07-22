@@ -24,6 +24,7 @@ interface CourseCategoryChild extends TableCommon {
    keywords?: string;
    description?: string;
    course_category_id: number;
+   courses?: Course[];
 }
 
 // courses.ts

@@ -65,33 +65,21 @@ const Index = (props: Props) => {
       post(route('courses.store'));
    };
 
-   const transformedCategories = useMemo(() => {
-      return categories.flatMap((category) => {
-         // Parent categories
-         const categoryItem = {
-            label: category.title,
-            value: category.title,
-            id: category.id,
-            child_id: '',
-         };
-
-         // Child categories
-         const childItems =
-            category.category_children?.map((child) => ({
-               label: `--${child.title}`,
-               value: child.title,
-               id: child.course_category_id,
-               child_id: child.id,
-            })) || [];
-
-         return [categoryItem, ...childItems]; // Combine parent + children
-      });
-   }, [categories]);
-
    const transformedInstructors = instructors.map((instructor) => ({
       label: instructor.user.name,
       value: instructor.id as string,
    }));
+
+   const selectedCategory = useMemo(
+      () => categories.find((category) => String(category.id) === String(data.course_category_id)),
+      [categories, data.course_category_id],
+   );
+
+   const selectedChildCategory = useMemo(
+      () =>
+         selectedCategory?.category_children?.find((child) => String(child.id) === String(data.course_category_child_id)) ?? null,
+      [selectedCategory, data.course_category_child_id],
+   );
 
    const courseLevelLabels: Record<string, string> = {
       beginner: 'Iniciante',
@@ -182,15 +170,37 @@ const Index = (props: Props) => {
                      <div>
                         <Label htmlFor="course_category_id">{input.category} *</Label>
                         <Combobox
-                           data={transformedCategories}
+                           data={categories.map((category) => ({
+                              id: category.id,
+                              label: category.title,
+                              value: String(category.id),
+                           }))}
                            placeholder={input.category_placeholder}
+                           defaultValue={String(data.course_category_id || '')}
                            onSelect={(selected) => {
-                              setData('course_category_id', selected.id as any);
-                              setData('course_category_child_id', selected.child_id as any);
+                              setData('course_category_id', String(selected.id));
+                              setData('course_category_child_id', '');
                            }}
                         />
                         <InputError message={errors.course_category_id} />
                      </div>
+
+                     {selectedCategory?.category_children?.length ? (
+                        <div>
+                           <Label htmlFor="course_category_child_id">Subcategoria</Label>
+                           <Combobox
+                              data={selectedCategory.category_children.map((child) => ({
+                                 id: child.id,
+                                 label: child.title,
+                                 value: String(child.id),
+                              }))}
+                              placeholder="Selecione uma subcategoria"
+                              defaultValue={selectedChildCategory ? String(selectedChildCategory.id) : ''}
+                              onSelect={(selected) => setData('course_category_child_id', String(selected.id))}
+                           />
+                           <InputError message={errors.course_category_child_id} />
+                        </div>
+                     ) : null}
 
                      <div>
                         <Label htmlFor="level">{input.course_level} *</Label>

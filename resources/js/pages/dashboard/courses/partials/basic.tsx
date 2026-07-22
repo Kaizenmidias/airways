@@ -44,33 +44,21 @@ const Basic = () => {
       post(route('courses.update', { id: course.id }));
    };
 
-   const transformedCategories = useMemo(() => {
-      return categories.flatMap((category) => {
-         // Parent categories
-         const categoryItem = {
-            id: category.id,
-            label: category.title,
-            value: category.title,
-            child_id: '',
-         };
-
-         // Child categories
-         const childItems =
-            category.category_children?.map((child) => ({
-               id: child.course_category_id,
-               label: `--${child.title}`,
-               value: child.title,
-               child_id: child.id,
-            })) || [];
-
-         return [categoryItem, ...childItems]; // Combine parent + children
-      });
-   }, [categories]);
-
    const transformedInstructors = instructors?.map((instructor) => ({
       label: instructor.user.name,
       value: instructor.id as string,
    }));
+
+   const selectedCategory = useMemo(
+      () => categories.find((category) => String(category.id) === String(data.course_category_id)),
+      [categories, data.course_category_id],
+   );
+
+   const selectedChildCategory = useMemo(
+      () =>
+         selectedCategory?.category_children?.find((child) => String(child.id) === String(data.course_category_child_id)) ?? null,
+      [selectedCategory, data.course_category_child_id],
+   );
 
    const courseLevelLabels: Record<string, string> = {
       beginner: 'Iniciante',
@@ -78,23 +66,6 @@ const Basic = () => {
       advanced: 'Avançado',
       expert: 'Especialista',
    };
-
-   let selectedCategory: any;
-   categories.map((category) => {
-      if (course.course_category_child_id) {
-         category.category_children?.map((child) => {
-            if (child.id === data.course_category_child_id) {
-               selectedCategory = child;
-               return;
-            }
-         });
-      } else {
-         if (category.id === data.course_category_id) {
-            selectedCategory = category;
-            return;
-         }
-      }
-   });
 
    return (
       <Card className="container p-4 sm:p-6">
@@ -162,16 +133,37 @@ const Basic = () => {
                <div>
                   <Label>{input.category} *</Label>
                   <Combobox
-                     data={transformedCategories}
+                     data={categories.map((category) => ({
+                        id: category.id,
+                        label: category.title,
+                        value: String(category.id),
+                     }))}
                      placeholder={input.category_placeholder}
-                     defaultValue={selectedCategory?.title || ''}
+                     defaultValue={String(data.course_category_id || '')}
                      onSelect={(selected) => {
-                        setData('course_category_id', selected.id as number);
-                        setData('course_category_child_id', selected.child_id as number);
+                        setData('course_category_id', String(selected.id));
+                        setData('course_category_child_id', '');
                      }}
                   />
                   <InputError message={errors.course_category_id} />
                </div>
+
+               {selectedCategory?.category_children?.length ? (
+                  <div>
+                     <Label>Subcategoria</Label>
+                     <Combobox
+                        data={selectedCategory.category_children.map((child) => ({
+                           id: child.id,
+                           label: child.title,
+                           value: String(child.id),
+                        }))}
+                        placeholder="Selecione uma subcategoria"
+                        defaultValue={selectedChildCategory ? String(selectedChildCategory.id) : ''}
+                        onSelect={(selected) => setData('course_category_child_id', String(selected.id))}
+                     />
+                     <InputError message={errors.course_category_child_id} />
+                  </div>
+               ) : null}
 
                <div>
                   <Label>{input.course_level} *</Label>

@@ -150,11 +150,21 @@ class SettingsService extends MediaService
                 ->where('active', true)
                 ->with(['navbarItems' => function ($query) {
                     $query->with(['courseCategory' => function ($categoryQuery) {
-                        $categoryQuery->with(['courses' => function ($courseQuery) {
-                            $courseQuery->where('status', 'approved')
-                                ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id')
-                                ->orderBy('title', 'asc');
-                        }]);
+                        $categoryQuery->with([
+                            'courses' => function ($courseQuery) {
+                                $courseQuery->where('status', 'approved')
+                                    ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
+                                    ->orderBy('title', 'asc');
+                            },
+                            'category_children' => function ($childQuery) {
+                                $childQuery->orderBy('sort', 'asc')
+                                    ->with(['courses' => function ($courseQuery) {
+                                        $courseQuery->where('status', 'approved')
+                                            ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
+                                            ->orderBy('title', 'asc');
+                                    }]);
+                            },
+                        ]);
                     }]);
                 }])
                 ->first();
