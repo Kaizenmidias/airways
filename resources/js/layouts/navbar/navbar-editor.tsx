@@ -6,35 +6,35 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { buildNavbarTree, recalculateFlatSorts } from '@/lib/navbar-tree';
+import { buildNavbarTree, recalculateFlatSorts, type NavbarTreeNode } from '@/lib/navbar-tree';
 import { router, useForm } from '@inertiajs/react';
 import { ArrowUpDown, Edit, ExternalLink, GripVertical, Plus, Settings, Trash2 } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 
 interface NavbarItemForm {
-   type: string;
+   type: 'url' | 'category' | 'action';
    slug: string;
    subtitle: string;
    title: string;
    value: string;
    active: boolean;
    parent_id: number | null;
+   course_category_id: number | null;
    items: { title: string; url: string }[];
    sort: number;
    [key: string]: any;
 }
 
-interface NavbarTreeNode {
-   item: NavbarItem;
-   children: NavbarTreeNode[];
+interface Props {
+   navbar: Navbar;
+   courseCategories: CourseCategory[];
 }
 
-const getRootLinkCount = (items: NavbarItem[]) => items.filter((item) => item.type !== 'action' && !item.parent_id).length;
+const getRootMenuCount = (items: NavbarItem[]) => items.filter((item) => item.type !== 'action' && !item.parent_id).length;
 
-const moveTreeItem = (items: NavbarItem[], draggedId: number | string, targetId: number | string, mode: 'before' | 'after' | 'child') => {
+const moveTreeItem = (items: NavbarItem[], draggedId: string | number, targetId: string | number, mode: 'before' | 'after' | 'child') => {
    const reordered = [...items];
    const draggedIndex = reordered.findIndex((item) => String(item.id) === String(draggedId));
    const targetIndex = reordered.findIndex((item) => String(item.id) === String(targetId));
@@ -47,26 +47,19 @@ const moveTreeItem = (items: NavbarItem[], draggedId: number | string, targetId:
    const [draggedItem] = reordered.splice(draggedIndex, 1);
    const nextTargetIndex = reordered.findIndex((item) => String(item.id) === String(targetId));
 
-   const updatedDragged = {
+   reordered.splice(nextTargetIndex >= 0 ? nextTargetIndex + (mode === 'before' ? 0 : 1) : reordered.length, 0, {
       ...draggedItem,
       parent_id: mode === 'child' ? Number(targetId) : targetItem?.parent_id ?? null,
-   };
-
-   const insertionIndex = mode === 'before' ? nextTargetIndex : nextTargetIndex + 1;
-   reordered.splice(insertionIndex, 0, updatedDragged);
+   });
 
    return recalculateFlatSorts(reordered);
 };
 
-const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
-   const navbarItems = useMemo(() => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)), [navbar.navbar_items]);
-   const linkItems = useMemo(() => navbarItems.filter((item) => item.type !== 'action'), [navbarItems]);
-   const linkTree = useMemo(() => buildNavbarTree(linkItems), [linkItems]);
-   const [activeType, setActiveType] = useState<string>('url');
+const NavbarEditor = ({ navbar, courseCategories }: Props) => {
+   const [activeType, setActiveType] = useState<'menu' | 'action'>('menu');
    const [editingItem, setEditingItem] = useState<NavbarItem | null>(null);
    const [isFormOpen, setIsFormOpen] = useState(false);
-   const [isReorderOpen, setIsReorderOpen] = useState(false);
-   const [reorderItems, setReorderItems] = useState<NavbarItem[]>(linkItems);
+   const [menuItems, setMenuItems] = useState<NavbarItem[]>([]);
    const [draggedId, setDraggedId] = useState<string | number | null>(null);
    const [dropState, setDropState] = useState<{ id: string | number; mode: 'before' | 'after' | 'child' } | null>(null);
 
@@ -79,27 +72,53 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
       items: [],
       active: true,
       parent_id: null,
+      course_category_id: null,
       sort: 0,
    });
 
-   useEffect(() => {
-      if (!isReorderOpen) {
-         setReorderItems(linkItems);
-      }
-   }, [isReorderOpen, linkItems]);
+   const sortedNavbarItems = useMemo(() => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)), [navbar.navbar_items]);
+   const actionItems = useMemo(() => sortedNavbarItems.filter((item) => item.type === 'action'), [sortedNavbarItems]);
+   const activeMenuItems = useMemo(() => menuItems.filter((item) => item.type !== 'action'), [menuItems]);
+   const menuTree = useMemo(() => buildNavbarTree(activeMenuItems), [activeMenuItems]);
 
-   const openCreateForm = (type: string) => {
+   useEffect(() => {
+      setMenuItems(sortedNavbarItems.filter((item) => item.type !== 'action'));
+   }, [sortedNavbarItems]);
+
+   const persistMenuOrder = (items: NavbarItem[]) => {
+      const sortedData = recalculateFlatSorts(items).map((item) => ({
+         id: Number(item.id),
+         sort: item.sort,
+         parent_id: item.parent_id === null ? null : Number(item.parent_id),
+      }));
+
+      router.post(
+         route('settings.navbar.items.reorder'),
+         { sortedData },
+         {
+            preserveScroll: true,
+            onSuccess: () => {
+               router.reload({ only: ['navbar'] });
+            },
+         },
+      );
+   };
+
+   const openCreateForm = (type: 'url' | 'category' | 'action') => {
+      const defaultCategory = type === 'category' ? courseCategories[0] : null;
+
       setEditingItem(null);
       setData({
          type,
-         slug: '',
+         slug: type === 'category' && defaultCategory ? `category-${defaultCategory.slug}` : '',
          subtitle: '',
-         title: '',
+         title: type === 'category' && defaultCategory ? defaultCategory.title : '',
          value: '',
          items: [],
          active: true,
          parent_id: null,
-         sort: type === 'url' ? getRootLinkCount(linkItems) + 1 : navbarItems.filter((item) => item.type === 'action').length + 1,
+         course_category_id: defaultCategory ? Number(defaultCategory.id) : null,
+         sort: type === 'action' ? actionItems.length + 1 : getRootMenuCount(menuItems) + 1,
       });
       setIsFormOpen(true);
    };
@@ -107,17 +126,29 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
    const openEditForm = (item: NavbarItem) => {
       setEditingItem(item);
       setData({
-         type: item.type,
+         type: item.type as NavbarItemForm['type'],
          slug: item.slug,
          subtitle: item.subtitle || '',
          title: item.title,
          value: item.value || '',
+         items: Array.isArray(item.items) ? item.items.map((subItem: any) => ({ title: subItem.title || '', url: subItem.url || '' })) : [],
          active: item.active,
          parent_id: item.parent_id ?? null,
-         items: Array.isArray(item.items) ? item.items.map((subItem: any) => ({ title: subItem.title || '', url: subItem.url || '' })) : [],
+         course_category_id: item.course_category_id ?? null,
          sort: item.sort,
       });
       setIsFormOpen(true);
+   };
+
+   const handleCategorySelect = (courseCategoryId: string) => {
+      const selectedCategory = courseCategories.find((category) => String(category.id) === courseCategoryId);
+
+      setData((prev) => ({
+         ...prev,
+         course_category_id: selectedCategory ? Number(selectedCategory.id) : null,
+         title: selectedCategory ? selectedCategory.title : prev.title,
+         slug: selectedCategory ? `category-${selectedCategory.slug}` : prev.slug,
+      }));
    };
 
    const handleSubmit = (e: React.FormEvent) => {
@@ -140,28 +171,6 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
       }
    };
 
-   const handleReorderSave = () => {
-      const sortedData = recalculateFlatSorts(reorderItems).map((item) => ({
-         id: Number(item.id),
-         sort: item.sort,
-         parent_id: item.parent_id === null ? null : Number(item.parent_id),
-      }));
-
-      router.post(
-         route('settings.navbar.items.reorder'),
-         {
-            sortedData,
-         },
-         {
-            preserveScroll: true,
-            onSuccess: () => {
-               setIsReorderOpen(false);
-               router.reload({ only: ['navbar'] });
-            },
-         },
-      );
-   };
-
    const handleDragStart = (itemId: string | number) => {
       setDraggedId(itemId);
    };
@@ -176,75 +185,81 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
          return;
       }
 
-      setReorderItems((current) => moveTreeItem(current, draggedId, targetId, mode));
+      const nextItems = moveTreeItem(menuItems, draggedId, targetId, mode);
+      setMenuItems(nextItems);
       setDraggedId(null);
       setDropState(null);
+      persistMenuOrder(nextItems);
    };
 
-   const renderTreeNode = (node: NavbarTreeNode, depth = 0, draggable = false) => {
-      const hasChildren = node.children.length > 0;
+   const renderMenuNode = (node: NavbarTreeNode<NavbarItem>, depth = 0) => {
+      const selectedCategory = node.item.course_category_id ? courseCategories.find((category) => category.id === node.item.course_category_id) : null;
       const isDragged = draggedId === node.item.id;
+      const hasStaticChildren = node.children.length > 0;
 
       return (
          <div key={node.item.id} className="space-y-2">
             <div
-               draggable={draggable}
-               onDragStart={draggable ? () => handleDragStart(node.item.id) : undefined}
-               onDragEnd={draggable ? handleDragEnd : undefined}
-               onDragOver={
-                  draggable
-                     ? (event) => {
-                          event.preventDefault();
+               draggable
+               onDragStart={() => handleDragStart(node.item.id)}
+               onDragEnd={handleDragEnd}
+               onDragOver={(event) => {
+                  event.preventDefault();
 
-                          if (draggedId === node.item.id) {
-                             return;
-                          }
+                  if (draggedId === node.item.id) {
+                     return;
+                  }
 
-                          const rect = (event.currentTarget as HTMLDivElement).getBoundingClientRect();
-                          const xOffset = event.clientX - rect.left;
-                          const childThreshold = 78;
-                          const mode = depth === 0 && xOffset > childThreshold ? 'child' : event.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+                  const rect = (event.currentTarget as HTMLDivElement).getBoundingClientRect();
+                  const xOffset = event.clientX - rect.left;
+                  const childThreshold = 78;
+                  const mode = depth === 0 && xOffset > childThreshold ? 'child' : event.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
 
-                          setDropState({ id: node.item.id, mode });
-                       }
-                     : undefined
-               }
-               onDrop={
-                  draggable
-                     ? (event) => {
-                          event.preventDefault();
-                          handleDropZone(node.item.id, dropState?.id === node.item.id ? dropState.mode : 'after');
-                       }
-                     : undefined
-               }
+                  setDropState({ id: node.item.id, mode });
+               }}
+               onDrop={(event) => {
+                  event.preventDefault();
+                  handleDropZone(node.item.id, dropState?.id === node.item.id ? dropState.mode : 'after');
+               }}
                className={cn(
                   'group flex items-start gap-3 rounded-2xl border border-transparent bg-muted/70 p-3 transition-all',
                   depth > 0 && 'ml-8 border-l-2 border-dashed border-primary/20 bg-background/80',
-                  draggable && isDragged && 'opacity-40',
-                  draggable && dropState?.id === node.item.id && 'border-primary/40 bg-primary/5',
+                  isDragged && 'opacity-40',
+                  dropState?.id === node.item.id && 'border-primary/40 bg-primary/5',
                )}
             >
-               {draggable ? (
-                  <button
-                     type="button"
-                     className="mt-0.5 cursor-grab rounded-md p-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground active:cursor-grabbing"
-                  >
-                     <GripVertical className="h-4 w-4" />
-                  </button>
-               ) : null}
+               <button
+                  type="button"
+                  className="mt-0.5 cursor-grab rounded-md p-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground active:cursor-grabbing"
+               >
+                  <GripVertical className="h-4 w-4" />
+               </button>
 
                <div className="flex-1">
                   {node.item.subtitle ? <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-rose-500">{node.item.subtitle}</div> : null}
+
                   <div className="flex items-center gap-2">
                      {node.item.type === 'action' ? <Settings className="h-4 w-4 text-muted-foreground" /> : <ExternalLink className="h-4 w-4 text-muted-foreground" />}
                      <div className="font-medium text-foreground">{node.item.title}</div>
-                     {hasChildren && (
+                     {node.item.type === 'category' ? (
+                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-600">
+                           Category
+                        </span>
+                     ) : null}
+                     {hasStaticChildren ? (
                         <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
                            Dropdown
                         </span>
-                     )}
+                     ) : null}
                   </div>
-                  {node.item.value ? <div className="mt-1 text-sm text-muted-foreground">{node.item.value}</div> : null}
+
+                  {node.item.type === 'category' ? (
+                     <div className="mt-1 text-sm text-muted-foreground">
+                        {selectedCategory ? `${selectedCategory.courses_count ?? 0} courses from ${selectedCategory.title}` : 'Dynamic course list'}
+                     </div>
+                  ) : node.item.value ? (
+                     <div className="mt-1 text-sm text-muted-foreground">{node.item.value}</div>
+                  ) : null}
                </div>
 
                <div className="flex gap-2">
@@ -262,106 +277,76 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
                </div>
             </div>
 
-            {node.children.length > 0 && <div className="space-y-2">{node.children.map((child) => renderTreeNode(child, depth + 1, draggable))}</div>}
+            {node.children.length > 0 && <div className="space-y-2">{node.children.map((child) => renderMenuNode(child, depth + 1))}</div>}
          </div>
       );
    };
 
    return (
       <div className="p-4 sm:p-6">
-         <Tabs value={activeType} onValueChange={setActiveType}>
+         <Tabs value={activeType} onValueChange={(value) => setActiveType(value as 'menu' | 'action')}>
             <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                <TabsList className="grid h-auto grid-cols-2 sm:h-10 sm:grid-cols-2">
-                  <TabsTrigger value="url" className="flex h-8 cursor-pointer items-center gap-2">
+                  <TabsTrigger value="menu" className="flex h-8 cursor-pointer items-center gap-2">
                      <ExternalLink className="h-4 w-4" />
-                     URL Items ({linkItems.length})
+                     Menu Items ({menuItems.length})
                   </TabsTrigger>
                   <TabsTrigger value="action" className="flex h-8 cursor-pointer items-center gap-2">
                      <Settings className="h-4 w-4" />
-                     Actions ({navbarItems.filter((item) => item.type === 'action').length})
+                     Actions ({actionItems.length})
                   </TabsTrigger>
                </TabsList>
 
-               <div className="flex items-center gap-2">
-                  <Dialog open={isReorderOpen} onOpenChange={setIsReorderOpen}>
-                     <Button variant="outline" className="flex items-center gap-2" onClick={() => setIsReorderOpen(true)}>
-                        <ArrowUpDown className="h-4 w-4" />
-                        Reorder
-                     </Button>
-                     <DialogContent className="max-h-[90vh] max-w-4xl overflow-hidden p-0">
-                        <div className="border-b px-6 py-5">
-                           <DialogHeader>
-                              <DialogTitle>Reorder navbar items</DialogTitle>
-                              <DialogDescription>Drag a link below and to the right of another link to turn it into a dropdown child.</DialogDescription>
-                           </DialogHeader>
-                        </div>
+               <div className="flex flex-wrap items-center gap-2">
+                  <div className="rounded-full border bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
+                     Drag items to reorder. Slide an item to the right of another root item to nest it.
+                  </div>
 
-                        <div className="px-6 py-5">
-                           <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
-                              <span>Drag rows to reorder. Drop to the right of a root item to create a dropdown.</span>
-                              <Button type="button" onClick={handleReorderSave} disabled={!reorderItems.length}>
-                                 Save order
-                              </Button>
-                           </div>
+                  <Button variant="outline" className="flex items-center gap-2" onClick={() => openCreateForm('url')}>
+                     <Plus className="h-4 w-4" />
+                     Add URL
+                  </Button>
 
-                           <div className="rounded-2xl border bg-background p-3">
-                              <ScrollArea className="max-h-[60vh] pr-3">
-                                 <div className="space-y-2">
-                                    {buildNavbarTree(reorderItems).map((node) => renderTreeNode(node, 0, true))}
-                                 </div>
-                              </ScrollArea>
-                           </div>
-                        </div>
-                     </DialogContent>
-                  </Dialog>
-
-                  {activeType === 'url' && (
-                     <Button onClick={() => openCreateForm('url')} className="flex items-center gap-2">
-                        <Plus className="h-4 w-4" />
-                        Add URL
-                     </Button>
-                  )}
+                  <Button variant="outline" className="flex items-center gap-2" onClick={() => openCreateForm('category')} disabled={courseCategories.length === 0}>
+                     <Plus className="h-4 w-4" />
+                     Add Category
+                  </Button>
                </div>
             </div>
 
-            <TabsContent value="url" className="space-y-4">
-               {linkTree.length > 0 ? (
-                  <div className="space-y-3">
-                     {linkTree.map((node) => renderTreeNode(node))}
-                  </div>
+            <TabsContent value="menu" className="space-y-4">
+               {menuTree.length > 0 ? (
+                  <div className="space-y-3">{menuTree.map((node) => renderMenuNode(node))}</div>
                ) : (
-                  <div className="py-8 text-center text-gray-500">No URL items found. Click "Add URL" to create one.</div>
+                  <div className="py-8 text-center text-gray-500">No menu items found. Use the buttons above to add URL items or course categories.</div>
                )}
             </TabsContent>
 
             <TabsContent value="action" className="space-y-4">
-               {navbarItems.filter((item) => item.type === 'action').length > 0 ? (
+               {actionItems.length > 0 ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                     {navbarItems
-                        .filter((item) => item.type === 'action')
-                        .map((item) => (
-                           <div key={item.id} className="bg-muted flex items-center justify-between gap-3 rounded-2xl border p-3">
-                              <div className="flex items-center gap-3">
-                                 <Settings className="h-4 w-4" />
-
-                                 <p className="text-sm font-medium">{item.title}</p>
-                              </div>
-
-                              <div className="flex items-center space-x-2">
-                                 <Label htmlFor={`action-${item.id}`}>Active</Label>
-                                 <Switch
-                                    id={`action-${item.id}`}
-                                    checked={item.active}
-                                    onCheckedChange={(checked) => {
-                                       router.put(`/dashboard/settings/navbar-items/${item.id}`, {
-                                          ...(item as any),
-                                          active: checked,
-                                       });
-                                    }}
-                                 />
-                              </div>
+                     {actionItems.map((item) => (
+                        <div key={item.id} className="bg-muted flex items-center justify-between gap-3 rounded-2xl border p-3">
+                           <div className="flex items-center gap-3">
+                              <Settings className="h-4 w-4" />
+                              <p className="text-sm font-medium">{item.title}</p>
                            </div>
-                        ))}
+
+                           <div className="flex items-center space-x-2">
+                              <Label htmlFor={`action-${item.id}`}>Active</Label>
+                              <Switch
+                                 id={`action-${item.id}`}
+                                 checked={item.active}
+                                 onCheckedChange={(checked) => {
+                                    router.put(`/dashboard/settings/navbar-items/${item.id}`, {
+                                       ...(item as any),
+                                       active: checked,
+                                    });
+                                 }}
+                              />
+                           </div>
+                        </div>
+                     ))}
                   </div>
                ) : (
                   <div className="py-8 text-center text-gray-500">No action items found.</div>
@@ -373,9 +358,11 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
             <DialogContent className="max-w-2xl">
                <DialogHeader>
                   <DialogTitle>
-                     {editingItem ? 'Edit' : 'Create'} {data.type.charAt(0).toUpperCase() + data.type.slice(1)} Item
+                     {editingItem ? 'Edit' : 'Create'} {data.type === 'category' ? 'Category' : data.type.charAt(0).toUpperCase() + data.type.slice(1)} Item
                   </DialogTitle>
-                  <DialogDescription>{editingItem ? 'Update the details of this navbar item.' : 'Add a new navbar item to your navigation.'}</DialogDescription>
+                  <DialogDescription>
+                     {editingItem ? 'Update the details of this navbar item.' : 'Add a new navbar item to your navigation.'}
+                  </DialogDescription>
                </DialogHeader>
 
                <form onSubmit={handleSubmit} className="space-y-4">
@@ -403,7 +390,7 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
                      />
                   </div>
 
-                  {data.type === 'url' && (
+                  {data.type !== 'action' && (
                      <div>
                         <Label htmlFor="subtitle">Subtitle</Label>
                         <Input
@@ -436,6 +423,27 @@ const NavbarEditor = ({ navbar }: { navbar: Navbar }) => {
                            placeholder="Enter URL (e.g., /courses, https://example.com)"
                            required
                         />
+                     </div>
+                  )}
+
+                  {data.type === 'category' && (
+                     <div>
+                        <Label htmlFor="course_category_id">Course Category</Label>
+                        <Select
+                           value={data.course_category_id ? String(data.course_category_id) : ''}
+                           onValueChange={handleCategorySelect}
+                        >
+                           <SelectTrigger>
+                              <SelectValue placeholder="Select a category" />
+                           </SelectTrigger>
+                           <SelectContent>
+                              {courseCategories.map((category) => (
+                                 <SelectItem key={category.id} value={String(category.id)}>
+                                    {category.title}
+                                 </SelectItem>
+                              ))}
+                           </SelectContent>
+                        </Select>
                      </div>
                   )}
 

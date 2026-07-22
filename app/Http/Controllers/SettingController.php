@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Updater\Models\Backup;
 use App\Models\Footer;
 use App\Models\FooterItem;
+use App\Models\Course\CourseCategory;
 use App\Models\Navbar;
 use App\Models\NavbarItem;
 use App\Models\Setting;
@@ -68,8 +69,11 @@ class SettingController extends Controller
     public function system(Request $request)
     {
         $system = $this->settingsService->getSetting(['type' => 'system']);
+        $courseCategories = CourseCategory::withCount(['courses' => function ($query) {
+            $query->where('status', 'approved');
+        }])->orderBy('sort', 'asc')->get();
 
-        return Inertia::render('dashboard/settings/system/index', compact('system'));
+        return Inertia::render('dashboard/settings/system/index', compact('system', 'courseCategories'));
     }
 
     /**

@@ -11,7 +11,7 @@ import { SystemProps } from '../index';
 
 const Navbar = () => {
    const { props } = usePage<SystemProps & SharedData>();
-   const { navbar, translate } = props;
+   const { navbar, translate, courseCategories } = props;
    const { settings, button } = translate;
    const [showEditor, setShowEditor] = useState(false);
 
@@ -46,7 +46,7 @@ const Navbar = () => {
          <Separator />
 
          {showEditor ? (
-            <NavbarEditor navbar={navbar} />
+            <NavbarEditor navbar={navbar} courseCategories={courseCategories} />
          ) : (
             <CardContent className="space-y-6 p-5">
                <div>

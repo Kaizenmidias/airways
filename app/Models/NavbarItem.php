@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Course\CourseCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,6 +16,7 @@ class NavbarItem extends Model
         'subtitle',
         'value',
         'items',
+        'course_category_id',
         'active',
         'parent_id',
         'navbar_id',
@@ -23,6 +25,7 @@ class NavbarItem extends Model
     protected $casts = [
         'sort' => 'integer',
         'active' => 'boolean',
+        'course_category_id' => 'integer',
         'parent_id' => 'integer',
         'items' => 'array',
     ];
@@ -37,6 +40,14 @@ class NavbarItem extends Model
     public function navbar(): BelongsTo
     {
         return $this->belongsTo(Navbar::class);
+    }
+
+    /**
+     * Get the course category linked to this navbar item.
+     */
+    public function courseCategory(): BelongsTo
+    {
+        return $this->belongsTo(CourseCategory::class, 'course_category_id');
     }
 
     /**

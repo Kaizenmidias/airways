@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Footer;
 use App\Models\FooterItem;
+use App\Models\Course\CourseCategory;
 use App\Models\Navbar;
 use App\Models\NavbarItem;
 use App\Models\Page;
@@ -147,7 +148,15 @@ class SettingsService extends MediaService
         return DB::transaction(function () use ($slug) {
             return Navbar::where('slug', $slug)
                 ->where('active', true)
-                ->with('navbarItems')
+                ->with(['navbarItems' => function ($query) {
+                    $query->with(['courseCategory' => function ($categoryQuery) {
+                        $categoryQuery->with(['courses' => function ($courseQuery) {
+                            $courseQuery->where('status', 'approved')
+                                ->select('id', 'title', 'slug', 'thumbnail', 'course_category_id')
+                                ->orderBy('title', 'asc');
+                        }]);
+                    }]);
+                }])
                 ->first();
         }, 5);
     }
@@ -188,9 +197,22 @@ class SettingsService extends MediaService
                 $data['items'] = null;
                 $data['parent_id'] = null;
                 $data['subtitle'] = null;
+                $data['course_category_id'] = null;
+            } elseif ($data['type'] === 'category') {
+                $category = CourseCategory::find($data['course_category_id'] ?? null);
+
+                if ($category) {
+                    $data['title'] = $data['title'] ?: $category->title;
+                    $data['slug'] = $data['slug'] ?: $category->slug;
+                }
+
+                $data['value'] = null;
+                $data['items'] = null;
+                $data['subtitle'] = $data['subtitle'] ?? null;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
+                $data['course_category_id'] = null;
             }
 
             $navbarItem = NavbarItem::create([
@@ -228,9 +250,21 @@ class SettingsService extends MediaService
                 $data['items'] = null;
                 $data['parent_id'] = null;
                 $data['subtitle'] = null;
+                $data['course_category_id'] = null;
+            } elseif ($data['type'] === 'category') {
+                $category = CourseCategory::find($data['course_category_id'] ?? null);
+
+                if ($category) {
+                    $data['title'] = $data['title'] ?: $category->title;
+                    $data['slug'] = $data['slug'] ?: $category->slug;
+                }
+
+                $data['value'] = null;
+                $data['items'] = null;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
+                $data['course_category_id'] = null;
             }
 
             $item->update($data);
@@ -346,6 +380,7 @@ class SettingsService extends MediaService
                 'subtitle' => $item->subtitle,
                 'value' => $item->value,
                 'items' => $item->items,
+                'course_category_id' => $item->course_category_id,
                 'parent_id' => $item->parent_id,
                 'sort' => $maxSort + 1,
                 'active' => true,

@@ -55,6 +55,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const resolveHref = (item: NavbarItem) => item.value || '';
    const isExternal = (href: string) => /^https?:\/\//i.test(href);
 
+   const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
+
    const renderNavLabel = (item: NavbarItem, className = '') => (
       <span className={cn('flex flex-col leading-tight', className)}>
          {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-rose-300/80">{item.subtitle}</span> : null}
@@ -66,6 +68,40 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       const { item } = node;
       const href = resolveHref(item);
       const linkClass = 'text-sm font-medium text-white/90 transition-colors hover:text-white';
+
+      if (item.type === 'category') {
+         const courses = item.course_category?.courses ?? [];
+
+         if (courses.length > 0) {
+            return (
+               <DropdownMenu key={item.id}>
+                  <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', linkClass)}>
+                     {renderNavLabel(item)}
+                     <ChevronDown className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="min-w-56 border-white/10 bg-slate-950/95 text-white">
+                     {courses.map((course) => (
+                        <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-0 py-0">
+                           <Link href={resolveCourseHref(course)} className="block w-full px-4 py-2 text-white/90 hover:text-white">
+                              <span className="flex flex-col leading-tight">
+                                 <span>{course.title}</span>
+                              </span>
+                           </Link>
+                        </DropdownMenuItem>
+                     ))}
+                  </DropdownMenuContent>
+               </DropdownMenu>
+            );
+         }
+
+         const categoryHref = route('category.courses', { category: item.course_category?.slug || item.slug });
+
+         return (
+            <Link key={item.id} href={categoryHref} className={linkClass}>
+               {renderNavLabel(item)}
+            </Link>
+         );
+      }
 
       if (node.children.length > 0) {
          return (

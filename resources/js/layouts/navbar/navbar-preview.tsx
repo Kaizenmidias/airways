@@ -21,6 +21,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const items = useMemo(() => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)), [navbar.navbar_items]);
    const linkTree = useMemo(() => buildNavbarTree(items.filter((item) => item.type !== 'action' && item.active)), [items]);
 
+   const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
+
    const renderNavLabel = (item: NavbarItem) => (
       <span className="flex flex-col leading-tight">
          {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-rose-300/80">{item.subtitle}</span> : null}
@@ -31,6 +33,34 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const renderNode = (node: NavbarTreeNode) => {
       const { item } = node;
       const href = item.value || '';
+
+      if (item.type === 'category') {
+         const courses = item.course_category?.courses ?? [];
+
+         if (courses.length > 0) {
+            return (
+               <DropdownMenu key={item.id}>
+                  <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm">
+                     {renderNavLabel(item)}
+                     <ChevronDown className="ml-1 h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="min-w-20">
+                     {courses.map((course) => (
+                        <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-5">
+                           <Link href={resolveCourseHref(course)}>{course.title}</Link>
+                        </DropdownMenuItem>
+                     ))}
+                  </DropdownMenuContent>
+               </DropdownMenu>
+            );
+         }
+
+         return (
+            <Link key={item.id} href={route('category.courses', { category: item.course_category?.slug || item.slug })} className="py-1 text-sm font-normal">
+               {renderNavLabel(item)}
+            </Link>
+         );
+      }
 
       if (node.children.length > 0) {
          return (

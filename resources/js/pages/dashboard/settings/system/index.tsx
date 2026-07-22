@@ -11,6 +11,7 @@ import Website from './partials/website';
 
 export interface SystemProps extends SharedData {
    system: Settings<SystemFields>;
+   courseCategories: CourseCategory[];
 }
 
 const System = () => {

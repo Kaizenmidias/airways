@@ -145,12 +145,14 @@ interface Navbar extends TableCommon {
 
 interface NavbarItem extends TableCommon {
    sort: number;
-   type: string;
+   type: 'url' | 'category' | 'action' | string;
    slug: string;
    title: string;
    subtitle: string | null;
    active: boolean;
    value: string | null;
+   course_category_id: number | null;
+   course_category?: CourseCategory | null;
    items: NavbarItem[] | null;
    parent_id: number | null;
    navbar_id: number;
