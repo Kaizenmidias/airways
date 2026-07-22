@@ -19,9 +19,9 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
    return [
    {
       accessorKey: 'title',
-      header: table.course_title,
+      header: () => <div className="pl-4">{table.course_title}</div>,
       cell: ({ row }) => (
-         <div className="py-1">
+         <div className="py-1 pl-4">
             <Link
                href={route('courses.edit', {
                   course: row.original.id,

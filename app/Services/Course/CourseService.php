@@ -42,12 +42,11 @@ class CourseService extends MediaService
    {
       return \DB::transaction(function () use ($id) {
          $course = Course::findOrFail($id);
-         $duplicate = $course->replicate();
+         $duplicate = $course->replicate(['user_id']);
 
          $duplicate->title = $course->title . ' (Copy)';
          $duplicate->slug = Str::slug($course->title . ' copy ' . now()->timestamp);
          $duplicate->status = 'draft';
-         $duplicate->user_id = Auth::user()->id;
          $duplicate->save();
 
          return $duplicate;
