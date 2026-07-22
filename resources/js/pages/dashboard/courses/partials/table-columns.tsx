@@ -8,6 +8,13 @@ import CourseStatusFilter from './course-status-filter';
 
 const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnDef<Course>[] => {
    const { table } = translate;
+   const statusLabels: Record<string, string> = {
+      draft: 'Rascunho',
+      upcoming: 'Próximo',
+      pending: 'Pendente',
+      approved: 'Aprovado',
+      rejected: 'Rejeitado',
+   };
    
    return [
    {
@@ -51,7 +58,7 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
             <CourseStatusFilter />
          </div>
       ),
-      cell: ({ row }) => <div className="py-1 text-center capitalize">{row.getValue('status')}</div>,
+      cell: ({ row }) => <div className="py-1 text-center capitalize">{statusLabels[String(row.getValue('status'))] ?? row.getValue('status')}</div>,
    },
    {
       accessorKey: 'category',

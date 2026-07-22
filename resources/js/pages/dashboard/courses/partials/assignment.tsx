@@ -30,14 +30,14 @@ const Assignment = () => {
       <div className="grid grid-cols-1">
          <Card className="space-y-6 overflow-hidden p-4 sm:p-6">
             <div className="flex items-center justify-between">
-               <h2 className="text-xl font-bold">Atividades</h2>
+               <h2 className="text-xl font-bold">{translate.dashboard.assignments}</h2>
 
                <AssignmentForm
-                  title={'Add Assignment'}
+                  title={`${translate.button.add} ${translate.button.assignment}`}
                   handler={
                      <Button className="flex items-center gap-2">
                         <Plus className="h-4 w-4" />
-                        <span>Adicionar Atividade</span>
+                        <span>{translate.button.add} {translate.button.assignment}</span>
                      </Button>
                   }
                />

@@ -15,6 +15,13 @@ const CourseUpdateHeader = () => {
    const { props } = usePage<CourseUpdateProps>();
    const { translate } = props;
    const { dashboard, button, input, common } = translate;
+   const statusLabels: Record<string, string> = {
+      draft: 'Rascunho',
+      upcoming: 'Próximo',
+      pending: common.pending || 'Pendente',
+      approved: button.approved || 'Approved',
+      rejected: 'Rejeitado',
+   };
    const user = props.auth.user;
    const { course, watchHistory, approvalStatus } = props;
    const statuses = props.statuses.filter((status) => status !== course.status);
@@ -71,7 +78,7 @@ const CourseUpdateHeader = () => {
             className={cn('capitalize', course.status === 'approved' ? 'bg-green-500' : course.status === 'rejected' ? 'bg-red-500' : 'bg-gray-500')}
             disabled
          >
-            {course.status}
+            {statusLabels[course.status] ?? course.status}
          </Button>
 
          {user.role === 'instructor' &&
@@ -140,7 +147,7 @@ const CourseUpdateHeader = () => {
                            <SelectContent>
                               {statuses.map((status) => (
                                  <SelectItem key={status} value={status}>
-                                    {status}
+                                    {statusLabels[status] ?? status}
                                  </SelectItem>
                               ))}
                            </SelectContent>

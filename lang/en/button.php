@@ -42,6 +42,7 @@ return [
     'send' => 'Send',
     'add_item' => 'Add Item',
     'reorder' => 'Reorder',
+    'assignment' => 'Assignment',
     'active' => 'Active',
     'inactive' => 'Inactive',
     'deactivate' => 'Deactivate',
@@ -107,6 +108,7 @@ return [
     'course_preview' => 'Course Preview',
     'submit_for_approval' => 'Submit for Approval',
     'approval_status' => 'Approval Status',
+    'approved' => 'Approved',
 
     // ==================================================
     // 04. Authentication Buttons

@@ -57,7 +57,7 @@ const Update = (props: CourseUpdateProps) => {
       },
       {
          id: nanoid(),
-         name: 'Assignment',
+         name: button.assignment,
          slug: 'assignment',
          Icon: FileText,
          Component: assignment ? Submissions : Assignment,

@@ -44,6 +44,7 @@ class StoreCourseRequest extends FormRequest
 
         return [
             'title' => 'required|string|max:255',
+            'sub_title' => 'nullable|string|max:255',
             'short_description' => 'required|string',
             'description' => 'nullable|string',
             'status' => 'required|string',

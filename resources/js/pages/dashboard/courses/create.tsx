@@ -39,6 +39,7 @@ const Index = (props: Props) => {
 
    const { data, setData, post, errors, processing } = useForm({
       title: '',
+      sub_title: '',
       short_description: '',
       description: '',
       status: user.role === 'admin' ? 'approved' : 'draft',
@@ -119,6 +120,12 @@ const Index = (props: Props) => {
                      <Label>{input.title} *</Label>
                      <Input name="title" value={data.title} onChange={(e) => onHandleChange(e, setData)} placeholder={input.title_placeholder} />
                      <InputError message={errors.title} />
+                  </div>
+
+                  <div>
+                     <Label>{input.sub_title}</Label>
+                     <Input name="sub_title" value={data.sub_title} onChange={(e) => onHandleChange(e, setData)} placeholder="Ex.: Grand School" />
+                     <InputError message={errors.sub_title} />
                   </div>
 
                   <div>

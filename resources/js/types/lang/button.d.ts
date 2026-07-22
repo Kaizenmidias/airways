@@ -106,6 +106,7 @@ interface ButtonLang {
    course_preview: string;
    submit_for_approval: string;
    approval_status: string;
+   approved: string;
 
    // ==================================================
    // 04. Authentication Buttons
@@ -246,4 +247,5 @@ interface ButtonLang {
    style: string;
    edit_navbar: string;
    edit_footer: string;
+   assignment: string;
 }
