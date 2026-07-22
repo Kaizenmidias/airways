@@ -181,10 +181,13 @@ class SettingsService extends MediaService
                     $data['items'] = [];
                 }
                 $data['value'] = null; // Dropdowns don't use value field
+                $data['parent_id'] = null;
             } elseif ($data['type'] === 'action') {
                 // For action types, clear both value and items fields
                 $data['value'] = null;
                 $data['items'] = null;
+                $data['parent_id'] = null;
+                $data['subtitle'] = null;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
@@ -218,10 +221,13 @@ class SettingsService extends MediaService
                     $data['items'] = [];
                 }
                 $data['value'] = null; // Dropdowns don't use value field
+                $data['parent_id'] = null;
             } elseif ($data['type'] === 'action') {
                 // For action types, clear both value and items fields
                 $data['value'] = null;
                 $data['items'] = null;
+                $data['parent_id'] = null;
+                $data['subtitle'] = null;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
@@ -248,11 +254,14 @@ class SettingsService extends MediaService
      */
     public function reorderNavbarItems(array $sortedData)
     {
-        foreach ($sortedData as $value) {
-            NavbarItem::where('id', $value['id'])->update([
-                'sort' => $value['sort']
-            ]);
-        }
+        return DB::transaction(function () use ($sortedData) {
+            foreach ($sortedData as $value) {
+                NavbarItem::where('id', $value['id'])->update([
+                    'sort' => $value['sort'],
+                    'parent_id' => $value['parent_id'] ?? null,
+                ]);
+            }
+        }, 5);
     }
 
     /**
@@ -334,8 +343,10 @@ class SettingsService extends MediaService
                 'type' => $item->type,
                 'slug' => $item->slug . '_copy',
                 'title' => $item->title . ' (Copy)',
+                'subtitle' => $item->subtitle,
                 'value' => $item->value,
                 'items' => $item->items,
+                'parent_id' => $item->parent_id,
                 'sort' => $maxSort + 1,
                 'active' => true,
             ]);

@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ScrollArea } from '@/components/ui/scroll-area';
 import PublicContainer from '@/components/public/public-container';
 import { cn } from '@/lib/utils';
+import { buildNavbarTree, type NavbarTreeNode } from '@/lib/navbar-tree';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronDown, GraduationCap, LayoutDashboard, LogOut, Menu, SettingsIcon, UserCircle, X } from 'lucide-react';
@@ -21,12 +22,6 @@ interface NavbarProps {
    customizable?: boolean;
 }
 
-type NavbarAction = NavbarItem & {
-   type?: string;
-   value?: string | null;
-   items?: NavbarAction[] | null;
-};
-
 const Navbar = ({ language = true, heightCover = true, customizable = true }: NavbarProps) => {
    const { props } = usePage<SharedData>();
    const { ziggy, navbar, translate, system, auth } = props;
@@ -35,13 +30,15 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
    const sortedItems = useMemo(() => {
-      return Array.isArray(navbar?.navbar_items) ? [...navbar.navbar_items].sort((a, b) => a.sort - b.sort) : [];
+      return Array.isArray(navbar?.navbar_items) ? [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)) : [];
    }, [navbar]);
 
-   const linkItems = sortedItems.filter((item) => (item.type === 'url' || item.type === 'dropdown') && item.active !== false);
+   const linkItems = useMemo(() => sortedItems.filter((item) => item.type !== 'action' && item.active !== false), [sortedItems]);
+   const linkTree = useMemo(() => buildNavbarTree(linkItems), [linkItems]);
    const actionItems = sortedItems.filter((item) => item.type === 'action' && item.active !== false);
    const customizeLink = props.customize ? ziggy.location : '?customize=true';
    const user = auth?.user;
+   const buttonLabels = translate.button as unknown as Record<string, string>;
 
    useEffect(() => {
       const handleScroll = () => {
@@ -55,46 +52,56 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       };
    }, []);
 
-   const resolveHref = (item: NavbarAction) => item.value || '';
+   const resolveHref = (item: NavbarItem) => item.value || '';
    const isExternal = (href: string) => /^https?:\/\//i.test(href);
 
-   const renderNavItem = (item: NavbarAction) => {
+   const renderNavLabel = (item: NavbarItem, className = '') => (
+      <span className={cn('flex flex-col leading-tight', className)}>
+         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-rose-300/80">{item.subtitle}</span> : null}
+         <span>{item.title}</span>
+      </span>
+   );
+
+   const renderNavItem = (node: NavbarTreeNode) => {
+      const { item } = node;
       const href = resolveHref(item);
       const linkClass = 'text-sm font-medium text-white/90 transition-colors hover:text-white';
 
-      if (item.type === 'dropdown' && Array.isArray(item.items) && item.items.length > 0) {
+      if (node.children.length > 0) {
          return (
             <DropdownMenu key={item.id}>
                <DropdownMenuTrigger className={cn('flex cursor-pointer items-center gap-1 outline-none', linkClass)}>
-                  <span>{item.title}</span>
+                  {renderNavLabel(item)}
                   <ChevronDown className="h-4 w-4" />
                </DropdownMenuTrigger>
                <DropdownMenuContent align="start" className="min-w-56 border-white/10 bg-slate-950/95 text-white">
-                  {item.items
-                     .filter((subItem) => subItem.active !== false)
-                     .map((subItem, index) => {
-                     const subHref = subItem.value || '';
-                     if (!subHref) {
-                        return (
-                           <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-default px-4 py-2 text-white/80">
-                              {subItem.title}
-                           </DropdownMenuItem>
-                        );
-                     }
+                  {node.children
+                     .filter((subNode) => subNode.item.active !== false)
+                     .map((subNode, index) => {
+                        const subItem = subNode.item;
+                        const subHref = subItem.value || '';
 
-                     return (
+                        if (!subHref) {
+                           return (
+                              <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-default px-4 py-2 text-white/80">
+                                 {renderNavLabel(subItem, 'text-white/80')}
+                              </DropdownMenuItem>
+                           );
+                        }
+
+                        return (
                            <DropdownMenuItem key={`${item.id}-${index}`} className="cursor-pointer px-0 py-0" asChild>
                               {isExternal(subHref) ? (
                                  <a href={subHref} className="block w-full px-4 py-2 text-white/90 hover:text-white">
-                                    {subItem.title}
+                                    {renderNavLabel(subItem)}
                                  </a>
                               ) : (
                                  <Link href={subHref} className="block w-full px-4 py-2 text-white/90 hover:text-white">
-                                    {subItem.title}
+                                    {renderNavLabel(subItem)}
                                  </Link>
                               )}
-                        </DropdownMenuItem>
-                     );
+                           </DropdownMenuItem>
+                        );
                      })}
                </DropdownMenuContent>
             </DropdownMenu>
@@ -104,7 +111,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (!href) {
          return (
             <span key={item.id} className={linkClass}>
-               {item.title}
+               {renderNavLabel(item)}
             </span>
          );
       }
@@ -112,14 +119,14 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (isExternal(href)) {
          return (
             <a key={item.id} href={href} className={linkClass}>
-               {item.title}
+               {renderNavLabel(item)}
             </a>
          );
       }
 
       return (
          <Link key={item.id} href={href} className={linkClass}>
-            {item.title}
+            {renderNavLabel(item)}
          </Link>
       );
    };
@@ -203,7 +210,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                </div>
 
                <div className="hidden flex-1 items-center justify-center gap-6 xl:flex">
-                  {linkItems.length > 0 && <nav className="flex items-center gap-10">{linkItems.map((item) => renderNavItem(item))}</nav>}
+                  {linkTree.length > 0 && <nav className="flex items-center gap-10">{linkTree.map((node) => renderNavItem(node))}</nav>}
                </div>
 
                <div className="flex items-center gap-2">
@@ -266,7 +273,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             {isMenuOpen && (
                <ScrollArea className="border-t border-white/10 bg-slate-950/95 text-white lg:hidden">
                   <div className="space-y-6 px-5 py-6">
-                     {linkItems.length > 0 && <nav className="flex flex-col gap-4">{linkItems.map((item) => renderNavItem(item))}</nav>}
+                     {linkTree.length > 0 && <nav className="flex flex-col gap-4">{linkTree.map((node) => renderNavItem(node))}</nav>}
 
                      <div className="grid gap-3 sm:grid-cols-2">
                         {actionItems.map((item) => {
@@ -277,7 +284,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            if (item.slug === 'language' && system.fields.language_selector && language) {
                               return (
                                  <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-slate-200 px-4 py-3">
-                                    <span className="text-sm font-medium text-white/90">{translate.button.language || 'Language'}</span>
+                                    <span className="text-sm font-medium text-white/90">{buttonLabels.language || 'Language'}</span>
                                     <Language />
                                  </div>
                               );
@@ -286,7 +293,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            if (item.slug === 'cart') {
                               return (
                                  <div key={item.id} className="flex items-center justify-between rounded-[18px] border border-white/10 px-4 py-3">
-                                    <span className="text-sm font-medium text-white/90">{translate.button.cart || 'Carrinho'}</span>
+                                    <span className="text-sm font-medium text-white/90">{buttonLabels.cart || 'Carrinho'}</span>
                                     <CourseCart />
                                  </div>
                               );

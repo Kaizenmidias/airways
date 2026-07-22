@@ -148,9 +148,11 @@ interface NavbarItem extends TableCommon {
    type: string;
    slug: string;
    title: string;
+   subtitle: string | null;
    active: boolean;
    value: string | null;
    items: NavbarItem[] | null;
+   parent_id: number | null;
    navbar_id: number;
 }
 
