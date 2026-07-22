@@ -77,7 +77,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-0 py-0">
             <Link href={resolveCourseHref(course)} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
                <span className="flex flex-col leading-tight">
-                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary/75">{course.sub_title}</span> : null}
+                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white">{course.sub_title}</span> : null}
                   <span>{course.title}</span>
                </span>
             </Link>
