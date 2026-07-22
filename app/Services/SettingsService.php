@@ -152,7 +152,7 @@ class SettingsService extends MediaService
                     $query->with(['courseCategory' => function ($categoryQuery) {
                         $categoryQuery->with(['courses' => function ($courseQuery) {
                             $courseQuery->where('status', 'approved')
-                                ->select('id', 'title', 'slug', 'thumbnail', 'course_category_id')
+                                ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id')
                                 ->orderBy('title', 'asc');
                         }]);
                     }]);
