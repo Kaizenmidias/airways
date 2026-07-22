@@ -28,7 +28,6 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
                })}
                className="flex flex-col leading-tight"
             >
-               {row.original.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{row.original.sub_title}</span> : null}
                {row.getValue('title')}
             </Link>
          </div>

@@ -117,6 +117,16 @@ const Index = (props: Props) => {
                      <InputError message={errors.sub_title} />
                   </div>
 
+                  <div className="flex items-center gap-3 rounded-2xl border border-border bg-background px-4 py-3">
+                     <Checkbox id="is_development" checked={Boolean(data.is_development)} onCheckedChange={(checked) => setData('is_development', checked === true)} />
+                     <div className="space-y-0.5">
+                        <Label htmlFor="is_development" className="cursor-pointer">
+                           Em desenvolvimento
+                        </Label>
+                        <p className="text-xs text-muted-foreground">Ao ativar, o curso exibirá uma página de aviso em vez da página normal.</p>
+                     </div>
+                  </div>
+
                   <div>
                      <Label>{input.short_description}</Label>
                      <Textarea
@@ -149,16 +159,6 @@ const Index = (props: Props) => {
                         }
                      />
                      <InputError message={errors.description} />
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-2xl border border-border bg-background px-4 py-3">
-                     <Checkbox id="is_development" checked={Boolean(data.is_development)} onCheckedChange={(checked) => setData('is_development', checked === true)} />
-                     <div className="space-y-0.5">
-                        <Label htmlFor="is_development" className="cursor-pointer">
-                           Em desenvolvimento
-                        </Label>
-                        <p className="text-xs text-muted-foreground">Ao ativar, o curso exibirá uma página de aviso em vez da página normal.</p>
-                     </div>
                   </div>
                </div>
 
