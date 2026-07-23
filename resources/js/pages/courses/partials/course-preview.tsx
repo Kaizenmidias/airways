@@ -70,19 +70,20 @@ const formatAccessPeriod = (course: Course) => {
 };
 
 const FeatureRow = ({ icon, label, value }: { icon: ReactNode; label: string; value?: string }) => (
-   <div className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
-      <div className="mt-0.5 rounded-2xl bg-slate-950 p-2 text-white shadow-lg shadow-slate-950/15">{icon}</div>
-
-      <div className="min-w-0">
-         <p className="text-sm font-black tracking-[-0.02em] text-slate-950">{label}</p>
-         {value ? <p className="mt-1 text-sm leading-6 text-slate-600">{value}</p> : null}
+   <div className="flex items-center gap-3 py-1.5">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-teal-200 bg-teal-50 text-teal-500">
+         {icon}
       </div>
+
+      <p className="min-w-0 text-sm leading-6 font-semibold text-slate-800">
+         <span className="font-black text-slate-900">{label}</span>
+         {value ? `: ${value}` : ''}
+      </p>
    </div>
 );
 
 const CoursePreview = () => {
-   const { course, system, translate } = usePage<CourseDetailsProps>().props;
-   const { frontend } = translate;
+   const { course, system } = usePage<CourseDetailsProps>().props;
    const currency = system.fields['selling_currency'] || 'BRL';
    const coursePrice = formatCurrency(course.price, currency);
    const discountPrice = formatCurrency(course.discount_price, currency);
@@ -90,10 +91,10 @@ const CoursePreview = () => {
    const accessLabel = formatAccessPeriod(course);
 
    return (
-      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
-         <div className="space-y-5 p-5 sm:p-6">
-            <div className="relative overflow-hidden rounded-[24px]">
-               <img className="h-56 w-full object-cover" src={course.thumbnail ?? '/assets/images/blank-image.jpg'} alt={course.title} />
+      <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)]">
+         <div className="space-y-4 p-4 sm:p-5">
+            <div className="relative overflow-hidden rounded-[20px]">
+               <img className="h-52 w-full object-cover" src={course.thumbnail ?? '/assets/images/blank-image.jpg'} alt={course.title} />
 
                {course.preview && (
                   <Dialog>
@@ -120,15 +121,14 @@ const CoursePreview = () => {
                )}
             </div>
 
-            <div className="space-y-2">
-               <p className="text-xs font-bold tracking-[0.28em] text-[#FD122E] uppercase">Investimento</p>
-               <h2 className="text-4xl leading-none font-black tracking-[-0.06em] text-slate-950">
+            <div className="space-y-1">
+               <h2 className="text-3xl leading-none font-black tracking-[-0.06em] text-slate-950 sm:text-[2.15rem]">
                   {course.pricing_type === 'free' ? (
                      'Grátis'
                   ) : course.discount ? (
                      <>
                         <span>{discountPrice}</span>
-                        <span className="text-muted-foreground ml-3 text-base font-semibold line-through">{coursePrice}</span>
+                        <span className="text-muted-foreground ml-3 text-sm font-semibold line-through sm:text-base">{coursePrice}</span>
                      </>
                   ) : (
                      <span>{coursePrice}</span>
@@ -139,36 +139,26 @@ const CoursePreview = () => {
             <EnrollOrPlayerButton />
          </div>
 
-         <div className="border-t border-slate-200/80 bg-slate-50 p-5 sm:p-6">
-            <div className="grid gap-3">
-               <FeatureRow icon={<Clock3 className="h-4 w-4" />} label="Carga horária" value={durationLabel} />
+         <div className="space-y-1 border-t border-slate-200/80 px-4 py-4 sm:px-5">
+            <FeatureRow icon={<Clock3 className="h-4 w-4" />} label="Carga horária" value={durationLabel} />
 
-               <FeatureRow
-                  icon={
-                     <div className="flex items-center gap-1.5">
-                        <Laptop className="h-4 w-4" />
-                        <Smartphone className="h-4 w-4" />
-                     </div>
-                  }
-                  label="Todos dispositivos"
-               />
+            <FeatureRow
+               icon={
+                  <div className="flex items-center gap-1.5">
+                     <Laptop className="h-4 w-4" />
+                     <Smartphone className="h-4 w-4" />
+                  </div>
+               }
+               label="Todos dispositivos"
+            />
 
-               <FeatureRow icon={<NotebookPen className="h-4 w-4" />} label="Exercícios práticos" />
+            <FeatureRow icon={<NotebookPen className="h-4 w-4" />} label="Exercícios práticos" />
 
-               <FeatureRow icon={<CalendarDays className="h-4 w-4" />} label={accessLabel} />
+            <FeatureRow icon={<CalendarDays className="h-4 w-4" />} label={accessLabel} />
 
-               <FeatureRow icon={<Headset className="h-4 w-4" />} label="Suporte a dúvidas" />
+            <FeatureRow icon={<Headset className="h-4 w-4" />} label="Suporte a dúvidas" />
 
-               <FeatureRow icon={<BadgeCheck className="h-4 w-4" />} label="Certificado" />
-            </div>
-
-            <div className="mt-5 flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3">
-               <span className="flex items-center gap-2 text-sm font-medium text-slate-600">
-                  <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                  {frontend.students}
-               </span>
-               <span className="text-sm font-semibold text-slate-950">{course.enrollments_count || 0}</span>
-            </div>
+            <FeatureRow icon={<BadgeCheck className="h-4 w-4" />} label="Certificado" />
          </div>
       </div>
    );

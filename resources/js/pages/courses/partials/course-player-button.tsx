@@ -10,7 +10,7 @@ const EnabledPlayButton = ({ watchHistory }: { watchHistory: WatchHistory }) => 
    const { frontend } = translate;
 
    return (
-      <Button size="lg" className="w-full" asChild>
+      <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600" asChild>
          <Link
             href={route('course.player', {
                type: watchHistory.current_watching_type,
@@ -32,11 +32,11 @@ const DisabledPlayButton = ({ course, approvalStatus }: { course: Course; approv
    const approve_able = approvalStatus.approve_able;
 
    return approve_able ? (
-      <Button size="lg" className="w-full" onClick={() => router.post(route('player.init.watch-history'), { course_id: course.id })}>
+      <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600" onClick={() => router.post(route('player.init.watch-history'), { course_id: course.id })}>
          {frontend.play_course}
       </Button>
    ) : (
-      <Button disabled size="lg" className="w-full">
+      <Button disabled size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
          {frontend.course_player}
       </Button>
    );
@@ -57,12 +57,12 @@ const EnrollmentButton = ({ auth, course }: { auth: Auth; course: Course }) => {
    };
 
    return course.pricing_type === 'free' ? (
-      <Button size="lg" className="w-full" onClick={() => enrollmentHandler(course)}>
+      <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600" onClick={() => enrollmentHandler(course)}>
          {frontend.enroll_now}
       </Button>
    ) : (
       <a href={route('payments.index', { from: 'web', item: 'course', id: course.id })}>
-         <Button size="lg" className="w-full">
+         <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
             {frontend.buy_now}
          </Button>
       </a>
