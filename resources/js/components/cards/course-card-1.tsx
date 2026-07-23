@@ -95,6 +95,7 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
                      id: course.id,
                   })}
                >
+                  {course.sub_title ? <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#FD122E]">{course.sub_title}</p> : null}
                   <p className="hover:text-secondary-foreground font-semibold">{course.title}</p>
 
                   <p className="text-muted-foreground flex items-center gap-1.5 text-sm">

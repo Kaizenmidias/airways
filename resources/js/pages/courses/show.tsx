@@ -1,11 +1,13 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Card } from '@/components/ui/card';
 import CourseCard1 from '@/components/cards/course-card-1';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Card } from '@/components/ui/card';
 import LandingLayout from '@/layouts/landing-layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
 import { Head, usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
+import CourseFaqs from './partials/course-faqs';
 import CourseLearnings from './partials/course-learnings';
 import CoursePreview from './partials/course-preview';
 import CourseReviews from './partials/course-reviews';
@@ -49,6 +51,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    const siteName = system.fields?.name;
    const siteUrl = window.location.href;
    const hasLearnings = Boolean(course.learnings && course.learnings.length > 0);
+   const hasFaqs = Boolean(course.faqs && course.faqs.length > 0);
    const hasDescription = Boolean(course.description);
    const breadcrumbs = [
       { title: 'Início', href: route('home') },
@@ -183,6 +186,12 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
                   <Curriculum course={course} compact />
                </SectionShell>
 
+               {hasFaqs && (
+                  <SectionShell title="Perguntas frequentes">
+                     <CourseFaqs faqs={course.faqs} />
+                  </SectionShell>
+               )}
+
                {showInstructorTab && (
                   <SectionShell title="Quem vai te acompanhar">
                      <Instructor course={course} compact />
@@ -202,11 +211,17 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
          <div className="container pb-14">
             <SectionShell title="Você também pode se interessar">
                {relatedCourses.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-                     {relatedCourses.map((relatedCourse) => (
-                        <CourseCard1 key={relatedCourse.id} course={relatedCourse} />
-                     ))}
-                  </div>
+                  <Carousel opts={{ align: 'start' }} className="relative">
+                     <CarouselContent className="-ml-4">
+                        {relatedCourses.map((relatedCourse) => (
+                           <CarouselItem key={relatedCourse.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                              <CourseCard1 course={relatedCourse} className="h-full" />
+                           </CarouselItem>
+                        ))}
+                     </CarouselContent>
+                     <CarouselPrevious className="hidden lg:flex" />
+                     <CarouselNext className="hidden lg:flex" />
+                  </Carousel>
                ) : (
                   <p className="text-muted-foreground text-sm">Ainda não encontramos cursos relacionados para este curso.</p>
                )}
