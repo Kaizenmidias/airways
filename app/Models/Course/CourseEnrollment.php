@@ -10,6 +10,11 @@ class CourseEnrollment extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'entry_date' => 'datetime',
+        'expiry_date' => 'datetime',
+    ];
+
     protected $fillable = [
         'user_id',
         'course_id',
@@ -28,8 +33,8 @@ class CourseEnrollment extends Model
         return $this->belongsTo(Course::class);
     }
 
-    // public function isActive()
-    // {
-    //     return $this->enrollment_type === 'lifetime' || ($this->expiry_date && now()->lt($this->expiry_date));
-    // }
+    public function isActive(): bool
+    {
+        return !$this->expiry_date || $this->expiry_date->isFuture();
+    }
 }

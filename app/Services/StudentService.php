@@ -56,6 +56,7 @@ class StudentService extends MediaService
       switch ($tab) {
          case 'courses':
             $enrollments = $this->courseEnrollment->getEnrollments(['user_id' => $user->id]);
+            $enrollments = $enrollments->filter(fn ($enrollment) => $enrollment->isActive())->values();
 
             foreach ($enrollments as $enrollment) {
                $watch_history = $this->coursePlayer->getWatchHistory($enrollment->course_id, $user->id);
@@ -107,6 +108,10 @@ class StudentService extends MediaService
    {
       $enrollment = CourseEnrollment::where('user_id', $user->id)
          ->where('course_id', $id)
+         ->where(function ($query) {
+            $query->whereNull('expiry_date')
+               ->orWhere('expiry_date', '>', now());
+         })
          ->first();
 
       if (!$enrollment) {

@@ -30,6 +30,10 @@ class StoreCourseEnrollmentRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     if (CourseEnrollment::where('user_id', $this->user_id)
                         ->where('course_id', $value)
+                        ->where(function ($query) {
+                            $query->whereNull('expiry_date')
+                                ->orWhere('expiry_date', '>', now());
+                        })
                         ->exists()
                     ) {
                         $fail('This user is already enrolled in this course.');

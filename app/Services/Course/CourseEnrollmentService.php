@@ -2,6 +2,7 @@
 
 namespace App\Services\Course;
 
+use App\Models\Course\Course;
 use App\Models\Course\CourseEnrollment;
 use App\Models\Course\SectionLesson;
 use App\Models\Course\SectionQuiz;
@@ -13,6 +14,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CourseEnrollmentService extends MediaService
 {
+   public function __construct(
+      protected CourseService $courseService,
+   ) {}
+
    function getEnrollmentById(int $id): ?CourseEnrollment
    {
       return CourseEnrollment::with(['user', 'course'])->find($id);
@@ -20,7 +25,13 @@ class CourseEnrollmentService extends MediaService
 
    function getEnrollmentByCourseId(int $courseId, int $userId): ?CourseEnrollment
    {
-      return CourseEnrollment::where('course_id', $courseId)->where('user_id', $userId)->first();
+      return CourseEnrollment::where('course_id', $courseId)
+         ->where('user_id', $userId)
+         ->where(function ($query) {
+            $query->whereNull('expiry_date')
+               ->orWhere('expiry_date', '>', now());
+         })
+         ->first();
    }
 
    function getEnrollments(array $data, bool $paginate = false): LengthAwarePaginator|Collection
@@ -55,9 +66,21 @@ class CourseEnrollmentService extends MediaService
    {
       return DB::transaction(function () use ($data) {
          $courseId = $data['course_id'];
+         $course = Course::findOrFail($courseId);
          $courseSectionService = new CourseSectionService();
+         $expiryDate = $this->courseService->getCourseExpiryDate($course, now());
 
-         $enrollment = CourseEnrollment::create([...$data, 'entry_date' => now()]);
+         $enrollment = CourseEnrollment::updateOrCreate(
+            [
+               'user_id' => $data['user_id'],
+               'course_id' => $courseId,
+            ],
+            [
+               ...$data,
+               'entry_date' => now(),
+               'expiry_date' => $expiryDate,
+            ]
+         );
 
          $lessons = SectionLesson::query()->where('course_id', $courseId);
          if ($lessons->exists()) {

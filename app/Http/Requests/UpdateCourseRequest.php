@@ -18,6 +18,7 @@ class UpdateCourseRequest extends FormRequest
             'is_development' => filter_var(request('is_development'), FILTER_VALIDATE_BOOLEAN),
             'course_category_id' => (int) request('course_category_id', 0),
             'course_category_child_id' => request('course_category_child_id') ? (int) request('course_category_child_id') : null,
+            'expiry_duration' => request('expiry_duration') ? (int) request('expiry_duration') : null,
         ]);
     }
 
@@ -94,7 +95,7 @@ class UpdateCourseRequest extends FormRequest
             'discount' => 'boolean',
             'discount_price' => 'nullable|numeric|min:1|lt:price|required_if:discount,true',
             'expiry_type' => "required|string|in:$lifetime,$limited",
-            'expiry_duration' => "nullable|string|required_if:expiry_type,$limited",
+            'expiry_duration' => "nullable|integer|in:30,60,90,365|required_if:expiry_type,$limited",
         ];
     }
 

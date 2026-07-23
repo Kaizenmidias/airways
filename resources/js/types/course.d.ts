@@ -55,7 +55,7 @@ interface Course extends TableCommon {
    reviews_count?: number;
    average_rating?: number;
    expiry_type?: 'lifetime' | 'limited_time';
-   expiry_duration?: Date;
+   expiry_duration?: number | string | null;
    description?: string;
    requirements?: CourseRequirement[];
    outcomes?: CourseOutcome[];

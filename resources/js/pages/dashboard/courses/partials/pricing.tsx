@@ -1,4 +1,3 @@
-import { DateTimePicker } from '@/components/datetime-picker';
 import InputError from '@/components/input-error';
 import LoadingButton from '@/components/loading-button';
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -18,6 +17,7 @@ const Pricing = () => {
    const { translate } = props;
    const { dashboard, input, button } = translate;
    const { tab, prices, expiries, course } = props;
+
    const coursePricingLabels: Record<string, string> = {
       free: 'Grátis',
       paid: 'Pago',
@@ -28,6 +28,13 @@ const Pricing = () => {
       limited_time: 'Tempo limitado',
    };
 
+   const accessDurationOptions = [
+      { value: '30', label: '30 dias' },
+      { value: '60', label: '60 dias' },
+      { value: '90', label: '90 dias' },
+      { value: '365', label: '1 ano' },
+   ];
+
    const { data, setData, post, errors, processing } = useForm({
       tab: tab,
       pricing_type: course.pricing_type || '',
@@ -35,10 +42,9 @@ const Pricing = () => {
       discount: Boolean(course.discount) || false,
       discount_price: course.discount_price || '',
       expiry_type: course.expiry_type || '',
-      expiry_duration: course.expiry_duration ? new Date(course.expiry_duration) : new Date(),
+      expiry_duration: String(course.expiry_duration || '30'),
    });
 
-   // Handle form submission
    const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
 
@@ -120,7 +126,7 @@ const Pricing = () => {
 
             <Accordion collapsible type="single" value={data.expiry_type}>
                <div>
-                  <Label>Tipo do período de expiração</Label>
+                  <Label>Tipo de acesso</Label>
                   <RadioGroup
                      defaultValue={data.expiry_type}
                      className="flex items-center space-x-4 pt-2 pb-1"
@@ -141,8 +147,22 @@ const Pricing = () => {
                <AccordionItem value={expiries[1]} className="border-none">
                   <AccordionContent className="space-y-4 p-0.5">
                      <div className="pt-3">
-                        <Label>Data de expiração</Label>
-                        <DateTimePicker date={data.expiry_duration} setDate={(date) => setData('expiry_duration', date)} />
+                        <Label>Duração do acesso</Label>
+                        <RadioGroup
+                           defaultValue={String(data.expiry_duration)}
+                           className="grid gap-3 pt-2 sm:grid-cols-2"
+                           onValueChange={(value) => setData('expiry_duration', value)}
+                        >
+                           {accessDurationOptions.map((option) => (
+                              <div key={option.value} className="flex items-center gap-2 rounded-xl border border-border px-3 py-2">
+                                 <RadioGroupItem className="cursor-pointer" id={`expiry_duration_${option.value}`} value={option.value} />
+                                 <Label htmlFor={`expiry_duration_${option.value}`} className="cursor-pointer font-normal">
+                                    {option.label}
+                                 </Label>
+                              </div>
+                           ))}
+                        </RadioGroup>
+                        <p className="text-xs text-muted-foreground">O vencimento será contado a partir da matrícula do aluno.</p>
                         <InputError message={errors.expiry_duration} />
                      </div>
                   </AccordionContent>

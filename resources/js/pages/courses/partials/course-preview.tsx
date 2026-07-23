@@ -57,8 +57,14 @@ const formatAccessPeriod = (course: Course) => {
       return 'Acesso vitalício';
    }
 
+   const accessDays = Number(course.expiry_duration);
+
+   if (Number.isFinite(accessDays) && accessDays > 0) {
+      return accessDays === 365 ? '1 ano de acesso' : `${accessDays} dias de acesso`;
+   }
+
    const startDate = new Date(course.created_at);
-   const endDate = new Date(course.expiry_duration);
+   const endDate = new Date(course.expiry_duration as string);
 
    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
       return 'Acesso limitado';
@@ -66,7 +72,7 @@ const formatAccessPeriod = (course: Course) => {
 
    const days = Math.max(1, Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
 
-   return `${days} dias de acesso`;
+   return days === 365 ? '1 ano de acesso' : `${days} dias de acesso`;
 };
 
 const FeatureRow = ({ icon, label, value }: { icon: ReactNode; label: string; value?: string }) => (

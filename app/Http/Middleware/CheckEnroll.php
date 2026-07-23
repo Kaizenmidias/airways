@@ -38,6 +38,10 @@ class CheckEnroll
 
         $enrollment = CourseEnrollment::where('user_id', $user->id)
             ->where('course_id', $watchHistory->course_id)
+            ->where(function ($query) {
+                $query->whereNull('expiry_date')
+                    ->orWhere('expiry_date', '>', now());
+            })
             ->first();
 
         if ($enrollment) {

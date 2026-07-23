@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Enums\CourseStatusType;
 use App\Notifications\CourseApprovalNotification;
 use App\Services\MediaService;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -330,10 +331,48 @@ class CourseService extends MediaService
       if ($user) {
          return CourseEnrollment::where('course_id', $courseId)
             ->where('user_id', $user->id)
+            ->where(function ($query) {
+               $query->whereNull('expiry_date')
+                  ->orWhere('expiry_date', '>', now());
+            })
             ->first();
       } else {
          return null;
       }
+   }
+
+   function getCourseAccessDays(Course $course): ?int
+   {
+      if ($course->expiry_type !== 'limited_time' || empty($course->expiry_duration)) {
+         return null;
+      }
+
+      if (is_numeric($course->expiry_duration)) {
+         return max(1, (int) $course->expiry_duration);
+      }
+
+      try {
+         $expiryDate = Carbon::parse($course->expiry_duration);
+
+         if ($course->created_at) {
+            return max(1, Carbon::parse($course->created_at)->diffInDays($expiryDate));
+         }
+      } catch (\Throwable $th) {
+         return null;
+      }
+
+      return null;
+   }
+
+   function getCourseExpiryDate(Course $course, ?Carbon $baseDate = null): ?Carbon
+   {
+      $accessDays = $this->getCourseAccessDays($course);
+
+      if (!$accessDays) {
+         return null;
+      }
+
+      return ($baseDate ?? now())->copy()->addDays($accessDays);
    }
 
    function deleteCourse(string $id): void

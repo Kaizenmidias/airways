@@ -22,6 +22,7 @@ class StoreCourseRequest extends FormRequest
             'instructor_id' => (int) request('instructor_id'),
             'course_category_id' => (int) request('course_category_id'),
             'course_category_child_id' => request('course_category_child_id') ? (int) request('course_category_child_id') : null,
+            'expiry_duration' => request('expiry_duration') ? (int) request('expiry_duration') : null,
         ]);
     }
 
@@ -56,7 +57,7 @@ class StoreCourseRequest extends FormRequest
             'discount' => 'boolean',
             'discount_price' => 'nullable|numeric|min:1|lt:price|required_if:discount,true',
             'expiry_type' => "required|string|in:$lifetime,$limited",
-            'expiry_duration' => "nullable|string|required_if:expiry_type,$limited",
+            'expiry_duration' => "nullable|integer|in:30,60,90,365|required_if:expiry_type,$limited",
             'drip_content' => 'boolean',
             'is_development' => 'boolean',
             'thumbnail' => 'nullable|image|max:2048',

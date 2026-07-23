@@ -1,5 +1,4 @@
 import Combobox from '@/components/combobox';
-import { DateTimePicker } from '@/components/datetime-picker';
 import InputError from '@/components/input-error';
 import LoadingButton from '@/components/loading-button';
 import TiptapEditor from '@/components/text-editor/tiptap-editor';
@@ -45,7 +44,7 @@ const Index = (props: Props) => {
       discount: false as boolean,
       discount_price: '',
       expiry_type: 'lifetime',
-      expiry_duration: new Date(),
+      expiry_duration: '30',
       drip_content: false as boolean,
       is_development: false as boolean,
       thumbnail: null,
@@ -86,6 +85,13 @@ const Index = (props: Props) => {
       lifetime: 'Vitalício',
       limited_time: 'Tempo limitado',
    };
+
+   const accessDurationOptions = [
+      { value: '30', label: '30 dias' },
+      { value: '60', label: '60 dias' },
+      { value: '90', label: '90 dias' },
+      { value: '365', label: '1 ano' },
+   ];
 
    return (
       <Card className="container p-6">
@@ -274,7 +280,7 @@ const Index = (props: Props) => {
                   </div>
 
                   <div>
-                     <Label>{input.expiry_period_type}</Label>
+                     <Label>Tipo de acesso</Label>
                      <RadioGroup
                         defaultValue={data.expiry_type}
                         className="flex items-center space-x-4 pt-2 pb-1"
@@ -295,8 +301,22 @@ const Index = (props: Props) => {
                         <AccordionItem value={expiries[1]} className="border-none">
                            <AccordionContent className="space-y-4 p-0.5">
                               <div className="pt-3">
-                                 <Label htmlFor="expiry_duration">{input.expiry_date}</Label>
-                                 <DateTimePicker date={data.expiry_duration} setDate={(date) => setData('expiry_duration', date)} />
+                                 <Label>Duração do acesso</Label>
+                                 <RadioGroup
+                                    defaultValue={String(data.expiry_duration)}
+                                    className="grid gap-3 pt-2 sm:grid-cols-2"
+                                    onValueChange={(value) => setData('expiry_duration', value)}
+                                 >
+                                    {accessDurationOptions.map((option) => (
+                                       <div key={option.value} className="flex items-center gap-2 rounded-xl border border-border px-3 py-2">
+                                          <RadioGroupItem className="cursor-pointer" id={`expiry_duration_${option.value}`} value={option.value} />
+                                          <Label htmlFor={`expiry_duration_${option.value}`} className="cursor-pointer font-normal">
+                                             {option.label}
+                                          </Label>
+                                       </div>
+                                    ))}
+                                 </RadioGroup>
+                                 <p className="text-xs text-muted-foreground">O vencimento será contado a partir da matrícula do aluno.</p>
                                  <InputError message={errors.expiry_duration} />
                               </div>
                            </AccordionContent>
