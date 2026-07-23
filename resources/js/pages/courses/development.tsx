@@ -20,18 +20,18 @@ const Development = ({ course, system }: Props) => {
             <meta name="description" content={message} />
          </Head>
 
-         <section className="relative overflow-hidden bg-white px-6 py-24 text-slate-900 sm:px-10 lg:px-14 lg:py-32">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,18,46,0.08),transparent_32%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]" />
+         <section className="relative flex min-h-screen overflow-hidden bg-slate-950 px-6 py-24 text-white sm:px-10 lg:px-14 lg:py-32">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,18,46,0.2),transparent_30%),linear-gradient(180deg,#02070f_0%,#04101f_100%)]" />
 
-            <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
-               <Card className="w-full rounded-[28px] border border-slate-200 bg-white p-8 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:p-10">
+            <div className="relative mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center text-center">
+               <Card className="w-full rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:p-10">
                   <div className="space-y-4">
-                     {course.sub_title ? <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">{course.sub_title}</p> : null}
-                     <h1 className="text-4xl font-black tracking-[-0.06em] text-slate-900 sm:text-5xl">{course.title}</h1>
+                     {course.sub_title ? <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#ccccccb8]">{course.sub_title}</p> : null}
+                     <h1 className="text-4xl font-black tracking-[-0.06em] text-white sm:text-5xl">{course.title}</h1>
                      <div className="mx-auto h-1.5 w-20 rounded-full bg-[#FD122E]" />
                   </div>
 
-                  <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-slate-600">{message}</p>
+                  <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/80">{message}</p>
 
                   <div className="mt-10 flex justify-center">
                      <Button asChild className="rounded-full bg-primary px-6 text-white hover:bg-primary/90">
