@@ -69,7 +69,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       const category = item.course_category;
 
       if (item.display_courses_in_menu === false) {
-         return item.slug ? route('inner.page', item.slug) : '';
+         return route('category.courses', { category: category?.slug || item.slug });
       }
 
       return route('category.courses', { category: category?.slug || item.slug });
@@ -114,7 +114,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                         <span>{child.title}</span>
                      </span>
                   </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 p-2 text-white">
+                  <DropdownMenuSubContent className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
                      {renderCourseMenuItems(childCourses)}
                   </DropdownMenuSubContent>
                </DropdownMenuSub>
@@ -170,7 +170,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                {renderNavLabel(item)}
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-56 border-white/10 bg-slate-950/95 p-2 text-white">
+            <DropdownMenuContent align="start" className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
                {courses.length > 0 ? renderCourseMenuItems(courses) : null}
                {childCategories.length > 0 ? renderSubCategoryMenuItems(category as CourseCategory, childCategories) : null}
                {childCategories.length === 0 && courses.length === 0 ? (
@@ -202,7 +202,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
-                     <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 p-2 text-white">
+                     <DropdownMenuSubContent className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
                         {renderChildren(subNode.children, `${parentKey}-${index}`)}
                      </DropdownMenuSubContent>
                   </DropdownMenuSub>

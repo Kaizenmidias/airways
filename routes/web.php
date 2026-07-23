@@ -14,8 +14,14 @@ Route::get('job-circulars/{job_circular}', [JobCircularController::class, 'show'
 
 // course page
 Route::controller(CourseController::class)->group(function () {
-    Route::get('courses/{category}/{category_child?}', 'category_courses')->name('category.courses')->middleware('customize');
+    Route::get('category/{category}/{category_child?}', 'category_courses')->name('category.courses')->middleware('customize');
     Route::get('courses/details/{slug}/{id}', 'show')->name('course.details');
+    Route::get('courses/{category}/{category_child?}', function (string $category, ?string $category_child = null) {
+        return redirect()->route('category.courses', array_merge([
+            'category' => $category,
+            'category_child' => $category_child,
+        ], request()->query()), 301);
+    })->middleware('customize');
 });
 
 Route::get('instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
