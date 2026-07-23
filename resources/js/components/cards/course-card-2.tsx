@@ -79,7 +79,7 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
                   <p className="text-secondary-foreground text-xs uppercase">{course.course_category.title}</p>
 
                   <div className="flex items-center gap-2">
-                     {course.is_development ? null : course.discount ? <p className="pt-1 text-gray-300 line-through">{coursePrice}</p> : null}
+                     {course.is_development ? <p className="text-lg font-semibold text-muted-foreground">Em breve</p> : course.discount ? <p className="pt-1 text-gray-300 line-through">{coursePrice}</p> : null}
 
                      {course.is_development ? null : course.pricing_type === 'free' ? (
                         <p className="text-lg font-semibold">{common.free}</p>
