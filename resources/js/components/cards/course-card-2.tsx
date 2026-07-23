@@ -2,10 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
-import { Clock, Heart, Star, TrendingUp, Users } from 'lucide-react';
+import { Heart, Star, TrendingUp } from 'lucide-react';
 import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 const CourseCard2 = ({ course, className, wishlists }: Props) => {
    const { props } = usePage<SharedData>();
    const { user } = props.auth;
-   const { button, common, frontend } = props.translate;
+   const { button, common } = props.translate;
 
    const isWishlisted = wishlists?.find((wishlist) => wishlist.course_id === course.id);
    const currency = props.system.fields['selling_currency'] || 'BRL';
@@ -106,11 +106,6 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
                         ({course.reviews_count || 0} {common.reviews})
                      </span>
                   </p>
-                  <p className="flex items-center gap-1.5">
-                     <Users className="h-3.5 w-3.5" />
-                     <span className="font-medium">{course.enrollments_count || 0}</span>
-                     <span className="text-muted-foreground text-sm">{course.enrollments_count || 0 > 0 ? common.students : frontend.student}</span>
-                  </p>
                </div>
 
                <div className="flex items-center gap-2">
@@ -123,11 +118,6 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
             </CardContent>
 
             <CardFooter className="border-muted flex items-center gap-5 border-t p-0 pt-5">
-               <p className="text-muted-foreground flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">{getCourseDuration(course, 'readable')}</span>
-               </p>
-
                <p className="text-muted-foreground flex items-center gap-1">
                   <TrendingUp className="h-4 w-4" />
                   <span className="text-sm">{course.level}</span>

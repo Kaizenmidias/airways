@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
-import { Clock, Heart, Star, Users } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
@@ -76,16 +76,6 @@ const CourseCard6 = ({ course, type = 'grid', className, wishlists }: Props) => 
          </CardHeader>
 
          <CardContent className="p-4">
-            <div className="text-secondary-foreground mb-1 flex items-center gap-1.5 text-xs">
-               <Users className="h-3 w-3" />
-               <span>
-                  {course.enrollments_count || 0} {course.enrollments_count || 0 > 0 ? common.students : frontend.student}
-               </span>
-
-               <Clock className="ml-2 h-3 w-3" />
-               <span>{getCourseDuration(course, 'readable')}</span>
-            </div>
-
             <Link
                className="space-y-3"
                href={route('course.details', {

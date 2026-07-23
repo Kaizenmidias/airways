@@ -1,8 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, usePage } from '@inertiajs/react';
-import { Clock, Star, TrendingUp, Users } from 'lucide-react';
+import { Star, TrendingUp } from 'lucide-react';
 import { Separator } from '../ui/separator';
 import CourseDevelopmentBadge from './course-development-badge';
 
@@ -13,7 +13,7 @@ interface Props {
 
 const CourseCard5 = ({ course, className }: Props) => {
    const { props } = usePage<SharedData>();
-   const { common, frontend } = props.translate;
+   const { common } = props.translate;
    const currency = props.system.fields['selling_currency'] || 'BRL';
    const coursePrice = formatCurrency(course.price, currency);
    const discountPrice = formatCurrency(course.discount_price, currency);
@@ -75,22 +75,12 @@ const CourseCard5 = ({ course, className }: Props) => {
                         ({course.reviews_count || 0} {common.reviews})
                      </span>
                   </p>
-                  <p className="flex items-center gap-1.5">
-                     <Users className="h-3.5 w-3.5" />
-                     <span className="font-medium">{course.enrollments_count || 0}</span>
-                     <span className="text-muted-foreground text-sm">{course.enrollments_count || 0 > 0 ? common.students : frontend.student}</span>
-                  </p>
                </div>
             </CardContent>
 
             <Separator className="bg-muted" />
 
             <CardFooter className="flex items-center gap-5 p-0 pt-6">
-               <p className="text-muted-foreground flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">{getCourseDuration(course, 'readable')}</span>
-               </p>
-
                <p className="text-muted-foreground flex items-center gap-1">
                   <TrendingUp className="h-4 w-4" />
                   <span className="text-sm">{course.level}</span>
