@@ -40,6 +40,7 @@ Route::prefix('dashboard')->group(function () {
     // course
     Route::delete('courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
     Route::post('courses/{id}/duplicate', [CourseController::class, 'duplicate'])->name('courses.duplicate');
+    Route::post('courses/bulk-actions', [CourseController::class, 'bulkActions'])->name('courses.bulk-actions');
 
     // exam coupon
     Route::resource('courses/course/coupons', CourseCouponController::class)->only(['index', 'store', 'update', 'destroy'])->names('course-coupons');

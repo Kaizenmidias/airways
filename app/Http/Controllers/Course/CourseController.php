@@ -10,6 +10,7 @@ use App\Enums\ExpiryLimitType;
 use App\Services\InstructorService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\BulkCourseActionRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Requests\UpdateCourseStatusRequest;
 use App\Services\Course\AssignmentSubmissionService;
@@ -321,6 +322,25 @@ class CourseController extends Controller
         $this->courseService->deleteCourse($id);
 
         return redirect(route('courses.index'))->with('success', 'Curso excluído com sucesso.');
+    }
+
+    public function bulkActions(BulkCourseActionRequest $request)
+    {
+        abort_unless(isAdmin(), 403);
+
+        $validated = $request->validated();
+        $count = $this->courseService->bulkActionCourses($validated['course_ids'], $validated['action']);
+
+        $messages = [
+            'delete' => 'Curso(s) excluído(s) com sucesso.',
+            'development_on' => 'Curso(s) marcado(s) como modo de desenvolvimento.',
+            'development_off' => 'Curso(s) removido(s) do modo de desenvolvimento.',
+            'approve' => 'Curso(s) aprovado(s) com sucesso.',
+            'draft' => 'Curso(s) marcado(s) como rascunho.',
+            'pending' => 'Curso(s) marcado(s) como pendente(s).',
+        ];
+
+        return back()->with('success', $messages[$validated['action']] ?? "{$count} curso(s) atualizado(s) com sucesso.");
     }
 
     public function duplicate(string $id)

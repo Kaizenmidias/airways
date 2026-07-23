@@ -1,5 +1,6 @@
 import DeleteModal from '@/components/inertia/delete-modal';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { formatCurrency } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -17,6 +18,33 @@ const TableColumn = (isAdmin: boolean, translate: LanguageTranslations): ColumnD
    };
    
    return [
+   ...(isAdmin
+      ? [
+           {
+              id: 'select',
+              header: ({ table }) => (
+                 <div className="flex justify-center pl-4">
+                    <Checkbox
+                       checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+                       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                       aria-label="Selecionar todos os cursos"
+                    />
+                 </div>
+              ),
+              cell: ({ row }) => (
+                 <div className="flex justify-center pl-4">
+                    <Checkbox
+                       checked={row.getIsSelected()}
+                       onCheckedChange={(value) => row.toggleSelected(!!value)}
+                       aria-label="Selecionar curso"
+                    />
+                 </div>
+              ),
+              enableSorting: false,
+              enableHiding: false,
+           } as ColumnDef<Course>,
+        ]
+      : []),
    {
       accessorKey: 'title',
       header: () => <div className="pl-4">{table.course_title}</div>,

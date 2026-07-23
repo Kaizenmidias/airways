@@ -6,6 +6,7 @@ use App\Models\Course\Course;
 use App\Models\Course\CourseEnrollment;
 use App\Models\Instructor;
 use App\Models\User;
+use App\Enums\CourseStatusType;
 use App\Notifications\CourseApprovalNotification;
 use App\Services\MediaService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -285,6 +286,45 @@ class CourseService extends MediaService
    {
       $course = Course::find($id);
       $course->delete();
+   }
+
+   /**
+    * Apply a bulk action to a list of courses.
+    *
+    * @return int Number of affected courses.
+    */
+   function bulkActionCourses(array $courseIds, string $action): int
+   {
+      if (empty($courseIds)) {
+         return 0;
+      }
+
+      return \DB::transaction(function () use ($courseIds, $action) {
+         return match ($action) {
+            'delete' => $this->bulkDeleteCourses($courseIds),
+            'development_on' => Course::whereIn('id', $courseIds)->update(['is_development' => true]),
+            'development_off' => Course::whereIn('id', $courseIds)->update(['is_development' => false]),
+            'approve' => Course::whereIn('id', $courseIds)->update(['status' => CourseStatusType::APPROVED->value]),
+            'draft' => Course::whereIn('id', $courseIds)->update(['status' => CourseStatusType::DRAFT->value]),
+            'pending' => Course::whereIn('id', $courseIds)->update(['status' => CourseStatusType::PENDING->value]),
+            default => 0,
+         };
+      });
+   }
+
+   /**
+    * Delete multiple courses while keeping the existing single-delete behavior.
+    */
+   private function bulkDeleteCourses(array $courseIds): int
+   {
+      $deleted = 0;
+
+      foreach (Course::whereIn('id', $courseIds)->get() as $course) {
+         $course->delete();
+         $deleted++;
+      }
+
+      return $deleted;
    }
 
    /**

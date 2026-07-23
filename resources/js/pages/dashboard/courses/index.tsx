@@ -11,9 +11,10 @@ import { useAuth } from '@/hooks/use-auth';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
-import { SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { RowSelectionState, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import * as React from 'react';
 import { ReactNode } from 'react';
+import BulkCourseActions from './partials/bulk-course-actions';
 import TableColumn from './partials/table-columns';
 
 interface Props extends SharedData {
@@ -26,12 +27,17 @@ const Index = (props: Props) => {
    const { translate } = props;
    const { button, dashboard, frontend } = translate;
    const [sorting, setSorting] = React.useState<SortingState>([]);
+   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
    const page = usePage<SharedData>();
    const urlParams = getQueryParams(page.url);
    const [selectedCategory, setSelectedCategory] = React.useState(String(urlParams.category ?? 'all'));
 
    React.useEffect(() => {
       setSelectedCategory(String(urlParams.category ?? 'all'));
+   }, [page.url]);
+
+   React.useEffect(() => {
+      setRowSelection({});
    }, [page.url]);
 
    const categoryOptions = React.useMemo(
@@ -61,11 +67,15 @@ const Index = (props: Props) => {
       data: props.courses.data,
       columns: TableColumn(isAdmin, translate),
       onSortingChange: setSorting,
+      onRowSelectionChange: setRowSelection,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
-      state: { sorting },
+      state: { sorting, rowSelection },
+      enableRowSelection: isAdmin,
    });
+
+   const selectedCourseIds = table.getSelectedRowModel().rows.map((row) => row.original.id);
 
    return (
       <div>
@@ -75,7 +85,7 @@ const Index = (props: Props) => {
 
          <Separator className="my-6" />
 
-         <Card>
+            <Card>
             <TableFilter
                data={props.courses}
                title={dashboard.course_list}
@@ -101,6 +111,7 @@ const Index = (props: Props) => {
                      </Button>
                   </div>
                }
+               component={<BulkCourseActions selectedCourseIds={selectedCourseIds} onClearSelection={() => setRowSelection({})} />}
                tablePageSizes={[10, 15, 20, 25]}
                routeName="courses.index"
                // Icon={<Users className="h-6 w-6 text-primary" />}
