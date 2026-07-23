@@ -50,7 +50,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderCourseItems = (courses: Course[]) =>
       courses.map((course) => (
-         <DropdownMenuItem key={course.id} asChild className="cursor-pointer px-5">
+         <DropdownMenuItem key={course.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
             <Link href={resolveCourseHref(course)} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
                <span className="flex flex-col leading-tight">
                   {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
@@ -68,7 +68,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          if (childCourses.length > 0) {
             return (
                <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+                  <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                      <span className="flex flex-col leading-tight">
                         <span>{child.title}</span>
                      </span>
@@ -82,7 +82,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          }
 
          return (
-            <DropdownMenuItem key={child.id} asChild className="cursor-pointer px-5">
+            <DropdownMenuItem key={child.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
                <Link href={childHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                   <span className="flex flex-col leading-tight">
                      <span>{child.title}</span>
@@ -109,7 +109,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       if (keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+               <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                   {renderNavLabel(item)}
                   <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
@@ -170,14 +170,14 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
             if (!subHref) {
                return (
-                  <DropdownMenuItem key={`${parentKey}-${idx}`} className="cursor-default px-5">
+                  <DropdownMenuItem key={`${parentKey}-${idx}`} className="mb-1 cursor-default rounded-md px-4 py-2 text-white/80 last:mb-0">
                      {renderNavLabel(subItem)}
                   </DropdownMenuItem>
                );
             }
 
             return (
-               <DropdownMenuItem key={`${parentKey}-${idx}`} asChild className="cursor-pointer px-5">
+               <DropdownMenuItem key={`${parentKey}-${idx}`} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
                   <Link href={subHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                      {renderNavLabel(subItem)}
                   </Link>
