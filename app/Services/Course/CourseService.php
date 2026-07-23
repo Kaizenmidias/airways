@@ -310,7 +310,7 @@ class CourseService extends MediaService
          $related = $related->merge($more)->unique('id')->values();
       }
 
-      return $related->take($limit);
+      return new Collection($related->take($limit)->all());
    }
 
    function lastSectionLessonSort(Course $course): array
