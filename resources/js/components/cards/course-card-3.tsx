@@ -72,7 +72,7 @@ const CourseCard3 = ({ course, className }: Props) => {
 
             <div className="flex items-center gap-3">
                <Button className="px-5" onClick={() => enrollmentHandler(course)}>
-                  <Clock /> {course.pricing_type === 'free' ? common.free : coursePrice} | {button.enroll_now}
+                  <Clock /> {course.is_development ? 'Em desenvolvimento' : course.pricing_type === 'free' ? common.free : coursePrice} | {button.enroll_now}
                </Button>
                <Button
                   variant="outline"

@@ -110,16 +110,14 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
 
             <CardFooter className="flex w-full items-center justify-between px-4 pb-4 pt-1">
                <p className="capitalize">
-                  {course.pricing_type === 'free' ? (
+                  {course.is_development ? (
+                     ''
+                  ) : course.pricing_type === 'free' ? (
                      common.free
                   ) : course.discount ? (
                      <>
-                        <span className="font-semibold">
-                           {discountPrice}
-                        </span>
-                        <span className="text-muted-foreground ml-2 text-sm font-medium line-through">
-                           {coursePrice}
-                        </span>
+                        <span className="font-semibold">{discountPrice}</span>
+                        <span className="text-muted-foreground ml-2 text-sm font-medium line-through">{coursePrice}</span>
                      </>
                   ) : (
                      <>
