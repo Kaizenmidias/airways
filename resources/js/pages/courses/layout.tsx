@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const catalogPageData = catalogPage || page;
    const heroSection = getPageSection(catalogPageData, 'hero');
 
-   const heroTitle = category?.title || categoryChild?.title || heroSection?.title || 'Encontre sua próxima formação';
+   const heroTitle = categoryChild?.title || category?.title || heroSection?.title || 'Encontre sua próxima formação';
    const heroDescription = heroSection?.description || 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
 
    const formatCurrencyInput = (value: string) => {
@@ -182,10 +182,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <div className="mb-6 flex items-center justify-between gap-4">
                <div>
                   <h2 className="text-2xl font-bold capitalize">
-                     {category || categoryChild ? category?.title || categoryChild?.title : 'Todos os'} cursos
+                     {categoryChild?.title || category?.title || 'Todos os'} cursos
                   </h2>
-                  {((category && category.description) || (categoryChild && categoryChild.description)) && (
-                     <p className="text-muted-foreground mt-1 text-sm">{category?.description || categoryChild?.description}</p>
+                  {((categoryChild && categoryChild.description) || (category && category.description)) && (
+                     <p className="text-muted-foreground mt-1 text-sm">{categoryChild?.description || category?.description}</p>
                   )}
                </div>
 

@@ -100,7 +100,6 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                <DropdownMenuSub key={`${item.id}${keySuffix}`}>
                   <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                      {renderNavLabel(item)}
-                     <ChevronRight className="ml-auto h-4 w-4" />
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent className="min-w-20">
                      {renderSubCategoryItems(category as CourseCategory, childCategories)}
@@ -113,7 +112,6 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
                <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                   {renderNavLabel(item)}
-                  <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-20">
                   {courses.length > 0 ? renderCourseItems(courses) : null}

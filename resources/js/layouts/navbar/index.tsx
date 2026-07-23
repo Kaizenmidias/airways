@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { buildNavbarTree, type NavbarTreeNode } from '@/lib/navbar-tree';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
-import { ChevronDown, ChevronRight, GraduationCap, LayoutDashboard, LogOut, Menu, SettingsIcon, UserCircle, X } from 'lucide-react';
+import { ChevronDown, GraduationCap, LayoutDashboard, LogOut, Menu, SettingsIcon, UserCircle, X } from 'lucide-react';
 import { useEffect, useMemo, useState, type ComponentType } from 'react';
 
 interface NavbarProps {
@@ -143,7 +143,6 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
                <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                   {renderNavLabel(item)}
-                  <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
                   {renderSubCategoryMenuItems(category as CourseCategory, childCategories)}
@@ -171,7 +170,6 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
                <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
                   {renderNavLabel(item)}
-                  <ChevronRight className="ml-auto h-4 w-4" />
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
                   {courses.length > 0 ? renderCourseMenuItems(courses) : null}
@@ -212,10 +210,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
             if (subNode.children.length > 0) {
                return (
-                 <DropdownMenuSub key={`${parentKey}-${index}`}>
+                  <DropdownMenuSub key={`${parentKey}-${index}`}>
                      <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
                         {renderNavLabel(subItem)}
-                        <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
                      <DropdownMenuSubContent className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
                         {renderChildren(subNode.children, `${parentKey}-${index}`)}
