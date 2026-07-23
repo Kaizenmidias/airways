@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const catalogPageData = catalogPage || page;
    const heroSection = getPageSection(catalogPageData, 'hero');
 
-   const heroTitle = heroSection?.title || 'Encontre sua próxima formação';
+   const heroTitle = category?.title || categoryChild?.title || heroSection?.title || 'Encontre sua próxima formação';
    const heroDescription = heroSection?.description || 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
 
    const formatCurrencyInput = (value: string) => {
@@ -98,10 +98,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroDescription}</p>
                </div>
 
-               <form
-                  onSubmit={searchHandler}
-                  className="mx-auto mt-10 max-w-6xl rounded-[28px] border border-white/15 bg-white/[0.06] p-5 shadow-[0_30px_90px_rgba(0,0,0,0.28)] backdrop-blur-md lg:p-7"
-               >
+               {!category && !categoryChild ? (
+                  <form
+                     onSubmit={searchHandler}
+                     className="mx-auto mt-10 max-w-6xl rounded-[28px] border border-white/15 bg-white/[0.06] p-5 shadow-[0_30px_90px_rgba(0,0,0,0.28)] backdrop-blur-md lg:p-7"
+                  >
                   <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr_1.25fr_0.85fr_auto] lg:items-end">
                      <label className="flex flex-col gap-2">
                         <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Buscar curso</span>
@@ -172,7 +173,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                      <p className="text-sm text-slate-300">{courses?.total || 0} cursos encontrados para sua busca.</p>
                   </div>
-               </form>
+                  </form>
+               ) : null}
             </Section>
          </section>
 

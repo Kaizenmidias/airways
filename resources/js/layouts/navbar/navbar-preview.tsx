@@ -100,7 +100,11 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
       if (item.display_courses_in_menu === false) {
          return (
-            <Link key={item.id} href={categoryHref || '#'} className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+            <Link
+               key={item.id}
+               href={categoryHref || '#'}
+               className="flex cursor-pointer items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary"
+            >
                {renderNavLabel(item)}
             </Link>
          );

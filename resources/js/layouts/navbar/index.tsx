@@ -143,7 +143,10 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             <Link
                key={item.id}
                href={categoryHref || '#'}
-               className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}
+               className={cn(
+                  'group flex cursor-pointer items-center gap-1 rounded-md px-3 py-2 outline-none',
+                  'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary',
+               )}
             >
                {renderNavLabel(item)}
             </Link>
