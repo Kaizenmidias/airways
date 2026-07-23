@@ -225,6 +225,8 @@ class CourseService extends MediaService
          ->withCount(['assignments', 'faqs'])
          ->withAvg('reviews as average_rating', 'rating')
          ->with([
+            'course_category',
+            'course_category_child',
             'faqs',
             'learnings',
             'outcomes',
@@ -258,6 +260,57 @@ class CourseService extends MediaService
          ])->first();
 
       return $course;
+   }
+
+   function getRelatedCourses(Course $course, int $limit = 4): Collection
+   {
+      $baseQuery = Course::with([
+         'enrollments',
+         'instructor.user',
+         'course_category',
+         'course_category_child',
+         'sections.section_lessons',
+      ])
+         ->withCount('reviews')
+         ->withAvg('reviews as average_rating', 'rating')
+         ->where('status', 'approved')
+         ->where('id', '!=', $course->id)
+         ->orderBy('is_development', 'asc')
+         ->orderBy('created_at', 'desc');
+
+      $related = collect();
+
+      if ($course->course_category_child_id) {
+         $related = (clone $baseQuery)
+            ->where('course_category_child_id', $course->course_category_child_id)
+            ->limit($limit)
+            ->get();
+      }
+
+      if ($related->count() < $limit && $course->course_category_id) {
+         $remaining = $limit - $related->count();
+
+         $more = (clone $baseQuery)
+            ->where('course_category_id', $course->course_category_id)
+            ->when($course->course_category_child_id, function ($query) use ($course) {
+               $query->where(function ($childQuery) use ($course) {
+                  $childQuery->whereNull('course_category_child_id')
+                     ->orWhere('course_category_child_id', '!=', $course->course_category_child_id);
+               });
+            })
+            ->limit($remaining)
+            ->get();
+
+         $related = $related->merge($more)->unique('id')->values();
+      }
+
+      if ($related->count() < $limit) {
+         $remaining = $limit - $related->count();
+         $more = (clone $baseQuery)->limit($remaining)->get();
+         $related = $related->merge($more)->unique('id')->values();
+      }
+
+      return $related->take($limit);
    }
 
    function lastSectionLessonSort(Course $course): array

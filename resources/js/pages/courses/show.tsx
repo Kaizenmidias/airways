@@ -1,4 +1,6 @@
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Card } from '@/components/ui/card';
+import CourseCard1 from '@/components/cards/course-card-1';
 import LandingLayout from '@/layouts/landing-layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { SharedData } from '@/types/global';
@@ -19,6 +21,7 @@ export interface CourseDetailsProps extends SharedData {
    wishlists: CourseWishlist[];
    reviews: Pagination<CourseReview>;
    totalReviews: CourseTotalReview;
+   relatedCourses: Course[];
 }
 
 const SectionShell = ({ title, children }: { title: string; children: ReactNode }) => {
@@ -35,6 +38,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    const { frontend } = translate;
    const { props } = usePage<CourseDetailsProps>();
    const showInstructorTab = shouldShowCollaborativeUi(props.airways, system.sub_type);
+   const relatedCourses = props.relatedCourses || [];
 
    const pageTitle = course.meta_title || `${course.title} | ${system.fields?.name}`;
    const pageDescription = course.meta_description || course.short_description || course.description || frontend.learn_comprehensive_course;
@@ -46,6 +50,30 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
    const siteUrl = window.location.href;
    const hasLearnings = Boolean(course.learnings && course.learnings.length > 0);
    const hasDescription = Boolean(course.description);
+   const breadcrumbs = [
+      { title: 'Início', href: route('home') },
+      { title: 'Cursos', href: route('category.courses', { category: 'all' }) },
+      ...(course.course_category
+         ? [
+              {
+                 title: course.course_category.title,
+                 href: route('category.courses', { category: course.course_category.slug }),
+              },
+           ]
+         : []),
+      ...(course.course_category_child
+         ? [
+              {
+                 title: course.course_category_child.title,
+                 href: route('category.courses', {
+                    category: course.course_category?.slug || 'all',
+                    category_child: course.course_category_child.slug,
+                 }),
+              },
+           ]
+         : []),
+      { title: course.title, href: route('course.details', { slug: course.slug, id: course.id }) },
+   ];
 
    return (
       <>
@@ -124,6 +152,7 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
 
                <div className="container relative mx-auto max-w-[1600px] px-6 pt-28 pb-16 sm:px-10 sm:pt-32 sm:pb-[4.5rem] lg:px-14 lg:pt-36 lg:pb-16">
                   <div className="max-w-4xl space-y-4">
+                     <Breadcrumbs breadcrumbs={breadcrumbs} listClassName="text-white/70" />
                      {course.sub_title ? <p className="text-lg font-semibold tracking-[0.02em] text-[#FD122E] sm:text-xl">{course.sub_title}</p> : null}
                      <h1 className="max-w-3xl text-4xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.5rem]">
                         {course.title}
@@ -168,6 +197,20 @@ const Show = ({ course, system, translate }: CourseDetailsProps & { translate: a
             <div className="z-20 order-first self-start md:sticky md:top-6 md:order-none md:-mt-24 md:h-fit lg:top-8 lg:-mt-40">
                <CoursePreview />
             </div>
+         </div>
+
+         <div className="container pb-14">
+            <SectionShell title="Você também pode se interessar">
+               {relatedCourses.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+                     {relatedCourses.map((relatedCourse) => (
+                        <CourseCard1 key={relatedCourse.id} course={relatedCourse} />
+                     ))}
+                  </div>
+               ) : (
+                  <p className="text-muted-foreground text-sm">Ainda não encontramos cursos relacionados para este curso.</p>
+               )}
+            </SectionShell>
          </div>
       </>
    );

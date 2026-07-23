@@ -182,6 +182,7 @@ class CourseController extends Controller
         $approvalStatus = $this->courseService->validateCourseForApproval($course);
         $reviews = $this->reviewService->getReviews(['course_id' => $course->id, ...$request->all()], true);
         $totalReviews = $this->reviewService->totalReviews($course->id);
+        $relatedCourses = $this->courseService->getRelatedCourses($course);
 
         if ($course->exists()) {
             // Generate meta tags for SEO and social sharing
@@ -230,6 +231,7 @@ class CourseController extends Controller
                     'wishlists' => $wishlists,
                     'reviews' => $reviews,
                     'totalReviews' => $totalReviews,
+                    'relatedCourses' => $relatedCourses,
                 ]
             )->withViewData([
                 'metaTitle' => $pageTitle,

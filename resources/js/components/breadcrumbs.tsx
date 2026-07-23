@@ -2,12 +2,12 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Link } from '@inertiajs/react';
 import { Fragment } from 'react';
 
-export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: any[] }) {
+export function Breadcrumbs({ breadcrumbs, className, listClassName }: { breadcrumbs: any[]; className?: string; listClassName?: string }) {
    return (
       <>
          {breadcrumbs.length > 0 && (
-            <Breadcrumb>
-               <BreadcrumbList>
+            <Breadcrumb className={className}>
+               <BreadcrumbList className={listClassName}>
                   {breadcrumbs.map((item, index) => {
                      const isLast = index === breadcrumbs.length - 1;
                      return (

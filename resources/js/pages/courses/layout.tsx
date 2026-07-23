@@ -1,3 +1,4 @@
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -23,6 +24,22 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const [maxPrice, setMaxPrice] = useState((urlParams['max_price'] || '').replace(/\D/g, ''));
    const catalogPageData = catalogPage || page;
    const heroSection = getPageSection(catalogPageData, 'hero');
+   const breadcrumbs = [
+      { title: 'Início', href: route('home') },
+      { title: 'Cursos', href: route('category.courses', { category: 'all' }) },
+      ...(category ? [{ title: category.title, href: route('category.courses', { category: category.slug }) }] : []),
+      ...(categoryChild
+         ? [
+              {
+                 title: categoryChild.title,
+                 href: route('category.courses', {
+                    category: category?.slug || 'all',
+                    category_child: categoryChild.slug,
+                 }),
+              },
+           ]
+         : []),
+   ];
 
    const heroTitle = categoryChild?.title || category?.title || heroSection?.title || 'Encontre sua próxima formação';
    const heroDescription = heroSection?.description || 'Cursos online para quem quer evoluir na aviação com uma trilha objetiva, suporte especializado e conteúdo aplicado.';
@@ -91,6 +108,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
                editorButtonClassName="top-4 right-4 bg-emerald-600 text-white hover:bg-emerald-700"
             >
                <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+                  <div className="mb-5">
+                     <Breadcrumbs breadcrumbs={breadcrumbs} listClassName="justify-center text-white/70" />
+                  </div>
                   <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Catálogo Airways</p>
                   <h1 className="mx-auto mt-4 max-w-5xl text-4xl leading-[0.95] font-black tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.7rem] xl:whitespace-nowrap xl:text-[4rem]">
                      {heroTitle}
