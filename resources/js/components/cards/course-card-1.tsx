@@ -77,7 +77,7 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
          </CardHeader>
 
          <div className={cn(viewType === 'list' && 'flex w-[calc(100%-272px)] flex-col justify-between')}>
-            <CardContent className={cn('p-4', viewType === 'list' && 'h-full')}>
+            <CardContent className={cn('px-4 pt-4 pb-2', viewType === 'list' && 'h-full')}>
                <div className="text-secondary-foreground mb-1 flex items-center gap-1.5 text-xs">
                   <Users className="h-3 w-3" />
                   <span>
@@ -108,7 +108,7 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
                </Link>
             </CardContent>
 
-            <CardFooter className="flex w-full items-center justify-between p-4 pt-0">
+            <CardFooter className="flex w-full items-center justify-between px-4 pb-4 pt-1">
                <p className="capitalize">
                   {course.pricing_type === 'free' ? (
                      common.free
