@@ -74,7 +74,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                      </span>
                      <ChevronRight className="ml-auto h-4 w-4" />
                   </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="min-w-20">
+                  <DropdownMenuSubContent className="min-w-20 p-2">
                      {renderCourseItems(childCourses)}
                   </DropdownMenuSubContent>
                </DropdownMenuSub>
@@ -127,7 +127,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                {renderNavLabel(item)}
                <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-20">
+            <DropdownMenuContent align="start" className="min-w-20 p-2">
                {courses.length > 0 ? renderCourseItems(courses) : null}
                {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
                {childCategories.length === 0 && courses.length === 0 ? (
@@ -159,7 +159,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
-                     <DropdownMenuSubContent className="min-w-20">
+                     <DropdownMenuSubContent className="min-w-20 p-2">
                         {renderChildren(subNode.children, `${parentKey}-${idx}`)}
                      </DropdownMenuSubContent>
                   </DropdownMenuSub>
