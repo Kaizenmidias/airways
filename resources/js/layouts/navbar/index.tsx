@@ -103,23 +103,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
    const renderSubCategoryMenuItems = (category: CourseCategory, childCategories: CourseCategoryChild[]) =>
       childCategories.map((child) => {
-         const childCourses = child.courses ?? [];
          const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
-
-         if (childCourses.length > 0) {
-            return (
-               <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
-                     <span className="flex flex-col leading-tight">
-                        <span>{child.title}</span>
-                     </span>
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
-                     {renderCourseMenuItems(childCourses)}
-                  </DropdownMenuSubContent>
-               </DropdownMenuSub>
-            );
-         }
 
          return (
             <DropdownMenuItem key={child.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
@@ -137,8 +121,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       const courses = category?.courses ?? [];
       const childCategories = category?.category_children ?? [];
       const categoryHref = resolveCategoryHref(item);
+      const hasChildCategories = childCategories.length > 0;
 
-      if (item.display_courses_in_menu === false) {
+      if (!hasChildCategories && item.display_courses_in_menu === false) {
          return (
             <Link
                key={item.id}
@@ -153,15 +138,43 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          );
       }
 
+      if (hasChildCategories && keySuffix) {
+         return (
+            <DropdownMenuSub key={`${item.id}${keySuffix}`}>
+               <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+                  {renderNavLabel(item)}
+                  <ChevronRight className="ml-auto h-4 w-4" />
+               </DropdownMenuSubTrigger>
+               <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
+                  {renderSubCategoryMenuItems(category as CourseCategory, childCategories)}
+               </DropdownMenuSubContent>
+            </DropdownMenuSub>
+         );
+      }
+
+      if (hasChildCategories) {
+         return (
+            <DropdownMenu key={item.id}>
+               <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}>
+                  {renderNavLabel(item)}
+                  <ChevronDown className="h-4 w-4" />
+               </DropdownMenuTrigger>
+               <DropdownMenuContent align="start" className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
+                  {renderSubCategoryMenuItems(category as CourseCategory, childCategories)}
+               </DropdownMenuContent>
+            </DropdownMenu>
+         );
+      }
+
       if (keySuffix) {
          return (
-           <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-                  <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
-                     {renderNavLabel(item)}
-                  </DropdownMenuSubTrigger>
+            <DropdownMenuSub key={`${item.id}${keySuffix}`}>
+               <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+                  {renderNavLabel(item)}
+                  <ChevronRight className="ml-auto h-4 w-4" />
+               </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
                   {courses.length > 0 ? renderCourseMenuItems(courses) : null}
-                  {childCategories.length > 0 ? renderSubCategoryMenuItems(category as CourseCategory, childCategories) : null}
                </DropdownMenuSubContent>
             </DropdownMenuSub>
          );
@@ -174,9 +187,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
-               {courses.length > 0 ? renderCourseMenuItems(courses) : null}
-               {childCategories.length > 0 ? renderSubCategoryMenuItems(category as CourseCategory, childCategories) : null}
-               {childCategories.length === 0 && courses.length === 0 ? (
+               {!hasChildCategories && item.display_courses_in_menu !== false && courses.length > 0 ? renderCourseMenuItems(courses) : null}
+               {!hasChildCategories && courses.length === 0 && item.display_courses_in_menu !== false ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-0 py-0">
                      <Link href={categoryHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(item)}
@@ -252,31 +264,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          </Link>
       ));
 
-   const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[], parentKey: string) =>
+   const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[]) =>
       childCategories.map((child) => {
-         const childCourses = child.courses ?? [];
          const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
-         const childKey = `child-${parentKey}-${child.id}`;
-         const childOpen = Boolean(mobileOpenItems[childKey]);
-
-         if (childCourses.length > 0) {
-            return (
-               <div key={child.id} className="space-y-2">
-                  <button
-                     type="button"
-                     onClick={() => toggleMobileItem(childKey)}
-                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
-               >
-                  <span className="flex flex-col leading-tight">
-                        <span className="text-inherit group-hover:text-primary">{child.title}</span>
-                  </span>
-                  <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', childOpen && 'rotate-180')} />
-               </button>
-
-                  {childOpen ? <div className="space-y-2 pl-4">{renderMobileCourseItems(childCourses)}</div> : null}
-               </div>
-            );
-         }
 
          return (
             <Link
@@ -301,7 +291,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          const category = item.course_category;
          const courses = category?.courses ?? [];
          const childCategories = category?.category_children ?? [];
-         const hasContent = item.display_courses_in_menu !== false && (courses.length > 0 || childCategories.length > 0);
+         const hasChildCategories = childCategories.length > 0;
+         const hasContent = hasChildCategories || (item.display_courses_in_menu !== false && courses.length > 0);
          const isOpen = Boolean(mobileOpenItems[mobileKey]);
 
          if (!hasContent) {
@@ -330,8 +321,8 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                {isOpen ? (
                   <div className="space-y-3 pl-3">
-                     {courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
-                     {childCategories.length > 0 ? <div className="space-y-3">{renderMobileSubCategories(category as CourseCategory, childCategories, mobileKey)}</div> : null}
+                     {hasChildCategories ? <div className="space-y-2">{renderMobileSubCategories(category as CourseCategory, childCategories)}</div> : null}
+                     {!hasChildCategories && courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
                   </div>
                ) : null}
             </div>

@@ -3,7 +3,7 @@ import TableFooter from '@/components/table/table-footer';
 import { getQueryParams } from '@/lib/route';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types/global';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
 import Layout from './layout';
 
@@ -164,6 +164,29 @@ const Index = (props: CoursesIndexProps) => {
          <div
             className={cn(urlParams['view'] && urlParams['view'] === 'list' ? 'space-y-7' : 'grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3')}
          >
+            {category && !categoryChild && category.category_children?.length ? (
+               <div className="col-span-full grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {category.category_children.map((child) => (
+                     <Link
+                        key={child.id}
+                        href={route('category.courses', { category: category.slug, category_child: child.slug })}
+                        className="group rounded-2xl border border-border bg-background p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                     >
+                        <div className="flex h-full flex-col justify-between gap-4">
+                           <div className="space-y-2">
+                              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary/70">Subcategoria</p>
+                              <h3 className="text-lg font-bold text-foreground group-hover:text-primary">{child.title}</h3>
+                              {child.description ? <p className="text-sm text-muted-foreground">{child.description}</p> : null}
+                           </div>
+                           <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+                              <span>{child.courses_count ?? 0} cursos</span>
+                              <span className="font-medium text-primary">Ver cursos</span>
+                           </div>
+                        </div>
+                     </Link>
+                  ))}
+               </div>
+            ) : null}
             {courses.data.map((course) => (
                <CourseCard1 key={course.id} course={course} wishlists={wishlists} viewType={urlParams['view'] as 'grid' | 'list'} />
             ))}

@@ -167,6 +167,7 @@ class CourseService extends MediaService
          ->when($user && $user->role === 'instructor', function ($query) use ($user) {
             return $query->where('instructor_id', $user->instructor_id);
          })
+         ->orderBy('is_development', 'asc')
          ->orderBy('created_at', 'desc');
 
       if ($paginate) {

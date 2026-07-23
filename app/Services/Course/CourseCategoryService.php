@@ -11,18 +11,32 @@ class CourseCategoryService extends MediaService
 {
    function getCategoryBySlug(?string $name): ?CourseCategory
    {
-      return CourseCategory::where('slug', $name)->first();
+      return CourseCategory::with([
+         'category_children' => function ($query) {
+            $query->withCount(['courses' => function ($courseQuery) {
+               $courseQuery->where('status', 'approved');
+            }])->orderBy('sort', 'asc');
+         },
+      ])->withCount(['courses' => function ($query) {
+         $query->where('status', 'approved');
+      }])->where('slug', $name)->first();
    }
 
    function getCategoryChildBySlug(?string $name): ?CourseCategoryChild
    {
-      return CourseCategoryChild::where('slug', $name)->first();
+      return CourseCategoryChild::with(['course_category'])->withCount(['courses' => function ($query) {
+         $query->where('status', 'approved');
+      }])->where('slug', $name)->first();
    }
 
    function getCategories(): array
    {
       $categories = CourseCategory::with(['category_children' => function ($query) {
-         $query->orderBy('sort', 'asc');
+         $query->withCount(['courses' => function ($courseQuery) {
+            $courseQuery->where('status', 'approved');
+         }])->orderBy('sort', 'asc');
+      }])->withCount(['courses' => function ($query) {
+         $query->where('status', 'approved');
       }])->orderBy('sort', 'asc')->get();
 
       return [

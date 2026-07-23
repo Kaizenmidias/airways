@@ -62,24 +62,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderSubCategoryItems = (category: CourseCategory, childCategories: CourseCategoryChild[]) =>
       childCategories.map((child) => {
-         const childCourses = child.courses ?? [];
          const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
-
-         if (childCourses.length > 0) {
-            return (
-               <DropdownMenuSub key={child.id}>
-                  <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
-                     <span className="flex flex-col leading-tight">
-                        <span>{child.title}</span>
-                     </span>
-                     <ChevronRight className="ml-auto h-4 w-4" />
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="flex min-w-20 flex-col gap-1 p-2">
-                     {renderCourseItems(childCourses)}
-                  </DropdownMenuSubContent>
-               </DropdownMenuSub>
-            );
-         }
 
          return (
             <DropdownMenuItem key={child.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
@@ -97,8 +80,9 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       const courses = category?.courses ?? [];
       const childCategories = category?.category_children ?? [];
       const categoryHref = resolveCategoryHref(item);
+      const hasChildCategories = childCategories.length > 0;
 
-      if (item.display_courses_in_menu === false) {
+      if (!hasChildCategories && item.display_courses_in_menu === false) {
          return (
             <Link
                key={item.id}
@@ -111,6 +95,20 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       }
 
       if (keySuffix) {
+         if (hasChildCategories) {
+            return (
+               <DropdownMenuSub key={`${item.id}${keySuffix}`}>
+                  <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+                     {renderNavLabel(item)}
+                     <ChevronRight className="ml-auto h-4 w-4" />
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="min-w-20">
+                     {renderSubCategoryItems(category as CourseCategory, childCategories)}
+                  </DropdownMenuSubContent>
+               </DropdownMenuSub>
+            );
+         }
+
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
                <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
@@ -119,7 +117,6 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-20">
                   {courses.length > 0 ? renderCourseItems(courses) : null}
-                  {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
                </DropdownMenuSubContent>
             </DropdownMenuSub>
          );
@@ -132,9 +129,9 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="flex min-w-20 flex-col gap-1 p-2">
-               {courses.length > 0 ? renderCourseItems(courses) : null}
-               {childCategories.length > 0 ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
-               {childCategories.length === 0 && courses.length === 0 ? (
+               {hasChildCategories ? renderSubCategoryItems(category as CourseCategory, childCategories) : null}
+               {!hasChildCategories && courses.length > 0 ? renderCourseItems(courses) : null}
+               {!hasChildCategories && courses.length === 0 ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-5">
                      <Link href={categoryHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
                         {renderNavLabel(item)}
@@ -205,40 +202,27 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       ));
 
    const renderMobileSubCategories = (category: CourseCategory, childCategories: CourseCategoryChild[]) => (
-      <Accordion type="single" collapsible className="space-y-2">
+      <div className="space-y-2">
          {childCategories.map((child) => {
-            const childCourses = child.courses ?? [];
             const childHref = route('category.courses', { category: category.slug, category_child: child.slug });
-
-            if (childCourses.length > 0) {
-               return (
-                  <AccordionItem key={child.id} value={`child-${child.id}`} className="border-b-0">
-                     <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
-                        <span className="flex flex-col leading-tight">
-                           <span className="text-inherit">{child.title}</span>
-                        </span>
-                     </AccordionTrigger>
-                     <AccordionContent className="pb-0 pt-2">
-                        <div className="space-y-2 pl-3">{renderMobileCourseItems(childCourses)}</div>
-                     </AccordionContent>
-                  </AccordionItem>
-               );
-            }
 
             return (
                <Link
                   key={child.id}
                   href={childHref}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+                  className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
                >
-                  <span className="flex flex-col leading-tight">
-                     <span className="text-inherit">{child.title}</span>
+                  <span className="flex items-center justify-between gap-3">
+                     <span className="flex flex-col leading-tight">
+                        <span className="text-inherit group-hover:text-primary">{child.title}</span>
+                     </span>
+                     <ChevronRight className="h-4 w-4 shrink-0 text-white/50 group-hover:text-primary" />
                   </span>
                </Link>
             );
          })}
-      </Accordion>
+      </div>
    );
 
    const renderMobileNode = (node: NavbarTreeNode, parentKey: string | number) => {
@@ -249,7 +233,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          const category = item.course_category;
          const courses = category?.courses ?? [];
          const childCategories = category?.category_children ?? [];
-         const hasContent = item.display_courses_in_menu !== false && (courses.length > 0 || childCategories.length > 0);
+         const hasChildCategories = childCategories.length > 0;
+         const hasContent = hasChildCategories || (item.display_courses_in_menu !== false && courses.length > 0);
 
          if (!hasContent) {
             return (
@@ -271,8 +256,8 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                </AccordionTrigger>
                <AccordionContent className="pb-0 pt-2">
                   <div className="space-y-3 pl-3">
-                     {courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
-                     {childCategories.length > 0 ? renderMobileSubCategories(category as CourseCategory, childCategories) : null}
+                     {hasChildCategories ? renderMobileSubCategories(category as CourseCategory, childCategories) : null}
+                     {!hasChildCategories && courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
                   </div>
                </AccordionContent>
             </AccordionItem>
