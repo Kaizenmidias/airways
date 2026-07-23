@@ -89,7 +89,7 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
                </div>
 
                <Link
-                  className={cn('space-y-3', viewType === 'list' && 'sm:flex sm:h-full sm:flex-col sm:justify-between sm:py-4')}
+                  className={cn('space-y-1.5', viewType === 'list' && 'sm:flex sm:h-full sm:flex-col sm:justify-between sm:py-4')}
                   href={route('course.details', {
                      slug: course.slug,
                      id: course.id,
