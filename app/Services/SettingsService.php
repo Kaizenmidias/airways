@@ -220,10 +220,14 @@ class SettingsService extends MediaService
                 $data['value'] = null;
                 $data['items'] = null;
                 $data['subtitle'] = $data['subtitle'] ?? null;
+                $data['display_courses_in_menu'] = array_key_exists('display_courses_in_menu', $data)
+                    ? (bool) $data['display_courses_in_menu']
+                    : true;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
                 $data['course_category_id'] = null;
+                $data['display_courses_in_menu'] = false;
             }
 
             $navbarItem = NavbarItem::create([
@@ -272,10 +276,14 @@ class SettingsService extends MediaService
 
                 $data['value'] = null;
                 $data['items'] = null;
+                $data['display_courses_in_menu'] = array_key_exists('display_courses_in_menu', $data)
+                    ? (bool) $data['display_courses_in_menu']
+                    : true;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
                 $data['course_category_id'] = null;
+                $data['display_courses_in_menu'] = false;
             }
 
             $item->update($data);
@@ -392,6 +400,7 @@ class SettingsService extends MediaService
                 'value' => $item->value,
                 'items' => $item->items,
                 'course_category_id' => $item->course_category_id,
+                'display_courses_in_menu' => $item->display_courses_in_menu,
                 'parent_id' => $item->parent_id,
                 'sort' => $maxSort + 1,
                 'active' => true,

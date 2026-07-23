@@ -1,4 +1,5 @@
 import DeleteModal from '@/components/inertia/delete-modal';
+import { Checkbox } from '@/components/ui/checkbox';
 import Switch from '@/components/switch';
 import Tabs from '@/components/tabs';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ interface NavbarItemForm {
    active: boolean;
    parent_id: number | null;
    course_category_id: number | null;
+   display_courses_in_menu: boolean;
    items: { title: string; url: string }[];
    sort: number;
    [key: string]: any;
@@ -73,6 +75,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
       active: true,
       parent_id: null,
       course_category_id: null,
+      display_courses_in_menu: true,
       sort: 0,
    });
 
@@ -118,6 +121,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
          active: true,
          parent_id: null,
          course_category_id: defaultCategory ? Number(defaultCategory.id) : null,
+         display_courses_in_menu: true,
          sort: type === 'action' ? actionItems.length + 1 : getRootMenuCount(menuItems) + 1,
       });
       setIsFormOpen(true);
@@ -135,6 +139,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
          active: item.active,
          parent_id: item.parent_id ?? null,
          course_category_id: item.course_category_id ?? null,
+         display_courses_in_menu: item.display_courses_in_menu ?? true,
          sort: item.sort,
       });
       setIsFormOpen(true);
@@ -148,6 +153,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
          course_category_id: selectedCategory ? Number(selectedCategory.id) : null,
          title: selectedCategory ? selectedCategory.title : prev.title,
          slug: selectedCategory ? `category-${selectedCategory.slug}` : prev.slug,
+         display_courses_in_menu: true,
       }));
    };
 
@@ -442,8 +448,26 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                                     {category.title}
                                  </SelectItem>
                               ))}
-                           </SelectContent>
-                        </Select>
+                          </SelectContent>
+                       </Select>
+                     </div>
+                  )}
+
+                  {data.type === 'category' && (
+                     <div className="flex items-start gap-3 rounded-xl border bg-muted/30 p-4">
+                        <Checkbox
+                           id="display_courses_in_menu"
+                           checked={data.display_courses_in_menu}
+                           onCheckedChange={(checked) => setData((prev) => ({ ...prev, display_courses_in_menu: checked === true }))}
+                        />
+                        <div className="space-y-1">
+                           <Label htmlFor="display_courses_in_menu" className="cursor-pointer">
+                              Exibir cursos no menu
+                           </Label>
+                           <p className="text-sm text-muted-foreground">
+                              Quando ativo, a categoria abre o dropdown com os cursos. Quando desativado, o item vira um link para o slug informado.
+                           </p>
+                        </div>
                      </div>
                   )}
 

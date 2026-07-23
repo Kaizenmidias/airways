@@ -31,6 +31,15 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const linkTree = useMemo(() => buildNavbarTree(items.filter((item) => item.type !== 'action' && item.active)), [items]);
 
    const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
+   const resolveCategoryHref = (item: NavbarItem) => {
+      const category = item.course_category;
+
+      if (item.display_courses_in_menu === false) {
+         return item.slug ? route('inner.page', item.slug) : '';
+      }
+
+      return route('category.courses', { category: category?.slug || item.slug });
+   };
 
    const renderNavLabel = (item: NavbarItem) => (
       <span className="flex flex-col leading-tight">
@@ -87,7 +96,15 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       const category = item.course_category;
       const courses = category?.courses ?? [];
       const childCategories = category?.category_children ?? [];
-      const categoryHref = route('category.courses', { category: category?.slug || item.slug });
+      const categoryHref = resolveCategoryHref(item);
+
+      if (item.display_courses_in_menu === false) {
+         return (
+            <Link key={item.id} href={categoryHref || '#'} className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+               {renderNavLabel(item)}
+            </Link>
+         );
+      }
 
       if (keySuffix) {
          return (
@@ -228,13 +245,13 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          const category = item.course_category;
          const courses = category?.courses ?? [];
          const childCategories = category?.category_children ?? [];
-         const hasContent = courses.length > 0 || childCategories.length > 0;
+         const hasContent = item.display_courses_in_menu !== false && (courses.length > 0 || childCategories.length > 0);
 
          if (!hasContent) {
             return (
                <Link
                   key={item.id}
-                  href={route('category.courses', { category: category?.slug || item.slug })}
+                  href={resolveCategoryHref(item) || '#'}
                   onClick={() => setIsMenuOpen(false)}
                   className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
                >

@@ -152,6 +152,7 @@ interface NavbarItem extends TableCommon {
    active: boolean;
    value: string | null;
    course_category_id: number | null;
+   display_courses_in_menu: boolean;
    course_category?: CourseCategory | null;
    items: NavbarItem[] | null;
    parent_id: number | null;

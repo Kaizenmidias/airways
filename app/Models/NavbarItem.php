@@ -17,6 +17,7 @@ class NavbarItem extends Model
         'value',
         'items',
         'course_category_id',
+        'display_courses_in_menu',
         'active',
         'parent_id',
         'navbar_id',
@@ -26,6 +27,7 @@ class NavbarItem extends Model
         'sort' => 'integer',
         'active' => 'boolean',
         'course_category_id' => 'integer',
+        'display_courses_in_menu' => 'boolean',
         'parent_id' => 'integer',
         'items' => 'array',
     ];

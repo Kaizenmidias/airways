@@ -65,6 +65,15 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const isExternal = (href: string) => /^https?:\/\//i.test(href);
 
    const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
+   const resolveCategoryHref = (item: NavbarItem) => {
+      const category = item.course_category;
+
+      if (item.display_courses_in_menu === false) {
+         return item.slug ? route('inner.page', item.slug) : '';
+      }
+
+      return route('category.courses', { category: category?.slug || item.slug });
+   };
 
    const toggleMobileItem = (key: string) => {
       setMobileOpenItems((current) => ({
@@ -127,7 +136,19 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       const category = item.course_category;
       const courses = category?.courses ?? [];
       const childCategories = category?.category_children ?? [];
-      const categoryHref = route('category.courses', { category: category?.slug || item.slug });
+      const categoryHref = resolveCategoryHref(item);
+
+      if (item.display_courses_in_menu === false) {
+         return (
+            <Link
+               key={item.id}
+               href={categoryHref || '#'}
+               className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}
+            >
+               {renderNavLabel(item)}
+            </Link>
+         );
+      }
 
       if (keySuffix) {
          return (
@@ -277,14 +298,14 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
          const category = item.course_category;
          const courses = category?.courses ?? [];
          const childCategories = category?.category_children ?? [];
-         const hasContent = courses.length > 0 || childCategories.length > 0;
+         const hasContent = item.display_courses_in_menu !== false && (courses.length > 0 || childCategories.length > 0);
          const isOpen = Boolean(mobileOpenItems[mobileKey]);
 
          if (!hasContent) {
             return (
                <Link
                   key={item.id}
-                  href={route('category.courses', { category: category?.slug || item.slug })}
+                  href={resolveCategoryHref(item) || '#'}
                   onClick={() => setIsMenuOpen(false)}
                   className="block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
                >
