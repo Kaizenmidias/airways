@@ -70,7 +70,7 @@ const formatAccessPeriod = (course: Course) => {
 };
 
 const FeatureRow = ({ icon, label, value }: { icon: ReactNode; label: string; value?: string }) => (
-   <div className="flex items-center gap-3 py-1.5">
+   <div className="flex items-center gap-3 py-0.5">
       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-teal-200 bg-teal-50 text-teal-500">
          {icon}
       </div>
@@ -139,16 +139,11 @@ const CoursePreview = () => {
             <EnrollOrPlayerButton />
          </div>
 
-         <div className="space-y-1 border-t border-slate-200/80 px-4 py-4 sm:px-5">
+         <div className="space-y-0.5 border-t border-slate-200/80 px-4 py-3 sm:px-5">
             <FeatureRow icon={<Clock3 className="h-4 w-4" />} label="Carga horária" value={durationLabel} />
 
             <FeatureRow
-               icon={
-                  <div className="flex items-center gap-1.5">
-                     <Laptop className="h-4 w-4" />
-                     <Smartphone className="h-4 w-4" />
-                  </div>
-               }
+               icon={<Laptop className="h-4 w-4" />}
                label="Todos dispositivos"
             />
 
