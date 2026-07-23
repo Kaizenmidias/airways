@@ -18,7 +18,7 @@ const EnabledPlayButton = ({ watchHistory }: { watchHistory: WatchHistory }) => 
                lesson_id: watchHistory.current_watching_id,
             })}
          >
-            {frontend.play_course}
+            Reproduzir Curso
          </Link>
       </Button>
    );
@@ -33,11 +33,11 @@ const DisabledPlayButton = ({ course, approvalStatus }: { course: Course; approv
 
    return approve_able ? (
       <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600" onClick={() => router.post(route('player.init.watch-history'), { course_id: course.id })}>
-         {frontend.play_course}
+         Reproduzir Curso
       </Button>
    ) : (
       <Button disabled size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
-         {frontend.course_player}
+         Reproduzir Curso
       </Button>
    );
 };
@@ -58,12 +58,12 @@ const EnrollmentButton = ({ auth, course }: { auth: Auth; course: Course }) => {
 
    return course.pricing_type === 'free' ? (
       <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600" onClick={() => enrollmentHandler(course)}>
-         {frontend.enroll_now}
+         Matricule-se agora
       </Button>
    ) : (
       <a href={route('payments.index', { from: 'web', item: 'course', id: course.id })}>
          <Button size="lg" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
-            {frontend.buy_now}
+            Matricule-se agora
          </Button>
       </a>
    );
