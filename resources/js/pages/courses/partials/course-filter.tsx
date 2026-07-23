@@ -11,17 +11,11 @@ interface CourseFilterProps {
 const CourseFilter = ({ setOpen }: CourseFilterProps) => {
    const page = usePage<CoursesIndexProps>();
    const urlParams = getQueryParams(page.url);
-   const { levels, prices, categories, category, categoryChild, translate } = page.props;
+   const { prices, categories, category, categoryChild, translate } = page.props;
    const { frontend, common } = translate;
    const coursePricingLabels: Record<string, string> = {
       free: 'Grátis',
       paid: 'Pago',
-   };
-   const courseLevelLabels: Record<string, string> = {
-      beginner: 'Iniciante',
-      intermediate: 'Intermediário',
-      advanced: 'Avançado',
-      expert: 'Especialista',
    };
 
    const getQueryRoute = (newParams: Record<string, string>, category: string, category_child?: string) => {
@@ -43,7 +37,6 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
       <div className="space-y-6">
          <SearchInput onChangeValue={(value) => router.get(route('category.courses', { category: 'all', search: value }))} />
 
-         {/* Categories Section */}
          <div>
             <h3 className="mb-3 font-semibold">{common.categories}</h3>
             <RadioGroup value={categoryChild ? categoryChild?.slug : category?.slug || 'all'}>
@@ -71,17 +64,18 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
                            </label>
                         </Link>
 
-                        {category.category_children?.map((child, ind) => {
-                           const key = `category_child${ind}`;
+                        {category.category_children?.map((child, childIndex) => {
+                           const childKey = `category_child${ind}-${childIndex}`;
+
                            return (
                               <Link
-                                 key={key}
+                                 key={childKey}
                                  className="mt-2 flex items-center pl-3"
                                  href={getQueryRoute({}, category.slug, child.slug)}
                                  onFinish={() => !urlParams.search && setOpen && setOpen(false)}
                               >
-                                 <RadioGroupItem className="cursor-pointer" id={key} value={child.slug} />
-                                 <label htmlFor={key} className="cursor-pointer pl-2">
+                                 <RadioGroupItem className="cursor-pointer" id={childKey} value={child.slug} />
+                                 <label htmlFor={childKey} className="cursor-pointer pl-2">
                                     {child.title}
                                  </label>
                               </Link>
@@ -93,7 +87,6 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
             </RadioGroup>
          </div>
 
-         {/* Price Section */}
          <div>
             <h3 className="mb-3 font-semibold">{common.price}</h3>
             <RadioGroup value={urlParams['price'] || 'all'}>
@@ -118,36 +111,6 @@ const CourseFilter = ({ setOpen }: CourseFilterProps) => {
                      <RadioGroupItem className="cursor-pointer" value={price} id={price} />
                      <label htmlFor={price} className="cursor-pointer pl-2">
                         {coursePricingLabels[price] ?? price}
-                     </label>
-                  </Link>
-               ))}
-            </RadioGroup>
-         </div>
-
-         {/* Label Section */}
-         <div>
-            <h3 className="mb-3 font-semibold">{common.level}</h3>
-            <RadioGroup value={urlParams['level'] || 'all'}>
-               <Link
-                  className="flex items-center"
-                  href={getQueryRoute({ level: 'all' }, category?.slug || 'all', categoryChild?.slug)}
-                  onFinish={() => !urlParams.search && setOpen && setOpen(false)}
-               >
-                  <RadioGroupItem className="cursor-pointer" id="level" value="all" />
-                  <label htmlFor="level" className="cursor-pointer pl-2">
-                     {frontend.all}
-                  </label>
-               </Link>
-               {levels.map((level) => (
-                  <Link
-                     key={level}
-                     className="flex items-center capitalize"
-                     href={getQueryRoute({ level }, category?.slug || 'all', categoryChild?.slug)}
-                     onFinish={() => !urlParams.search && setOpen && setOpen(false)}
-                  >
-                     <RadioGroupItem className="cursor-pointer" value={level} id={level} />
-                     <label htmlFor={level} className="cursor-pointer pl-2">
-                        {courseLevelLabels[level] ?? level}
                      </label>
                   </Link>
                ))}

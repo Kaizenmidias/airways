@@ -7,9 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import courseLanguages from '@/data/course-languages';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
@@ -19,7 +17,7 @@ import { CourseUpdateProps } from '../update';
 
 const Basic = () => {
    const { props } = usePage<CourseUpdateProps>();
-   const { auth, system, tab, labels, categories, course, instructors, translate, airways } = props;
+   const { auth, system, tab, categories, course, instructors, translate, airways } = props;
    const { input, button, common } = translate;
    const showInstructorSelector = auth.user.role === 'admin' && shouldShowCollaborativeUi(airways, system.sub_type);
 
@@ -30,8 +28,6 @@ const Basic = () => {
       short_description: course.short_description,
       description: course.description,
       status: course.status,
-      level: course.level,
-      language: course.language,
       instructor_id: course.instructor_id,
       drip_content: Boolean(course.drip_content),
       is_development: Boolean(course.is_development),
@@ -61,13 +57,6 @@ const Basic = () => {
          selectedCategory?.category_children?.find((child) => String(child.id) === String(data.course_category_child_id)) ?? null,
       [selectedCategory, data.course_category_child_id],
    );
-
-   const courseLevelLabels: Record<string, string> = {
-      beginner: 'Iniciante',
-      intermediate: 'Intermediário',
-      advanced: 'Avançado',
-      expert: 'Especialista',
-   };
 
    return (
       <Card className="container p-4 sm:p-6">
@@ -176,34 +165,6 @@ const Basic = () => {
                      <InputError message={errors.course_category_child_id} />
                   </div>
                ) : null}
-
-               <div>
-                  <Label>{input.course_level} *</Label>
-                  <Select value={data.level} onValueChange={(value) => setData('level', value)}>
-                     <SelectTrigger>
-                        <SelectValue placeholder={input.course_level_placeholder} />
-                     </SelectTrigger>
-                        <SelectContent>
-                           {labels.map((label) => (
-                              <SelectItem key={label} value={label} className="capitalize">
-                                 {courseLevelLabels[label] ?? label}
-                              </SelectItem>
-                           ))}
-                        </SelectContent>
-                  </Select>
-                  <InputError message={errors.level} />
-               </div>
-
-               <div>
-                  <Label>{input.course_language} *</Label>
-                  <Combobox
-                     defaultValue={data.language}
-                     data={courseLanguages}
-                     placeholder={input.course_language_placeholder}
-                     onSelect={(selected) => setData('language', selected.value)}
-                  />
-                  <InputError message={errors.language} />
-               </div>
 
                <div>
                   <Label>{input.enable_drip_content} *</Label>

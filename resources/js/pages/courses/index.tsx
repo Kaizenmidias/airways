@@ -8,7 +8,6 @@ import { ReactNode } from 'react';
 import Layout from './layout';
 
 export interface CoursesIndexProps extends SharedData {
-   levels: string[];
    prices: string[];
    expiries: string[];
    category?: CourseCategory;

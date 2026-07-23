@@ -9,9 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import courseLanguages from '@/data/course-languages';
 import DashboardLayout from '@/layouts/dashboard/layout';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
@@ -20,7 +18,6 @@ import { useForm, usePage } from '@inertiajs/react';
 import { ReactNode, useMemo } from 'react';
 
 interface Props extends SharedData {
-   labels: string[];
    prices: string[];
    expiries: string[];
    categories: CourseCategory[];
@@ -33,7 +30,7 @@ const Index = (props: Props) => {
    const { input, button, common } = translate;
 
    const user = props.auth.user;
-   const { labels, prices, expiries, categories, instructors, system } = props;
+   const { prices, expiries, categories, instructors, system } = props;
    const showInstructorSelector = user.role === 'admin' && shouldShowCollaborativeUi(airways, system.sub_type);
    const defaultInstructorId = String(user.instructor_id ?? instructors[0]?.id ?? '');
 
@@ -43,8 +40,6 @@ const Index = (props: Props) => {
       short_description: '',
       description: '',
       status: user.role === 'admin' ? 'approved' : 'draft',
-      level: '',
-      language: '',
       pricing_type: 'paid',
       price: '',
       discount: false as boolean,
@@ -81,13 +76,6 @@ const Index = (props: Props) => {
          selectedCategory?.category_children?.find((child) => String(child.id) === String(data.course_category_child_id)) ?? null,
       [selectedCategory, data.course_category_child_id],
    );
-
-   const courseLevelLabels: Record<string, string> = {
-      beginner: 'Iniciante',
-      intermediate: 'Intermediário',
-      advanced: 'Avançado',
-      expert: 'Especialista',
-   };
 
    const coursePricingLabels: Record<string, string> = {
       free: 'Grátis',
@@ -213,32 +201,6 @@ const Index = (props: Props) => {
                         </div>
                      ) : null}
 
-                     <div>
-                        <Label htmlFor="level">{input.course_level} *</Label>
-                        <Select value={data.level} onValueChange={(value) => setData('level', value)}>
-                           <SelectTrigger>
-                              <SelectValue placeholder={input.course_level_placeholder} />
-                           </SelectTrigger>
-                        <SelectContent>
-                              {labels.map((label) => (
-                                 <SelectItem key={label} value={label}>
-                                    {courseLevelLabels[label] ?? label}
-                                 </SelectItem>
-                              ))}
-                           </SelectContent>
-                        </Select>
-                        <InputError message={errors.level} />
-                     </div>
-                  </div>
-
-                  <div>
-                     <Label>{input.course_language} *</Label>
-                     <Combobox
-                        data={courseLanguages}
-                        placeholder={input.course_language_placeholder}
-                        onSelect={(selected) => setData('language', selected.value)}
-                     />
-                     <InputError message={errors.language} />
                   </div>
 
                   <div>

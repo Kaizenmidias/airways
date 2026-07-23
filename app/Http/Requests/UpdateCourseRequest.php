@@ -71,8 +71,6 @@ class UpdateCourseRequest extends FormRequest
             'short_description' => 'required|string',
             'description' => 'nullable|string',
             'status' => 'required|string',
-            'level' => 'required|string',
-            'language' => 'required|string|max:255',
             'drip_content' => 'required|boolean',
             'is_development' => 'boolean',
             'course_category_id' => 'required|exists:course_categories,id',

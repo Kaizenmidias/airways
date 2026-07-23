@@ -144,9 +144,6 @@ class CourseService extends MediaService
          ->when(array_key_exists('status', $data) && $data['status'] !== 'all', function ($query) use ($data) {
             return $query->where('status', $data['status']);
          })
-         ->when(array_key_exists('level', $data) && $data['level'] !== 'all', function ($query) use ($data) {
-            return $query->where('level', $data['level']);
-         })
          ->when(array_key_exists('price', $data) && $data['price'] !== 'all', function ($query) use ($data) {
             return $query->where('pricing_type', $data['price']);
          })
@@ -165,9 +162,6 @@ class CourseService extends MediaService
                '(CASE WHEN discount = 1 AND discount_price IS NOT NULL THEN discount_price ELSE price END) <= ?',
                [floatval($maxPrice)],
             );
-         })
-         ->when(array_key_exists('language', $data) && $data['language'] !== 'all', function ($query) use ($data) {
-            return $query->where('language', $data['language']);
          })
          ->when($user && $user->role === 'instructor', function ($query) use ($user) {
             return $query->where('instructor_id', $user->instructor_id);
@@ -226,6 +220,7 @@ class CourseService extends MediaService
    {
       $course = Course::where('id', $id)
          ->withCount('enrollments')
+         ->withCount(['assignments', 'faqs'])
          ->withAvg('reviews as average_rating', 'rating')
          ->with([
             'faqs',

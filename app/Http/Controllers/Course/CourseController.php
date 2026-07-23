@@ -52,7 +52,6 @@ class CourseController extends Controller
         $user = Auth::user() ? Auth::user() : null;
         $query = [...$request->all(), 'per_page' => 12, 'category' => $category, 'category_child' => $category_child, 'status' => 'approved'];
 
-        $levels = CourseLevelType::cases();
         $prices = CoursePricingType::cases();
         $category = $this->categoryService->getCategoryBySlug($category);
         $categoryChild = $this->categoryService->getCategoryChildBySlug($category_child);
@@ -119,7 +118,6 @@ class CourseController extends Controller
 
         return Inertia::render('courses/index', [
             'page' => $catalogPage,
-            'levels' => $levels,
             'prices' => $prices,
             'courses' => $courses,
             'categories' => $categories,

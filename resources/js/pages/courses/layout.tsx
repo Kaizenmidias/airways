@@ -13,7 +13,7 @@ import { CoursesIndexProps } from './index';
 
 const Layout = ({ children }: { children: ReactNode }) => {
    const { url, props } = usePage<CoursesIndexProps>();
-   const { category, categoryChild, categories, levels, courses, page, customize, catalogPage } = props;
+   const { category, categoryChild, categories, courses, page, customize, catalogPage } = props;
    const urlParams = getQueryParams(url);
    const viewType = urlParams['view'] ?? 'grid';
    const selectedCategory = categoryChild ? `${category?.slug || 'all'}::${categoryChild.slug}` : category?.slug || 'all';
@@ -21,7 +21,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
    const [courseCategory, setCourseCategory] = useState(selectedCategory);
    const [minPrice, setMinPrice] = useState((urlParams['min_price'] || '').replace(/\D/g, ''));
    const [maxPrice, setMaxPrice] = useState((urlParams['max_price'] || '').replace(/\D/g, ''));
-   const [level, setLevel] = useState(urlParams['level'] || 'all');
    const catalogPageData = catalogPage || page;
    const heroSection = getPageSection(catalogPageData, 'hero');
 
@@ -41,16 +40,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
    };
 
    const normalizeCurrencyInput = (value: string) => value.replace(/\D/g, '');
-
-   const levelLabel = (value: string) => {
-      const labels: Record<string, string> = {
-         beginner: 'Iniciante',
-         intermediate: 'Intermediário',
-         advanced: 'Avançado',
-      };
-
-      return labels[value] || value;
-   };
 
    const getQueryRoute = (newParams: Record<string, string>, category: string, category_child?: string) => {
       const updatedParams = { ...urlParams };
@@ -80,7 +69,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
       if (search) query.search = search;
       if (minPrice) query.min_price = minPrice;
       if (maxPrice) query.max_price = maxPrice;
-      if (level !== 'all') query.level = level;
       if (viewType) query.view = viewType;
 
       router.get(
@@ -172,23 +160,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
                            />
                         </div>
                      </div>
-
-                     <label className="flex flex-col gap-2">
-                        <span className="text-xs font-bold tracking-[0.24em] text-slate-400 uppercase">Nível</span>
-                        <Select value={level} onValueChange={setLevel}>
-                           <SelectTrigger className="h-12 rounded-2xl border-white/10 bg-white text-slate-950">
-                              <SelectValue placeholder="Todos" />
-                           </SelectTrigger>
-                           <SelectContent>
-                              <SelectItem value="all">Todos</SelectItem>
-                              {levels.map((item) => (
-                                 <SelectItem key={item} value={item} className="capitalize">
-                                    {levelLabel(item)}
-                                 </SelectItem>
-                              ))}
-                           </SelectContent>
-                        </Select>
-                     </label>
 
                      <div className="flex lg:h-full lg:items-end">
                         <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FD122E] px-7 font-semibold text-white shadow-none hover:bg-[#d90f26] lg:w-auto">
