@@ -4,6 +4,7 @@ import { Link, usePage } from '@inertiajs/react';
 import ButtonGradientPrimary from '../button-gradient-primary';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Progress } from '../ui/progress';
+import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
    course: Course;
@@ -20,15 +21,18 @@ const CourseCard7 = ({ course, watch_history, completion, className }: Props) =>
    return (
       <Card className={cn('flex flex-col justify-between overflow-hidden !border md:flex-row', className)}>
          <CardHeader className="h-[200px] w-full max-w-[360px] p-0">
-            <img
-               src={course.thumbnail || '/assets/images/blank-image.jpg'}
-               alt={course.title}
-               className="h-full w-full object-cover"
-               onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/assets/images/blank-image.jpg';
-               }}
-            />
+            <div className="relative h-full w-full">
+               <img
+                  src={course.thumbnail || '/assets/images/blank-image.jpg'}
+                  alt={course.title}
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                     const target = e.target as HTMLImageElement;
+                     target.src = '/assets/images/blank-image.jpg';
+                  }}
+               />
+               <CourseDevelopmentBadge enabled={course.is_development} />
+            </div>
          </CardHeader>
 
          <CardContent className="flex w-full flex-col justify-between p-4">

@@ -4,6 +4,7 @@ import { SharedData } from '@/types/global';
 import { Link, usePage } from '@inertiajs/react';
 import { Clock, Star, TrendingUp, Users } from 'lucide-react';
 import { Separator } from '../ui/separator';
+import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
    course: Course;
@@ -36,6 +37,7 @@ const CourseCard5 = ({ course, className }: Props) => {
                         target.src = '/assets/images/blank-image.jpg';
                      }}
                   />
+                  <CourseDevelopmentBadge enabled={course.is_development} />
                </div>
             </Link>
          </CardHeader>

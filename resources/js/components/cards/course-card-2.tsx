@@ -6,6 +6,7 @@ import { cn, formatCurrency, getCourseDuration } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Clock, Heart, Star, TrendingUp, Users } from 'lucide-react';
+import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
    course: Course;
@@ -41,18 +42,19 @@ const CourseCard2 = ({ course, className, wishlists }: Props) => {
                      id: course.id,
                   })}
                >
-                  <div className="relative h-[300px] w-full overflow-hidden rounded-t-lg">
-                     <img
-                        src={course.thumbnail || '/assets/images/blank-image.jpg'}
-                        alt={course.title}
-                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+               <div className="relative h-[300px] w-full overflow-hidden rounded-t-lg">
+                  <img
+                     src={course.thumbnail || '/assets/images/blank-image.jpg'}
+                     alt={course.title}
+                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                         onError={(e) => {
                            const target = e.target as HTMLImageElement;
                            target.src = '/assets/images/blank-image.jpg';
-                        }}
-                     />
-                  </div>
-               </Link>
+                     }}
+                  />
+                  <CourseDevelopmentBadge enabled={course.is_development} />
+               </div>
+            </Link>
 
                {wishlists && (
                   <TooltipProvider delayDuration={0}>

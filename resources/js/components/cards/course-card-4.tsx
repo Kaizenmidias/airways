@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import CourseDevelopmentBadge from './course-development-badge';
 
 interface Props {
    className?: string;
@@ -31,6 +32,7 @@ const CourseCard4 = ({ enrollment, className }: Props) => {
                         target.src = '/assets/images/blank-image.jpg';
                      }}
                   />
+                  <CourseDevelopmentBadge enabled={course.is_development} />
                </div>
             </Link>
          </CardHeader>
