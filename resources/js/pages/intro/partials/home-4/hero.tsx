@@ -48,7 +48,7 @@ const Hero = () => {
             />
          ) : null}
 
-         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.34),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.18),transparent_16%),linear-gradient(135deg,#050b16_0%,#06101d_44%,#071425_100%)]" />
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.28),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.14),transparent_16%),linear-gradient(135deg,rgba(5,11,22,0.68)_0%,rgba(6,17,29,0.42)_44%,rgba(7,20,37,0.68)_100%)]" />
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
          <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 pt-[118px] sm:pt-[136px] lg:grid-cols-[1.02fr_0.98fr] lg:pt-0">
