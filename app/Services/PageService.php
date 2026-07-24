@@ -99,12 +99,18 @@ class PageService extends PageSectionService
    {
       $section = PageSection::where('id', $id)->first();
 
-      // Process main thumbnail if exists
-      if (array_key_exists('thumbnail', $data) && $data['thumbnail']) {
+      // Allow explicit removal of the main media fields.
+      if (array_key_exists('remove_thumbnail', $data) && $data['remove_thumbnail']) {
+         $this->deleteSectionMedia($section, 'thumbnail');
+         $data['thumbnail'] = '';
+      } elseif (array_key_exists('thumbnail', $data) && $data['thumbnail']) {
          $data['thumbnail'] = $this->addNewDeletePrev($section, $data['thumbnail'], 'thumbnail');
       }
 
-      if (array_key_exists('background_image', $data) && $data['background_image']) {
+      if (array_key_exists('remove_background_image', $data) && $data['remove_background_image']) {
+         $this->deleteSectionMedia($section, 'background_image');
+         $data['background_image'] = '';
+      } elseif (array_key_exists('background_image', $data) && $data['background_image']) {
          $data['background_image'] = $this->addNewDeletePrev($section, $data['background_image'], 'background_image');
       }
 
@@ -132,6 +138,7 @@ class PageService extends PageSectionService
 
       // Remove null values from the data array recursively
       $dataNew = $this->removeImageNullProperties($data);
+      unset($dataNew['remove_thumbnail'], $dataNew['remove_background_image']);
       foreach ($dataNew as $key => $value) {
          $section[$key] = $value;
       }
@@ -179,5 +186,14 @@ class PageService extends PageSectionService
       // }
 
       return $array;
+   }
+
+   private function deleteSectionMedia(PageSection $section, string $name): void
+   {
+      $media = $section->getMedia('*', ['name' => $name])->first();
+
+      if ($media) {
+         $media->delete();
+      }
    }
 }

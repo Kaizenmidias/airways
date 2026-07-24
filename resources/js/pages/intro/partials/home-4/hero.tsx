@@ -11,19 +11,12 @@ const Hero = () => {
    const { props } = usePage<IntroPageProps>();
    const { page } = props;
    const heroSection = getPageSection(page, 'hero');
-   const heroImage = heroSection?.thumbnail || '/assets/aviao.png';
-   const backgroundImage = heroSection?.background_image || '/assets/images/intro/home-4/hero-bg.png';
+   const heroImage = heroSection?.thumbnail || '';
+   const backgroundImage = heroSection?.background_image || '';
    const backgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
-   const partnerLogos = getPropertyArray(heroSection);
-   const fallbackPartnerLogos = [
-      { image: '/assets/logos/logo-1.png', name: 'Latam' },
-      { image: '/assets/logos/logo-2.png', name: 'Gol' },
-      { image: '/assets/logos/logo-3.png', name: 'Azul' },
-      { image: '/assets/logos/logo-4.png', name: 'Avianca' },
-      { image: '/assets/logos/logo-5.png', name: 'Embraer' },
-      { image: '/assets/logos/logo-6.png', name: 'Flydubai' },
-   ];
-   const logos = (partnerLogos.length > 0 ? partnerLogos : fallbackPartnerLogos).slice(0, 6);
+   const logos = getPropertyArray(heroSection)
+      .filter((partner) => Boolean(partner.image))
+      .slice(0, 6);
 
    return (
       <Section
@@ -102,9 +95,9 @@ const Hero = () => {
                   <div className="relative overflow-hidden rounded-[24px]">
                      {backgroundVideo ? (
                         <video className="h-full w-full object-cover object-center" src={backgroundVideo} autoPlay muted loop playsInline poster={backgroundImage} />
-                     ) : (
+                     ) : heroImage ? (
                         <img src={heroImage} alt={heroSection?.sub_title || heroSection?.title || 'Airways Academy'} className={cn('h-full w-full object-cover object-center', 'min-h-[420px] lg:min-h-[720px]')} />
-                     )}
+                     ) : null}
 
                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,13,23,0.05)_0%,rgba(8,13,23,0.14)_48%,rgba(8,13,23,0.28)_100%)]" />
                   </div>

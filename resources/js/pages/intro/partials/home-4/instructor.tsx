@@ -28,9 +28,11 @@ const Instructor = () => {
             <div className="space-y-12">
                {oddElements?.map((item, index) => (
                   <div key={index}>
-                     <div className="bg-background shadow-card-md h-10 w-10 rounded p-2">
-                        <DynamicIcon name={item.icon} className="text-secondary-foreground h-6 w-6" />
-                     </div>
+                     {item.icon ? (
+                        <div className="bg-background shadow-card-md h-10 w-10 rounded p-2">
+                           <DynamicIcon name={item.icon} className="text-secondary-foreground h-6 w-6" />
+                        </div>
+                     ) : null}
 
                      <h3 className="pt-4 pb-2 font-semibold">{item.title}</h3>
                      <p className="text-muted-foreground text-sm">{item.description}</p>
@@ -69,9 +71,11 @@ const Instructor = () => {
             <div className="space-y-12">
                {evenElements?.map((item, index) => (
                   <div key={index}>
-                     <div className="bg-background shadow-card-md h-10 w-10 rounded p-2">
-                        <DynamicIcon name={item.icon} className="text-secondary-foreground h-6 w-6" />
-                     </div>
+                     {item.icon ? (
+                        <div className="bg-background shadow-card-md h-10 w-10 rounded p-2">
+                           <DynamicIcon name={item.icon} className="text-secondary-foreground h-6 w-6" />
+                        </div>
+                     ) : null}
 
                      <h3 className="pt-4 pb-2 font-semibold">{item.title}</h3>
                      <p className="text-muted-foreground text-sm">{item.description}</p>

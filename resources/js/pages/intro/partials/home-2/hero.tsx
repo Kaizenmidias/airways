@@ -37,7 +37,7 @@ const Hero = () => {
 
          {/* Right Image */}
          <div className="animate-fade-in relative flex items-center justify-center lg:justify-end">
-            <img src={heroSection?.thumbnail || ''} alt="Student learning online" className="relative z-10 h-full max-h-[460px]" />
+            {heroSection?.thumbnail ? <img src={heroSection.thumbnail} alt="Student learning online" className="relative z-10 h-full max-h-[460px]" /> : null}
 
             <div className="after:pointer-events-none after:absolute after:top-0 after:right-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(97,95,255,1))] after:blur-[290px] after:content-[''] dark:after:bg-[#fff5cc6d]"></div>
          </div>

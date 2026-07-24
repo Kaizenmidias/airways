@@ -1,8 +1,11 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import IconPickerDialog from '@/components/icon-picker-dialog';
 import React, { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { useSectionEditor } from '../context';
 import ArrayFields from './array';
 import Contents from './contents';
@@ -62,9 +65,46 @@ const Fields = ({ field, onChange }: FieldsProps) => {
          case 'number':
             return <Input type="number" id={field.name} name={field.name} value={localValue} onChange={handleInputChange} />;
 
+         case 'icon':
+            return (
+               <IconPickerDialog
+                  name={field.name}
+                  value={localValue}
+                  placeholder={field.label}
+                  onSelect={(icon) => {
+                     setLocalValue(icon);
+                     onChange(icon);
+                  }}
+                  onClear={() => {
+                     setLocalValue('');
+                     onChange('');
+                  }}
+               />
+            );
+
          case 'image':
          case 'file':
-            return <Input type="file" id={field.name} name={field.name} onChange={handleFileChange} />;
+            return (
+               <div className="space-y-2">
+                  <Input type="file" id={field.name} name={field.name} onChange={handleFileChange} />
+
+                  {localValue ? (
+                     <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-xs"
+                        onClick={() => {
+                           setLocalValue('');
+                           onChange(null);
+                        }}
+                     >
+                        <X className="mr-1 h-3.5 w-3.5" />
+                        Remover imagem
+                     </Button>
+                  ) : null}
+               </div>
+            );
 
          case 'boolean':
             return (

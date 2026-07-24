@@ -44,11 +44,7 @@ const Hero = () => {
 
          {/* Right Image */}
          <div className="relative flex w-full max-w-[680px] items-center justify-center lg:justify-end">
-            <img
-               src={heroSection?.thumbnail || '/assets/images/intro/default/hero-image.png'}
-               alt="Student learning online"
-               className="relative z-10 w-full"
-            />
+            {heroSection?.thumbnail ? <img src={heroSection.thumbnail} alt="Student learning online" className="relative z-10 w-full" /> : null}
 
             <div className="after:pointer-events-none after:absolute after:right-0 after:bottom-0 after:h-[240px] after:w-[240px] after:rounded-full after:bg-[rgba(253,18,46,0.9)] after:blur-[290px] after:content-['']"></div>
          </div>

@@ -26,11 +26,13 @@ const Hero = () => {
       >
          <div className="relative min-h-[calc(100vh-80px)]">
             <div className="absolute inset-0">
-               <img
-                  src={heroSection?.thumbnail || ''}
-                  alt={heroSection?.sub_title || heroSection?.title || 'Airways Academy'}
-                  className="h-full w-full object-cover object-center"
-               />
+               {heroSection?.thumbnail ? (
+                  <img
+                     src={heroSection?.thumbnail}
+                     alt={heroSection?.sub_title || heroSection?.title || 'Airways Academy'}
+                     className="h-full w-full object-cover object-center"
+                  />
+               ) : null}
                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.2)_0%,rgba(15,23,42,0.45)_32%,rgba(15,23,42,0.82)_100%)]" />
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.18),transparent_34%),radial-gradient(circle_at_right_center,rgba(30,41,59,0.12),transparent_24%)]" />
             </div>
@@ -76,7 +78,10 @@ const Hero = () => {
                <div className="flex items-end justify-between gap-8 pb-4 text-white/90">
                   <div className="flex items-center gap-4">
                      <div className="*:data-[slot=avatar]:ring-background flex -space-x-4 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
-                        {getPropertyArray(heroSection).slice(0, 4).map((item, index) => (
+                        {getPropertyArray(heroSection)
+                           .filter((item) => Boolean(item.image))
+                           .slice(0, 4)
+                           .map((item, index) => (
                            <Avatar key={index} className="h-11 w-11">
                               <AvatarImage src={item.image || ''} alt={item.name} className="object-cover" />
                               <AvatarFallback>IM</AvatarFallback>

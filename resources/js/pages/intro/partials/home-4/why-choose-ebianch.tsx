@@ -105,11 +105,13 @@ const WhyChooseEbianch = () => {
                         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,18,46,0.12),transparent_38%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#FD122E]/65 to-transparent" />
 
-                        <div className="flex justify-center">
-                           <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#FD122E]/25 bg-[#FD122E]/12 text-[#FD122E] shadow-[0_0_0_1px_rgba(253,18,46,0.04),0_0_28px_rgba(253,18,46,0.2)]">
-                              <DynamicIcon name={item.icon || fallbackItems[index]?.icon || 'star'} className="h-7 w-7" />
+                        {item.icon ? (
+                           <div className="flex justify-center">
+                              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#FD122E]/25 bg-[#FD122E]/12 text-[#FD122E] shadow-[0_0_0_1px_rgba(253,18,46,0.04),0_0_28px_rgba(253,18,46,0.2)]">
+                                 <DynamicIcon name={item.icon} className="h-7 w-7" />
+                              </div>
                            </div>
-                        </div>
+                        ) : null}
 
                         <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
                         <p className="mt-4 text-sm leading-7 text-slate-300">{item.description || fallbackItems[index]?.description}</p>

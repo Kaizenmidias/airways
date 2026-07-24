@@ -65,9 +65,11 @@ const WhoWeAre = () => {
                            key={`who-we-are-stat-${index}`}
                            className="rounded-[22px] border border-white/12 bg-white/[0.03] p-5 text-white shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-md"
                         >
-                           <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 text-[#FD122E]">
-                              <DynamicIcon name={item.icon || defaultStats[index]?.icon || 'circle'} className="h-5 w-5" />
-                           </div>
+                           {item.icon ? (
+                              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 text-[#FD122E]">
+                                 <DynamicIcon name={item.icon} className="h-5 w-5" />
+                              </div>
+                           ) : null}
 
                            <p className="mt-6 text-4xl leading-none font-black tracking-[-0.06em] text-white">
                               {item.count || defaultStats[index]?.count}

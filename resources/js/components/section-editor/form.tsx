@@ -1,5 +1,6 @@
 import ChunkedUploaderInput from '@/components/chunked-uploader-input';
 import LoadingButton from '@/components/loading-button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,6 +9,7 @@ import { onHandleChange } from '@/lib/inertia';
 import { generatePropertyFields } from '@/lib/page';
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { useSectionEditor } from './context';
 import Fields from './fields';
 
@@ -24,8 +26,10 @@ const EditForm = () => {
       sub_title: section.sub_title,
       description: section.description || '',
       thumbnail: null,
+      remove_thumbnail: false as boolean,
       video_url: section.video_url,
       background_image: null,
+      remove_background_image: false as boolean,
       background_color: section.background_color,
       properties: section.properties,
       active: section.active,
@@ -50,6 +54,18 @@ const EditForm = () => {
       }
 
       submitForm();
+   };
+
+   const clearThumbnail = () => {
+      setData('thumbnail', null);
+      setData('remove_thumbnail', true);
+      setThumbnailPreview(null);
+   };
+
+   const clearBackgroundImage = () => {
+      setData('background_image', null);
+      setData('remove_background_image', true);
+      setBackgroundPreview(null);
    };
 
    const submitForm = () => {
@@ -112,7 +128,7 @@ const EditForm = () => {
                      type="text"
                      id="sub_title"
                      name="sub_title"
-                     value={data.sub_title}
+                     value={data.sub_title ?? ''}
                      onChange={(e) => onHandleChange(e, setData)}
                      placeholder={input.title_placeholder}
                   />
@@ -143,13 +159,28 @@ const EditForm = () => {
                      id="thumbnail"
                      name="thumbnail"
                      accept="image/*"
-                     onChange={(e) => onHandleChange(e, setData, setThumbnailPreview)}
+                     onChange={(e) => {
+                        setData('remove_thumbnail', false);
+                        onHandleChange(e, setData, setThumbnailPreview);
+                     }}
                      className="cursor-pointer"
                   />
                   {errors.thumbnail && <p className="mt-1 text-sm text-red-600">{errors.thumbnail}</p>}
 
                   {thumbnailPreview && (
-                     <img src={thumbnailPreview} alt="Thumbnail Preview" className="h-32 w-auto rounded-lg border object-cover shadow-sm" />
+                     <div className="relative inline-block">
+                        <img src={thumbnailPreview} alt="Thumbnail Preview" className="h-32 w-auto rounded-lg border object-cover shadow-sm" />
+                        <Button
+                           type="button"
+                           variant="secondary"
+                           size="icon"
+                           className="absolute top-2 right-2 h-8 w-8 rounded-full"
+                           onClick={clearThumbnail}
+                           title="Remover imagem"
+                        >
+                           <X className="h-4 w-4" />
+                        </Button>
+                     </div>
                   )}
                </div>
             )}
@@ -188,12 +219,27 @@ const EditForm = () => {
                      type="file"
                      id="background_image"
                      name="background_image"
-                     onChange={(e) => onHandleChange(e, setData, setBackgroundPreview)}
+                     onChange={(e) => {
+                        setData('remove_background_image', false);
+                        onHandleChange(e, setData, setBackgroundPreview);
+                     }}
                   />
                   {errors.background_image && <p className="mt-1 text-sm text-red-600">{errors.background_image}</p>}
 
                   {backgroundPreview && (
-                     <img src={backgroundPreview} alt="Background Image Preview" className="h-32 w-auto rounded-lg border object-cover shadow-sm" />
+                     <div className="relative inline-block">
+                        <img src={backgroundPreview} alt="Background Image Preview" className="h-32 w-auto rounded-lg border object-cover shadow-sm" />
+                        <Button
+                           type="button"
+                           variant="secondary"
+                           size="icon"
+                           className="absolute top-2 right-2 h-8 w-8 rounded-full"
+                           onClick={clearBackgroundImage}
+                           title="Remover imagem"
+                        >
+                           <X className="h-4 w-4" />
+                        </Button>
+                     </div>
                   )}
                </div>
             )}
@@ -205,7 +251,7 @@ const EditForm = () => {
                      type="color"
                      id="background_color"
                      name="background_color"
-                     value={data.background_color}
+                     value={data.background_color ?? ''}
                      onChange={(e) => onHandleChange(e, setData)}
                   />
                   {errors.background_color && <p className="mt-1 text-sm text-red-600">{errors.background_color}</p>}

@@ -63,6 +63,22 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
       }
    };
 
+   const clearArrayFile = (index: number, key: string) => {
+      const previewKey = `${index}-${key}`;
+
+      setImagePreviews((prev) => {
+         const updated = { ...prev };
+         if (updated[previewKey]) {
+            URL.revokeObjectURL(updated[previewKey]);
+            delete updated[previewKey];
+         }
+         return updated;
+      });
+
+      handleArrayItemChange(index, key, '');
+      handleArrayItemChange(index, 'new_image', null);
+   };
+
    const handleArrayItemChange = (index: number, key: string, value: any) => {
       const updatedItems = [...arrayItems];
 
@@ -113,7 +129,7 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
                         </Button>
                         {field.fields?.map((subField, fieldIdx) => {
                            // Get existing image URL for preview (only for file fields)
-                           const prevImage = subField.type === 'file' ? item.image : null;
+                           const prevImage = subField.type === 'file' ? item[subField.name] || item.image : null;
 
                            return (
                               <div key={fieldIdx} className="mb-4">
@@ -144,6 +160,16 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
                                                    src={imagePreviews[`${index}-${subField.name}`] || prevImage}
                                                    className="h-20 w-auto rounded-lg border object-cover shadow-sm"
                                                 />
+                                                <Button
+                                                   type="button"
+                                                   variant="secondary"
+                                                   size="icon"
+                                                   className="absolute top-2 right-2 h-7 w-7 rounded-full"
+                                                   onClick={() => clearArrayFile(index, subField.name)}
+                                                   title="Remover imagem"
+                                                >
+                                                   <X className="h-4 w-4" />
+                                                </Button>
                                              </div>
                                           )}
                                        </div>
@@ -153,6 +179,7 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
                                           value={item[subField.name] || ''}
                                           placeholder="Pick your category icon"
                                           onSelect={(icon) => handleArrayItemChange(index, subField.name, icon)}
+                                          onClear={() => handleArrayItemChange(index, subField.name, '')}
                                        />
                                     ) : (
                                        <Input

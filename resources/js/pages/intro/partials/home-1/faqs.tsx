@@ -18,7 +18,7 @@ const FAQs = () => {
                   <h2 className="mb-4 text-2xl font-bold sm:text-3xl">{faqsCoursesSection?.sub_title}</h2>
                   <p className="text-muted-foreground">{faqsCoursesSection?.description}</p>
 
-                  <img src={faqsCoursesSection?.thumbnail || ''} alt="" className="mx-auto mt-6 max-w-[268px]" />
+                  {faqsCoursesSection?.thumbnail ? <img src={faqsCoursesSection.thumbnail} alt="" className="mx-auto mt-6 max-w-[268px]" /> : null}
                </div>
 
                <Accordion type="single" collapsible defaultValue="faq-0" className="w-full">

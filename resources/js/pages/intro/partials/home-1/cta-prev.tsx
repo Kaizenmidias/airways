@@ -32,7 +32,7 @@ const CTA = () => {
 
          {/* Right Image */}
          <div className="animate-fade-in relative flex items-center justify-center lg:justify-end">
-            <img src={ctaSection?.thumbnail || ''} alt="Student learning online" className="relative z-10 max-h-[444px] w-full" />
+            {ctaSection?.thumbnail ? <img src={ctaSection.thumbnail} alt="Student learning online" className="relative z-10 max-h-[444px] w-full" /> : null}
 
             <div className="after:pointer-events-none after:absolute after:right-10 after:-bottom-10 after:h-[200px] after:w-[200px] after:rounded-full after:bg-[#FFF5CC] after:blur-[250px] after:content-[''] md:after:h-[310px] md:after:w-[310px] dark:after:bg-[#fff5cc6d]"></div>
          </div>
