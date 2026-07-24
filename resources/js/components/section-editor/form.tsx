@@ -8,18 +8,19 @@ import { useLang } from '@/hooks/use-lang';
 import { onHandleChange } from '@/lib/inertia';
 import { generatePropertyFields } from '@/lib/page';
 import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useSectionEditor } from './context';
 import Fields from './fields';
 
 const EditForm = () => {
    const { input, button, frontend } = useLang();
-   const { section, setOpen, isSubmit, setIsSubmit } = useSectionEditor();
+   const { section, open, setOpen, isSubmit, setIsSubmit } = useSectionEditor();
    const [isFileSelected, setIsFileSelected] = useState(false);
    const [isFileUploaded, setIsFileUploaded] = useState(false);
    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(section.thumbnail || null);
    const [backgroundPreview, setBackgroundPreview] = useState<string | null>(section.background_image || null);
+   const [backgroundVideoUrl, setBackgroundVideoUrl] = useState<string | null>(section.video_url || null);
 
    const { data, setData, post, reset, processing, errors } = useForm({
       title: section.title,
@@ -28,6 +29,7 @@ const EditForm = () => {
       thumbnail: null,
       remove_thumbnail: false as boolean,
       video_url: section.video_url,
+      remove_video_url: false as boolean,
       background_image: null,
       remove_background_image: false as boolean,
       background_color: section.background_color,
@@ -68,6 +70,12 @@ const EditForm = () => {
       setBackgroundPreview(null);
    };
 
+   const clearBackgroundVideo = () => {
+      setData('video_url', '');
+      setData('remove_video_url', true);
+      setBackgroundVideoUrl(null);
+   };
+
    const submitForm = () => {
       post(route('page.section.update', section.id), {
          onSuccess: () => {
@@ -97,10 +105,33 @@ const EditForm = () => {
    };
 
    useEffect(() => {
-      if (!open) {
-         reset();
+      if (!open || !section?.id) {
+         return;
       }
-   }, [open]);
+
+      setData({
+         title: section.title || '',
+         sub_title: section.sub_title || '',
+         description: section.description || '',
+         thumbnail: null,
+         remove_thumbnail: false,
+         video_url: section.video_url || '',
+         remove_video_url: false,
+         background_image: null,
+         remove_background_image: false,
+         background_color: section.background_color || '',
+         properties: section.properties,
+         active: section.active,
+         sort: section.sort,
+      });
+      setThumbnailPreview(section.thumbnail || null);
+      setBackgroundPreview(section.background_image || null);
+      setBackgroundVideoUrl(section.video_url || null);
+      setIsFileSelected(false);
+      setIsFileUploaded(false);
+      setIsSubmit(false);
+      setPropertyFields(generatePropertyFields(section.properties));
+   }, [open, section, setData, setIsSubmit]);
 
    return (
       <form onSubmit={handleSubmit}>
@@ -198,7 +229,9 @@ const EditForm = () => {
                      }}
                      onFileUploaded={(fileData) => {
                         setIsFileUploaded(true);
+                        setData('remove_video_url', false);
                         setData('video_url', fileData.file_url);
+                        setBackgroundVideoUrl(fileData.file_url);
                      }}
                      onError={(errors) => {
                         setIsSubmit(false);
@@ -209,6 +242,22 @@ const EditForm = () => {
                   />
 
                   {errors.video_url && <p className="mt-1 text-sm text-red-600">{errors.video_url}</p>}
+
+                  {backgroundVideoUrl && (
+                     <div className="relative overflow-hidden rounded-lg border">
+                        <video className="h-48 w-full object-cover" src={backgroundVideoUrl} controls />
+                        <Button
+                           type="button"
+                           variant="secondary"
+                           size="icon"
+                           className="absolute top-2 right-2 h-8 w-8 rounded-full"
+                           onClick={clearBackgroundVideo}
+                           title="Remover vídeo"
+                        >
+                           <X className="h-4 w-4" />
+                        </Button>
+                     </div>
+                  )}
                </div>
             )}
 
@@ -228,7 +277,11 @@ const EditForm = () => {
 
                   {backgroundPreview && (
                      <div className="relative inline-block">
-                        <img src={backgroundPreview} alt="Background Image Preview" className="h-32 w-auto rounded-lg border object-cover shadow-sm" />
+                        <img
+                           src={backgroundPreview}
+                           alt="Background Image Preview"
+                           className="h-32 w-auto rounded-lg border object-cover shadow-sm"
+                        />
                         <Button
                            type="button"
                            variant="secondary"

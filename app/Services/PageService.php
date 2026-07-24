@@ -114,6 +114,10 @@ class PageService extends PageSectionService
          $data['background_image'] = $this->addNewDeletePrev($section, $data['background_image'], 'background_image');
       }
 
+      if (array_key_exists('remove_video_url', $data) && $data['remove_video_url']) {
+         $data['video_url'] = '';
+      }
+
       // Process images inside properties->array if they exist
       if (isset($data['properties']) && isset($data['properties']['array']) && is_array($data['properties']['array'])) {
          foreach ($data['properties']['array'] as $key => $item) {
@@ -138,7 +142,7 @@ class PageService extends PageSectionService
 
       // Remove null values from the data array recursively
       $dataNew = $this->removeImageNullProperties($data);
-      unset($dataNew['remove_thumbnail'], $dataNew['remove_background_image']);
+      unset($dataNew['remove_thumbnail'], $dataNew['remove_background_image'], $dataNew['remove_video_url']);
       foreach ($dataNew as $key => $value) {
          $section[$key] = $value;
       }

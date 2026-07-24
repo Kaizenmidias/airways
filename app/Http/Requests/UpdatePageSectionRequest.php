@@ -29,6 +29,7 @@ class UpdatePageSectionRequest extends FormRequest
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'remove_thumbnail' => 'nullable|boolean',
             'video_url' => 'nullable|string|max:255',
+            'remove_video_url' => 'nullable|boolean',
             'background_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'remove_background_image' => 'nullable|boolean',
             'background_color' => 'nullable|string|max:255',
