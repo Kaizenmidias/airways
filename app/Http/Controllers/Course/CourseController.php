@@ -347,8 +347,8 @@ class CourseController extends Controller
 
     public function duplicate(string $id)
     {
-        $this->courseService->duplicateCourse($id);
+        $duplicate = $this->courseService->duplicateCourse($id);
 
-        return redirect(route('courses.index'))->with('success', 'Curso duplicado com sucesso.');
+        return redirect(route('courses.edit', ['course' => $duplicate->id]))->with('success', 'Curso duplicado com sucesso.');
     }
 }

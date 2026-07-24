@@ -4,12 +4,24 @@ namespace App\Services\Course;
 
 use App\Models\Course\Course;
 use App\Models\Course\CourseEnrollment;
+use App\Models\Course\CourseAssignment;
+use App\Models\Course\CourseFaq;
+use App\Models\Course\CourseLearning;
+use App\Models\Course\CourseOutcome;
+use App\Models\Course\CourseRequirement;
+use App\Models\Course\CourseSection;
+use App\Models\Course\CourseLiveClass;
+use App\Models\Course\LessonResource;
+use App\Models\Course\QuizQuestion;
+use App\Models\Course\SectionQuiz;
+use App\Models\Course\SectionLesson;
 use App\Models\Instructor;
 use App\Models\User;
 use App\Enums\CourseStatusType;
 use App\Notifications\CourseApprovalNotification;
 use App\Services\MediaService;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -43,16 +55,73 @@ class CourseService extends MediaService
    function duplicateCourse(string $id): Course
    {
       return \DB::transaction(function () use ($id) {
-         $course = Course::findOrFail($id);
-         $duplicate = $course->replicate(['user_id']);
+         $course = Course::with([
+            'faqs',
+            'learnings',
+            'outcomes',
+            'requirements',
+            'live_classes',
+            'assignments',
+            'sections.section_lessons.resources',
+            'sections.section_quizzes.quiz_questions',
+         ])->findOrFail($id);
+
+         $duplicate = $course->replicate();
 
          $duplicate->title = $course->title . ' (Copy)';
          $duplicate->slug = Str::slug($course->title . ' copy ' . now()->timestamp);
-         $duplicate->status = 'approved';
          $duplicate->save();
+
+         $this->duplicateCourseRelations($course, $duplicate);
 
          return $duplicate;
       }, 5);
+   }
+
+   private function duplicateCourseRelations(Course $source, Course $duplicate): void
+   {
+      foreach (['faqs', 'learnings', 'outcomes', 'requirements', 'live_classes', 'assignments'] as $relation) {
+         foreach ($source->{$relation} as $item) {
+            $duplicate->{$relation}()->create($this->replicableAttributes($item, ['id', 'course_id', 'created_at', 'updated_at']));
+         }
+      }
+
+      foreach ($source->sections as $section) {
+         $newSection = $duplicate->sections()->create(
+            $this->replicableAttributes($section, ['id', 'course_id', 'created_at', 'updated_at'])
+         );
+
+         foreach ($section->section_lessons as $lesson) {
+            $newLesson = $newSection->section_lessons()->create(
+               $this->replicableAttributes($lesson, ['id', 'course_id', 'course_section_id', 'lesson_number', 'created_at', 'updated_at'])
+            );
+
+            $newLesson->forceFill(['lesson_number' => $lesson->lesson_number])->save();
+
+            foreach ($lesson->resources as $resource) {
+               $newLesson->resources()->create(
+                  $this->replicableAttributes($resource, ['id', 'section_lesson_id', 'created_at', 'updated_at'])
+               );
+            }
+         }
+
+         foreach ($section->section_quizzes as $quiz) {
+            $newQuiz = $newSection->section_quizzes()->create(
+               $this->replicableAttributes($quiz, ['id', 'course_id', 'course_section_id', 'created_at', 'updated_at'])
+            );
+
+            foreach ($quiz->quiz_questions as $question) {
+               $newQuiz->quiz_questions()->create(
+                  $this->replicableAttributes($question, ['id', 'section_quiz_id', 'created_at', 'updated_at'])
+               );
+            }
+         }
+      }
+   }
+
+   private function replicableAttributes($model, array $except = []): array
+   {
+      return Arr::except($model->getAttributes(), $except);
    }
 
    function updateCourse(string $id, array $data): Course
