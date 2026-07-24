@@ -4,6 +4,7 @@ import { getPageSection, getPropertyArray } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
+import { type CSSProperties } from 'react';
 import Section from '../section';
 
 const Hero = () => {
@@ -14,7 +15,14 @@ const Hero = () => {
    const backgroundImage = heroSection?.background_image || '';
    const backgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
    const sectionBackground = heroSection?.background_color || '#06101d';
-   const heroBackdrop = backgroundVideo || backgroundImage || heroImage || '';
+   const heroBackdrop = backgroundImage || heroImage || '';
+   const sectionStyle: CSSProperties = {
+      backgroundColor: sectionBackground,
+      backgroundImage: backgroundVideo ? undefined : heroBackdrop ? `url('${heroBackdrop}')` : undefined,
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+   };
    const logos = getPropertyArray(heroSection)
       .filter((partner) => Boolean(partner.image))
       .slice(0, 6);
@@ -24,9 +32,22 @@ const Hero = () => {
          customize={props.customize}
          pageSection={heroSection}
          containerClass="!max-w-none !px-0 !pt-0"
-         contentClass="relative isolate overflow-hidden bg-[#06101d]"
+         containerStyle={sectionStyle}
+         contentClass="relative isolate overflow-hidden"
          editorButtonClassName="top-[96px] right-6"
       >
+         {backgroundVideo ? (
+            <video
+               className="absolute inset-0 h-full w-full object-cover object-center"
+               src={backgroundVideo}
+               autoPlay
+               muted
+               loop
+               playsInline
+               poster={heroBackdrop || undefined}
+            />
+         ) : null}
+
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.34),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.18),transparent_16%),linear-gradient(135deg,#050b16_0%,#06101d_44%,#071425_100%)]" />
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
@@ -97,37 +118,8 @@ const Hero = () => {
                </div>
             </div>
 
-            <div className="relative order-2 flex items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:items-center lg:justify-end lg:px-8 lg:py-10">
-               <div
-                  className="relative w-full max-w-[760px] overflow-hidden rounded-[28px] shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
-                  style={{ backgroundColor: sectionBackground }}
-               >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(253,18,46,0.35),transparent_16%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_14%)]" />
-
-                  <div className="relative min-h-[420px] overflow-hidden lg:min-h-[720px]">
-                     {heroBackdrop ? (
-                        backgroundVideo ? (
-                           <video
-                              className="absolute inset-0 h-full w-full object-cover object-center"
-                              src={backgroundVideo}
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              poster={backgroundImage || heroImage || undefined}
-                           />
-                        ) : (
-                           <img
-                              src={heroBackdrop}
-                              alt={heroSection?.sub_title || heroSection?.title || 'Airways Academy'}
-                              className="absolute inset-0 h-full w-full object-cover object-center"
-                           />
-                        )
-                     ) : null}
-
-                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,13,23,0.05)_0%,rgba(8,13,23,0.14)_48%,rgba(8,13,23,0.28)_100%)]" />
-                  </div>
-               </div>
+            <div className="relative order-2 flex min-h-[420px] items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:min-h-[720px] lg:items-center lg:justify-end lg:px-8 lg:py-10">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(253,18,46,0.22),transparent_16%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.08),transparent_14%)]" />
             </div>
          </div>
       </Section>
