@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { formatCurrency } from '@/lib/utils';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Copy, Pencil, Trash2 } from 'lucide-react';
 import * as React from 'react';
@@ -90,15 +90,27 @@ const InlineCourseTitleCell = ({ course }: { course: Course }) => {
    }
 
    return (
-      <div className="py-1 pl-4">
-         <button
-            type="button"
-            onClick={() => setIsEditing(true)}
+      <div className="flex items-center gap-2 py-1 pl-4">
+         <Link
+            href={route('courses.edit', {
+               course: course.id,
+            })}
             className="block max-w-full text-left text-sm font-medium text-primary transition-colors hover:underline"
-            title="Clique para renomear"
+            title="Abrir curso"
          >
             {course.title}
-         </button>
+         </Link>
+
+         <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7 shrink-0"
+            title="Clique para renomear"
+            onClick={() => setIsEditing(true)}
+         >
+            <Pencil className="h-4 w-4" />
+         </Button>
       </div>
    );
 };
