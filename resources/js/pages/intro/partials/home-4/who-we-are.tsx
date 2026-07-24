@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card';
 import { getPageSection, getPropertyArray } from '@/lib/page';
-import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
 import { DynamicIcon } from 'lucide-react/dynamic';
@@ -30,7 +29,7 @@ const WhoWeAre = () => {
       .filter(Boolean);
    const topImage = section?.thumbnail || '/assets/images/intro/home-4/hero-image.png';
    const bottomImage = section?.background_image || '/assets/images/students-2.jpg';
-   const cards = stats.length > 0 ? stats : defaultStats;
+   const cards = stats;
 
    return (
       <Section customize={props.customize} pageSection={section} containerClass="!w-full !max-w-none !px-0 overflow-hidden" contentClass="relative isolate w-full">
@@ -51,29 +50,33 @@ const WhoWeAre = () => {
                   <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
                </div>
 
-               <div className="space-y-6 max-w-2xl text-[14px] leading-6 text-slate-200/92 sm:text-lg sm:leading-8">
+               <div className="max-w-2xl space-y-6 text-[16px] leading-7 text-slate-200/92">
                   {descriptionBlocks.map((block, index) => (
-                     <p key={`who-we-are-text-${index}`} className={cn(index === 0 && 'text-[14px] leading-6 text-slate-100 sm:text-xl sm:leading-9')}>{block}</p>
+                     <p key={`who-we-are-text-${index}`} className="text-[16px] leading-7 text-slate-200/92">
+                        {block}
+                     </p>
                   ))}
                </div>
 
-               <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                  {cards.map((item, index) => (
-                     <Card
-                        key={`who-we-are-stat-${index}`}
-                        className="rounded-[22px] border border-white/12 bg-white/[0.03] p-5 text-white shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-md"
-                     >
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 text-[#FD122E]">
-                           <DynamicIcon name={item.icon || defaultStats[index]?.icon || 'circle'} className="h-5 w-5" />
-                        </div>
+               {cards.length > 0 ? (
+                  <div className="grid gap-4 pt-2 sm:grid-cols-3">
+                     {cards.map((item, index) => (
+                        <Card
+                           key={`who-we-are-stat-${index}`}
+                           className="rounded-[22px] border border-white/12 bg-white/[0.03] p-5 text-white shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-md"
+                        >
+                           <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 text-[#FD122E]">
+                              <DynamicIcon name={item.icon || defaultStats[index]?.icon || 'circle'} className="h-5 w-5" />
+                           </div>
 
-                        <p className="mt-6 text-4xl leading-none font-black tracking-[-0.06em] text-white">
-                           {item.count || defaultStats[index]?.count}
-                        </p>
-                        <p className="mt-2 text-base text-slate-300">{item.title || defaultStats[index]?.title}</p>
-                     </Card>
-                  ))}
-               </div>
+                           <p className="mt-6 text-4xl leading-none font-black tracking-[-0.06em] text-white">
+                              {item.count || defaultStats[index]?.count}
+                           </p>
+                           <p className="mt-2 text-base text-slate-300">{item.title || defaultStats[index]?.title}</p>
+                        </Card>
+                     ))}
+                  </div>
+               ) : null}
             </div>
 
             <div className="relative order-1 z-10 pb-6 lg:order-2 lg:pr-14">
