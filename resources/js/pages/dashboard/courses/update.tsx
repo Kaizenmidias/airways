@@ -101,7 +101,15 @@ const Update = (props: CourseUpdateProps) => {
 
    return (
       <section className="space-y-8">
-         <CourseUpdateHeader />
+         <div className="space-y-4">
+            <div className="space-y-1">
+               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Curso</p>
+               <h1 className="text-3xl font-semibold tracking-tight text-slate-900">{course.title}</h1>
+               {course.sub_title ? <p className="text-sm text-slate-500">{course.sub_title}</p> : null}
+            </div>
+
+            <CourseUpdateHeader />
+         </div>
 
          <Tabs value={tab ?? tabs[0].slug} className="grid grid-rows-1 gap-5 md:grid-cols-4">
             <div className="col-span-full md:col-span-1">
