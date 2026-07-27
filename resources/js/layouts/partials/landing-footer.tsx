@@ -67,7 +67,7 @@ const LandingFooter = () => {
             <div className="mb-11 flex flex-col items-start justify-between gap-10 md:flex-row md:gap-12">
                <div className="w-full md:max-w-[280px]">
                   <Link href="/">
-                     <AppLogo theme="light" className="h-5 w-auto md:h-6" />
+                     <AppLogo theme="dark" className="h-5 w-auto md:h-6" />
                   </Link>
 
                   <p className="mt-5 text-sm">{system.fields.description}</p>

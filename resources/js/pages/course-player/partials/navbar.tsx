@@ -22,7 +22,7 @@ const Navbar = () => {
       <header className="bg-primary dark:bg-primary-dark text-primary-foreground dark:text-primary sticky top-0 z-50 h-[60px]">
          <div className="flex h-full items-center justify-between gap-3 px-4 md:px-8">
             <Link href="/">
-               <AppLogo theme="light" />
+               <AppLogo theme="dark" />
             </Link>
 
             <p className="hidden font-semibold sm:block">{props.course.title}</p>
