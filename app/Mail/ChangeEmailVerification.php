@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\User;
+use App\Services\EmailTemplateService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -17,9 +18,6 @@ class ChangeEmailVerification extends Mailable
     public $app;
     public $verificationUrl;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(User $user, $app, $verificationUrl)
     {
         $this->user = $user;
@@ -27,33 +25,61 @@ class ChangeEmailVerification extends Mailable
         $this->verificationUrl = $verificationUrl;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'Changed Email Verification',
-        );
+        $data = $this->templateData();
+        $templateService = app(EmailTemplateService::class);
+        $template = $templateService->get('change_email');
+
+        $subject = 'Confirme sua alteração de e-mail';
+
+        if ($template) {
+            $renderedSubject = $templateService->renderString(data_get($template->fields, 'subject'), $data);
+
+            if (filled($renderedSubject)) {
+                $subject = $renderedSubject;
+            }
+        }
+
+        return new Envelope(subject: $subject);
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
+        $data = $this->templateData();
+        $templateService = app(EmailTemplateService::class);
+        $template = $templateService->get('change_email');
+
+        if ($template) {
+            $body = $templateService->renderString(data_get($template->fields, 'body'), $data);
+
+            if (filled($body)) {
+                return new Content(
+                    view: 'mail.dynamic',
+                    with: [
+                        'body' => $body,
+                    ],
+                );
+            }
+        }
+
         return new Content(
-            markdown: 'mail.email-change-verification',
+            view: 'mail.email-change-verification',
+            with: $data,
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];
+    }
+
+    private function templateData(): array
+    {
+        return [
+            'user' => $this->user,
+            'app' => $this->app,
+            'url' => $this->verificationUrl,
+        ];
     }
 }

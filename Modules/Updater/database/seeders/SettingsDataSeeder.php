@@ -53,8 +53,8 @@ class SettingsDataSeeder extends Seeder
 
         foreach ($settings as $setting) {
             Setting::firstOrCreate(
-                ['sub_type' => $setting['sub_type']], // Search by sub_type
-                $setting                              // Find or insert
+                ['type' => $setting['type'], 'sub_type' => $setting['sub_type']],
+                $setting
             );
         }
 

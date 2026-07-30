@@ -62,6 +62,11 @@ interface SmtpFields {
    mail_from_name: string;
 }
 
+interface EmailTemplateFields {
+   subject: string;
+   body: string;
+}
+
 interface StorageFields {
    storage_driver: 'local' | 's3';
    aws_access_key_id: string;

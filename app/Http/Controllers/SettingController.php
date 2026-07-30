@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\UpdateGoogleAuthSettingsRequest;
 use App\Http\Requests\FooterItemRequest;
 use App\Http\Requests\NavbarItemRequest;
+use App\Http\Requests\UpdateEmailTemplateRequest;
 use App\Http\Requests\StoreCustomPageRequest;
 use App\Http\Requests\UpdateAuthRequest;
 use App\Http\Requests\UpdateCustomPageRequest;
@@ -18,6 +19,7 @@ use App\Http\Requests\UpdateStorageRequest;
 use App\Http\Requests\UpdateZoomConfigRequest;
 use App\Models\Page;
 use App\Services\InstructorService;
+use App\Services\EmailTemplateService;
 use App\Services\StudentService;
 use Illuminate\Support\Facades\Auth;
 use Modules\Updater\Models\Backup;
@@ -35,7 +37,8 @@ class SettingController extends Controller
     public function __construct(
         private StudentService $studentService,
         private SettingsService $settingsService,
-        private InstructorService $instructorService
+        private InstructorService $instructorService,
+        private EmailTemplateService $emailTemplateService
     ) {}
 
     /**
@@ -202,6 +205,26 @@ class SettingController extends Controller
         $payments = $this->settingsService->getSettings(['type' => 'payment']);
 
         return Inertia::render('dashboard/settings/payment', compact('payments'));
+    }
+
+    /**
+     * Display email templates.
+     */
+    public function emails(Request $request)
+    {
+        $templates = $this->emailTemplateService->all();
+
+        return Inertia::render('dashboard/settings/emails', compact('templates'));
+    }
+
+    /**
+     * Update an email template.
+     */
+    public function email_templates_update(UpdateEmailTemplateRequest $request, string $id)
+    {
+        $this->settingsService->emailTemplateUpdate($request->validated(), $id);
+
+        return back()->with('success', 'O template de e-mail foi atualizado com sucesso.');
     }
 
     /**

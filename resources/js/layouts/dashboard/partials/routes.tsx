@@ -348,6 +348,12 @@ export const getDashboardRoutes = (translate: LanguageTranslations, airways: Sha
                   access: ['admin', 'collaborative', 'administrative'],
                },
                {
+                  name: 'E-mails',
+                  slug: routeLastSegment(route('settings.email-templates')),
+                  path: route('settings.email-templates'),
+                  access: ['admin', 'collaborative', 'administrative'],
+               },
+               {
                   name: 'SMTP',
                   slug: routeLastSegment(route('settings.smtp')),
                   path: route('settings.smtp'),
