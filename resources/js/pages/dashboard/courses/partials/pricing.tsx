@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import DashboardLayout from '@/layouts/dashboard/layout';
-import { onHandleChange } from '@/lib/inertia';
+import { formatCurrencyInput, onCurrencyInputChange } from '@/lib/currency-input';
 import { useForm, usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
 import { CourseUpdateProps } from '../update';
@@ -79,14 +79,12 @@ const Pricing = () => {
                      <div className="pt-3">
                         <Label>{dashboard.price} *</Label>
                         <Input
-                           type="number"
-                           inputMode="decimal"
-                           min="0"
-                           step="0.01"
+                           type="text"
+                           inputMode="numeric"
                            name="price"
-                           value={data.price}
-                           onChange={(e) => onHandleChange(e, setData)}
-                           placeholder={input.course_price_placeholder}
+                           value={formatCurrencyInput(data.price)}
+                           onChange={(e) => onCurrencyInputChange(e, setData, 'price')}
+                           placeholder="R$ 0,00"
                         />
                         <InputError message={errors.price} />
                      </div>
@@ -107,14 +105,12 @@ const Pricing = () => {
                         {data.discount && (
                            <div>
                               <Input
-                                 type="number"
-                                 inputMode="decimal"
-                                 min="0"
-                                 step="0.01"
+                                 type="text"
+                                 inputMode="numeric"
                                  name="discount_price"
-                                 value={data.discount_price}
-                                 onChange={(e) => onHandleChange(e, setData)}
-                                 placeholder={input.discount_price_placeholder}
+                                 value={formatCurrencyInput(data.discount_price)}
+                                 onChange={(e) => onCurrencyInputChange(e, setData, 'discount_price')}
+                                 placeholder="R$ 0,00"
                               />
                               <InputError message={errors.discount_price} />
                            </div>

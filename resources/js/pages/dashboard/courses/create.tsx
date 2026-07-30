@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import DashboardLayout from '@/layouts/dashboard/layout';
+import { formatCurrencyInput, onCurrencyInputChange } from '@/lib/currency-input';
 import { shouldShowCollaborativeUi } from '@/lib/airways';
 import { onHandleChange } from '@/lib/inertia';
 import { SharedData } from '@/types/global';
@@ -233,14 +234,12 @@ const Index = (props: Props) => {
                               <div className="pt-3">
                                  <Label htmlFor="price">{input.price} *</Label>
                                  <Input
-                                    type="number"
-                                    inputMode="decimal"
-                                    min="0"
-                                    step="0.01"
+                                    type="text"
+                                    inputMode="numeric"
                                     name="price"
-                                    value={data.price}
-                                    onChange={(e) => onHandleChange(e, setData)}
-                                    placeholder={input.course_price_placeholder}
+                                    value={formatCurrencyInput(data.price)}
+                                    onChange={(e) => onCurrencyInputChange(e, setData, 'price')}
+                                    placeholder="R$ 0,00"
                                  />
                                  <InputError message={errors.price} />
                               </div>
@@ -261,14 +260,12 @@ const Index = (props: Props) => {
                                  {data.discount && (
                                     <div>
                                        <Input
-                                          type="number"
-                                          inputMode="decimal"
-                                          min="0"
-                                          step="0.01"
+                                          type="text"
+                                          inputMode="numeric"
                                           name="discount_price"
-                                          value={data.discount_price}
-                                          onChange={(e) => onHandleChange(e, setData)}
-                                          placeholder={input.discount_price_placeholder}
+                                          value={formatCurrencyInput(data.discount_price)}
+                                          onChange={(e) => onCurrencyInputChange(e, setData, 'discount_price')}
+                                          placeholder="R$ 0,00"
                                        />
                                        <InputError message={errors.discount_price} />
                                     </div>
