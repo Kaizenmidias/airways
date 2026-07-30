@@ -2,6 +2,7 @@ const stripeCurrencies = [
    { label: 'Euro', value: 'EUR' },
    { label: 'Burundian Franc', value: 'BIF' },
    { label: 'Chilean Peso', value: 'CLP' },
+   { label: 'Brazilian Real', value: 'BRL' },
    { label: 'Djiboutian Franc', value: 'DJF' },
    { label: 'Guinean Franc', value: 'GNF' },
    { label: 'Japanese Yen', value: 'JPY' },

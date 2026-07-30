@@ -49,6 +49,7 @@ const Stripe = ({ payment }: StripeProps) => {
                      <SelectContent>
                         <SelectItem value="USD">US Dollar (USD)</SelectItem>
                         <SelectItem value="EUR">Euro (EUR)</SelectItem>
+                        <SelectItem value="BRL">Brazilian Real (BRL)</SelectItem>
                         <SelectItem value="GBP">British Pound (GBP)</SelectItem>
                         <SelectItem value="CAD">Canadian Dollar (CAD)</SelectItem>
                         <SelectItem value="AUD">Australian Dollar (AUD)</SelectItem>
