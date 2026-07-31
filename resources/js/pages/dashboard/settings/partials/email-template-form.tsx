@@ -174,8 +174,6 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
                      <CardTitle className="text-base">Conteúdo do e-mail</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 p-4 sm:p-5">
-                     <EmailTemplateToolbar />
-
                      <div className="overflow-hidden rounded-3xl border border-border/60 bg-white shadow-sm">
                         <TiptapEditor
                            ssr
@@ -185,6 +183,7 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
                            initialContent={data.body}
                            contentMinHeight={860}
                            contentMaxHeight={1200}
+                           slotBefore={<EmailTemplateToolbar />}
                            placeholder={{
                               paragraph: 'Comece a editar seu e-mail...',
                               imageCaption: 'Legenda da imagem',
