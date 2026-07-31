@@ -1072,23 +1072,21 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Instructor Application Status Update
+      Atualização do status da solicitação de instrutor
    </h1>
 
    @if ($status === 'approved')
       <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-         🎉 Congratulations, {{ $user->name }}!
+         🎉 Parabéns, {{ $user->name }}!
       </h2>
 
-
       <p style="margin-bottom: 1.5em;">
-         Your instructor application has been approved! You can now create and manage courses on our platform.
+         Sua solicitação para instrutor foi aprovada! Agora você pode criar e gerenciar cursos em nossa plataforma.
       </p>
-
 
       @if (!empty($feedback))
          <div style="margin: 1.5em 0; padding: 1em; background-color: #f9fafb; border-radius: 0.5em;">
-            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Notes from our team:</h3>
+            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Observações da nossa equipe:</h3>
             {!! $feedback !!}
          </div>
       @endif
@@ -1097,20 +1095,21 @@
          href="{{ route('dashboard') }}"
          style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600;"
       >
-         Go to Dashboard
+         Ir para o painel
       </a>
    @else
       <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-         Application Status: {{ ucfirst($status) }}
+         Status da solicitação: {{ ucfirst($status) }}
       </h2>
 
       <p style="margin-bottom: 1em;">
-         Your instructor application status has been updated to: <strong>{{ ucfirst($status) }}</strong>.
+         O status da sua solicitação para instrutor foi atualizado para:
+         <strong>{{ ucfirst($status) }}</strong>.
       </p>
 
       @if (!empty($feedback))
          <div style="margin: 1.5em 0; padding: 1em; background-color: #f9fafb; border-radius: 0.5em;">
-            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Reviewer Feedback:</h3>
+            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Feedback da revisão:</h3>
             <div class="prose dark:prose-invert max-w-none py-6">
                <div class="tiptap ProseMirror !py-0">
                   {!! $feedback !!}
@@ -1124,24 +1123,24 @@
             href="{{ route('student.index', ['tab' => 'instructor']) }}"
             style="display: inline-block; padding: 0.75em 1.5em; background-color: #ef4444; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600;"
          >
-            Re-apply
+            Reenviar solicitação
          </a>
       @endif
    @endif
 
    @if ($status === 'approved')
       <p style="margin: 1.5em 0;">
-         Start creating your first course and share your knowledge with students around the world!
+         Comece a criar seu primeiro curso e compartilhe seu conhecimento com alunos do mundo todo!
       </p>
    @endif
 
    <p style="margin: 1.5em 0; font-size: 0.875em; color: #4b5563;">
-      If you have any questions, please don't hesitate to contact our support team.
+      Se tiver qualquer dúvida, entre em contato com nossa equipe de suporte.
    </p>
 
    <p style="margin: 2em 0 0;">
-      Best regards,<br>
-      {{ config('mail.from.name') }} Team
+      Atenciosamente,<br>
+      Equipe {{ config('mail.from.name') }}
    </p>
 </body>
 

@@ -174,22 +174,22 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Exam Approval Status Update
+      Atualização do status de aprovação do exame
    </h1>
 
    @if ($status === 'approved')
       <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-         🎉 Congratulations, {{ $user->name }}!
+         🎉 Parabéns, {{ $user->name }}!
       </h2>
 
       <p style="margin-bottom: 1.5em;">
-         Your exam "{{ $exam->title }}" has been approved and is now live on our
-         platform.
+         Seu exame "{{ $exam->title }}" foi aprovado e já está disponível em nossa
+         plataforma.
       </p>
 
       @if (!empty($feedback))
          <div style="margin: 1.5em 0; padding: 1em; background-color: #f9fafb; border-radius: 0.5em;">
-            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Reviewer Feedback:</h3>
+            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Feedback da revisão:</h3>
             <div class="prose dark:prose-invert max-w-none py-6">
                <div class="tiptap ProseMirror !py-0">
                   {!! $feedback !!}
@@ -202,21 +202,21 @@
          href="{{ route('exams.details', ['slug' => $exam->slug, 'id' => $exam->id]) }}"
          style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600;"
       >
-         View Exam
+         Ver exame
       </a>
    @else
       <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-         Exam Approval Request Update: {{ ucfirst($status) }}
+         Atualização da solicitação de aprovação do exame: {{ ucfirst($status) }}
       </h2>
 
       <p style="margin-bottom: 1em;">
-         Your exam "{{ $exam->title }}" status has been updated to:
+         O status do seu exame "{{ $exam->title }}" foi atualizado para:
          <strong>{{ ucfirst($status) }}</strong>.
       </p>
 
       @if (!empty($feedback))
          <div style="margin: 1.5em 0; padding: 1em; background-color: #f9fafb; border-radius: 0.5em;">
-            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Reviewer Feedback:</h3>
+            <h3 style="font-weight: 600; margin-bottom: 0.5em;">Feedback da revisão:</h3>
             <div class="prose dark:prose-invert max-w-none py-6">
                <div class="tiptap ProseMirror !py-0">
                   {!! $feedback !!}
@@ -229,25 +229,24 @@
          href="{{ route('exams.edit', $exam->id) }}"
          style="display: inline-block; padding: 0.75em 1.5em; background-color: #ef4444; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600;"
       >
-         Update Exam
+         Atualizar exame
       </a>
    @endif
 
    @if ($status === 'approved')
       <p style="margin: 1.5em 0;">
-         Students can now enroll in your exam. Promote it to reach more learners!
+         Os alunos agora podem se inscrever no seu exame. Divulgue-o para alcançar mais pessoas!
       </p>
    @endif
 
    <p style="margin: 1.5em 0; font-size: 0.875em; color: #4b5563;">
-      If you have any questions, please don't hesitate to contact our support team.
+      Se tiver qualquer dúvida, entre em contato com nossa equipe de suporte.
    </p>
 
    <p style="margin: 2em 0 0;">
-      Best regards,<br>
-      {{ config('mail.from.name') }} Team
+      Atenciosamente,<br>
+      Equipe {{ config('mail.from.name') }}
    </p>
 </body>
 
 </html>
-

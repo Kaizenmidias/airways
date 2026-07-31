@@ -1072,7 +1072,7 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      {{ $subject ?? 'Latest Newsletter' }}
+      {{ $subject ?? 'Últimas novidades' }}
    </h1>
 
    <div style="margin-bottom: 1.5em; line-height: 1.6;">
@@ -1084,12 +1084,12 @@
    </div>
 
    <p style="margin: 1.5em 0; font-size: 0.875em; color: #4b5563;">
-      If you have any questions, please don't hesitate to contact our support team.
+      Se tiver qualquer dúvida, entre em contato com nossa equipe de suporte.
    </p>
 
    <p style="margin: 2em 0 0;">
-      Best regards,<br>
-      {{ config('mail.from.name') }} Team
+      Atenciosamente,<br>
+      Equipe {{ config('mail.from.name') }}
    </p>
 </body>
 

@@ -100,6 +100,7 @@ Route::prefix('dashboard')->group(function () {
 
         Route::get('settings/email-templates', 'emails')->name('settings.email-templates');
         Route::post('settings/email-templates/{id}', 'email_templates_update')->name('settings.email-templates.update');
+        Route::post('settings/email-templates/preview', 'email_templates_preview')->name('settings.email-templates.preview');
 
         Route::get('settings/smtp', 'smtp')->name('settings.smtp');
         Route::post('settings/smtp/{id}', 'smtp_update')->name('settings.smtp.update');

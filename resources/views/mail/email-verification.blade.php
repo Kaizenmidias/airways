@@ -45,26 +45,30 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Hello, {{ $user->name }}!
+      Olá, {{ $user->name }}!
    </h1>
+
    <p style="margin-bottom: 1.5em;">
-      Thank you for registering with us. Please verify your email address by clicking the button below:
+      Obrigado por se cadastrar. Para concluir seu acesso, verifique seu endereço de e-mail clicando no botão abaixo:
    </p>
+
    <a
       href="{{ $url }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Verificar Endereço de E-mail
+      Verificar endereço de e-mail
    </a>
+
    <p style="margin-bottom: 1em;">
-      This verification link will expire in 5 minutes.
+      Este link de verificação expirará em 5 minutos.
    </p>
+
    <p style="margin-bottom: 1em;">
       Se você não criou uma conta, nenhuma ação é necessária.
    </p>
 
    <p style="margin: 2em 0 0;">
-      Thanks,<br>
+      Obrigado,<br>
       {{ config('mail.from.name') }}
    </p>
 </body>

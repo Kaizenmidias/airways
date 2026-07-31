@@ -212,7 +212,14 @@ class SettingController extends Controller
      */
     public function emails(Request $request)
     {
-        $templates = $this->emailTemplateService->all();
+        $templates = $this->emailTemplateService->all()->map(function ($template) {
+            $template->preview_html = $this->emailTemplateService->previewHtml(
+                $template->sub_type,
+                $this->emailTemplateService->sampleData($template->sub_type),
+            );
+
+            return $template;
+        });
 
         return Inertia::render('dashboard/settings/emails', compact('templates'));
     }
@@ -225,6 +232,29 @@ class SettingController extends Controller
         $this->settingsService->emailTemplateUpdate($request->validated(), $id);
 
         return back()->with('success', 'O template de e-mail foi atualizado com sucesso.');
+    }
+
+    /**
+     * Preview an email template.
+     */
+    public function email_templates_preview(Request $request)
+    {
+        $validated = $request->validate([
+            'sub_type' => 'required|string',
+            'subject' => 'required|string',
+            'body' => 'required|string',
+        ]);
+
+        $previewData = $this->emailTemplateService->sampleData($validated['sub_type']);
+        $previewData['subject'] = $validated['subject'];
+
+        return response()->json([
+            'subject' => $this->emailTemplateService->renderString($validated['subject'], $previewData, $validated['subject']),
+            'html' => $this->emailTemplateService->renderPreview($validated['sub_type'], [
+                ...$previewData,
+                'body' => $validated['body'],
+            ]),
+        ]);
     }
 
     /**

@@ -6,9 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 interface EmailTemplateFormProps {
-   template: Settings<EmailTemplateFields>;
+   template: Settings<EmailTemplateFields> & { preview_html?: string };
 }
 
 const placeholders: Record<string, string[]> = {
@@ -25,6 +26,8 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
       body: template.fields?.body ?? '',
    });
 
+   const [previewHtml, setPreviewHtml] = useState(template.preview_html ?? '');
+   const [previewSubject, setPreviewSubject] = useState(template.fields?.subject ?? '');
    const availablePlaceholders = placeholders[template.sub_type] ?? [];
 
    const handleSubmit = (e: React.FormEvent) => {
@@ -35,13 +38,47 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
       });
    };
 
+   useEffect(() => {
+      const timeout = window.setTimeout(async () => {
+         try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+            const response = await fetch(route('settings.email-templates.preview'), {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                  'X-CSRF-TOKEN': csrfToken,
+               },
+               body: JSON.stringify({
+                  sub_type: template.sub_type,
+                  subject: data.subject,
+                  body: data.body,
+               }),
+            });
+
+            if (!response.ok) {
+               return;
+            }
+
+            const payload = await response.json();
+            setPreviewHtml(payload.html ?? '');
+            setPreviewSubject(payload.subject ?? data.subject);
+         } catch {
+            setPreviewHtml(template.preview_html ?? '');
+            setPreviewSubject(data.subject);
+         }
+      }, 450);
+
+      return () => window.clearTimeout(timeout);
+   }, [data.body, data.subject, template.preview_html, template.sub_type]);
+
    return (
       <Card className="border-border/60 shadow-sm">
          <CardHeader className="border-b bg-muted/20">
             <CardTitle className="text-lg">{template.title}</CardTitle>
          </CardHeader>
          <CardContent className="pt-6">
-            <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <form onSubmit={handleSubmit} className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
                <div className="space-y-4">
                   <div className="space-y-2">
                      <Label>Assunto do e-mail</Label>
@@ -71,6 +108,24 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
                </div>
 
                <div className="space-y-4">
+                  <div className="overflow-hidden rounded-3xl border border-border bg-white shadow-sm">
+                     <div className="border-b bg-slate-950 px-4 py-3 text-white">
+                        <p className="text-xs font-semibold tracking-[0.22em] text-slate-400 uppercase">Prévia</p>
+                        <h3 className="mt-1 text-base font-semibold">{previewSubject || template.title}</h3>
+                     </div>
+
+                     <div className="bg-slate-100 p-4">
+                        <div className="mx-auto max-w-[560px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+                           <iframe
+                              title={`Preview - ${template.title}`}
+                              srcDoc={previewHtml}
+                              className="h-[760px] w-full border-0 bg-white"
+                              sandbox=""
+                           />
+                        </div>
+                     </div>
+                  </div>
+
                   <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-4">
                      <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Placeholders</h3>
                      <div className="flex flex-wrap gap-2">
@@ -89,7 +144,7 @@ const EmailTemplateForm = ({ template }: EmailTemplateFormProps) => {
                   <div className="rounded-2xl border border-border bg-slate-950 p-4 text-slate-100">
                      <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">Dica</h3>
                      <p className="text-sm leading-6 text-slate-300">
-                        O conteúdo é salvo exatamente como você escrever. Se o template ficar inválido, o sistema usa o e-mail padrão como fallback.
+                        O preview é renderizado como o e-mail real. Se algo der errado no template, o sistema usa o conteúdo padrão como fallback.
                      </p>
                   </div>
                </div>

@@ -45,39 +45,37 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Solicitação de Alteração de E-mail
+      Solicitação de alteração de e-mail
    </h1>
 
    <p style="margin-bottom: 1em;">
-      Hello, {{ $user->name }}!
+      Olá, {{ $user->name }}!
    </p>
 
    <p style="margin-bottom: 1.5em;">
-      We received a request to update the email address for your {{ config('mail.from.name') }} account. To complete
-      this change, please verify your new email address by clicking the button below:
+      Recebemos uma solicitação para atualizar o endereço de e-mail da sua conta em {{ config('mail.from.name') }}.
+      Para concluir essa alteração, confirme seu novo endereço de e-mail clicando no botão abaixo:
    </p>
-
 
    <a
       href="{{ $verificationUrl }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Verificar Novo Endereço de E-mail
+      Verificar novo endereço de e-mail
    </a>
 
-
    <p style="margin-bottom: 1em;">
-      This verification link will expire in 5 minutes.
+      Este link de verificação expirará em 5 minutos.
    </p>
 
    <p style="margin-bottom: 1em;">
-      If you did not request this change, please secure your account by changing your password immediately and contact
-      our support team.
+      Se você não solicitou essa alteração, proteja sua conta alterando sua senha imediatamente e entre em contato com
+      nossa equipe de suporte.
    </p>
 
    <p style="margin: 2em 0 0;">
-      Thanks,<br>
-      {{ config('mail.from.name') }} Team
+      Obrigado,<br>
+      Equipe {{ config('mail.from.name') }}
    </p>
 </body>
 

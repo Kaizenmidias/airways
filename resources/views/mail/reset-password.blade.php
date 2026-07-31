@@ -45,11 +45,11 @@
 
 <body>
    <h1 style="font-size: 1.5em; font-weight: 600; margin-bottom: 1em;">
-      Hello, {{ $user->name }}!
+      Olá, {{ $user->name }}!
    </h1>
 
    <h2 style="font-size: 1.25em; font-weight: 600; margin: 1.5em 0 1em;">
-      Redefinição de Senha
+      Redefinição de senha
    </h2>
 
    <p style="margin-bottom: 1.5em;">
@@ -60,11 +60,11 @@
       href="{{ $url }}"
       style="display: inline-block; padding: 0.75em 1.5em; background-color: #0969da; color: #fff; border-radius: 0.5em; text-decoration: none; font-weight: 600; margin-bottom: 1.5em;"
    >
-      Redefinir Senha
+      Redefinir senha
    </a>
 
    <p style="margin-bottom: 1em;">
-      This password reset link will expire in {{ $count }} minutes.
+      Este link de redefinição de senha expirará em {{ $count }} minutos.
    </p>
 
    <p style="margin-bottom: 1em;">
@@ -72,7 +72,7 @@
    </p>
 
    <p style="margin: 2em 0 0;">
-      Thanks,<br>
+      Obrigado,<br>
       {{ config('mail.from.name') }}
    </p>
 </body>
