@@ -17,6 +17,8 @@ import {
   TextStyle,
   Color,
   Highlight,
+  FontFamily,
+  FontSize,
   Table,
 } from "./extensions";
 
@@ -49,6 +51,8 @@ const ExtensionKit = [
   TextStyle,
   Color,
   Highlight.configure({ multicolor: true }),
+  FontFamily,
+  FontSize,
   ListKeymap,
   Link,
   Image,

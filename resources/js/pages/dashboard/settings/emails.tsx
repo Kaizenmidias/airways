@@ -30,40 +30,36 @@ const Emails = ({ templates }: Props) => {
             <div>
                <h1 className="text-2xl font-bold">Templates de e-mail</h1>
                <p className="text-sm text-muted-foreground">
-                  Edite os e-mails automáticos enviados pela plataforma. HTML e variáveis Blade são aceitos.
+                  Edite os e-mails automáticos enviados pela plataforma. O conteúdo é salvo em HTML e renderizado como um e-mail real.
                </p>
             </div>
          </div>
 
-         <Tabs value={params['tab'] ?? tabs[0]?.sub_type} className="grid grid-rows-1 gap-5 md:grid-cols-4">
-            <div>
-               <TabsList className="horizontal-tabs-list">
-                  {tabs.map(({ id, title, sub_type }) => (
-                     <TabsTrigger
-                        key={id}
-                        value={sub_type}
-                        className="horizontal-tabs-trigger"
-                        onClick={() =>
-                           router.get(
-                              route('settings.email-templates', {
-                                 tab: sub_type,
-                              }),
-                           )
-                        }
-                     >
-                        {title}
-                     </TabsTrigger>
-                  ))}
-               </TabsList>
-            </div>
-
-            <div className="md:col-span-3">
-               {tabs.map((template) => (
-                  <TabsContent key={template.id} value={template.sub_type} className="m-0">
-                     <template.Component template={template} />
-                  </TabsContent>
+         <Tabs value={params['tab'] ?? tabs[0]?.sub_type} className="space-y-5">
+            <TabsList className="horizontal-tabs-list w-full flex-wrap justify-start">
+               {tabs.map(({ id, title, sub_type }) => (
+                  <TabsTrigger
+                     key={id}
+                     value={sub_type}
+                     className="horizontal-tabs-trigger"
+                     onClick={() =>
+                        router.get(
+                           route('settings.email-templates', {
+                              tab: sub_type,
+                           }),
+                        )
+                     }
+                  >
+                     {title}
+                  </TabsTrigger>
                ))}
-            </div>
+            </TabsList>
+
+            {tabs.map((template) => (
+               <TabsContent key={template.id} value={template.sub_type} className="m-0">
+                  <template.Component template={template} />
+               </TabsContent>
+            ))}
          </Tabs>
       </section>
    );

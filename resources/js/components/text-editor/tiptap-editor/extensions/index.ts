@@ -11,6 +11,8 @@ export { OrderedList } from "@tiptap/extension-ordered-list";
 export { ListKeymap } from "@tiptap/extension-list-keymap";
 export { Color } from "@tiptap/extension-color";
 export { Highlight } from "@tiptap/extension-highlight";
+export { FontFamily } from "./FontFamily";
+export { FontSize } from "./FontSize";
 
 export { CodeBlock } from "./CodeBlock";
 export { Figure } from "./Figure";

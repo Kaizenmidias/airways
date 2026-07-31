@@ -7,7 +7,7 @@ import Resizer from './Resizer';
 import StatusBar from './StatusBar';
 
 import { Content, type Editor } from '@tiptap/react';
-import { forwardRef, useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect, type ReactNode } from 'react';
 import { cssVar } from '../utils/cssVar';
 import { throttle } from '../utils/throttle';
 import { CodeBlockMenu, ImageMenu, LinkMenu } from './menus';
@@ -40,6 +40,8 @@ export interface TiptapEditorProps {
    contentClass?: string;
    contentMinHeight?: string | number;
    contentMaxHeight?: string | number;
+   slotBefore?: ReactNode;
+   slotAfter?: ReactNode;
    onContentChange?: (value: Content) => void;
 }
 
@@ -57,6 +59,8 @@ const TiptapEditor = forwardRef<TiptapEditorRef, TiptapEditorProps>(
          hideBubbleMenu = true,
          contentMinHeight = 200,
          contentMaxHeight,
+         slotBefore,
+         slotAfter,
          onContentChange,
       },
       ref,
@@ -105,7 +109,21 @@ const TiptapEditor = forwardRef<TiptapEditorRef, TiptapEditorProps>(
       );
 
       return (
-         <TiptapProvider editorOptions={editorOptions} slotBefore={!hideMenuBar && <MenuBar />} slotAfter={!hideStatusBar && <StatusBar />}>
+         <TiptapProvider
+            editorOptions={editorOptions}
+            slotBefore={
+               <>
+                  {slotBefore}
+                  {!hideMenuBar && <MenuBar />}
+               </>
+            }
+            slotAfter={
+               <>
+                  {!hideStatusBar && <StatusBar />}
+                  {slotAfter}
+               </>
+            }
+         >
             {menus}
             <Resizer />
          </TiptapProvider>
