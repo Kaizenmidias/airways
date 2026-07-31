@@ -58,7 +58,11 @@ export const getCourseDuration = (course: Course, format: DurationFormat = 'hhmm
 };
 
 // Get completed content like lessons or quizzes
-export const getCompletedContents = (watchHistory: WatchHistory): CompletedContent[] => {
+export const getCompletedContents = (watchHistory?: WatchHistory | null): CompletedContent[] => {
+   if (!watchHistory) {
+      return [];
+   }
+
    const completed =
       typeof watchHistory.completed_watching === 'string' ? JSON.parse(watchHistory.completed_watching) : watchHistory.completed_watching || [];
 
