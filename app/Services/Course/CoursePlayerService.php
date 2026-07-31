@@ -228,9 +228,11 @@ class CoursePlayerService
       return $watchHistory;
    }
 
-   public function calculateCompletion(Course $course, WatchHistory $watchHistory): array
+   public function calculateCompletion(Course $course, ?WatchHistory $watchHistory): array
    {
-      $completedItems = json_decode($watchHistory->completed_watching, true) ?: [];
+      $completedItems = $watchHistory?->completed_watching
+         ? (json_decode($watchHistory->completed_watching, true) ?: [])
+         : [];
 
       // Count the total number of items (lessons + quizzes) across all sections
       $totalItems = 0;
