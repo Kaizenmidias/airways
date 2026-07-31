@@ -173,6 +173,13 @@ BLADE,
         return Setting::where('type', self::TYPE)->where('sub_type', $subType)->first();
     }
 
+    public function find(string $id): ?Setting
+    {
+        $this->ensureDefaults();
+
+        return Setting::where('type', self::TYPE)->find($id);
+    }
+
     public function update(string $id, array $data): Setting
     {
         $setting = Setting::findOrFail($id);
@@ -242,6 +249,11 @@ BLADE,
         $body = $this->renderString(data_get($template->fields, 'body'), $data);
 
         return view('mail.dynamic', ['body' => $body])->render();
+    }
+
+    public function renderPreview(string $subType, array $data): string
+    {
+        return $this->previewHtml($subType, $data);
     }
 
     private function isLegacyDefaultTemplate(string $subType, array $fields): bool

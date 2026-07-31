@@ -225,6 +225,23 @@ class SettingController extends Controller
     }
 
     /**
+     * Edit an email template.
+     */
+    public function email_templates_edit(string $id)
+    {
+        $template = $this->emailTemplateService->find($id);
+
+        abort_if(!$template, 404);
+
+        $template->preview_html = $this->emailTemplateService->previewHtml(
+            $template->sub_type,
+            $this->emailTemplateService->sampleData($template->sub_type),
+        );
+
+        return Inertia::render('dashboard/settings/email-template-builder', compact('template'));
+    }
+
+    /**
      * Update an email template.
      */
     public function email_templates_update(UpdateEmailTemplateRequest $request, string $id)
@@ -250,7 +267,7 @@ class SettingController extends Controller
 
         return response()->json([
             'subject' => $this->emailTemplateService->renderString($validated['subject'], $previewData, $validated['subject']),
-            'html' => $this->emailTemplateService->renderPreview($validated['sub_type'], [
+            'html' => $this->emailTemplateService->previewHtml($validated['sub_type'], [
                 ...$previewData,
                 'body' => $validated['body'],
             ]),

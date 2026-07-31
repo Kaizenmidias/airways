@@ -1,8 +1,25 @@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AlignPopover from '@/components/text-editor/tiptap-editor/components/controls/AlignPopover';
+import BoldButton from '@/components/text-editor/tiptap-editor/components/controls/BoldButton';
+import BulletListButton from '@/components/text-editor/tiptap-editor/components/controls/BulletListButton';
+import ClearFormatButton from '@/components/text-editor/tiptap-editor/components/controls/ClearFormatButton';
+import HeadingDropdown from '@/components/text-editor/tiptap-editor/components/controls/HeadingDropdown';
+import InsertDropdown from '@/components/text-editor/tiptap-editor/components/controls/InsertDropdown';
+import ItalicButton from '@/components/text-editor/tiptap-editor/components/controls/ItalicButton';
+import LinkButton from '@/components/text-editor/tiptap-editor/components/controls/LinkButton';
+import MoreMarkPopover from '@/components/text-editor/tiptap-editor/components/controls/MoreMarkPopover';
+import OrderedListButton from '@/components/text-editor/tiptap-editor/components/controls/OrderedList';
+import RedoButton from '@/components/text-editor/tiptap-editor/components/controls/RedoButton';
+import TableButton from '@/components/text-editor/tiptap-editor/components/controls/TableButton';
+import TextColorButton from '@/components/text-editor/tiptap-editor/components/controls/TextColorButton';
+import TextHighlightButton from '@/components/text-editor/tiptap-editor/components/controls/TextHighlightButton';
+import UnderlineButton from '@/components/text-editor/tiptap-editor/components/controls/UnderlineButton';
+import UndoButton from '@/components/text-editor/tiptap-editor/components/controls/UndoButton';
+import { Toolbar, ToolbarDivider } from '@/components/text-editor/tiptap-editor/components/ui/Toolbar';
 import { useTiptapContext } from '@/components/text-editor/tiptap-editor/components/Provider';
 import { useEditorState } from '@tiptap/react';
-import { Upload } from 'lucide-react';
+import { ImagePlus } from 'lucide-react';
 import { type ChangeEvent, useRef } from 'react';
 
 const fontFamilies = [
@@ -80,9 +97,43 @@ const EmailTemplateToolbar = () => {
    };
 
    return (
-      <div className="space-y-4 rounded-2xl border border-border/60 bg-gradient-to-br from-slate-50 via-white to-slate-100 p-4 shadow-sm">
-         <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
-            <div className="grid flex-1 gap-2">
+      <div className="space-y-3 rounded-3xl border border-border/60 bg-gradient-to-br from-slate-50 via-white to-slate-100 p-4 shadow-sm">
+         <Toolbar dense className="flex-wrap gap-1 rounded-2xl bg-white/80 px-2 py-2 shadow-sm">
+            <UndoButton />
+            <RedoButton />
+            <ClearFormatButton />
+            <ToolbarDivider />
+            <HeadingDropdown />
+            <ToolbarDivider />
+            <BoldButton />
+            <ItalicButton />
+            <UnderlineButton />
+            <MoreMarkPopover />
+            <ToolbarDivider />
+            <TextColorButton />
+            <TextHighlightButton />
+            <ToolbarDivider />
+            <AlignPopover />
+            <BulletListButton />
+            <OrderedListButton />
+            <ToolbarDivider />
+            <LinkButton />
+            <TableButton />
+            <InsertDropdown />
+            <Button
+               type="button"
+               variant="ghost"
+               size="icon"
+               className="h-8 w-8 rounded-xl"
+               onClick={handleImageUpload}
+               disabled={!state.isEditable}
+            >
+               <ImagePlus className="h-4 w-4" />
+            </Button>
+         </Toolbar>
+
+         <div className="grid gap-3 lg:grid-cols-[1fr_220px]">
+            <div className="grid gap-2">
                <label className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Família da fonte</label>
                <Select value={state.fontFamily} onValueChange={applyFontFamily} disabled={!state.isEditable}>
                   <SelectTrigger className="h-10 rounded-xl bg-white">
@@ -98,7 +149,7 @@ const EmailTemplateToolbar = () => {
                </Select>
             </div>
 
-            <div className="grid w-full gap-2 lg:max-w-[220px]">
+            <div className="grid gap-2">
                <label className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Tamanho</label>
                <Select value={state.fontSize} onValueChange={applyFontSize} disabled={!state.isEditable}>
                   <SelectTrigger className="h-10 rounded-xl bg-white">
@@ -113,29 +164,10 @@ const EmailTemplateToolbar = () => {
                   </SelectContent>
                </Select>
             </div>
-
-            <div className="flex flex-wrap gap-2 lg:justify-end">
-               <Button type="button" variant="outline" className="rounded-xl" onClick={handleImageUpload} disabled={!state.isEditable}>
-                  <Upload className="h-4 w-4" />
-                  Imagem
-               </Button>
-               <Button
-                  type="button"
-                  variant="outline"
-                  className="rounded-xl"
-                  onClick={() => editor.chain().focus().unsetFontFamily().unsetFontSize().run()}
-                  disabled={!state.isEditable}
-               >
-                  Remover fonte
-               </Button>
-               <Button type="button" variant="secondary" className="rounded-xl" onClick={() => editor.chain().focus().setParagraph().run()} disabled={!state.isEditable}>
-                  Parágrafo
-               </Button>
-            </div>
          </div>
 
          <p className="text-xs leading-5 text-muted-foreground">
-            O conteúdo abaixo é salvo como HTML real e enviado como e-mail real. Você pode usar cores, links, listas, tabelas, imagens e formatação avançada.
+            O editor salva HTML real. Você pode combinar blocos, alterar cores, inserir imagens e montar o layout do e-mail visualmente.
          </p>
 
          <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onImageChange} />

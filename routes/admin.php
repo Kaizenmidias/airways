@@ -99,6 +99,7 @@ Route::prefix('dashboard')->group(function () {
         Route::post('settings/payment/{id}', 'payment_update')->name('settings.payment.update');
 
         Route::get('settings/email-templates', 'emails')->name('settings.email-templates');
+        Route::get('settings/email-templates/{id}/edit', 'email_templates_edit')->name('settings.email-templates.edit');
         Route::post('settings/email-templates/{id}', 'email_templates_update')->name('settings.email-templates.update');
         Route::post('settings/email-templates/preview', 'email_templates_preview')->name('settings.email-templates.preview');
 
