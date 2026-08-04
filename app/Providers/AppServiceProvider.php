@@ -199,9 +199,11 @@ class AppServiceProvider extends ServiceProvider
 
                 $heroTemplate = collect(InnerSections::getAboutUsSections())->firstWhere('slug', 'hero');
                 $pillarsTemplate = collect(InnerSections::getAboutUsSections())->firstWhere('slug', 'success_statistics');
+                $missionCardsTemplate = collect(InnerSections::getAboutUsSections())->firstWhere('slug', 'mission_values_cards');
 
                 $this->syncAboutUsSection($page, $heroTemplate);
                 $this->syncAboutUsSection($page, $pillarsTemplate);
+                $this->syncAboutUsSection($page, $missionCardsTemplate);
 
                 if (!$page->relationLoaded('sections')) {
                     $page->load(['sections' => function ($query) {
@@ -255,11 +257,11 @@ class AppServiceProvider extends ServiceProvider
             $updates['description'] = $template['description'];
         }
 
-        if (($template['slug'] ?? null) === 'success_statistics') {
-            if (blank($section->thumbnail)) {
-                $updates['thumbnail'] = $section->background_image ?: ($template['thumbnail'] ?? null);
-            }
+        if (blank($section->thumbnail) && array_key_exists('thumbnail', $template)) {
+            $updates['thumbnail'] = $template['thumbnail'];
+        }
 
+        if (($template['slug'] ?? null) === 'success_statistics') {
             if (!blank($section->background_image)) {
                 $updates['background_image'] = null;
             }

@@ -21,7 +21,7 @@ const generateFieldByType = (key: string, value: any): PropertyField => {
             value: null,
          };
          // Description fields
-      } else if (key === 'description' || key.includes('description') || key === 'bio' || key === 'content') {
+      } else if (key === 'description' || key.includes('description') || key === 'bio' || key === 'content' || key.includes('bullet')) {
          return {
             type: 'textarea',
             label: formatLabel(key),

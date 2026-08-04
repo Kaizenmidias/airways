@@ -40,18 +40,44 @@ class InnerSections
             'properties' => [
                'array' => [
                   [
+                     'text' => 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
+                  ],
+                  [
+                     'text' => 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
+                  ],
+                  [
+                     'text' => 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
+                  ]
+               ]
+            ],
+         ],
+         [
+            'name' => 'Mission Vision Cards',
+            'slug' => 'mission_values_cards',
+            'title' => 'Missão, visão e valores',
+            'description' => 'Cada card abaixo também pode receber seus próprios bullets no Builder.',
+            'flags' => [
+               'title' => true,
+               'description' => true,
+            ],
+            'properties' => [
+               'array' => [
+                  [
                      'title' => 'Missão',
                      'description' => 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
+                     'bullets' => "Experiência clara e direta\nConteúdo útil e confiável\nJornada pensada para o usuário",
                   ],
                   [
                      'title' => 'Visão',
                      'description' => 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
+                     'bullets' => "Jornada leve e elegante\nPresença consistente\nFoco total na experiência",
                   ],
                   [
                      'title' => 'Valores',
                      'description' => 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
-                  ]
-               ]
+                     'bullets' => "Simplicidade visual\nTransparência e consistência\nAcessibilidade e agilidade",
+                  ],
+               ],
             ],
          ],
          [
