@@ -55,10 +55,8 @@ class InnerSections
             'name' => 'Mission Vision Cards',
             'slug' => 'mission_values_cards',
             'title' => 'Missão, visão e valores',
-            'description' => 'Cada card abaixo também pode receber seus próprios bullets no Builder.',
             'flags' => [
                'title' => true,
-               'description' => true,
             ],
             'properties' => [
                'array' => [

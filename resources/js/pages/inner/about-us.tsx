@@ -138,7 +138,16 @@ const AboutUs = () => {
             <Section customize={customize} pageSection={identitySection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
                   <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
-                     <div className="max-w-[52rem] space-y-4 about-us-reveal">
+                     <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float lg:order-2">
+                        <img
+                           src={identityImage}
+                           alt={identitySection?.title || 'Idealizador do projeto'}
+                           className="h-full min-h-[420px] w-full object-cover object-center"
+                        />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,26,61,0.02)_0%,rgba(7,26,61,0.10)_100%)]" />
+                     </div>
+
+                     <div className="max-w-[52rem] space-y-4 about-us-reveal lg:order-1">
                         <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
                         <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
                            {identitySection?.title || 'Quem está por trás da Airways Academy?'}
@@ -167,20 +176,11 @@ const AboutUs = () => {
                                     <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1d3f7b] text-white">
                                        <Check className="h-4 w-4" />
                                     </div>
-                                    <p className="text-[16px] leading-7 font-normal text-slate-700">{bulletText}</p>
+                                    <p className="text-[14px] leading-6 font-normal text-slate-700">{bulletText}</p>
                                  </div>
                               );
                            })}
                         </div>
-                     </div>
-
-                     <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float">
-                        <img
-                           src={identityImage}
-                           alt={identitySection?.title || 'Idealizador do projeto'}
-                           className="h-full min-h-[420px] w-full object-cover object-center"
-                        />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,26,61,0.02)_0%,rgba(7,26,61,0.10)_100%)]" />
                      </div>
                   </div>
                </div>
@@ -195,16 +195,6 @@ const AboutUs = () => {
                      <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
                         {cardsSection?.title || 'Missão, visão e valores'}
                      </h2>
-                     {cardsSection?.description && (
-                        <div
-                           className={cn(
-                              'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
-                              '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
-                           )}
-                        >
-                           <TiptapRenderer>{cardsSection.description}</TiptapRenderer>
-                        </div>
-                     )}
                   </div>
 
                   <div className="mt-10 grid gap-6 lg:grid-cols-3">
