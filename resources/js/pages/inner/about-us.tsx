@@ -33,7 +33,7 @@ const AboutUs = () => {
    const { props } = usePage<InnerPageProps>();
    const { innerPage, customize } = props;
 
-   const heroSection = getPageSection(innerPage, 'hero');
+   const heroSection = getPageSection(innerPage, 'hero') || innerPage.sections[0];
    const pillarsSection = getPageSection(innerPage, 'success_statistics');
    const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter(Boolean)?.length
       ? ((pillarsSection?.properties?.array as Pillar[]) || fallbackPillars)
@@ -81,34 +81,21 @@ const AboutUs = () => {
          <section className="bg-white">
             <Section customize={customize} pageSection={pillarsSection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
-                  <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
-                     <div className="space-y-4">
-                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
-                        <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
-                           {pillarsSection?.title || 'Missão, visão e valores'}
-                        </h2>
-                        {pillarsSection?.description && (
-                           <div
-                              className={cn(
-                                 'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
-                                 '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
-                              )}
-                           >
-                              <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
-                           </div>
-                        )}
-                     </div>
-
-                     <div className="relative">
-                        <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[36px] bg-[#dce6f1]" />
-                        <div className="relative overflow-hidden rounded-[36px] border border-white bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)]">
-                           <img
-                              src={pillarsSection?.background_image || heroBackgroundImage}
-                              alt={pillarsSection?.title || innerPage.name}
-                              className="h-[360px] w-full object-cover object-center md:h-[500px]"
-                           />
+                  <div className="max-w-[52rem] space-y-4">
+                     <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
+                     <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                        {pillarsSection?.title || 'Missão, visão e valores'}
+                     </h2>
+                     {pillarsSection?.description && (
+                        <div
+                           className={cn(
+                              'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
+                              '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
+                           )}
+                        >
+                           <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
                         </div>
-                     </div>
+                     )}
                   </div>
 
                   <div className="mt-10 grid gap-6 lg:grid-cols-3">
