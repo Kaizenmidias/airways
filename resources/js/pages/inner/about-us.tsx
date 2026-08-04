@@ -137,7 +137,7 @@ const AboutUs = () => {
             <Section customize={customize} pageSection={identitySection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
                   <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
-                     <div className="space-y-4 about-us-reveal lg:col-start-1 lg:row-start-1">
+                     <div className="space-y-2 about-us-reveal lg:col-start-1 lg:row-start-1">
                         <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
                         <h2 className="text-[clamp(2rem,3vw,42px)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
                            {identitySection?.title || 'Quem está por trás da Airways Academy?'}
