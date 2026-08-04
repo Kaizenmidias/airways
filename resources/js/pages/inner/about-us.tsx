@@ -1,8 +1,11 @@
 import TiptapRenderer from '@/components/text-editor/tiptap-renderer/client-renderer';
+import SectionEditor from '@/components/section-editor';
+import { Button } from '@/components/ui/button';
 import { getPageSection } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import Section from '@/pages/intro/partials/section';
 import { usePage } from '@inertiajs/react';
+import { Pencil } from 'lucide-react';
 import { InnerPageProps } from '.';
 
 type Pillar = {
@@ -33,7 +36,7 @@ const AboutUs = () => {
    const { props } = usePage<InnerPageProps>();
    const { innerPage, customize } = props;
 
-   const heroSection = getPageSection(innerPage, 'hero') || innerPage.sections[0];
+   const heroSection = getPageSection(innerPage, 'hero');
    const pillarsSection = getPageSection(innerPage, 'success_statistics');
    const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter(Boolean)?.length
       ? ((pillarsSection?.properties?.array as Pillar[]) || fallbackPillars)
@@ -66,7 +69,24 @@ const AboutUs = () => {
             <div className="absolute inset-0 bg-[#071A3D]/72" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(88,140,255,0.22),transparent_26%),radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.12),transparent_24%),linear-gradient(180deg,rgba(7,26,61,0.18)_0%,rgba(7,26,61,0.58)_100%)]" />
 
-            <Section customize={customize} pageSection={heroSection} containerClass="!max-w-none !px-0" contentClass="relative">
+            <Section customize={false} pageSection={heroSection} containerClass="!max-w-none !px-0" contentClass="relative">
+               {customize && heroSection && (
+                  <div className="absolute top-5 right-5 z-50">
+                     <SectionEditor
+                        section={heroSection}
+                        actionComponent={
+                           <Button
+                              size="icon"
+                              variant="secondary"
+                              className="h-11 w-11 rounded-full bg-white/90 text-slate-900 shadow-[0_12px_40px_rgba(2,6,23,0.2)] ring-1 ring-black/10 backdrop-blur hover:bg-white"
+                           >
+                              <Pencil className="h-5 w-5" />
+                           </Button>
+                        }
+                     />
+                  </div>
+               )}
+
                <div className="relative mx-auto flex min-h-[520px] max-w-[1600px] items-end px-5 pb-20 pt-28 sm:min-h-[560px] sm:pb-24 md:min-h-[620px] md:px-10 lg:px-14">
                   <div className="max-w-[1100px] space-y-5">
                      <h1 className="max-w-[1050px] text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white [text-shadow:0_4px_18px_rgba(2,6,23,0.55)]">
