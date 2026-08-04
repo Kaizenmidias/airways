@@ -2,6 +2,7 @@ import TiptapRenderer from '@/components/text-editor/tiptap-renderer/client-rend
 import { SharedData } from '@/types/global';
 import { Head } from '@inertiajs/react';
 import Layout from '../intro/partials/layout';
+import AboutUs from './about-us';
 import Hero from './partials/hero';
 import Sections from './sections';
 import Career from './sections/career';
@@ -21,9 +22,15 @@ const Index = ({ innerPage, jobCirculars }: InnerPageProps) => {
       <Layout page={innerPage} navbarHeight={false}>
          <Head title={innerPage.name} />
 
-         <Hero innerPage={innerPage} />
+         {innerPage.slug === 'about-us' ? (
+            <AboutUs />
+         ) : (
+            <>
+               <Hero innerPage={innerPage} />
 
-         {innerPage.sections.length > 0 && <Sections sections={innerPage.sections} />}
+               {innerPage.sections.length > 0 && <Sections sections={innerPage.sections} />}
+            </>
+         )}
 
          {innerPage.slug === 'careers' && jobCirculars && isAirwaysFeatureEnabled(props.airways, 'jobs') && <Career jobCirculars={jobCirculars} />}
 

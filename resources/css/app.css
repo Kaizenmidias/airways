@@ -199,6 +199,14 @@
    }
 }
 
+@font-face {
+   font-family: 'InterVariable';
+   src: url('/assets/fonts/InterVariable.ttf') format('truetype');
+   font-style: normal;
+   font-weight: 100 900;
+   font-display: swap;
+}
+
 @layer utilities {
    .container {
       @apply mx-auto max-w-[1280px] px-5;
@@ -262,6 +270,12 @@
 
    .landing-shell {
       background: var(--background-image);
+   }
+
+   .about-us-page {
+      font-family: 'InterVariable', 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
    }
 
    .horizontal-tabs-list {
