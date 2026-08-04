@@ -9,8 +9,6 @@ import { Check, Pencil } from 'lucide-react';
 import { InnerPageProps } from '.';
 
 type BulletItem = {
-   title?: string;
-   description?: string;
    text?: string;
 };
 
@@ -53,7 +51,7 @@ const fallbackCards: AboutCard[] = [
    },
 ];
 
-const normalizeArrayText = (item: BulletItem | undefined) => item?.text || item?.description || item?.title || '';
+const normalizeArrayText = (item: BulletItem | undefined) => item?.text || '';
 
 const splitBullets = (value?: string) =>
    (value || '')
@@ -138,7 +136,14 @@ const AboutUs = () => {
             <Section customize={customize} pageSection={identitySection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
                   <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
-                     <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float lg:order-2">
+                     <div className="space-y-4 about-us-reveal lg:col-start-1 lg:row-start-1">
+                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
+                        <h2 className="text-[clamp(2rem,3vw,42px)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                           {identitySection?.title || 'Quem está por trás da Airways Academy?'}
+                        </h2>
+                     </div>
+
+                     <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center">
                         <img
                            src={identityImage}
                            alt={identitySection?.title || 'Idealizador do projeto'}
@@ -147,11 +152,7 @@ const AboutUs = () => {
                         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,26,61,0.02)_0%,rgba(7,26,61,0.10)_100%)]" />
                      </div>
 
-                     <div className="max-w-[52rem] space-y-4 about-us-reveal lg:order-1">
-                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
-                        <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
-                           {identitySection?.title || 'Quem está por trás da Airways Academy?'}
-                        </h2>
+                     <div className="max-w-[52rem] space-y-4 about-us-reveal lg:col-start-1 lg:row-start-2 lg:self-start">
                         {identitySection?.description && (
                            <div
                               className={cn(
