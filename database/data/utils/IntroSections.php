@@ -988,6 +988,11 @@ class IntroSections
                   ['icon' => 'calendar-days', 'count' => '+25', 'title' => 'Anos'],
                   ['icon' => 'bar-chart-3', 'count' => '+91%', 'title' => 'Aprovação'],
                ],
+               'bullet_points' => [
+                  ['title' => 'Formação aeronáutica com base prática e confiável'],
+                  ['title' => 'Didática refinada ao longo de décadas de experiência'],
+                  ['title' => 'Estrutura pensada para uma jornada clara e objetiva'],
+               ],
             ],
          ],
          [

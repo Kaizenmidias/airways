@@ -9,7 +9,7 @@
 
 @theme {
    --font-sans:
-      'Inter', sans-serif, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      'InterVariable', 'Inter', sans-serif, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
    --radius: 0.625rem;
    --radius-lg: var(--radius);
@@ -190,7 +190,8 @@
    }
 
    body {
-      @apply bg-background text-foreground;
+      @apply bg-background text-foreground font-sans;
+      font-weight: 400;
    }
 
    a,

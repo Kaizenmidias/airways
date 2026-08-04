@@ -46,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->ensureHome4Section($page, 'who_we_are', 'testimonials');
                     $this->ensureHome4Section($page, 'selected_courses', 'who_we_are');
                     $this->ensureHome4Section($page, 'why_choose_ebianch', 'selected_courses');
+                    $this->syncHome4WhoWeAreSection($page, collect(IntroSections::getHome4Sections())->firstWhere('slug', 'who_we_are'));
 
                     return $page;
                 }
@@ -311,11 +312,11 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
-        $sectionTemplate = collect(IntroSections::getHome4Sections())->firstWhere('slug', $slug);
+                $sectionTemplate = collect(IntroSections::getHome4Sections())->firstWhere('slug', $slug);
 
-        if (!$sectionTemplate) {
-            return;
-        }
+                if (!$sectionTemplate) {
+                    return;
+                }
 
         $afterSection = $afterSlug ? $page->sections->firstWhere('slug', $afterSlug) : null;
         $insertAfterSort = (int) ($afterSection?->sort ?? $page->sections->max('sort') ?? 0);
@@ -344,6 +345,36 @@ class AppServiceProvider extends ServiceProvider
         $page->load(['sections' => function ($query) {
             $query->orderBy('sort', 'asc');
         }]);
+    }
+
+    private function syncHome4WhoWeAreSection(?Page $page, ?array $template): void
+    {
+        if (!$page || !$template || $page->slug !== 'home-4') {
+            return;
+        }
+
+        $section = $page->sections->firstWhere('slug', 'who_we_are');
+
+        if (!$section) {
+            return;
+        }
+
+        $properties = is_array($section->properties) ? $section->properties : [];
+        $templateProperties = $template['properties'] ?? [];
+        $updates = [];
+
+        if (!array_key_exists('bullet_points', $properties) && array_key_exists('bullet_points', $templateProperties)) {
+            $updates['properties'] = array_merge($properties, [
+                'bullet_points' => $templateProperties['bullet_points'],
+            ]);
+        }
+
+        if (!empty($updates)) {
+            $section->update($updates);
+            $page->load(['sections' => function ($query) {
+                $query->orderBy('sort', 'asc');
+            }]);
+        }
     }
 
     /**

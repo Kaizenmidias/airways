@@ -6,6 +6,40 @@ const formatLabel = (key: string): string => {
    return key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 };
 
+const generateArrayField = (key: string, value: any[]): PropertyField => {
+   const sampleItem =
+      Array.isArray(value) && value.length > 0 ? value.find((item: Record<string, any>) => !isEmptyArrayItem(item)) || value[0] : {};
+   let itemFields: PropertyField[] = [];
+
+   if (Object.keys(sampleItem).length > 0) {
+      Object.keys(sampleItem).forEach((itemKey) => {
+         if (typeof sampleItem[itemKey] === 'string' || typeof sampleItem[itemKey] === 'number' || typeof sampleItem[itemKey] === 'boolean') {
+            itemFields.push(generateFieldByType(itemKey, sampleItem[itemKey]));
+         }
+      });
+   } else {
+      itemFields = [{ type: 'text' as const, label: 'Title', name: 'title', value: '' }];
+   }
+
+   return {
+      type: 'array',
+      label: formatLabel(key),
+      name: key,
+      value: (value || []).map((item: Record<string, any>) => {
+         const processedItem = { ...item };
+
+         Object.keys(processedItem).forEach((itemKey) => {
+            if (itemKey === 'image' || itemKey.includes('image')) {
+               processedItem[`new_image`] = null;
+            }
+         });
+
+         return processedItem;
+      }),
+      fields: itemFields,
+   };
+};
+
 /**
  * Generate a field definition based on a value's type
  */
@@ -116,52 +150,20 @@ export const generatePropertyFields = (properties: Record<string, any>): Propert
 
    // Handle array property (static content defined in seeder)
    if ('array' in properties) {
-       const sampleItem =
-          Array.isArray(properties.array) && properties.array.length > 0
-             ? properties.array.find((item: Record<string, any>) => !isEmptyArrayItem(item)) || properties.array[0]
-             : {};
-      let itemFields: PropertyField[] = [];
+      const fields: PropertyField[] = [generateArrayField('array', properties.array || [])];
 
-      // Generate fields based on sample item if available
-      if (Object.keys(sampleItem).length > 0) {
-         Object.keys(sampleItem).forEach((key) => {
-            if (typeof sampleItem[key] === 'string' || typeof sampleItem[key] === 'number' || typeof sampleItem[key] === 'boolean') {
-               itemFields.push(generateFieldByType(key, sampleItem[key]));
-            }
-         });
-      } else {
-         // Default basic fields if no sample available
-         itemFields = [
-            { type: 'text' as const, label: 'Title', name: 'title', value: '' },
-            { type: 'text' as const, label: 'Value', name: 'value', value: '' },
-         ];
+      if ('bullet_points' in properties) {
+         fields.push(generateArrayField('bullet_points', properties.bullet_points || []));
       }
-
-      // Return the array field
-      const fields: PropertyField[] = [
-         {
-            type: 'array',
-            label: 'Items',
-            name: 'array',
-            value: (properties.array || []).map((item: Record<string, any>) => {
-               // Process each item in the array to set image fields to null
-               const processedItem = { ...item };
-               // Set image properties to null for file uploads
-               Object.keys(processedItem).forEach((key) => {
-                  if (key === 'image' || key.includes('image')) {
-                     processedItem[`new_image`] = null;
-                  }
-               });
-               return processedItem;
-            }),
-            fields: itemFields,
-         },
-      ];
 
       // Add other properties to the beginning of fields array
       Object.entries(properties).forEach(([key, value]) => {
          // Skip array property as it's already handled
          if (key === 'array') {
+            return;
+         }
+
+         if (key === 'bullet_points') {
             return;
          }
 
