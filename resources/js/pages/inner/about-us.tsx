@@ -38,6 +38,7 @@ const AboutUs = () => {
 
    const heroSection = getPageSection(innerPage, 'hero');
    const pillarsSection = getPageSection(innerPage, 'success_statistics');
+   const pillarsBackgroundImage = pillarsSection?.background_image || '/assets/images/team-1.jpg';
    const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter(Boolean)?.length
       ? ((pillarsSection?.properties?.array as Pillar[]) || fallbackPillars)
       : fallbackPillars;
@@ -101,28 +102,40 @@ const AboutUs = () => {
          <section className="bg-white">
             <Section customize={customize} pageSection={pillarsSection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
-                  <div className="max-w-[52rem] space-y-4">
-                     <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
-                     <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
-                        {pillarsSection?.title || 'Missão, visão e valores'}
-                     </h2>
-                     {pillarsSection?.description && (
-                        <div
-                           className={cn(
-                              'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
-                              '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
-                           )}
-                        >
-                           <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
-                        </div>
-                     )}
+                  <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-start">
+                     <div className="max-w-[52rem] space-y-4 about-us-reveal">
+                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
+                        <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                           {pillarsSection?.title || 'Missão, visão e valores'}
+                        </h2>
+                        {pillarsSection?.description && (
+                           <div
+                              className={cn(
+                                 'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
+                                 '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
+                              )}
+                           >
+                              <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
+                           </div>
+                        )}
+                     </div>
+
+                     <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float">
+                        <img
+                           src={pillarsBackgroundImage}
+                           alt={pillarsSection?.title || 'Idealizador do projeto'}
+                           className="h-full min-h-[420px] w-full object-cover object-top"
+                        />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,26,61,0.02)_0%,rgba(7,26,61,0.10)_100%)]" />
+                     </div>
                   </div>
 
-                  <div className="mt-10 grid gap-6 lg:grid-cols-3">
+                  <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-3">
                      {pillars.map((pillar, index) => (
                         <article
                            key={`${pillar.title || 'pillar'}-${index}`}
-                           className="group rounded-[28px] border border-slate-200 bg-[#f8fafc] p-8 shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-transform duration-200 hover:-translate-y-1"
+                           className="group rounded-[28px] border border-slate-200 bg-[#f8fafc] p-8 shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-transform duration-300 hover:-translate-y-1 about-us-reveal"
+                           style={{ animationDelay: `${index * 120}ms` }}
                         >
                            <div className="mb-6 flex items-center gap-3">
                               <span className="h-3 w-3 rounded-full bg-[#1d3f7b]" />

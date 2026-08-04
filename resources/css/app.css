@@ -278,6 +278,40 @@
       text-rendering: optimizeLegibility;
    }
 
+   @media (prefers-reduced-motion: no-preference) {
+      .about-us-reveal {
+         animation: about-us-reveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .about-us-float {
+         animation: about-us-float 14s ease-in-out infinite;
+         will-change: transform;
+      }
+   }
+
+   @keyframes about-us-reveal {
+      from {
+         opacity: 0;
+         transform: translateY(24px);
+      }
+
+      to {
+         opacity: 1;
+         transform: translateY(0);
+      }
+   }
+
+   @keyframes about-us-float {
+      0%,
+      100% {
+         transform: translateY(0);
+      }
+
+      50% {
+         transform: translateY(-10px);
+      }
+   }
+
    .horizontal-tabs-list {
       @apply border-border bg-card text-card-foreground grid h-auto grid-cols-1 overflow-hidden rounded-2xl border px-0 py-5 shadow;
    }
