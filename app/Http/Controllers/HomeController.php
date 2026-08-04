@@ -78,9 +78,11 @@ class HomeController extends Controller
          abort(404);
       }
 
-      $innerPage = $request->slug === 'contact-us'
-         ? (app('contact_page') ?: $this->pageService->getCustomPageBySlug($request->slug))
-         : $this->pageService->getCustomPageBySlug($request->slug);
+      $innerPage = $request->slug === 'about-us'
+         ? (app('about_page') ?: $this->pageService->getCustomPageBySlug($request->slug))
+         : ($request->slug === 'contact-us'
+            ? (app('contact_page') ?: $this->pageService->getCustomPageBySlug($request->slug))
+            : $this->pageService->getCustomPageBySlug($request->slug));
       $sections = $request->slug === 'careers' ? [] : $this->pageService->getPageSections($request->all(), $innerPage);
       $jobCirculars = $request->slug === 'careers' ? $this->jobCircularService->getActiveJobCirculars($request->all()) : null;
 

@@ -13,50 +13,42 @@ class InnerSections
          [
             'name' => 'Hero',
             'slug' => 'hero',
-            'title' => 'About Us',
-            'flags' => [
-               'title' => true,
-            ],
-            'properties' => [
-               'array' => [
-                  [
-                     'title' => 'Our Mission',
-                     'description' => 'To democratize education by making high-quality learning accessible to everyone, everywhere. We strive to bridge the gap between knowledge and application. Meet our passionate team of educators, developers, and designers who believe in the power of learning to change lives.',
-                     'image' => '/assets/images/team-1.jpg'
-                  ],
-                  [
-                     'title' => 'Our Value',
-                     'description' => 'We believe in fostering a love for lifelong learning through innovative teaching methods, personalized experiences, and supportive communities. Meet our passionate team of educators, developers, and designers who believe in the power of learning to change lives.',
-                     'image' => '/assets/images/team-2.jpg'
-                  ]
-               ]
-            ],
-         ],
-         [
-            'name' => 'Success Statistics',
-            'slug' => 'success_statistics',
-            'title' => 'Our Success Depends on Our Students Success',
-            'description' => 'We believe that our success is measured by our students\' achievements. Every milestone they reach is a testament to our commitment to excellence in education.',
+            'title' => 'Sobre nós',
+            'description' => 'Atualize o texto e a mídia de fundo desta seção principal diretamente no Builder.',
+            'background_image' => '/assets/images/intro/home-4/hero-bg.png',
+            'video_url' => '',
             'flags' => [
                'title' => true,
                'description' => true,
+               'background_image' => true,
+               'video_url' => true,
+            ],
+            'properties' => [],
+         ],
+         [
+            'name' => 'Mission Vision Values',
+            'slug' => 'success_statistics',
+            'title' => 'Missão, visão e valores',
+            'description' => 'Use esta segunda seção para destacar os pilares institucionais da Airways.',
+            'background_image' => '/assets/images/team-1.jpg',
+            'flags' => [
+               'title' => true,
+               'description' => true,
+               'background_image' => true,
             ],
             'properties' => [
                'array' => [
                   [
-                     'count' => '100+',
-                     'title' => 'Active Students',
-                     'image' => '/assets/images/students-1.jpg'
+                     'title' => 'Missão',
+                     'description' => 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
                   ],
                   [
-                     'count' => '300+',
-                     'title' => 'Best Courses',
-                     'image' => '/assets/images/students-2.jpg'
+                     'title' => 'Visão',
+                     'description' => 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
                   ],
                   [
-                     'count' => '40k+',
-                     'title' => 'Active Users',
-                     'image' => '/assets/images/students-3.jpg'
+                     'title' => 'Valores',
+                     'description' => 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
                   ]
                ]
             ],

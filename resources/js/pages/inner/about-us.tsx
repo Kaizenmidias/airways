@@ -5,7 +5,13 @@ import Section from '@/pages/intro/partials/section';
 import { usePage } from '@inertiajs/react';
 import { InnerPageProps } from '.';
 
-const defaultPillars = [
+type Pillar = {
+   title?: string;
+   description?: string;
+   image?: string;
+};
+
+const fallbackPillars: Pillar[] = [
    {
       title: 'Missão',
       description:
@@ -28,44 +34,67 @@ const AboutUs = () => {
    const { innerPage, customize } = props;
 
    const heroSection = getPageSection(innerPage, 'hero');
-   const valuesSection = getPageSection(innerPage, 'success_statistics');
+   const pillarsSection = getPageSection(innerPage, 'success_statistics');
+   const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter(Boolean)?.length
+      ? ((pillarsSection?.properties?.array as Pillar[]) || fallbackPillars)
+      : fallbackPillars;
 
-   const heroImage = heroSection?.properties?.array?.[0]?.image || valuesSection?.properties?.array?.[0]?.image || '/assets/aviao.png';
+   const heroBackgroundImage = heroSection?.background_image || '/assets/images/intro/home-4/hero-bg.png';
+   const heroBackgroundVideo = heroSection?.video_url && /\.(mp4|webm|ogg)(\?.*)?$/i.test(heroSection.video_url) ? heroSection.video_url : null;
 
    return (
       <div className="about-us-page bg-[#f4f7fb] text-slate-900">
-         <section className="relative overflow-hidden border-b border-slate-200/70 bg-[url('/assets/images/intro/home-1/bg-line.png')] bg-cover bg-center">
-            <div className="absolute inset-0 bg-[#071A3D]/70" />
+         <section className="relative isolate overflow-hidden border-b border-white/10 bg-slate-950">
+            {heroBackgroundVideo ? (
+               <video
+                  key={heroBackgroundVideo}
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  src={heroBackgroundVideo}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+               />
+            ) : (
+               <div
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url('${heroBackgroundImage}')` }}
+                  aria-hidden="true"
+               />
+            )}
+
+            <div className="absolute inset-0 bg-[#071A3D]/72" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(88,140,255,0.22),transparent_26%),radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.12),transparent_24%),linear-gradient(180deg,rgba(7,26,61,0.18)_0%,rgba(7,26,61,0.58)_100%)]" />
 
             <Section customize={customize} pageSection={heroSection} containerClass="!max-w-none !px-0" contentClass="relative">
-               <div className="relative mx-auto flex min-h-[340px] max-w-[1280px] items-center px-5 py-20 md:min-h-[420px] md:py-28 lg:px-8">
-                  <div className="max-w-3xl space-y-4">
-                     <h1 className="text-[clamp(2.5rem,5vw,5.5rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white">
+               <div className="relative mx-auto flex min-h-[520px] max-w-[1600px] items-end px-5 pb-20 pt-28 sm:min-h-[560px] sm:pb-24 md:min-h-[620px] md:px-10 lg:px-14">
+                  <div className="max-w-[1100px] space-y-5">
+                     <h1 className="max-w-[1050px] text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white [text-shadow:0_4px_18px_rgba(2,6,23,0.55)]">
                         {heroSection?.title || 'Sobre nós'}
                      </h1>
-                     <div className="h-1 w-16 rounded-full bg-white/90" />
+                     <div className="h-1.5 w-16 rounded-full bg-white/90 shadow-[0_0_24px_rgba(255,255,255,0.25)]" />
                   </div>
                </div>
             </Section>
          </section>
 
          <section className="bg-white">
-            <Section customize={customize} pageSection={valuesSection} containerClass="!max-w-none !px-0" contentClass="relative">
-               <div className="mx-auto max-w-[1280px] px-5 py-16 md:py-24 lg:px-8">
+            <Section customize={customize} pageSection={pillarsSection} containerClass="!max-w-none !px-0" contentClass="relative">
+               <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
                   <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
                      <div className="space-y-4">
                         <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
                         <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
-                           {valuesSection?.title || 'Missão, visão e valores'}
+                           {pillarsSection?.title || 'Missão, visão e valores'}
                         </h2>
-                        {valuesSection?.description && (
+                        {pillarsSection?.description && (
                            <div
                               className={cn(
-                                 'max-w-[50rem] text-[16px] leading-8 font-normal text-slate-600',
+                                 'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
                                  '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
                               )}
                            >
-                              <TiptapRenderer>{valuesSection.description}</TiptapRenderer>
+                              <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
                            </div>
                         )}
                      </div>
@@ -73,15 +102,19 @@ const AboutUs = () => {
                      <div className="relative">
                         <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[36px] bg-[#dce6f1]" />
                         <div className="relative overflow-hidden rounded-[36px] border border-white bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)]">
-                           <img src={heroImage} alt={heroSection?.title || innerPage.name} className="h-[360px] w-full object-cover object-center md:h-[500px]" />
+                           <img
+                              src={pillarsSection?.background_image || heroBackgroundImage}
+                              alt={pillarsSection?.title || innerPage.name}
+                              className="h-[360px] w-full object-cover object-center md:h-[500px]"
+                           />
                         </div>
                      </div>
                   </div>
 
                   <div className="mt-10 grid gap-6 lg:grid-cols-3">
-                     {defaultPillars.map((pillar, index) => (
+                     {pillars.map((pillar, index) => (
                         <article
-                           key={pillar.title}
+                           key={`${pillar.title || 'pillar'}-${index}`}
                            className="group rounded-[28px] border border-slate-200 bg-[#f8fafc] p-8 shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-transform duration-200 hover:-translate-y-1"
                         >
                            <div className="mb-6 flex items-center gap-3">

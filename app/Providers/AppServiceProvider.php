@@ -180,6 +180,113 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+
+        $this->app->singleton('about_page', function (): ?Page {
+            try {
+                if (!isDBConnected() || !Schema::hasTable('pages') || !Schema::hasTable('page_sections')) {
+                    return null;
+                }
+
+                $page = Page::firstOrCreate(
+                    ['slug' => 'about-us'],
+                    [
+                        'name' => 'About Us',
+                        'title' => 'About Us - Why Choose Mentor?',
+                        'meta_description' => 'Mentor LMS offers quality content, affordable learning, and continuous improvement in online education.',
+                        'meta_keywords' => 'about us, mission, vision, quality content, affordable learning, education platform',
+                    ]
+                );
+
+                $heroTemplate = collect(InnerSections::getAboutUsSections())->firstWhere('slug', 'hero');
+                $pillarsTemplate = collect(InnerSections::getAboutUsSections())->firstWhere('slug', 'success_statistics');
+
+                $this->syncAboutUsSection($page, $heroTemplate);
+                $this->syncAboutUsSection($page, $pillarsTemplate);
+
+                if (!$page->relationLoaded('sections')) {
+                    $page->load(['sections' => function ($query) {
+                        $query->orderBy('sort', 'asc');
+                    }]);
+                }
+
+                return $page;
+            } catch (\Throwable $th) {
+                return null;
+            }
+        });
+    }
+
+    private function syncAboutUsSection(Page $page, array $template): ?PageSection
+    {
+        $section = PageSection::firstOrCreate(
+            [
+                'page_id' => $page->id,
+                'slug' => $template['slug'],
+            ],
+            [
+                'name' => $template['name'],
+                'title' => $template['title'] ?? null,
+                'description' => $template['description'] ?? null,
+                'thumbnail' => $template['thumbnail'] ?? null,
+                'background_image' => $template['background_image'] ?? null,
+                'background_color' => $template['background_color'] ?? null,
+                'video_url' => $template['video_url'] ?? null,
+                'flags' => $template['flags'] ?? [],
+                'properties' => $template['properties'] ?? [],
+                'active' => $template['active'] ?? true,
+                'sort' => $template['sort'] ?? ($template['slug'] === 'success_statistics' ? 2 : 1),
+            ]
+        );
+
+        $updates = [];
+
+        $existingFlags = is_array($section->flags) ? $section->flags : [];
+        $mergedFlags = array_replace($existingFlags, $template['flags'] ?? []);
+
+        if ($mergedFlags !== $existingFlags) {
+            $updates['flags'] = $mergedFlags;
+        }
+
+        if (blank($section->title) || $section->title === 'About Us' || $section->title === 'Our Success Depends on Our Students Success') {
+            $updates['title'] = $template['title'] ?? $section->title;
+        }
+
+        if (blank($section->description) && array_key_exists('description', $template)) {
+            $updates['description'] = $template['description'];
+        }
+
+        if (blank($section->background_image) && array_key_exists('background_image', $template)) {
+            $updates['background_image'] = $template['background_image'];
+        }
+
+        if (blank($section->video_url) && array_key_exists('video_url', $template)) {
+            $updates['video_url'] = $template['video_url'];
+        }
+
+        if (blank($section->properties) && array_key_exists('properties', $template)) {
+            $updates['properties'] = $template['properties'];
+        }
+
+        $desiredSort = $template['sort'] ?? ($template['slug'] === 'success_statistics' ? 2 : 1);
+        if ((int) $section->sort !== (int) $desiredSort) {
+            $updates['sort'] = $desiredSort;
+        }
+
+        if (($template['slug'] ?? null) === 'success_statistics') {
+            $properties = is_array($section->properties) ? $section->properties : [];
+            $items = is_array($properties['array'] ?? null) ? $properties['array'] : [];
+            $firstItem = $items[0] ?? [];
+
+            if (isset($firstItem['count']) && !isset($firstItem['description'])) {
+                $updates['properties'] = $template['properties'] ?? [];
+            }
+        }
+
+        if (!empty($updates)) {
+            $section->update($updates);
+        }
+
+        return $section;
     }
 
     private function ensureHome4Section(?Page $page, string $slug, ?string $afterSlug = null): void
