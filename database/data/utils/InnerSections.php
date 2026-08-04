@@ -30,11 +30,12 @@ class InnerSections
             'slug' => 'success_statistics',
             'title' => 'Missão, visão e valores',
             'description' => 'Use esta segunda seção para destacar os pilares institucionais da Airways.',
-            'background_image' => '/assets/images/team-1.jpg',
+            'thumbnail' => '/assets/images/team-1.jpg',
             'flags' => [
                'title' => true,
                'description' => true,
-               'background_image' => true,
+               'thumbnail' => true,
+               'background_image' => false,
             ],
             'properties' => [
                'array' => [

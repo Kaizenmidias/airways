@@ -5,13 +5,12 @@ import { getPageSection } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import Section from '@/pages/intro/partials/section';
 import { usePage } from '@inertiajs/react';
-import { Pencil } from 'lucide-react';
+import { Check, Pencil } from 'lucide-react';
 import { InnerPageProps } from '.';
 
 type Pillar = {
    title?: string;
    description?: string;
-   image?: string;
 };
 
 const fallbackPillars: Pillar[] = [
@@ -38,8 +37,8 @@ const AboutUs = () => {
 
    const heroSection = getPageSection(innerPage, 'hero');
    const pillarsSection = getPageSection(innerPage, 'success_statistics');
-   const pillarsBackgroundImage = pillarsSection?.background_image || '/assets/images/team-1.jpg';
-   const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter(Boolean)?.length
+   const pillarsImage = pillarsSection?.thumbnail || '/assets/images/team-1.jpg';
+   const pillars = (pillarsSection?.properties?.array as Pillar[] | undefined)?.filter((item) => Boolean(item?.title || item?.description))?.length
       ? ((pillarsSection?.properties?.array as Pillar[]) || fallbackPillars)
       : fallbackPillars;
 
@@ -102,7 +101,7 @@ const AboutUs = () => {
          <section className="bg-white">
             <Section customize={customize} pageSection={pillarsSection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
-                  <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-start">
+                  <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
                      <div className="max-w-[52rem] space-y-4 about-us-reveal">
                         <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
                         <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
@@ -118,13 +117,32 @@ const AboutUs = () => {
                               <TiptapRenderer>{pillarsSection.description}</TiptapRenderer>
                            </div>
                         )}
+
+                        <div className="space-y-3 pt-2">
+                           {pillars.map((pillar, index) => {
+                              const bulletText = [pillar.title, pillar.description].filter(Boolean).join(' - ');
+
+                              return (
+                                 <div
+                                    key={`${pillar.title || 'pillar'}-${index}`}
+                                    className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.04)] about-us-reveal"
+                                    style={{ animationDelay: `${index * 120}ms` }}
+                                 >
+                                    <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1d3f7b] text-white">
+                                       <Check className="h-4 w-4" />
+                                    </div>
+                                    <p className="text-[16px] leading-7 font-normal text-slate-700">{bulletText}</p>
+                                 </div>
+                              );
+                           })}
+                        </div>
                      </div>
 
-                     <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float">
+                     <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_24px_70px_rgba(15,23,42,0.10)] about-us-float">
                         <img
-                           src={pillarsBackgroundImage}
+                           src={pillarsImage}
                            alt={pillarsSection?.title || 'Idealizador do projeto'}
-                           className="h-full min-h-[420px] w-full object-cover object-top"
+                           className="h-full min-h-[420px] w-full object-cover object-center"
                         />
                         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,26,61,0.02)_0%,rgba(7,26,61,0.10)_100%)]" />
                      </div>

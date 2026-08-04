@@ -255,7 +255,15 @@ class AppServiceProvider extends ServiceProvider
             $updates['description'] = $template['description'];
         }
 
-        if (blank($section->background_image) && array_key_exists('background_image', $template)) {
+        if (($template['slug'] ?? null) === 'success_statistics') {
+            if (blank($section->thumbnail)) {
+                $updates['thumbnail'] = $section->background_image ?: ($template['thumbnail'] ?? null);
+            }
+
+            if (!blank($section->background_image)) {
+                $updates['background_image'] = null;
+            }
+        } elseif (blank($section->background_image) && array_key_exists('background_image', $template)) {
             $updates['background_image'] = $template['background_image'];
         }
 
