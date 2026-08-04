@@ -30,35 +30,20 @@ const AboutUs = () => {
    const heroSection = getPageSection(innerPage, 'hero');
    const valuesSection = getPageSection(innerPage, 'success_statistics');
 
-   const heroImage = heroSection?.properties?.array?.[0]?.image || '/assets/aviao.png';
-   const aboutText = innerPage.description || heroSection?.description || 'Uma página pensada para apresentar a Airways com uma linguagem mais leve, visual limpo e foco em clareza.';
+   const heroImage = heroSection?.properties?.array?.[0]?.image || valuesSection?.properties?.array?.[0]?.image || '/assets/aviao.png';
 
    return (
       <div className="about-us-page bg-[#f4f7fb] text-slate-900">
-         <section className="border-b border-slate-200/70 bg-[linear-gradient(180deg,#f7f9fc_0%,#eef3f9_100%)]">
+         <section className="relative overflow-hidden border-b border-slate-200/70 bg-[url('/assets/images/intro/home-1/bg-line.png')] bg-cover bg-center">
+            <div className="absolute inset-0 bg-[#071A3D]/70" />
+
             <Section customize={customize} pageSection={heroSection} containerClass="!max-w-none !px-0" contentClass="relative">
-               <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-16 md:py-24 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-16 lg:px-8">
-                  <div className="max-w-2xl space-y-6">
-                     <div className="space-y-4">
-                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">About us</p>
-                        <h1 className="max-w-xl text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-normal tracking-[-0.06em] text-slate-950">
-                           {heroSection?.title || innerPage.name}
-                        </h1>
-                        <div className="h-1 w-14 rounded-full bg-[#1d3f7b]" />
-                     </div>
-
-                     <div className="max-w-[42rem] text-[16px] leading-8 font-normal text-slate-600">
-                        <div className={cn('[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600')}>
-                           <TiptapRenderer>{aboutText}</TiptapRenderer>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="relative">
-                     <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[36px] bg-[#dce6f1]" />
-                     <div className="relative overflow-hidden rounded-[36px] border border-white bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)]">
-                        <img src={heroImage} alt={heroSection?.title || innerPage.name} className="h-[420px] w-full object-cover object-center md:h-[560px]" />
-                     </div>
+               <div className="relative mx-auto flex min-h-[340px] max-w-[1280px] items-center px-5 py-20 md:min-h-[420px] md:py-28 lg:px-8">
+                  <div className="max-w-3xl space-y-4">
+                     <h1 className="text-[clamp(2.5rem,5vw,5.5rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white">
+                        {heroSection?.title || 'Sobre nós'}
+                     </h1>
+                     <div className="h-1 w-16 rounded-full bg-white/90" />
                   </div>
                </div>
             </Section>
@@ -67,16 +52,30 @@ const AboutUs = () => {
          <section className="bg-white">
             <Section customize={customize} pageSection={valuesSection} containerClass="!max-w-none !px-0" contentClass="relative">
                <div className="mx-auto max-w-[1280px] px-5 py-16 md:py-24 lg:px-8">
-                  <div className="max-w-3xl space-y-4">
-                     <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
-                     <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
-                        {valuesSection?.title || 'Missão, visão e valores'}
-                     </h2>
-                     {valuesSection?.description && (
-                        <div className="max-w-[50rem] text-[16px] leading-8 font-normal text-slate-600">
-                           <TiptapRenderer>{valuesSection.description}</TiptapRenderer>
+                  <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
+                     <div className="space-y-4">
+                        <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
+                        <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                           {valuesSection?.title || 'Missão, visão e valores'}
+                        </h2>
+                        {valuesSection?.description && (
+                           <div
+                              className={cn(
+                                 'max-w-[50rem] text-[16px] leading-8 font-normal text-slate-600',
+                                 '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
+                              )}
+                           >
+                              <TiptapRenderer>{valuesSection.description}</TiptapRenderer>
+                           </div>
+                        )}
+                     </div>
+
+                     <div className="relative">
+                        <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[36px] bg-[#dce6f1]" />
+                        <div className="relative overflow-hidden rounded-[36px] border border-white bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)]">
+                           <img src={heroImage} alt={heroSection?.title || innerPage.name} className="h-[360px] w-full object-cover object-center md:h-[500px]" />
                         </div>
-                     )}
+                     </div>
                   </div>
 
                   <div className="mt-10 grid gap-6 lg:grid-cols-3">
