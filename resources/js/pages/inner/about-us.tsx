@@ -71,7 +71,7 @@ const AboutUs = () => {
 
             <Section customize={false} pageSection={heroSection} containerClass="!max-w-none !px-0" contentClass="relative">
                {customize && heroSection && (
-                  <div className="absolute top-5 right-5 z-50">
+                  <div className="absolute top-24 right-5 z-[70] pointer-events-auto sm:top-28 md:top-32">
                      <SectionEditor
                         section={heroSection}
                         actionComponent={
