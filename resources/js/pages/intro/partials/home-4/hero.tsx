@@ -51,8 +51,8 @@ const Hero = () => {
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.28),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_50%_110%,rgba(253,18,46,0.14),transparent_16%),linear-gradient(135deg,rgba(5,11,22,0.68)_0%,rgba(6,17,29,0.42)_44%,rgba(7,20,37,0.68)_100%)]" />
          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.028)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.028)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
 
-         <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 pt-[118px] sm:pt-[136px] lg:grid-cols-[1.02fr_0.98fr] lg:pt-0">
-            <div className="relative order-1 flex items-center px-6 py-8 pb-12 sm:px-10 sm:py-16 sm:pb-14 lg:order-1 lg:px-14 lg:py-20 lg:pb-20">
+         <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] grid-cols-1 pt-[104px] sm:pt-[120px] lg:min-h-screen lg:grid-cols-[1.02fr_0.98fr] lg:pt-0">
+            <div className="relative order-1 flex items-center px-6 py-6 pb-8 sm:px-10 sm:py-12 sm:pb-12 lg:order-1 lg:px-14 lg:py-20 lg:pb-20">
                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_72%_70%,rgba(253,18,46,0.18),transparent_20%)] blur-2xl" />
 
                <div className="relative max-w-3xl text-white">
@@ -60,12 +60,12 @@ const Hero = () => {
                      {heroSection?.title || 'Sua Carreira na Aviação Começa Aqui'}
                   </h1>
 
-                  <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200/90 sm:text-lg">
+                  <p className="mt-5 max-w-2xl text-[16px] leading-7 text-slate-200/90">
                      {heroSection?.description ||
                         'Aprenda com especialistas da aviação, desenvolva conhecimentos práticos e prepare-se para os desafios do setor aeronáutico com cursos e treinamentos online de alta qualidade.'}
                   </p>
 
-                  <div className="mt-8 flex flex-nowrap gap-3 sm:flex-wrap sm:gap-4">
+                  <div className="mt-7 flex flex-nowrap gap-3 sm:flex-wrap sm:gap-4">
                      {heroSection?.properties?.button_text_1 && (
                         <div className="relative flex-1 sm:flex-none">
                            <span className="pointer-events-none absolute -inset-6 rounded-full bg-[#FD122E]/40 blur-3xl" />
@@ -118,7 +118,7 @@ const Hero = () => {
                </div>
             </div>
 
-            <div className="relative order-2 flex min-h-[420px] items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:min-h-[720px] lg:items-center lg:justify-end lg:px-8 lg:py-10">
+            <div className="relative order-2 hidden min-h-[420px] items-end justify-center px-6 pt-4 pb-6 sm:px-10 sm:pt-6 sm:pb-8 lg:order-2 lg:flex lg:min-h-[720px] lg:items-center lg:justify-end lg:px-8 lg:py-10">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(253,18,46,0.22),transparent_16%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.08),transparent_14%)]" />
             </div>
          </div>
