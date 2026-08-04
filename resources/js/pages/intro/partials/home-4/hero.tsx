@@ -56,7 +56,7 @@ const Hero = () => {
                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_72%_70%,rgba(253,18,46,0.18),transparent_20%)] blur-2xl" />
 
                <div className="relative max-w-3xl text-white">
-                  <h1 className="max-w-[680px] text-[42px] leading-[1] font-normal tracking-[-0.06em] text-white lg:leading-[0.96]">
+                  <h1 className="max-w-[680px] text-[48px] leading-[1] font-normal tracking-[-0.06em] text-white lg:leading-[0.96]">
                      {heroSection?.title || 'Sua Carreira na Aviação Começa Aqui'}
                   </h1>
 

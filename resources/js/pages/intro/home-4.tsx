@@ -78,9 +78,11 @@ const Home3 = ({ page, system, airways }: IntroPageProps) => {
       <Layout navbarHeight={false}>
          <Head title={system.fields.name} />
 
-         {components.map((Component, index) => (
-            <Component key={`home-3-${index}`} />
-         ))}
+         <div className="font-sans">
+            {components.map((Component, index) => (
+               <Component key={`home-3-${index}`} />
+            ))}
+         </div>
       </Layout>
    );
 };
