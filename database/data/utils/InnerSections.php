@@ -40,13 +40,13 @@ class InnerSections
             'properties' => [
                'array' => [
                   [
-                     'text' => 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
+                     'title' => 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
                   ],
                   [
-                     'text' => 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
+                     'title' => 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
                   ],
                   [
-                     'text' => 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
+                     'title' => 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
                   ]
                ]
             ],

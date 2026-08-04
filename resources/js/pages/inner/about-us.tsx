@@ -9,6 +9,7 @@ import { Check, Pencil } from 'lucide-react';
 import { InnerPageProps } from '.';
 
 type BulletItem = {
+   title?: string;
    text?: string;
 };
 
@@ -20,13 +21,13 @@ type AboutCard = {
 
 const fallbackBullets: BulletItem[] = [
    {
-      text: 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
+      title: 'Criar uma experiência digital clara, confiável e útil, aproximando pessoas de conteúdos, serviços e informações que realmente fazem diferença.',
    },
    {
-      text: 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
+      title: 'Evoluir como uma referência de jornada digital leve e elegante, com uma presença consistente em todo o site e foco total na experiência do usuário.',
    },
    {
-      text: 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
+      title: 'Simplicidade, transparência, consistência visual e compromisso com uma navegação acessível, rápida e bem organizada.',
    },
 ];
 
@@ -51,7 +52,7 @@ const fallbackCards: AboutCard[] = [
    },
 ];
 
-const normalizeArrayText = (item: BulletItem | undefined) => item?.text || '';
+const normalizeArrayText = (item: BulletItem | undefined) => item?.title || item?.text || '';
 
 const splitBullets = (value?: string) =>
    (value || '')

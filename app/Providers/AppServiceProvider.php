@@ -290,6 +290,21 @@ class AppServiceProvider extends ServiceProvider
 
             if (isset($firstItem['count']) && !isset($firstItem['description'])) {
                 $updates['properties'] = $template['properties'] ?? [];
+            } elseif (!empty($items)) {
+                $normalizedItems = array_map(function (array $item): array {
+                    if (!isset($item['title']) && isset($item['text'])) {
+                        $item['title'] = $item['text'];
+                    }
+
+                    unset($item['text']);
+
+                    return $item;
+                }, $items);
+
+                if ($normalizedItems !== $items) {
+                    $properties['array'] = $normalizedItems;
+                    $updates['properties'] = $properties;
+                }
             }
         }
 
