@@ -26,7 +26,7 @@ const SectionEditorContent = ({ actionComponent }: { actionComponent: ReactNode 
       <Dialog open={open} onOpenChange={(value) => !isSubmit && setOpen(value)}>
          <DialogTrigger asChild>{actionComponent}</DialogTrigger>
 
-         <DialogContent className="max-h-[90vh] overflow-y-auto">
+         <DialogContent className="max-h-[90vh] w-[min(92vw,48rem)] !max-w-[48rem] overflow-y-auto">
             <DialogHeader>
                <DialogTitle className="text-lg font-medium">
                   {button.update} {section.name} {frontend.section}

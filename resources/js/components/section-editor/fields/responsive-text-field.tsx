@@ -80,7 +80,7 @@ const ResponsiveTextField = ({
       <div className="space-y-2">
          {showLabel && <Label htmlFor={fieldName}>{label}</Label>}
 
-         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,220px)] md:items-start">
+         <div className="grid grid-cols-[minmax(0,1fr)_4rem_2.5rem] items-start gap-2">
             <div className="min-w-0">
                {multiline ? (
                   <Textarea
@@ -105,49 +105,47 @@ const ResponsiveTextField = ({
                )}
             </div>
 
-            <div className="flex min-w-0 items-start gap-2">
-               <Select
-                  value={device}
-                  onValueChange={(nextDevice) => {
-                     const normalizedDevice = nextDevice as ResponsiveFontSizeDevice;
-                     setDevice(normalizedDevice);
-                     setLocalFontSize(getFontSizeInputValue(getResponsiveFontSize(fontSizeValue, normalizedDevice) || ''));
-                  }}
+            <Input
+               type="text"
+               inputMode="decimal"
+               id={`${fieldName}-font-size`}
+               name={`${fieldName}-font-size`}
+               value={localFontSize}
+               onChange={(e) => {
+                  const nextValue = sanitizeFontSizeInput(e.target.value);
+                  setLocalFontSize(nextValue);
+                  onFontSizeChange(updateResponsiveFontSize(getResponsiveFontSizeMap(fontSizeValue), device, nextValue));
+               }}
+               placeholder="px"
+               className="min-w-0 px-2 text-center"
+            />
+
+            <Select
+               value={device}
+               onValueChange={(nextDevice) => {
+                  const normalizedDevice = nextDevice as ResponsiveFontSizeDevice;
+                  setDevice(normalizedDevice);
+                  setLocalFontSize(getFontSizeInputValue(getResponsiveFontSize(fontSizeValue, normalizedDevice) || ''));
+               }}
+            >
+               <SelectTrigger
+                  aria-label="Selecionar dispositivo"
+                  className="h-10 w-10 justify-center gap-0 rounded-full border-border bg-background px-0 [&>svg:last-child]:hidden"
                >
-                  <SelectTrigger
-                     aria-label="Selecionar dispositivo"
-                     className="h-10 w-10 shrink-0 justify-center gap-0 rounded-full border-border bg-background px-0"
-                  >
-                     <DeviceIcon className="h-4 w-4 shrink-0" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     {Object.entries(deviceMeta).map(([key, meta]) => {
-                        const Icon = meta.icon;
+                  <DeviceIcon className="h-4 w-4 shrink-0" />
+               </SelectTrigger>
+               <SelectContent>
+                  {Object.entries(deviceMeta).map(([key, meta]) => {
+                     const Icon = meta.icon;
 
-                        return (
-                           <SelectItem key={key} value={key}>
-                              <Icon className="h-4 w-4" />
-                           </SelectItem>
-                        );
-                     })}
-                  </SelectContent>
-               </Select>
-
-               <Input
-                  type="text"
-                  inputMode="decimal"
-                  id={`${fieldName}-font-size`}
-                  name={`${fieldName}-font-size`}
-                  value={localFontSize}
-                  onChange={(e) => {
-                     const nextValue = sanitizeFontSizeInput(e.target.value);
-                     setLocalFontSize(nextValue);
-                     onFontSizeChange(updateResponsiveFontSize(getResponsiveFontSizeMap(fontSizeValue), device, nextValue));
-                  }}
-                  placeholder="px"
-                  className="min-w-0 flex-1"
-               />
-            </div>
+                     return (
+                        <SelectItem key={key} value={key}>
+                           <Icon className="h-4 w-4" />
+                        </SelectItem>
+                     );
+                  })}
+               </SelectContent>
+            </Select>
          </div>
 
          {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
