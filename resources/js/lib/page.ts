@@ -6,6 +6,32 @@ const formatLabel = (key: string): string => {
    return key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 };
 
+const normalizeFontSize = (value: any): string | undefined => {
+   if (value === null || value === undefined || value === '') {
+      return undefined;
+   }
+
+   const parsed = typeof value === 'number' ? value : Number(value);
+
+   if (!Number.isFinite(parsed)) {
+      return undefined;
+   }
+
+   return `${parsed}px`;
+};
+
+export const getTextFontSize = (source: Record<string, any> | undefined, key: string, fallback?: any): string | undefined => {
+   const value = source?.[`${key}_font_size`] ?? fallback;
+
+   return normalizeFontSize(value);
+};
+
+export const getTextStyle = (source: Record<string, any> | undefined, key: string, fallback?: any): Record<string, string> => {
+   const fontSize = getTextFontSize(source, key, fallback);
+
+   return fontSize ? { fontSize } : {};
+};
+
 const generateArrayField = (key: string, value: any[]): PropertyField => {
    const sampleItem =
       Array.isArray(value) && value.length > 0 ? value.find((item: Record<string, any>) => !isEmptyArrayItem(item)) || value[0] : {};
@@ -14,7 +40,7 @@ const generateArrayField = (key: string, value: any[]): PropertyField => {
    if (Object.keys(sampleItem).length > 0) {
       Object.keys(sampleItem).forEach((itemKey) => {
          if (typeof sampleItem[itemKey] === 'string' || typeof sampleItem[itemKey] === 'number' || typeof sampleItem[itemKey] === 'boolean') {
-            itemFields.push(generateFieldByType(itemKey, sampleItem[itemKey]));
+            itemFields.push(generateFieldByType(itemKey, sampleItem[itemKey], sampleItem));
          }
       });
    } else {
@@ -43,7 +69,7 @@ const generateArrayField = (key: string, value: any[]): PropertyField => {
 /**
  * Generate a field definition based on a value's type
  */
-const generateFieldByType = (key: string, value: any): PropertyField => {
+const generateFieldByType = (key: string, value: any, source?: Record<string, any>): PropertyField => {
    // Handle different value types
    if (typeof value === 'string') {
       // Image or URL fields
@@ -55,13 +81,14 @@ const generateFieldByType = (key: string, value: any): PropertyField => {
             value: null,
          };
          // Description fields
-      } else if (key === 'description' || key.includes('description') || key === 'bio' || key === 'content' || key.includes('bullet')) {
-         return {
-            type: 'textarea',
-            label: formatLabel(key),
-            name: key,
-            value: value || '',
-         };
+         } else if (key === 'description' || key.includes('description') || key === 'bio' || key === 'content' || key.includes('bullet')) {
+            return {
+               type: 'textarea',
+               label: formatLabel(key),
+               name: key,
+               value: value || '',
+               fontSizeValue: source?.[`${key}_font_size`],
+            };
          // URL fields
       } else if (key === 'url' || key.includes('_url') || key.includes('link')) {
          return {
@@ -69,6 +96,7 @@ const generateFieldByType = (key: string, value: any): PropertyField => {
             label: formatLabel(key),
             name: key,
             value: value || '',
+            fontSizeValue: source?.[`${key}_font_size`],
          };
          // Default string field
       } else if (key === 'icon') {
@@ -84,6 +112,7 @@ const generateFieldByType = (key: string, value: any): PropertyField => {
             label: formatLabel(key),
             name: key,
             value: value || '',
+            fontSizeValue: source?.[`${key}_font_size`],
          };
       }
    } else if (typeof value === 'number') {
@@ -141,7 +170,7 @@ export const generatePropertyFields = (properties: Record<string, any>): Propert
          }
 
          // Generate field for other properties
-         const field = generateFieldByType(key, value);
+         const field = generateFieldByType(key, value, properties);
          fields.unshift(field);
       });
 
@@ -168,13 +197,13 @@ export const generatePropertyFields = (properties: Record<string, any>): Propert
          }
 
          // Skip contents property as it's handled separately
-         if (key === 'contents') {
-            return;
-         }
+        if (key === 'contents') {
+           return;
+        }
 
-         // Generate field for other properties
-         const field = generateFieldByType(key, value);
-         fields.unshift(field);
+        // Generate field for other properties
+        const field = generateFieldByType(key, value, properties);
+        fields.unshift(field);
       });
 
       return fields;
@@ -193,7 +222,7 @@ export const generatePropertyFields = (properties: Record<string, any>): Propert
          } as PropertyField;
       } else {
          // Use the common field generation function for primitive types
-         return generateFieldByType(key, value);
+         return generateFieldByType(key, value, properties);
       }
    });
 };

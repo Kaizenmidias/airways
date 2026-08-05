@@ -6,6 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { getTextStyle } from '@/lib/page';
 import Section from '@/pages/intro/partials/section';
 import { useForm, usePage } from '@inertiajs/react';
 import { Mail, MapPin, Phone, SendHorizontal } from 'lucide-react';
@@ -53,7 +54,7 @@ const ContactUs = () => {
       email: '',
       phone: '',
       message: '',
-      accepted_privacy: false,
+      accepted_privacy: false as boolean,
    });
 
    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -76,12 +77,16 @@ const ContactUs = () => {
       >
          <div className="space-y-6">
             <div className="space-y-3">
-               <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase">Contato</p>
-               <h2 className="text-3xl font-black tracking-[-0.04em] text-slate-950 md:text-4xl">Fale com a Airways</h2>
+               <p className="text-sm font-semibold tracking-[0.28em] text-[#FD122E] uppercase" style={getTextStyle(contactSection?.properties, 'title')}>
+                  Contato
+               </p>
+               <h2 className="text-3xl font-black tracking-[-0.04em] text-slate-950 md:text-4xl" style={getTextStyle(contactSection?.properties, 'sub_title')}>
+                  Fale com a Airways
+               </h2>
             </div>
 
             {contactContent && (
-               <div className="prose prose-slate max-w-none prose-headings:font-black prose-p:text-slate-700 prose-li:text-slate-700">
+               <div className="prose prose-slate max-w-none prose-headings:font-black prose-p:text-slate-700 prose-li:text-slate-700" style={getTextStyle(contactSection?.properties, 'description')}>
                   <TiptapRenderer>{contactContent}</TiptapRenderer>
                </div>
             )}
@@ -93,7 +98,9 @@ const ContactUs = () => {
                         <Mail className="h-5 w-5" />
                      </div>
                      <div>
-                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">E-mail</p>
+                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase" style={getTextStyle(contactSection?.properties, 'email')}>
+                           E-mail
+                        </p>
                         <p className="mt-1 text-sm text-slate-700">{contactDetails.email}</p>
                      </div>
                   </div>
@@ -105,7 +112,9 @@ const ContactUs = () => {
                         <Phone className="h-5 w-5" />
                      </div>
                      <div>
-                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">Telefone</p>
+                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase" style={getTextStyle(contactSection?.properties, 'phone')}>
+                           Telefone
+                        </p>
                         <p className="mt-1 text-sm text-slate-700">{contactDetails.phone}</p>
                      </div>
                   </div>
@@ -117,7 +126,9 @@ const ContactUs = () => {
                         <MapPin className="h-5 w-5" />
                      </div>
                      <div>
-                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">Endereço</p>
+                        <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase" style={getTextStyle(contactSection?.properties, 'address')}>
+                           Endereço
+                        </p>
                         <p className="mt-1 text-sm text-slate-700">{contactDetails.address}</p>
                      </div>
                   </div>
@@ -127,8 +138,12 @@ const ContactUs = () => {
 
          <Card className="border-slate-200/80 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
             <div className="mb-6 space-y-2">
-               <p className="text-sm font-semibold tracking-[0.24em] text-[#FD122E] uppercase">Envie uma mensagem</p>
-               <h3 className="text-2xl font-black tracking-[-0.04em] text-slate-950">Preencha o formulário</h3>
+               <p className="text-sm font-semibold tracking-[0.24em] text-[#FD122E] uppercase" style={getTextStyle(contactSection?.properties, 'form_title')}>
+                  Envie uma mensagem
+               </p>
+               <h3 className="text-2xl font-black tracking-[-0.04em] text-slate-950" style={getTextStyle(contactSection?.properties, 'form_sub_title')}>
+                  Preencha o formulário
+               </h3>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -185,7 +200,7 @@ const ContactUs = () => {
                   <Checkbox
                      id="privacy"
                      checked={data.accepted_privacy}
-                     onCheckedChange={(checked) => setData('accepted_privacy', Boolean(checked))}
+                     onCheckedChange={(checked) => setData('accepted_privacy', Boolean(checked) as boolean)}
                      className="mt-0.5"
                   />
                   <span>

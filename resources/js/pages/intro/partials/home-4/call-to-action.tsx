@@ -1,5 +1,5 @@
 import SubscribeInput from '@/components/subscribe-input';
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
 import Section from '../section';
@@ -17,8 +17,10 @@ const CallToAction = () => {
             contentStyle={{ backgroundImage: `url('${ctaSection?.background_image}')` }}
          >
             <div className="space-y-2">
-               <h1 className="text-[52px] leading-[0.95] font-normal">{ctaSection?.title}</h1>
-               <p>{ctaSection?.description}</p>
+               <h1 className="text-[52px] leading-[0.95] font-normal" style={getTextStyle(ctaSection?.properties, 'title')}>
+                  {ctaSection?.title}
+               </h1>
+               <p style={getTextStyle(ctaSection?.properties, 'description')}>{ctaSection?.description}</p>
             </div>
 
             <SubscribeInput buttonText={ctaSection?.properties?.button_text} />

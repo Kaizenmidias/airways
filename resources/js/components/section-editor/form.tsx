@@ -94,14 +94,86 @@ const EditForm = () => {
       }
    }, [data.video_url]);
 
-   const handlePropertyChange = (name: string, value: any) => {
+   const handlePropertyChange = (nameOrPatch: string | Record<string, any>, value?: any) => {
+      const patch = typeof nameOrPatch === 'string' ? { [nameOrPatch]: value } : nameOrPatch;
+
       setData((data) => ({
          ...data,
          properties: {
             ...data.properties,
-            [name]: value,
+            ...patch,
          },
       }));
+   };
+
+   const renderTextFieldWithFontSize = ({
+      fieldName,
+      label,
+      value,
+      fontSizeValue,
+      placeholder,
+      multiline = false,
+      rows = 3,
+      error,
+      onValueChange,
+   }: {
+      fieldName: string;
+      label: string;
+      value: string;
+      fontSizeValue: any;
+      placeholder: string;
+      multiline?: boolean;
+      rows?: number;
+      error?: string;
+      onValueChange: (value: string) => void;
+   }) => {
+      const fontSizeName = `${fieldName}_font_size`;
+
+      return (
+         <div className="space-y-2">
+            <Label htmlFor={fieldName}>{label}</Label>
+
+            <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
+               {multiline ? (
+                  <Textarea
+                     id={fieldName}
+                     name={fieldName}
+                     value={value}
+                     onChange={(e) => onValueChange(e.target.value)}
+                     placeholder={placeholder}
+                     rows={rows}
+                  />
+               ) : (
+                  <Input
+                     type="text"
+                     id={fieldName}
+                     name={fieldName}
+                     value={value}
+                     onChange={(e) => onValueChange(e.target.value)}
+                     placeholder={placeholder}
+                  />
+               )}
+
+               <div className="space-y-2">
+                  <Label htmlFor={fontSizeName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                     Tamanho da fonte
+                  </Label>
+                  <Input
+                     type="number"
+                     step="any"
+                     inputMode="decimal"
+                     id={fontSizeName}
+                     name={fontSizeName}
+                     value={fontSizeValue ?? ''}
+                     onChange={(e) => handlePropertyChange(fontSizeName, e.target.value)}
+                     placeholder="px"
+                  />
+               </div>
+            </div>
+
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+         </div>
+      );
    };
 
    useEffect(() => {
@@ -138,48 +210,41 @@ const EditForm = () => {
          <div className="space-y-6">
             {/* Basic section fields */}
             {section.flags.title && (
-               <div className="space-y-2">
-                  <Label htmlFor="title">{input.title}</Label>
-                  <Input
-                     type="text"
-                     id="title"
-                     name="title"
-                     value={data.title}
-                     onChange={(e) => onHandleChange(e, setData)}
-                     placeholder={input.title_placeholder}
-                  />
-                  {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
-               </div>
+               renderTextFieldWithFontSize({
+                  fieldName: 'title',
+                  label: input.title || '',
+                  value: data.title || '',
+                  fontSizeValue: data.properties?.title_font_size,
+                  placeholder: input.title_placeholder,
+                  error: errors.title,
+                  onValueChange: (nextValue) => setData('title', nextValue),
+               })
             )}
 
             {section.flags.sub_title && (
-               <div className="space-y-2">
-                  <Label htmlFor="sub_title">{input.sub_title}</Label>
-                  <Input
-                     type="text"
-                     id="sub_title"
-                     name="sub_title"
-                     value={data.sub_title ?? ''}
-                     onChange={(e) => onHandleChange(e, setData)}
-                     placeholder={input.title_placeholder}
-                  />
-                  {errors.sub_title && <p className="mt-1 text-sm text-red-600">{errors.sub_title}</p>}
-               </div>
+               renderTextFieldWithFontSize({
+                  fieldName: 'sub_title',
+                  label: input.sub_title || '',
+                  value: data.sub_title ?? '',
+                  fontSizeValue: data.properties?.sub_title_font_size,
+                  placeholder: input.title_placeholder,
+                  error: errors.sub_title,
+                  onValueChange: (nextValue) => setData('sub_title', nextValue),
+               })
             )}
 
             {section.flags.description && (
-               <div className="space-y-2">
-                  <Label htmlFor="description">{input.description}</Label>
-                  <Textarea
-                     id="description"
-                     name="description"
-                     value={data.description || ''}
-                     onChange={(e) => onHandleChange(e, setData)}
-                     placeholder={input.description_placeholder}
-                     rows={3}
-                  />
-                  {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
-               </div>
+               renderTextFieldWithFontSize({
+                  fieldName: 'description',
+                  label: input.description || '',
+                  value: data.description || '',
+                  fontSizeValue: data.properties?.description_font_size,
+                  placeholder: input.description_placeholder,
+                  multiline: true,
+                  rows: 3,
+                  error: errors.description,
+                  onValueChange: (nextValue) => setData('description', nextValue),
+               })
             )}
 
             {section.flags.thumbnail && (
@@ -318,7 +383,7 @@ const EditForm = () => {
 
                   <div className="mt-4 space-y-6">
                      {propertyFields.map((field, index) => {
-                        return <Fields key={`${field.name}-${index}`} field={field} onChange={(value) => handlePropertyChange(field.name, value)} />;
+                        return <Fields key={`${field.name}-${index}`} field={field} onChange={handlePropertyChange} />;
                      })}
                   </div>
                </div>

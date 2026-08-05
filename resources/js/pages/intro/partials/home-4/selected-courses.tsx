@@ -1,7 +1,7 @@
 import CourseCard1 from '@/components/cards/course-card-1';
 import { Button } from '@/components/ui/button';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -40,14 +40,14 @@ const SelectedCourses = () => {
 
          <div className="mx-auto max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-14 lg:py-28">
             <div className="mx-auto max-w-3xl text-center">
-               <p className="mb-3 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#FD122E]">
+               <p className="mb-3 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#FD122E]" style={getTextStyle(selectedCoursesSection?.properties, 'title')}>
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{selectedCoursesSection?.title || 'CURSOS SELECIONADOS'}</span>
                </p>
-               <h2 className="text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-slate-950">
+               <h2 className="text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-slate-950" style={getTextStyle(selectedCoursesSection?.properties, 'sub_title')}>
                   {selectedCoursesSection?.sub_title || 'Escolha os cursos que vão aparecer na home'}
                </h2>
-               <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+               <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg" style={getTextStyle(selectedCoursesSection?.properties, 'description')}>
                   {selectedCoursesSection?.description || 'Selecione no Builder os cursos que você quer exibir neste carrossel da página inicial.'}
                </p>
             </div>

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { Link, usePage } from '@inertiajs/react';
@@ -20,8 +20,12 @@ const Instructor = () => {
    return (
       <Section customize={customize} pageSection={instructorSection} containerClass="py-20 overflow-y-hidden" contentClass="relative">
          <div className="relative z-10 mx-auto mb-10 w-full text-center md:max-w-lg">
-            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{instructorSection?.title}</h2>
-            <p className="text-muted-foreground">{instructorSection?.description}</p>
+            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal" style={getTextStyle(instructorSection?.properties, 'title')}>
+               {instructorSection?.title}
+            </h2>
+            <p className="text-muted-foreground" style={getTextStyle(instructorSection?.properties, 'description')}>
+               {instructorSection?.description}
+            </p>
          </div>
 
          <div className="relative z-10 mx-auto grid w-full max-w-[964px] grid-cols-1 gap-8 md:grid-cols-3">
@@ -34,8 +38,12 @@ const Instructor = () => {
                         </div>
                      ) : null}
 
-                     <h3 className="pt-4 pb-2 font-normal">{item.title}</h3>
-                     <p className="text-muted-foreground text-sm">{item.description}</p>
+                     <h3 className="pt-4 pb-2 font-normal" style={getTextStyle(item, 'title')}>
+                        {item.title}
+                     </h3>
+                     <p className="text-muted-foreground text-sm" style={getTextStyle(item, 'description')}>
+                        {item.description}
+                     </p>
                   </div>
                ))}
             </div>
@@ -58,9 +66,15 @@ const Instructor = () => {
                      )}
 
                      <div className="space-y-2">
-                        <h3 className="font-normal">{instructor.user.name}</h3>
-                        <p className="text-muted-foreground text-sm">{instructor.designation}</p>
-                        <p className="text-muted-foreground text-sm">{instructor.biography}</p>
+                        <h3 className="font-normal" style={getTextStyle({ name: instructor.user.name }, 'name')}>
+                           {instructor.user.name}
+                        </h3>
+                        <p className="text-muted-foreground text-sm" style={getTextStyle({ designation: instructor.designation }, 'designation')}>
+                           {instructor.designation}
+                        </p>
+                        <p className="text-muted-foreground text-sm" style={getTextStyle({ biography: instructor.biography }, 'biography')}>
+                           {instructor.biography}
+                        </p>
                      </div>
 
                      <InstructorSocials instructor={instructor} className="py-0" buttonClass="w-8 h-8" />
@@ -77,8 +91,12 @@ const Instructor = () => {
                         </div>
                      ) : null}
 
-                     <h3 className="pt-4 pb-2 font-normal">{item.title}</h3>
-                     <p className="text-muted-foreground text-sm">{item.description}</p>
+                     <h3 className="pt-4 pb-2 font-normal" style={getTextStyle(item, 'title')}>
+                        {item.title}
+                     </h3>
+                     <p className="text-muted-foreground text-sm" style={getTextStyle(item, 'description')}>
+                        {item.description}
+                     </p>
                   </div>
                ))}
             </div>

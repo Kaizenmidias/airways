@@ -1,5 +1,5 @@
 import CategoryCard4 from '@/components/cards/category-card-4';
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { getColorWithOpacity } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -25,8 +25,12 @@ const TopCategories = () => {
       <Section customize={customize} pageSection={topCategoriesSection} containerClass="mt-20 py-20" contentClass="relative">
          <div className="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="w-full md:max-w-[306px]">
-               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{topCategoriesSection?.title}</h2>
-               <p className="text-muted-foreground">{topCategoriesSection?.description}</p>
+               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal" style={getTextStyle(topCategoriesSection?.properties, 'title')}>
+                  {topCategoriesSection?.title}
+               </h2>
+               <p className="text-muted-foreground" style={getTextStyle(topCategoriesSection?.properties, 'description')}>
+                  {topCategoriesSection?.description}
+               </p>
             </div>
 
             <div className="z-10 grid w-full grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">

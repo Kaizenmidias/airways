@@ -1,7 +1,7 @@
 import BlogCard1 from '@/components/cards/blog-card-1';
 import { Button } from '@/components/ui/button';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -36,8 +36,12 @@ const Blogs = () => {
    return (
       <Section customize={customize} pageSection={blogsSection} containerClass="z-10 py-20">
          <div className="mx-auto text-center md:max-w-2xl">
-            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{blogsSection?.title}</h2>
-            <p className="text-muted-foreground">{blogsSection?.description}</p>
+            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal" style={getTextStyle(blogsSection?.properties, 'title')}>
+               {blogsSection?.title}
+            </h2>
+            <p className="text-muted-foreground" style={getTextStyle(blogsSection?.properties, 'description')}>
+               {blogsSection?.description}
+            </p>
          </div>
 
          <Carousel setApi={setApi} className="py-10" opts={{ align: 'start', loop: true }} plugins={[Autoplay({ delay: 3000 })]}>

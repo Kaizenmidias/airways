@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
 import { DynamicIcon } from 'lucide-react/dynamic';
@@ -55,7 +55,7 @@ const WhoWeAre = () => {
                </div>
 
                <div className="space-y-4">
-                  <h2 className="max-w-xl text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-white">
+                  <h2 className="max-w-xl text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-white" style={getTextStyle(section?.properties, 'sub_title')}>
                      {section?.sub_title || 'Quem somos?'}
                   </h2>
                   <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
@@ -63,7 +63,11 @@ const WhoWeAre = () => {
 
                <div className="max-w-2xl space-y-6 text-[16px] leading-8 font-normal text-white/85">
                   {descriptionBlocks.map((block, index) => (
-                     <p key={`who-we-are-text-${index}`} className="text-[16px] leading-8 font-normal text-white/85">
+                     <p
+                        key={`who-we-are-text-${index}`}
+                        className="text-[16px] leading-8 font-normal text-white/85"
+                        style={getTextStyle(section?.properties, 'description')}
+                     >
                         {block}
                      </p>
                   ))}
@@ -80,7 +84,9 @@ const WhoWeAre = () => {
                               <path d="M20 6L9 17l-5-5" />
                            </svg>
                         </div>
-                        <p className="text-[14px] leading-6 font-normal text-white">{bullet.title}</p>
+                        <p className="text-[14px] leading-6 font-normal text-white" style={getTextStyle(bullet, 'title')}>
+                           {bullet.title}
+                        </p>
                      </div>
                   ))}
                </div>
@@ -98,10 +104,12 @@ const WhoWeAre = () => {
                               </div>
                            ) : null}
 
-                           <p className="mt-6 text-4xl leading-none font-normal tracking-[-0.06em] text-white">
+                           <p className="mt-6 text-4xl leading-none font-normal tracking-[-0.06em] text-white" style={getTextStyle(item, 'count')}>
                               {item.count || defaultStats[index]?.count}
                            </p>
-                           <p className="mt-2 text-base font-normal text-white/75">{item.title || defaultStats[index]?.title}</p>
+                           <p className="mt-2 text-base font-normal text-white/75" style={getTextStyle(item, 'title')}>
+                              {item.title || defaultStats[index]?.title}
+                           </p>
                         </Card>
                      ))}
                   </div>

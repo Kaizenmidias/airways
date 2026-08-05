@@ -12,7 +12,7 @@ import Contents from './contents';
 
 interface FieldsProps {
    field: PropertyField;
-   onChange: (value: any) => void;
+   onChange: (nameOrPatch: string | Record<string, any>, value?: any) => void;
 }
 
 const Fields = ({ field, onChange }: FieldsProps) => {
@@ -20,11 +20,17 @@ const Fields = ({ field, onChange }: FieldsProps) => {
 
    // Local state for basic field types to handle immediate UI updates
    const [localValue, setLocalValue] = useState<any>(field.value || '');
+   const [localFontSize, setLocalFontSize] = useState<any>(field.fontSizeValue || '');
+   const fontSizeFieldName = `${field.name}_font_size`;
 
    // Update local state when field.value changes from parent
    useEffect(() => {
       setLocalValue(field.value || '');
    }, [field.value, field.type]);
+
+   useEffect(() => {
+      setLocalFontSize(field.fontSizeValue || '');
+   }, [field.fontSizeValue, field.type]);
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { value, type } = e.target as HTMLInputElement;
@@ -32,7 +38,7 @@ const Fields = ({ field, onChange }: FieldsProps) => {
       if (type === 'checkbox') {
          const checked = (e.target as HTMLInputElement).checked;
          setLocalValue(checked);
-         onChange(checked);
+         onChange(field.name, checked);
          return;
       }
 
@@ -40,27 +46,73 @@ const Fields = ({ field, onChange }: FieldsProps) => {
       setLocalValue(value);
 
       // Notify parent component
-      onChange(value);
+      onChange(field.name, value);
+   };
+
+   const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      setLocalFontSize(value);
+      onChange(fontSizeFieldName, value);
    };
 
    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
       setLocalValue(file);
-      onChange(file);
+      onChange(field.name, file);
    };
 
    // Render different form elements based on field type
    const renderField = () => {
       switch (field.type) {
          case 'contents':
-            return <Contents field={field} section_slug={section.slug} onChange={onChange} />;
+            return <Contents field={field} section_slug={section.slug} onChange={(value) => onChange(field.name, value)} />;
 
          case 'text':
          case 'url':
-            return <Input type="text" id={field.name} name={field.name} value={localValue} onChange={handleInputChange} />;
+            return (
+               <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
+                  <Input type="text" id={field.name} name={field.name} value={localValue} onChange={handleInputChange} />
+
+                  <div className="space-y-2">
+                     <Label htmlFor={fontSizeFieldName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                        Tamanho da fonte
+                     </Label>
+                     <Input
+                        type="number"
+                        step="any"
+                        inputMode="decimal"
+                        id={fontSizeFieldName}
+                        name={fontSizeFieldName}
+                        value={localFontSize}
+                        onChange={handleFontSizeChange}
+                        placeholder="px"
+                     />
+                  </div>
+               </div>
+            );
 
          case 'textarea':
-            return <Textarea id={field.name} name={field.name} rows={3} value={localValue} onChange={handleInputChange} />;
+            return (
+               <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
+                  <Textarea id={field.name} name={field.name} rows={3} value={localValue} onChange={handleInputChange} />
+
+                  <div className="space-y-2">
+                     <Label htmlFor={fontSizeFieldName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                        Tamanho da fonte
+                     </Label>
+                     <Input
+                        type="number"
+                        step="any"
+                        inputMode="decimal"
+                        id={fontSizeFieldName}
+                        name={fontSizeFieldName}
+                        value={localFontSize}
+                        onChange={handleFontSizeChange}
+                        placeholder="px"
+                     />
+                  </div>
+               </div>
+            );
 
          case 'number':
             return <Input type="number" id={field.name} name={field.name} value={localValue} onChange={handleInputChange} />;
@@ -73,11 +125,11 @@ const Fields = ({ field, onChange }: FieldsProps) => {
                   placeholder={field.label}
                   onSelect={(icon) => {
                      setLocalValue(icon);
-                     onChange(icon);
+                     onChange(field.name, icon);
                   }}
                   onClear={() => {
                      setLocalValue('');
-                     onChange('');
+                     onChange(field.name, '');
                   }}
                />
             );
@@ -96,7 +148,7 @@ const Fields = ({ field, onChange }: FieldsProps) => {
                         className="h-8 px-2 text-xs"
                         onClick={() => {
                            setLocalValue('');
-                           onChange(null);
+                           onChange(field.name, null);
                         }}
                      >
                         <X className="mr-1 h-3.5 w-3.5" />
@@ -119,7 +171,7 @@ const Fields = ({ field, onChange }: FieldsProps) => {
             );
 
          case 'array':
-            return <ArrayFields field={field} onChange={onChange} />;
+            return <ArrayFields field={field} onChange={(value) => onChange(field.name, value)} />;
 
          case 'object':
             return (
@@ -131,15 +183,17 @@ const Fields = ({ field, onChange }: FieldsProps) => {
                               {subField.label}
                            </Label>
                            <div className="mt-1">
-                              <Fields
-                                 field={{
-                                    ...subField,
-                                    name: `${field.name}-${subField.name}`,
+                           <Fields
+                              field={{
+                                 ...subField,
+                                    name: subField.name,
                                     value: field.value && field.value[subField.name] !== undefined ? field.value[subField.name] : subField.value,
+                                    fontSizeValue: field.value && field.value[`${subField.name}_font_size`] !== undefined ? field.value[`${subField.name}_font_size`] : subField.fontSizeValue,
                                  }}
-                                 onChange={(value) => {
-                                    const newValue = { ...(field.value || {}), [subField.name]: value };
-                                    onChange(newValue);
+                                 onChange={(nameOrPatch, value) => {
+                                    const patch = typeof nameOrPatch === 'string' ? { [nameOrPatch]: value } : nameOrPatch;
+                                    const newValue = { ...(field.value || {}), ...patch };
+                                    onChange(field.name, newValue);
                                  }}
                               />
                            </div>

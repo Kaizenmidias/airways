@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { getColorWithOpacity } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -28,8 +28,12 @@ const Overview = () => {
                         <DynamicIcon name={stat.icon} className="h-8 w-8" />
                      </div>
 
-                     <h3 className="mt-8 text-3xl font-semibold md:text-4xl">{stat.count}</h3>
-                     <p className="mt-4 text-sm">{stat.title}</p>
+                     <h3 className="mt-8 text-3xl font-semibold md:text-4xl" style={getTextStyle(stat, 'count')}>
+                        {stat.count}
+                     </h3>
+                     <p className="mt-4 text-sm" style={getTextStyle(stat, 'title')}>
+                        {stat.title}
+                     </p>
                   </Card>
                );
             })}

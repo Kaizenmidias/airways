@@ -1,4 +1,4 @@
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import Section from '@/pages/intro/partials/section';
 import { usePage } from '@inertiajs/react';
@@ -27,8 +27,12 @@ const Hero = () => {
             <div className="w-full space-y-7 md:max-w-[480px]">
                {heroSection?.properties.array.map((item, index) => (
                   <div key={`contents-${index}`} className="space-y-2">
-                     <h1 className="text-2xl font-bold md:text-[30px]">{item.title}</h1>
-                     <p className="text-muted-foreground">{item.description}</p>
+                     <h1 className="text-2xl font-bold md:text-[30px]" style={getTextStyle(item, 'title')}>
+                        {item.title}
+                     </h1>
+                     <p className="text-muted-foreground" style={getTextStyle(item, 'description')}>
+                        {item.description}
+                     </p>
                   </div>
                ))}
             </div>

@@ -128,6 +128,7 @@ interface PropertyField {
    label: string;
    name: string;
    value: any;
+   fontSizeValue?: any;
    options?: { label: string; value: any }[];
    fields?: PropertyField[]; // For nested fields in array or object types
    isArray?: boolean;

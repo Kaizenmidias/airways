@@ -91,6 +91,47 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
       onChange(updatedItems);
    };
 
+   const renderTextField = (index: number, subField: PropertyField, type: 'text' | 'url' | 'textarea') => {
+      const fontSizeKey = `${subField.name}_font_size`;
+      const fontSizeValue = arrayItems[index]?.[fontSizeKey] ?? subField.fontSizeValue ?? '';
+      const baseId = `${field.name}-${index}-${subField.name}`;
+
+      return (
+         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
+            {type === 'textarea' ? (
+               <Textarea
+                  id={baseId}
+                  value={arrayItems[index]?.[subField.name] || ''}
+                  onChange={(e) => handleArrayItemChange(index, subField.name, e.target.value)}
+                  rows={3}
+               />
+            ) : (
+               <Input
+                  type="text"
+                  id={baseId}
+                  value={arrayItems[index]?.[subField.name] || ''}
+                  onChange={(e) => handleArrayItemChange(index, subField.name, e.target.value)}
+               />
+            )}
+
+            <div className="space-y-2">
+               <Label htmlFor={`${baseId}-font-size`} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                  Tamanho da fonte
+               </Label>
+               <Input
+                  type="number"
+                  step="any"
+                  inputMode="decimal"
+                  id={`${baseId}-font-size`}
+                  value={fontSizeValue}
+                  onChange={(e) => handleArrayItemChange(index, fontSizeKey, e.target.value)}
+                  placeholder="px"
+               />
+            </div>
+         </div>
+      );
+   };
+
    const addArrayItem = () => {
       // Create an empty object with all fields initialized
       const emptyItem = field.fields?.reduce<Record<string, any>>((acc: Record<string, any>, fieldDef: PropertyField) => {
@@ -138,12 +179,9 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
                                  </Label>
                                  <div className="mt-1">
                                     {subField.type === 'textarea' ? (
-                                       <Textarea
-                                          id={`${field.name}-${index}-${subField.name}`}
-                                          value={item[subField.name] || ''}
-                                          onChange={(e) => handleArrayItemChange(index, subField.name, e.target.value)}
-                                          rows={3}
-                                       />
+                                       renderTextField(index, subField, 'textarea')
+                                    ) : subField.type === 'url' || subField.type === 'text' ? (
+                                       renderTextField(index, subField, subField.type)
                                     ) : subField.type === 'file' ? (
                                        <div className="space-y-3">
                                           <Input

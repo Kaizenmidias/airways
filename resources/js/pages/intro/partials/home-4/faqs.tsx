@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
 import Section from '../section';
@@ -18,8 +18,12 @@ const FAQs = () => {
       <Section customize={customize} pageSection={faqsCoursesSection} containerClass="py-20" contentClass="relative">
          <div className="relative z-10">
             <div className="relative z-10 mx-auto mb-10 max-w-lg text-center">
-               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{faqsCoursesSection?.title}</h2>
-               <p className="text-muted-foreground">{faqsCoursesSection?.description}</p>
+               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal" style={getTextStyle(faqsCoursesSection?.properties, 'title')}>
+                  {faqsCoursesSection?.title}
+               </h2>
+               <p className="text-muted-foreground" style={getTextStyle(faqsCoursesSection?.properties, 'description')}>
+                  {faqsCoursesSection?.description}
+               </p>
             </div>
 
             <Accordion type="single" collapsible defaultValue="faq-0-first" className="relative w-full">
@@ -31,8 +35,12 @@ const FAQs = () => {
                            value={`faq-${index}-first`}
                            className="bg-background border-border mb-4 rounded-lg border px-6 shadow-sm"
                         >
-                           <AccordionTrigger className="cursor-pointer py-4 text-base font-semibold hover:no-underline">{faq.title}</AccordionTrigger>
-                           <AccordionContent className="text-muted-foreground pt-0 pb-4 text-sm">{faq.description}</AccordionContent>
+                           <AccordionTrigger className="cursor-pointer py-4 text-base font-semibold hover:no-underline" style={getTextStyle(faq as any, 'title')}>
+                              {faq.title}
+                           </AccordionTrigger>
+                           <AccordionContent className="text-muted-foreground pt-0 pb-4 text-sm" style={getTextStyle(faq as any, 'description')}>
+                              {faq.description}
+                           </AccordionContent>
                         </AccordionItem>
                      ))}
                   </div>
@@ -43,8 +51,12 @@ const FAQs = () => {
                            value={`faq-${index}-second`}
                            className="bg-background border-border mb-4 rounded-lg border px-6 shadow-sm"
                         >
-                           <AccordionTrigger className="cursor-pointer py-4 text-base font-semibold hover:no-underline">{faq.title}</AccordionTrigger>
-                           <AccordionContent className="text-muted-foreground pt-0 pb-4 text-sm">{faq.description}</AccordionContent>
+                           <AccordionTrigger className="cursor-pointer py-4 text-base font-semibold hover:no-underline" style={getTextStyle(faq as any, 'title')}>
+                              {faq.title}
+                           </AccordionTrigger>
+                           <AccordionContent className="text-muted-foreground pt-0 pb-4 text-sm" style={getTextStyle(faq as any, 'description')}>
+                              {faq.description}
+                           </AccordionContent>
                         </AccordionItem>
                      ))}
                   </div>

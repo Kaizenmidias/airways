@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -80,11 +80,14 @@ const WhyChooseEbianch = () => {
                   <span>{section?.title || 'POR QUE ESCOLHER A EBIANCH?'}</span>
                </p>
 
-               <h2 className="mx-auto max-w-5xl text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-white xl:max-w-6xl">
+               <h2
+                  className="mx-auto max-w-5xl text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-white xl:max-w-6xl"
+                  style={getTextStyle(section?.properties, 'sub_title')}
+               >
                   {section?.sub_title || 'Uma estrutura feita para acelerar sua formação'}
                </h2>
 
-               <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-200/90 sm:text-lg">
+               <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-200/90 sm:text-lg" style={getTextStyle(section?.properties, 'description')}>
                   {section?.description || 'Uma experiência de ensino aérea com conteúdo, suporte e tecnologia alinhados à identidade da Airways Academy.'}
                </p>
             </div>
@@ -113,15 +116,19 @@ const WhyChooseEbianch = () => {
                            </div>
                         ) : null}
 
-                        <h3 className="mt-6 text-xl font-normal tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
-                        <p className="mt-4 text-sm leading-7 text-slate-300">{item.description || fallbackItems[index]?.description}</p>
+                        <h3 className="mt-6 text-xl font-normal tracking-[-0.03em] text-white" style={getTextStyle(item, 'title')}>
+                           {item.title || fallbackItems[index]?.title}
+                        </h3>
+                        <p className="mt-4 text-sm leading-7 text-slate-300" style={getTextStyle(item, 'description')}>
+                           {item.description || fallbackItems[index]?.description}
+                        </p>
 
                         {!hideCta && (item.button_text || item.button_link) && (
                            <a
                               href={item.button_link || '#'}
                               className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#FD122E]/35 bg-[#FD122E]/12 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-[#FD122E]/55 hover:bg-[#FD122E]/18"
                            >
-                              {item.button_text || 'Saiba mais'}
+                              <span style={getTextStyle(item, 'button_text')}>{item.button_text || 'Saiba mais'}</span>
                               <ArrowRight className="h-4 w-4" />
                            </a>
                         )}

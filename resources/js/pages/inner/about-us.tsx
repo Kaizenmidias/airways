@@ -1,7 +1,7 @@
 import TiptapRenderer from '@/components/text-editor/tiptap-renderer/client-renderer';
 import SectionEditor from '@/components/section-editor';
 import { Button } from '@/components/ui/button';
-import { getPageSection } from '@/lib/page';
+import { getPageSection, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import Section from '@/pages/intro/partials/section';
 import { usePage } from '@inertiajs/react';
@@ -124,7 +124,10 @@ const AboutUs = () => {
 
                <div className="relative mx-auto flex min-h-[520px] max-w-[1600px] items-end px-5 pb-20 pt-28 sm:min-h-[560px] sm:pb-24 md:min-h-[620px] md:px-10 lg:px-14">
                   <div className="max-w-[1100px] space-y-5">
-                     <h1 className="max-w-[1050px] text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white [text-shadow:0_4px_18px_rgba(2,6,23,0.55)]">
+                     <h1
+                        className="max-w-[1050px] text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-normal tracking-[-0.06em] text-white [text-shadow:0_4px_18px_rgba(2,6,23,0.55)]"
+                        style={getTextStyle(heroSection?.properties, 'title')}
+                     >
                         {heroSection?.title || 'Sobre nós'}
                      </h1>
                      <div className="h-1.5 w-16 rounded-full bg-white/90 shadow-[0_0_24px_rgba(255,255,255,0.25)]" />
@@ -139,7 +142,10 @@ const AboutUs = () => {
                   <div className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
                      <div className="space-y-2 about-us-reveal lg:col-start-1 lg:row-start-1">
                         <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Nossa identidade</p>
-                        <h2 className="text-[clamp(2rem,3vw,42px)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                        <h2
+                           className="text-[clamp(2rem,3vw,42px)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950"
+                           style={getTextStyle(identitySection?.properties, 'title')}
+                        >
                            {identitySection?.title || 'Quem está por trás da Airways Academy?'}
                         </h2>
                      </div>
@@ -160,6 +166,7 @@ const AboutUs = () => {
                                  'max-w-[52rem] text-[16px] leading-8 font-normal text-slate-600',
                                  '[&_p]:mb-5 [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-8 [&_p]:text-slate-600',
                               )}
+                              style={getTextStyle(identitySection?.properties, 'description')}
                            >
                               <TiptapRenderer>{identitySection.description}</TiptapRenderer>
                            </div>
@@ -178,7 +185,9 @@ const AboutUs = () => {
                                     <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1d3f7b] text-white">
                                        <Check className="h-4 w-4" />
                                     </div>
-                                    <p className="text-[14px] leading-6 font-normal text-slate-700">{bulletText}</p>
+                                    <p className="text-[14px] leading-6 font-normal text-slate-700" style={getTextStyle(bullet, 'title')}>
+                                       {bulletText}
+                                    </p>
                                  </div>
                               );
                            })}
@@ -194,7 +203,10 @@ const AboutUs = () => {
                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-10 md:py-24 lg:px-14">
                   <div className="max-w-[52rem] space-y-4 about-us-reveal">
                      <p className="text-[11px] font-normal tracking-[0.34em] text-[#1d3f7b] uppercase">Missão, visão e valores</p>
-                     <h2 className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950">
+                     <h2
+                        className="text-[clamp(2rem,3vw,3.5rem)] leading-[0.98] font-normal tracking-[-0.06em] text-slate-950"
+                        style={getTextStyle(cardsSection?.properties, 'title')}
+                     >
                         {cardsSection?.title || 'Missão, visão e valores'}
                      </h2>
                   </div>
@@ -214,9 +226,15 @@ const AboutUs = () => {
                                  <span className="text-[11px] tracking-[0.28em] text-slate-500 uppercase">0{index + 1}</span>
                               </div>
 
-                              <h3 className="text-2xl leading-tight font-normal tracking-[-0.04em] text-slate-950">{card.title}</h3>
+                              <h3 className="text-2xl leading-tight font-normal tracking-[-0.04em] text-slate-950" style={getTextStyle(card, 'title')}>
+                                 {card.title}
+                              </h3>
 
-                              {card.description && <p className="mt-4 text-[16px] leading-8 font-normal text-slate-600">{card.description}</p>}
+                              {card.description && (
+                                 <p className="mt-4 text-[16px] leading-8 font-normal text-slate-600" style={getTextStyle(card, 'description')}>
+                                    {card.description}
+                                 </p>
+                              )}
 
                               {bulletList.length > 0 && (
                                  <div className="mt-6 space-y-3">
@@ -225,7 +243,9 @@ const AboutUs = () => {
                                           <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1d3f7b] text-white">
                                              <Check className="h-4 w-4" />
                                           </div>
-                                          <p className="text-[15px] leading-7 font-normal text-slate-700">{bullet}</p>
+                                          <p className="text-[15px] leading-7 font-normal text-slate-700" style={getTextStyle(card, 'bullets')}>
+                                             {bullet}
+                                          </p>
                                        </div>
                                     ))}
                                  </div>

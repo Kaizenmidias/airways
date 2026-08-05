@@ -1,7 +1,7 @@
 import ReviewCard1 from '@/components/cards/review-card-1';
 import { Button } from '@/components/ui/button';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { getPageSection, getPropertyArray } from '@/lib/page';
+import { getPageSection, getPropertyArray, getTextStyle } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { IntroPageProps } from '@/types/page';
 import { usePage } from '@inertiajs/react';
@@ -37,9 +37,15 @@ const Testimonials = () => {
       <div className="overflow-y-hidden">
          <Section customize={customize} pageSection={testimonialsSection} containerClass="py-20 relative">
             <div className="relative z-10 mx-auto max-w-lg text-center">
-               <p className="mb-1 font-medium text-[#FD122E]">{testimonialsSection?.title}</p>
-               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{testimonialsSection?.sub_title}</h2>
-               <p className="text-muted-foreground">{testimonialsSection?.description}</p>
+               <p className="mb-1 font-medium text-[#FD122E]" style={getTextStyle(testimonialsSection?.properties, 'title')}>
+                  {testimonialsSection?.title}
+               </p>
+               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal" style={getTextStyle(testimonialsSection?.properties, 'sub_title')}>
+                  {testimonialsSection?.sub_title}
+               </h2>
+               <p className="text-muted-foreground" style={getTextStyle(testimonialsSection?.properties, 'description')}>
+                  {testimonialsSection?.description}
+               </p>
             </div>
 
             <div className="relative">
