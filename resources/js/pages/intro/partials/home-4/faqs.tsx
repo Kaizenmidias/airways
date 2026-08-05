@@ -18,7 +18,7 @@ const FAQs = () => {
       <Section customize={customize} pageSection={faqsCoursesSection} containerClass="py-20" contentClass="relative">
          <div className="relative z-10">
             <div className="relative z-10 mx-auto mb-10 max-w-lg text-center">
-               <h2 className="mb-2 text-[62px] leading-[0.94] font-normal">{faqsCoursesSection?.title}</h2>
+               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{faqsCoursesSection?.title}</h2>
                <p className="text-muted-foreground">{faqsCoursesSection?.description}</p>
             </div>
 

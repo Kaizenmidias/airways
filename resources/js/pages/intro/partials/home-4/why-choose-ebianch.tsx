@@ -80,7 +80,7 @@ const WhyChooseEbianch = () => {
                   <span>{section?.title || 'POR QUE ESCOLHER A EBIANCH?'}</span>
                </p>
 
-               <h2 className="mx-auto max-w-5xl text-[62px] leading-[0.94] font-normal tracking-[-0.06em] text-white xl:max-w-6xl">
+               <h2 className="mx-auto max-w-5xl text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-white xl:max-w-6xl">
                   {section?.sub_title || 'Uma estrutura feita para acelerar sua formação'}
                </h2>
 

@@ -36,7 +36,7 @@ const Blogs = () => {
    return (
       <Section customize={customize} pageSection={blogsSection} containerClass="z-10 py-20">
          <div className="mx-auto text-center md:max-w-2xl">
-            <h2 className="mb-2 text-[62px] leading-[0.94] font-normal">{blogsSection?.title}</h2>
+            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{blogsSection?.title}</h2>
             <p className="text-muted-foreground">{blogsSection?.description}</p>
          </div>
 

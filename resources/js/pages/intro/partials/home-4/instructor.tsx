@@ -20,7 +20,7 @@ const Instructor = () => {
    return (
       <Section customize={customize} pageSection={instructorSection} containerClass="py-20 overflow-y-hidden" contentClass="relative">
          <div className="relative z-10 mx-auto mb-10 w-full text-center md:max-w-lg">
-            <h2 className="mb-2 text-[62px] leading-[0.94] font-normal">{instructorSection?.title}</h2>
+            <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{instructorSection?.title}</h2>
             <p className="text-muted-foreground">{instructorSection?.description}</p>
          </div>
 

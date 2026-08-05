@@ -44,7 +44,7 @@ const SelectedCourses = () => {
                   <span className="h-[2px] w-8 rounded-full bg-[#FD122E]" />
                   <span>{selectedCoursesSection?.title || 'CURSOS SELECIONADOS'}</span>
                </p>
-               <h2 className="text-[62px] leading-[0.96] font-normal tracking-[-0.06em] text-slate-950">
+               <h2 className="text-[52px] leading-[0.95] font-normal tracking-[-0.06em] text-slate-950">
                   {selectedCoursesSection?.sub_title || 'Escolha os cursos que vão aparecer na home'}
                </h2>
                <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">

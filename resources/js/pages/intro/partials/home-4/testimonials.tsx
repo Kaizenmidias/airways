@@ -38,7 +38,7 @@ const Testimonials = () => {
          <Section customize={customize} pageSection={testimonialsSection} containerClass="py-20 relative">
             <div className="relative z-10 mx-auto max-w-lg text-center">
                <p className="mb-1 font-medium text-[#FD122E]">{testimonialsSection?.title}</p>
-               <h2 className="mb-2 text-[62px] leading-[0.94] font-normal">{testimonialsSection?.sub_title}</h2>
+               <h2 className="mb-2 text-[52px] leading-[0.95] font-normal">{testimonialsSection?.sub_title}</h2>
                <p className="text-muted-foreground">{testimonialsSection?.description}</p>
             </div>
 
