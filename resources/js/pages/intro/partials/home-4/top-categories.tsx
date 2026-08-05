@@ -25,7 +25,7 @@ const TopCategories = () => {
       <Section customize={customize} pageSection={topCategoriesSection} containerClass="mt-20 py-20" contentClass="relative">
          <div className="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="w-full md:max-w-[306px]">
-               <h2 className="mb-2 text-3xl font-normal sm:text-4xl">{topCategoriesSection?.title}</h2>
+               <h2 className="mb-2 text-[62px] leading-[0.94] font-normal">{topCategoriesSection?.title}</h2>
                <p className="text-muted-foreground">{topCategoriesSection?.description}</p>
             </div>
 

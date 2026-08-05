@@ -55,7 +55,7 @@ const WhoWeAre = () => {
                </div>
 
                <div className="space-y-4">
-                  <h2 className="max-w-xl text-[42px] leading-[0.94] font-normal tracking-[-0.06em] text-white">
+                  <h2 className="max-w-xl text-[62px] leading-[0.94] font-normal tracking-[-0.06em] text-white">
                      {section?.sub_title || 'Quem somos?'}
                   </h2>
                   <div className="h-1.5 w-16 rounded-full bg-[#FD122E]" />
