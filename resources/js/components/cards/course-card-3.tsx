@@ -38,18 +38,18 @@ const CourseCard3 = ({ course, className }: Props) => {
       <Card className={cn(className)}>
          <CardHeader className="p-0">
             <div className="relative">
-               <div className="p-2 pb-0">
+               <div className="p-3 pb-0">
                   <Link
                      href={route('course.details', {
                         slug: course.slug,
                         id: course.id,
                      })}
                   >
-                     <div className="group relative h-[320px] w-full overflow-hidden rounded-lg">
+                     <div className="group relative h-[320px] w-full overflow-hidden rounded-xl bg-slate-50 p-3">
                         <img
                            src={course.thumbnail || '/assets/images/blank-image.jpg'}
                            alt={course.title}
-                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                           className="h-full w-full object-contain object-center transition-transform duration-300 group-hover:scale-105"
                            onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = '/assets/images/blank-image.jpg';

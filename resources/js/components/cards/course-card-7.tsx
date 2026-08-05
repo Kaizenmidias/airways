@@ -21,11 +21,11 @@ const CourseCard7 = ({ course, watch_history, completion, className }: Props) =>
    return (
       <Card className={cn('flex flex-col justify-between overflow-hidden !border md:flex-row', className)}>
          <CardHeader className="h-[200px] w-full max-w-[360px] p-0">
-            <div className="relative h-full w-full">
+            <div className="relative h-full w-full overflow-hidden rounded-l-xl bg-slate-50 p-3">
                <img
                   src={course.thumbnail || '/assets/images/blank-image.jpg'}
                   alt={course.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain object-center"
                   onError={(e) => {
                      const target = e.target as HTMLImageElement;
                      target.src = '/assets/images/blank-image.jpg';

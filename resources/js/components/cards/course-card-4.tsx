@@ -22,11 +22,11 @@ const CourseCard4 = ({ enrollment, className }: Props) => {
                   tab: 'modules',
                })}
             >
-               <div className="relative h-[220px] w-full overflow-hidden rounded-lg">
+               <div className="relative h-[220px] w-full overflow-hidden rounded-xl bg-slate-50 p-3">
                   <img
                      src={course.thumbnail || '/assets/images/blank-image.jpg'}
                      alt={course.title}
-                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                     className="h-full w-full object-contain object-center transition-transform duration-300 hover:scale-105"
                      onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/assets/images/blank-image.jpg';

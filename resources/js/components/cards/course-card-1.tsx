@@ -37,18 +37,18 @@ const CourseCard1 = ({ course, viewType = 'grid', className, wishlists }: Props)
       <Card className={cn('group p-0', viewType === 'list' && 'sm:flex sm:w-full sm:flex-row sm:justify-between', className)}>
          <CardHeader className="p-0">
             <div className="relative">
-               <div className={cn('p-2 pb-0', viewType === 'list' && 'pb-2')}>
+               <div className={cn('p-3 pb-0', viewType === 'list' && 'pb-3')}>
                   <Link
                      href={route('course.details', {
                         slug: course.slug,
                         id: course.id,
                      })}
                   >
-                     <div className={cn('relative h-[190px] overflow-hidden rounded-lg', viewType === 'list' && 'sm:w-[260px]')}>
+                     <div className={cn('relative h-[190px] overflow-hidden rounded-xl bg-slate-50 p-3', viewType === 'list' && 'sm:w-[260px]')}>
                         <img
                            src={course.thumbnail || '/assets/images/blank-image.jpg'}
                            alt={course.title}
-                           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                           className="h-full w-full object-contain object-center transition-transform duration-300 hover:scale-105"
                            onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = '/assets/images/blank-image.jpg';

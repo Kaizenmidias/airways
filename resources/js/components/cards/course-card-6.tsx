@@ -43,11 +43,11 @@ const CourseCard6 = ({ course, type = 'grid', className, wishlists }: Props) => 
                         id: course.id,
                      })}
                   >
-                     <div className={cn('relative h-[190px] overflow-hidden rounded-lg', type === 'grid' && 'w-full max-w-[240px]')}>
+                     <div className={cn('relative h-[190px] overflow-hidden rounded-xl bg-slate-50 p-3', type === 'grid' && 'w-full max-w-[240px]')}>
                         <img
                            src={course.thumbnail || '/assets/images/blank-image.jpg'}
                            alt={course.title}
-                           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                           className="h-full w-full object-contain object-center transition-transform duration-300 hover:scale-105"
                            onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = '/assets/images/blank-image.jpg';
