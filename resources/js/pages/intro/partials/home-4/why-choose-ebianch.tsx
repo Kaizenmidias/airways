@@ -80,7 +80,7 @@ const WhyChooseEbianch = () => {
                   <span>{section?.title || 'POR QUE ESCOLHER A EBIANCH?'}</span>
                </p>
 
-               <h2 className="mx-auto max-w-5xl text-3xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-[3.95rem] xl:max-w-6xl xl:text-[4.25rem]">
+               <h2 className="mx-auto max-w-5xl text-3xl leading-[0.96] font-normal tracking-[-0.06em] text-white sm:text-4xl lg:text-[3.95rem] xl:max-w-6xl xl:text-[4.25rem]">
                   {section?.sub_title || 'Uma estrutura feita para acelerar sua formação'}
                </h2>
 
@@ -113,7 +113,7 @@ const WhyChooseEbianch = () => {
                            </div>
                         ) : null}
 
-                        <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
+                        <h3 className="mt-6 text-xl font-normal tracking-[-0.03em] text-white">{item.title || fallbackItems[index]?.title}</h3>
                         <p className="mt-4 text-sm leading-7 text-slate-300">{item.description || fallbackItems[index]?.description}</p>
 
                         {!hideCta && (item.button_text || item.button_link) && (

@@ -17,7 +17,7 @@ const CallToAction = () => {
             contentStyle={{ backgroundImage: `url('${ctaSection?.background_image}')` }}
          >
             <div className="space-y-2">
-               <h1 className="text-2xl leading-tight font-bold md:text-3xl md:leading-9">{ctaSection?.title}</h1>
+               <h1 className="text-2xl leading-tight font-normal md:text-3xl md:leading-9">{ctaSection?.title}</h1>
                <p>{ctaSection?.description}</p>
             </div>
 

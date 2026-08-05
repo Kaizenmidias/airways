@@ -13,7 +13,7 @@ const TopCourses = () => {
       <Section customize={customize} pageSection={topCoursesSection} containerClass="py-20">
          <div className="relative z-10 mx-auto mb-10 max-w-lg text-center">
             <p className="text-secondary-foreground mb-1 font-medium">{topCoursesSection?.title}</p>
-            <h2 className="mb-2 text-3xl font-bold sm:text-4xl">{topCoursesSection?.sub_title}</h2>
+            <h2 className="mb-2 text-3xl font-normal sm:text-4xl">{topCoursesSection?.sub_title}</h2>
             <p className="text-muted-foreground">{topCoursesSection?.description}</p>
          </div>
 

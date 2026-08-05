@@ -20,7 +20,7 @@ const Instructor = () => {
    return (
       <Section customize={customize} pageSection={instructorSection} containerClass="py-20 overflow-y-hidden" contentClass="relative">
          <div className="relative z-10 mx-auto mb-10 w-full text-center md:max-w-lg">
-            <h2 className="mb-2 text-3xl font-bold sm:text-4xl">{instructorSection?.title}</h2>
+            <h2 className="mb-2 text-3xl font-normal sm:text-4xl">{instructorSection?.title}</h2>
             <p className="text-muted-foreground">{instructorSection?.description}</p>
          </div>
 
@@ -34,7 +34,7 @@ const Instructor = () => {
                         </div>
                      ) : null}
 
-                     <h3 className="pt-4 pb-2 font-semibold">{item.title}</h3>
+                     <h3 className="pt-4 pb-2 font-normal">{item.title}</h3>
                      <p className="text-muted-foreground text-sm">{item.description}</p>
                   </div>
                ))}
@@ -58,7 +58,7 @@ const Instructor = () => {
                      )}
 
                      <div className="space-y-2">
-                        <h3 className="font-semibold">{instructor.user.name}</h3>
+                        <h3 className="font-normal">{instructor.user.name}</h3>
                         <p className="text-muted-foreground text-sm">{instructor.designation}</p>
                         <p className="text-muted-foreground text-sm">{instructor.biography}</p>
                      </div>
@@ -77,7 +77,7 @@ const Instructor = () => {
                         </div>
                      ) : null}
 
-                     <h3 className="pt-4 pb-2 font-semibold">{item.title}</h3>
+                     <h3 className="pt-4 pb-2 font-normal">{item.title}</h3>
                      <p className="text-muted-foreground text-sm">{item.description}</p>
                   </div>
                ))}

@@ -50,7 +50,7 @@ const TopCourse = () => {
                      )}
                   </div>
 
-                  <h6 className="relative z-10 py-5 text-2xl font-bold md:text-[28px]">{topCourse.title}</h6>
+                  <h6 className="relative z-10 py-5 text-2xl font-normal md:text-[28px]">{topCourse.title}</h6>
 
                   <Accordion
                      type="single"
