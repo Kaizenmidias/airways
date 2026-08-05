@@ -22,15 +22,12 @@ type ResponsiveTextFieldProps = {
 
 const deviceMeta = {
    desktop: {
-      label: 'Computador',
       icon: Monitor,
    },
    tablet: {
-      label: 'Tablet',
       icon: TabletSmartphone,
    },
    mobile: {
-      label: 'Celular',
       icon: Smartphone,
    },
 } as const;
@@ -62,7 +59,7 @@ const ResponsiveTextField = ({
       <div className="space-y-2">
          {showLabel && <Label htmlFor={fieldName}>{label}</Label>}
 
-         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(190px,30%)] sm:items-start">
+         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(96px,25%)] sm:items-start">
             <div className="min-w-0">
                {multiline ? (
                   <Textarea
@@ -88,39 +85,32 @@ const ResponsiveTextField = ({
             </div>
 
             <div className="min-w-0 space-y-2">
-               <div className="flex items-center justify-between gap-2">
-                  <Label htmlFor={`${fieldName}-font-size`} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                     Tamanho da fonte
-                  </Label>
-
-                  <Select
-                     value={device}
-                     onValueChange={(nextDevice) => {
-                        const normalizedDevice = nextDevice as ResponsiveFontSizeDevice;
-                        setDevice(normalizedDevice);
-                        setLocalFontSize(getResponsiveFontSize(fontSizeValue, normalizedDevice) || '');
-                     }}
+               <Select
+                  value={device}
+                  onValueChange={(nextDevice) => {
+                     const normalizedDevice = nextDevice as ResponsiveFontSizeDevice;
+                     setDevice(normalizedDevice);
+                     setLocalFontSize(getResponsiveFontSize(fontSizeValue, normalizedDevice) || '');
+                  }}
+               >
+                  <SelectTrigger
+                     aria-label="Selecionar dispositivo"
+                     className="h-8 w-10 justify-center gap-0 rounded-full border-border bg-background px-0"
                   >
-                     <SelectTrigger className="h-8 w-[128px] justify-start gap-2 rounded-full border-border bg-background px-3 text-xs">
-                        <DeviceIcon className="h-3.5 w-3.5 shrink-0" />
-                        <span className="truncate">{deviceMeta[device].label}</span>
-                     </SelectTrigger>
-                     <SelectContent>
-                        {Object.entries(deviceMeta).map(([key, meta]) => {
-                           const Icon = meta.icon;
+                     <DeviceIcon className="h-3.5 w-3.5 shrink-0" />
+                  </SelectTrigger>
+                  <SelectContent>
+                     {Object.entries(deviceMeta).map(([key, meta]) => {
+                        const Icon = meta.icon;
 
-                           return (
-                              <SelectItem key={key} value={key}>
-                                 <span className="flex items-center gap-2">
-                                    <Icon className="h-4 w-4" />
-                                    {meta.label}
-                                 </span>
-                              </SelectItem>
-                           );
-                        })}
-                     </SelectContent>
-                  </Select>
-               </div>
+                        return (
+                           <SelectItem key={key} value={key}>
+                              <Icon className="h-4 w-4" />
+                           </SelectItem>
+                        );
+                     })}
+                  </SelectContent>
+               </Select>
 
                <Input
                   type="number"
