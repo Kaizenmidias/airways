@@ -2,13 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import IconPickerDialog from '@/components/icon-picker-dialog';
 import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useSectionEditor } from '../context';
 import ArrayFields from './array';
 import Contents from './contents';
+import ResponsiveTextField from './responsive-text-field';
 
 interface FieldsProps {
    field: PropertyField;
@@ -20,17 +20,12 @@ const Fields = ({ field, onChange }: FieldsProps) => {
 
    // Local state for basic field types to handle immediate UI updates
    const [localValue, setLocalValue] = useState<any>(field.value || '');
-   const [localFontSize, setLocalFontSize] = useState<any>(field.fontSizeValue || '');
    const fontSizeFieldName = `${field.name}_font_size`;
 
    // Update local state when field.value changes from parent
    useEffect(() => {
       setLocalValue(field.value || '');
    }, [field.value, field.type]);
-
-   useEffect(() => {
-      setLocalFontSize(field.fontSizeValue || '');
-   }, [field.fontSizeValue, field.type]);
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { value, type } = e.target as HTMLInputElement;
@@ -49,12 +44,6 @@ const Fields = ({ field, onChange }: FieldsProps) => {
       onChange(field.name, value);
    };
 
-   const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      setLocalFontSize(value);
-      onChange(fontSizeFieldName, value);
-   };
-
    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
       setLocalValue(file);
@@ -70,48 +59,38 @@ const Fields = ({ field, onChange }: FieldsProps) => {
          case 'text':
          case 'url':
             return (
-               <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
-                  <Input type="text" id={field.name} name={field.name} value={localValue} onChange={handleInputChange} />
-
-                  <div className="space-y-2">
-                     <Label htmlFor={fontSizeFieldName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                        Tamanho da fonte
-                     </Label>
-                     <Input
-                        type="number"
-                        step="any"
-                        inputMode="decimal"
-                        id={fontSizeFieldName}
-                        name={fontSizeFieldName}
-                        value={localFontSize}
-                        onChange={handleFontSizeChange}
-                        placeholder="px"
-                     />
-                  </div>
-               </div>
+               <ResponsiveTextField
+                  fieldName={field.name}
+                  label={field.label}
+                  value={localValue}
+                  fontSizeValue={field.fontSizeValue}
+                  placeholder={field.label}
+                  onValueChange={(nextValue) => {
+                     setLocalValue(nextValue);
+                     onChange(field.name, nextValue);
+                  }}
+                  onFontSizeChange={(nextValue) => onChange(fontSizeFieldName, nextValue)}
+                  showLabel={false}
+               />
             );
 
          case 'textarea':
             return (
-               <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
-                  <Textarea id={field.name} name={field.name} rows={3} value={localValue} onChange={handleInputChange} />
-
-                  <div className="space-y-2">
-                     <Label htmlFor={fontSizeFieldName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                        Tamanho da fonte
-                     </Label>
-                     <Input
-                        type="number"
-                        step="any"
-                        inputMode="decimal"
-                        id={fontSizeFieldName}
-                        name={fontSizeFieldName}
-                        value={localFontSize}
-                        onChange={handleFontSizeChange}
-                        placeholder="px"
-                     />
-                  </div>
-               </div>
+               <ResponsiveTextField
+                  fieldName={field.name}
+                  label={field.label}
+                  value={localValue}
+                  fontSizeValue={field.fontSizeValue}
+                  placeholder={field.label}
+                  multiline
+                  rows={3}
+                  onValueChange={(nextValue) => {
+                     setLocalValue(nextValue);
+                     onChange(field.name, nextValue);
+                  }}
+                  onFontSizeChange={(nextValue) => onChange(fontSizeFieldName, nextValue)}
+                  showLabel={false}
+               />
             );
 
          case 'number':

@@ -3,7 +3,6 @@ import LoadingButton from '@/components/loading-button';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { useLang } from '@/hooks/use-lang';
 import { onHandleChange } from '@/lib/inertia';
 import { generatePropertyFields } from '@/lib/page';
@@ -12,6 +11,7 @@ import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSectionEditor } from './context';
 import Fields from './fields';
+import ResponsiveTextField from './fields/responsive-text-field';
 
 const EditForm = () => {
    const { input, button, frontend } = useLang();
@@ -106,76 +106,6 @@ const EditForm = () => {
       }));
    };
 
-   const renderTextFieldWithFontSize = ({
-      fieldName,
-      label,
-      value,
-      fontSizeValue,
-      placeholder,
-      multiline = false,
-      rows = 3,
-      error,
-      onValueChange,
-   }: {
-      fieldName: string;
-      label: string;
-      value: string;
-      fontSizeValue: any;
-      placeholder: string;
-      multiline?: boolean;
-      rows?: number;
-      error?: string;
-      onValueChange: (value: string) => void;
-   }) => {
-      const fontSizeName = `${fieldName}_font_size`;
-
-      return (
-         <div className="space-y-2">
-            <Label htmlFor={fieldName}>{label}</Label>
-
-            <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
-               {multiline ? (
-                  <Textarea
-                     id={fieldName}
-                     name={fieldName}
-                     value={value}
-                     onChange={(e) => onValueChange(e.target.value)}
-                     placeholder={placeholder}
-                     rows={rows}
-                  />
-               ) : (
-                  <Input
-                     type="text"
-                     id={fieldName}
-                     name={fieldName}
-                     value={value}
-                     onChange={(e) => onValueChange(e.target.value)}
-                     placeholder={placeholder}
-                  />
-               )}
-
-               <div className="space-y-2">
-                  <Label htmlFor={fontSizeName} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                     Tamanho da fonte
-                  </Label>
-                  <Input
-                     type="number"
-                     step="any"
-                     inputMode="decimal"
-                     id={fontSizeName}
-                     name={fontSizeName}
-                     value={fontSizeValue ?? ''}
-                     onChange={(e) => handlePropertyChange(fontSizeName, e.target.value)}
-                     placeholder="px"
-                  />
-               </div>
-            </div>
-
-            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-         </div>
-      );
-   };
-
    useEffect(() => {
       if (!open || !section?.id) {
          return;
@@ -210,41 +140,44 @@ const EditForm = () => {
          <div className="space-y-6">
             {/* Basic section fields */}
             {section.flags.title && (
-               renderTextFieldWithFontSize({
-                  fieldName: 'title',
-                  label: input.title || '',
-                  value: data.title || '',
-                  fontSizeValue: data.properties?.title_font_size,
-                  placeholder: input.title_placeholder,
-                  error: errors.title,
-                  onValueChange: (nextValue) => setData('title', nextValue),
-               })
+               <ResponsiveTextField
+                  fieldName="title"
+                  label={input.title || ''}
+                  value={data.title || ''}
+                  fontSizeValue={data.properties?.title_font_size}
+                  placeholder={input.title_placeholder}
+                  error={errors.title}
+                  onValueChange={(nextValue) => setData('title', nextValue)}
+                  onFontSizeChange={(nextValue) => handlePropertyChange('title_font_size', nextValue)}
+               />
             )}
 
             {section.flags.sub_title && (
-               renderTextFieldWithFontSize({
-                  fieldName: 'sub_title',
-                  label: input.sub_title || '',
-                  value: data.sub_title ?? '',
-                  fontSizeValue: data.properties?.sub_title_font_size,
-                  placeholder: input.title_placeholder,
-                  error: errors.sub_title,
-                  onValueChange: (nextValue) => setData('sub_title', nextValue),
-               })
+               <ResponsiveTextField
+                  fieldName="sub_title"
+                  label={input.sub_title || ''}
+                  value={data.sub_title ?? ''}
+                  fontSizeValue={data.properties?.sub_title_font_size}
+                  placeholder={input.title_placeholder}
+                  error={errors.sub_title}
+                  onValueChange={(nextValue) => setData('sub_title', nextValue)}
+                  onFontSizeChange={(nextValue) => handlePropertyChange('sub_title_font_size', nextValue)}
+               />
             )}
 
             {section.flags.description && (
-               renderTextFieldWithFontSize({
-                  fieldName: 'description',
-                  label: input.description || '',
-                  value: data.description || '',
-                  fontSizeValue: data.properties?.description_font_size,
-                  placeholder: input.description_placeholder,
-                  multiline: true,
-                  rows: 3,
-                  error: errors.description,
-                  onValueChange: (nextValue) => setData('description', nextValue),
-               })
+               <ResponsiveTextField
+                  fieldName="description"
+                  label={input.description || ''}
+                  value={data.description || ''}
+                  fontSizeValue={data.properties?.description_font_size}
+                  placeholder={input.description_placeholder}
+                  multiline
+                  rows={3}
+                  error={errors.description}
+                  onValueChange={(nextValue) => setData('description', nextValue)}
+                  onFontSizeChange={(nextValue) => handlePropertyChange('description_font_size', nextValue)}
+               />
             )}
 
             {section.flags.thumbnail && (

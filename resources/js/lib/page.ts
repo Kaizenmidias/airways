@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 export const getPageSection = (page: Page, slug: string) => {
    return page.sections.find((section: PageSection) => section.slug === slug);
 };
@@ -5,6 +7,8 @@ export const getPageSection = (page: Page, slug: string) => {
 const formatLabel = (key: string): string => {
    return key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 };
+
+const fontSizeDevices: ResponsiveFontSizeDevice[] = ['desktop', 'tablet', 'mobile'];
 
 const normalizeFontSize = (value: any): string | undefined => {
    if (value === null || value === undefined || value === '') {
@@ -20,16 +24,67 @@ const normalizeFontSize = (value: any): string | undefined => {
    return `${parsed}px`;
 };
 
-export const getTextFontSize = (source: Record<string, any> | undefined, key: string, fallback?: any): string | undefined => {
-   const value = source?.[`${key}_font_size`] ?? fallback;
+const isResponsiveFontSizeValue = (value: FontSizeValue): value is ResponsiveFontSizeValue => {
+   return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
+export const getResponsiveFontSize = (value: FontSizeValue, device: ResponsiveFontSizeDevice): string | undefined => {
+   if (isResponsiveFontSizeValue(value)) {
+      if (device === 'desktop') {
+         return normalizeFontSize(value.desktop ?? value.tablet ?? value.mobile);
+      }
+
+      if (device === 'tablet') {
+         return normalizeFontSize(value.tablet ?? value.desktop ?? value.mobile);
+      }
+
+      return normalizeFontSize(value.mobile ?? value.tablet ?? value.desktop);
+   }
 
    return normalizeFontSize(value);
 };
 
-export const getTextStyle = (source: Record<string, any> | undefined, key: string, fallback?: any): Record<string, string> => {
-   const fontSize = getTextFontSize(source, key, fallback);
+export const getResponsiveFontSizeMap = (value: FontSizeValue): ResponsiveFontSizeValue => {
+   if (isResponsiveFontSizeValue(value)) {
+      return value;
+   }
 
-   return fontSize ? { fontSize } : {};
+   const desktop = normalizeFontSize(value);
+
+   return desktop ? { desktop } : {};
+};
+
+export const updateResponsiveFontSize = (value: FontSizeValue, device: ResponsiveFontSizeDevice, nextValue: string): ResponsiveFontSizeValue => {
+   const currentValue = getResponsiveFontSizeMap(value);
+
+   return {
+      ...currentValue,
+      [device]: nextValue,
+   };
+};
+
+export const getTextStyle = (source: Record<string, any> | undefined, key: string, fallback?: any): CSSProperties => {
+   const fontSize = getResponsiveFontSizeMap(source?.[`${key}_font_size`] ?? fallback);
+   const style = {} as CSSProperties & Record<string, string>;
+   const desktopValue = normalizeFontSize(fontSize.desktop ?? fontSize.tablet ?? fontSize.mobile);
+
+   if (desktopValue) {
+      style['--airways-font-size-desktop' as any] = desktopValue;
+   }
+
+   fontSizeDevices.slice(1).forEach((device) => {
+      const value = fontSize[device];
+
+      if (value !== undefined && value !== null && value !== '') {
+         const normalizedValue = normalizeFontSize(value);
+
+         if (normalizedValue) {
+            style[`--airways-font-size-${device}` as any] = normalizedValue;
+         }
+      }
+   });
+
+   return style;
 };
 
 const generateArrayField = (key: string, value: any[]): PropertyField => {

@@ -290,6 +290,22 @@
       }
    }
 
+   [style*='--airways-font-size-desktop'] {
+      font-size: var(--airways-font-size-desktop) !important;
+   }
+
+   @media (max-width: 1024px) {
+      [style*='--airways-font-size-desktop'] {
+         font-size: var(--airways-font-size-tablet, var(--airways-font-size-desktop)) !important;
+      }
+   }
+
+   @media (max-width: 640px) {
+      [style*='--airways-font-size-desktop'] {
+         font-size: var(--airways-font-size-mobile, var(--airways-font-size-tablet, var(--airways-font-size-desktop))) !important;
+      }
+   }
+
    @keyframes about-us-reveal {
       from {
          opacity: 0;

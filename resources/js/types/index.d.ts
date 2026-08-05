@@ -123,12 +123,22 @@ interface PageSectionFormValues {
    sort: number;
 }
 
+type ResponsiveFontSizeDevice = 'desktop' | 'tablet' | 'mobile';
+
+interface ResponsiveFontSizeValue {
+   desktop?: string | number;
+   tablet?: string | number;
+   mobile?: string | number;
+}
+
+type FontSizeValue = string | number | ResponsiveFontSizeValue | null | undefined;
+
 interface PropertyField {
    type: 'text' | 'icon' | 'textarea' | 'file' | 'image' | 'url' | 'array' | 'object' | 'boolean' | 'number' | 'select' | 'contents';
    label: string;
    name: string;
    value: any;
-   fontSizeValue?: any;
+   fontSizeValue?: FontSizeValue;
    options?: { label: string; value: any }[];
    fields?: PropertyField[]; // For nested fields in array or object types
    isArray?: boolean;

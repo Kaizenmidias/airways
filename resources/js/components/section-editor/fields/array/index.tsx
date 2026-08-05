@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { useLang } from '@/hooks/use-lang';
 import { isEmptyArrayItem } from '@/lib/page';
 import { cn } from '@/lib/utils';
 import { Plus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import ResponsiveTextField from '../responsive-text-field';
 
 interface ArrayFieldsProps {
    field: PropertyField;
@@ -93,42 +93,21 @@ const ArrayFields: React.FC<ArrayFieldsProps> = ({ field, onChange }) => {
 
    const renderTextField = (index: number, subField: PropertyField, type: 'text' | 'url' | 'textarea') => {
       const fontSizeKey = `${subField.name}_font_size`;
-      const fontSizeValue = arrayItems[index]?.[fontSizeKey] ?? subField.fontSizeValue ?? '';
       const baseId = `${field.name}-${index}-${subField.name}`;
 
       return (
-         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-start">
-            {type === 'textarea' ? (
-               <Textarea
-                  id={baseId}
-                  value={arrayItems[index]?.[subField.name] || ''}
-                  onChange={(e) => handleArrayItemChange(index, subField.name, e.target.value)}
-                  rows={3}
-               />
-            ) : (
-               <Input
-                  type="text"
-                  id={baseId}
-                  value={arrayItems[index]?.[subField.name] || ''}
-                  onChange={(e) => handleArrayItemChange(index, subField.name, e.target.value)}
-               />
-            )}
-
-            <div className="space-y-2">
-               <Label htmlFor={`${baseId}-font-size`} className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                  Tamanho da fonte
-               </Label>
-               <Input
-                  type="number"
-                  step="any"
-                  inputMode="decimal"
-                  id={`${baseId}-font-size`}
-                  value={fontSizeValue}
-                  onChange={(e) => handleArrayItemChange(index, fontSizeKey, e.target.value)}
-                  placeholder="px"
-               />
-            </div>
-         </div>
+         <ResponsiveTextField
+            fieldName={baseId}
+            label={subField.label}
+            value={arrayItems[index]?.[subField.name] || ''}
+            fontSizeValue={arrayItems[index]?.[fontSizeKey] ?? subField.fontSizeValue}
+            placeholder={subField.label}
+            multiline={type === 'textarea'}
+            rows={3}
+            onValueChange={(nextValue) => handleArrayItemChange(index, subField.name, nextValue)}
+            onFontSizeChange={(nextValue) => handleArrayItemChange(index, fontSizeKey, nextValue)}
+            showLabel={false}
+         />
       );
    };
 
