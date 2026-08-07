@@ -12,6 +12,7 @@ interface BlogCategory extends TableCommon {
 interface Blog extends TableCommon {
    title: string;
    slug: string;
+   summary: string | null;
    description: string;
    keywords: string | null;
    status: string;

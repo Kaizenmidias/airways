@@ -115,8 +115,16 @@ class BlogController extends Controller
             $userReaction = $blog->getUserReaction(Auth::id());
         }
 
+        $latestBlogs = Blog::published()
+            ->where('id', '!=', $blog->id)
+            ->with(['user:id,name,photo', 'category:id,name,slug'])
+            ->latest()
+            ->limit(4)
+            ->get();
+
         return Inertia::render('blogs/show', [
             'blog' => $blog,
+            'latestBlogs' => $latestBlogs,
             'userReaction' => $userReaction,
             'likesCount' => $blog->likes_count ?? 0,
             'dislikesCount' => $blog->dislikes_count ?? 0,

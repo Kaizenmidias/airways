@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { onHandleChange } from '@/lib/inertia';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FileText, Image, Save } from 'lucide-react';
@@ -22,6 +23,7 @@ const BlogForm = () => {
    const { data, setData, post, processing, errors } = useForm({
       title: blog ? blog.title : '',
       slug: blog ? blog.slug : '',
+      summary: blog ? blog.summary || '' : '',
       description: blog ? blog.description : '',
       keywords: blog ? blog.keywords || '' : '',
       status: blog ? blog.status : 'draft',
@@ -111,6 +113,19 @@ const BlogForm = () => {
                      maxLength={80}
                   />
                   <InputError message={errors.keywords} />
+               </div>
+
+               <div>
+                  <Label htmlFor="summary">Descrição curta da postagem</Label>
+                  <Textarea
+                     id="summary"
+                     value={data.summary}
+                     onChange={(e) => setData('summary', e.target.value)}
+                     placeholder="Texto curto exibido abaixo do título no hero da postagem"
+                     maxLength={500}
+                     rows={3}
+                  />
+                  <InputError message={errors.summary} />
                </div>
 
                <div>

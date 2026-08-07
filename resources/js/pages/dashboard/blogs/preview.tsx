@@ -43,6 +43,7 @@ const Preview = ({ blog }: Props) => {
                ))}
             </div>
             <h1 className="text-2xl leading-tight font-semibold md:text-3xl">{blog.title}</h1>
+            {blog.summary ? <p className="text-muted-foreground max-w-3xl text-sm leading-6">{blog.summary}</p> : null}
             <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-sm">
                <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
