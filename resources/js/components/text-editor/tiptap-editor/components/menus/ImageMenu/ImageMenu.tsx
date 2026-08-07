@@ -133,18 +133,18 @@ export const ImageMenu = () => {
             />
          ) : (
             <Toolbar>
-               <MenuButton text="Alt text" hideText={false} tooltip={'Alternative text'} onClick={toggleEditAltText} />
+               <MenuButton text="Texto alternativo" hideText={false} tooltip="Texto alternativo" onClick={toggleEditAltText} />
                <MenuButton
                   icon="ImageCaption"
-                  tooltip={`Caption: ${image?.hasCaption ? 'ON' : 'OFF'}`}
+                  tooltip={`Legenda: ${image?.hasCaption ? 'ativa' : 'inativa'}`}
                   active={image?.hasCaption}
                   onClick={toggleCaption}
                />
                <ToolbarDivider />
                <SizeDropdown value={image?.width} onChange={setSize} />
                <ToolbarDivider />
-               <MenuButton icon="Download" tooltip="Download" onClick={downloadImage} />
-               <MenuButton icon="Trash" tooltip="Delete" onClick={removeImage} />
+               <MenuButton icon="Download" tooltip="Baixar" onClick={downloadImage} />
+               <MenuButton icon="Trash" tooltip="Excluir" onClick={removeImage} />
             </Toolbar>
          )}
       </BubbleMenu>

@@ -1,33 +1,24 @@
-import React from "react";
-import { Toolbar } from "../../ui/Toolbar";
-import MenuButton from "../../MenuButton";
-import useCopyToClipboard from "../../../hooks/useCopyToClipboard";
+import useCopyToClipboard from '../../../hooks/useCopyToClipboard';
+import MenuButton from '../../MenuButton';
+import { Toolbar } from '../../ui/Toolbar';
 
 interface LinkViewProps {
-  url: string;
-  onEdit?: () => void;
-  onRemove?: () => void;
+   url: string;
+   onEdit?: () => void;
+   onRemove?: () => void;
 }
 
 const LinkView = ({ url, onEdit, onRemove }: LinkViewProps) => {
-  const { copy, isCopied } = useCopyToClipboard();
+   const { copy, isCopied } = useCopyToClipboard();
 
-  return (
-    <Toolbar>
-      <MenuButton text="Edit link" hideText={false} onClick={onEdit} />
-      <MenuButton
-        icon="ExternalLink"
-        text="Open in new tab"
-        onClick={() => window.open(url, "_blank")}
-      />
-      <MenuButton
-        icon={isCopied ? "Check" : "Clipboard"}
-        text={isCopied ? "Copied" : "Copy link"}
-        onClick={() => copy(url)}
-      />
-      <MenuButton icon="Unlink" text="Remove link" onClick={onRemove} />
-    </Toolbar>
-  );
+   return (
+      <Toolbar>
+         <MenuButton text="Editar link" hideText={false} onClick={onEdit} />
+         <MenuButton icon="ExternalLink" text="Abrir em nova aba" onClick={() => window.open(url, '_blank')} />
+         <MenuButton icon={isCopied ? 'Check' : 'Clipboard'} text={isCopied ? 'Copiado' : 'Copiar link'} onClick={() => copy(url)} />
+         <MenuButton icon="Unlink" text="Remover link" onClick={onRemove} />
+      </Toolbar>
+   );
 };
 
 export default LinkView;
