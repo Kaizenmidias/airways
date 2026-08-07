@@ -40,11 +40,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
    return (
       <LandingLayout customizable={false}>
          <div className="blogs-page font-sans font-normal text-slate-900">
-            <section className="relative isolate overflow-hidden border-b border-white/10 bg-slate-950 text-white">
+            <section className="relative isolate -mt-[92px] overflow-hidden border-b border-white/10 bg-slate-950 pt-[92px] text-white">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(37,99,235,0.16),transparent_26%),linear-gradient(180deg,#02070f_0%,#08111f_100%)]" />
                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_22%)]" />
 
-               <div className="relative mx-auto flex min-h-[320px] max-w-[1780px] flex-col justify-start px-5 pt-20 pb-16 sm:px-10 sm:pt-24 sm:pb-20 lg:px-14 lg:pt-28 lg:pb-24">
+               <div className="relative mx-auto flex min-h-[460px] max-w-[1780px] flex-col justify-start px-5 pt-20 pb-20 sm:min-h-[500px] sm:px-10 sm:pt-24 sm:pb-24 lg:min-h-[520px] lg:px-14 lg:pt-28 lg:pb-28">
                   <div className="w-full max-w-none space-y-5 lg:whitespace-nowrap">
                      <p className="w-full text-[11px] tracking-[0.34em] text-white/60 uppercase">Airways Academy</p>
                      <h1 className="w-full text-4xl leading-[0.96] font-normal tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.4rem]">
