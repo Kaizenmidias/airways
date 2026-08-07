@@ -44,13 +44,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(37,99,235,0.16),transparent_26%),linear-gradient(180deg,#02070f_0%,#08111f_100%)]" />
                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_22%)]" />
 
-               <div className="relative mx-auto flex min-h-[390px] max-w-[1600px] flex-col justify-center px-5 py-28 sm:px-10 sm:py-32 lg:px-14">
-                  <div className="max-w-4xl space-y-5">
-                     <p className="text-[11px] tracking-[0.34em] text-white/60 uppercase">Airways Academy</p>
-                     <h1 className="max-w-5xl text-4xl leading-[0.96] font-normal tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.4rem]">
+               <div className="relative mx-auto flex min-h-[320px] max-w-[1780px] flex-col justify-start px-5 pt-20 pb-16 sm:px-10 sm:pt-24 sm:pb-20 lg:px-14 lg:pt-28 lg:pb-24">
+                  <div className="w-full max-w-none space-y-5 lg:whitespace-nowrap">
+                     <p className="w-full text-[11px] tracking-[0.34em] text-white/60 uppercase">Airways Academy</p>
+                     <h1 className="w-full text-4xl leading-[0.96] font-normal tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.4rem]">
                         Notícias
                      </h1>
-                     <p className="max-w-2xl text-base leading-8 text-white/72 sm:text-lg">
+                     <p className="w-full max-w-none text-base leading-8 text-white/72 sm:text-lg">
                         Conteúdos, atualizações e leituras selecionadas para acompanhar a rotina da Airways.
                      </p>
                   </div>
