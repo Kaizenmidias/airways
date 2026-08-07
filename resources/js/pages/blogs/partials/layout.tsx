@@ -39,56 +39,69 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
    return (
       <LandingLayout customizable={false}>
-         <section className="overflow-hidden bg-slate-950 text-white">
-            <div className="relative isolate overflow-hidden">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_80%_20%,rgba(37,99,235,0.16),transparent_28%),linear-gradient(180deg,#02070f_0%,#04101f_58%,#02070f_100%)]" />
-               <div className="absolute inset-0 bg-gradient-to-r from-slate-950/94 via-slate-950/82 to-slate-950/94" />
+         <div className="blogs-page font-sans font-normal text-slate-900">
+            <section className="relative isolate overflow-hidden border-b border-white/10 bg-slate-950 text-white">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(253,18,46,0.22),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(37,99,235,0.16),transparent_26%),linear-gradient(180deg,#02070f_0%,#08111f_100%)]" />
+               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_22%)]" />
 
-               <div className="container relative mx-auto max-w-[1600px] px-6 pt-28 pb-16 text-center sm:px-10 sm:pt-32 sm:pb-20 lg:px-14">
-                  <h1 className="mx-auto max-w-4xl text-4xl leading-[0.96] font-black tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.5rem]">
-                     Confira nossos artigos
-                  </h1>
-               </div>
-            </div>
-         </section>
-
-         <div className="container flex items-start gap-6 py-6">
-            {screen > 768 && (
-               <Card className="sticky top-24 w-64 p-4">
-                  <BlogFilter />
-               </Card>
-            )}
-
-            {/* Main Content */}
-            <div className="flex-1">
-               <div className="mb-6 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                     {screen < 768 && (
-                        <Sheet open={open} onOpenChange={setOpen}>
-                           <SheetTrigger asChild>
-                              <Button size="icon" variant="outline">
-                                 <ListFilter className="h-5 w-5" />
-                              </Button>
-                           </SheetTrigger>
-
-                           <SheetContent side="left" className="border-border w-[220px]">
-                              <ScrollArea className="h-full">
-                                 <BlogFilter setOpen={setOpen} />
-                              </ScrollArea>
-                           </SheetContent>
-                        </Sheet>
-                     )}
-
-                     <div>
-                        <h2 className="text-2xl font-bold capitalize">{category ? category?.name : 'Todos os artigos'}</h2>
-                        {category && category.description && <p className="text-muted-foreground mt-1 text-sm">{category?.description}</p>}
-                     </div>
+               <div className="relative mx-auto flex min-h-[390px] max-w-[1600px] flex-col justify-center px-5 py-28 sm:px-10 sm:py-32 lg:px-14">
+                  <div className="max-w-4xl space-y-5">
+                     <p className="text-[11px] tracking-[0.34em] text-white/60 uppercase">Airways Academy</p>
+                     <h1 className="max-w-5xl text-4xl leading-[0.96] font-normal tracking-[-0.06em] text-white sm:text-5xl lg:text-[4.4rem]">
+                        Notícias
+                     </h1>
+                     <p className="max-w-2xl text-base leading-8 text-white/72 sm:text-lg">
+                        Conteúdos, atualizações e leituras selecionadas para acompanhar a rotina da Airways.
+                     </p>
                   </div>
                </div>
+            </section>
 
-               {/* Blog Grid */}
-               {children}
-            </div>
+            <section className="bg-[#f4f7fb]">
+               <div className="mx-auto grid max-w-[1600px] gap-6 px-5 py-10 sm:px-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-14 lg:py-12">
+                  {screen > 768 ? (
+                     <aside className="sticky top-24 self-start">
+                        <Card className="overflow-hidden border-slate-200/80 bg-white/95 shadow-[0_14px_50px_rgba(15,23,42,0.06)]">
+                           <BlogFilter />
+                        </Card>
+                     </aside>
+                  ) : null}
+
+                  <div className="min-w-0">
+                     <div className="mb-6 flex items-start justify-between gap-4">
+                        <div className="space-y-2">
+                           <p className="text-[11px] tracking-[0.3em] text-slate-500 uppercase">Artigos</p>
+                           <h2 className="text-2xl leading-tight font-normal tracking-[-0.04em] text-slate-950 capitalize sm:text-[2rem]">
+                              {category ? category?.name : 'Todos os artigos'}
+                           </h2>
+                           {category && category.description ? (
+                              <p className="max-w-2xl text-sm leading-7 text-slate-600">{category.description}</p>
+                           ) : null}
+                        </div>
+
+                        {screen < 768 ? (
+                           <Sheet open={open} onOpenChange={setOpen}>
+                              <SheetTrigger asChild>
+                                 <Button size="icon" variant="outline" className="h-11 w-11 rounded-full border-slate-200 bg-white text-slate-700">
+                                    <ListFilter className="h-5 w-5" />
+                                 </Button>
+                              </SheetTrigger>
+
+                              <SheetContent side="left" className="w-[300px] border-slate-200 bg-[#f4f7fb] p-0">
+                                 <ScrollArea className="h-full p-4">
+                                    <Card className="border-slate-200/80 bg-white shadow-[0_14px_50px_rgba(15,23,42,0.06)]">
+                                       <BlogFilter setOpen={setOpen} />
+                                    </Card>
+                                 </ScrollArea>
+                              </SheetContent>
+                           </Sheet>
+                        ) : null}
+                     </div>
+
+                     {children}
+                  </div>
+               </div>
+            </section>
          </div>
       </LandingLayout>
    );

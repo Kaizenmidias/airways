@@ -30,16 +30,25 @@ const BlogFilter = ({ setOpen }: BlogFilterProps) => {
    };
 
    return (
-      <div className="space-y-6">
-         <SearchInput placeholder="Pesquisar" onChangeValue={(value) => router.get(route('blogs.guest', { category: 'all', search: value }))} />
+      <div className="space-y-6 p-4">
+         <div className="space-y-3">
+            <p className="text-[11px] tracking-[0.28em] text-slate-500 uppercase">Filtro</p>
+            <SearchInput
+               placeholder="Pesquisar"
+               className="max-w-none"
+               onChangeValue={(value) => router.get(route('blogs.guest', { category: 'all', search: value }))}
+            />
+         </div>
 
-         {/* Categories Section */}
-         <div>
-            <h3 className="mb-3 font-semibold">{common.categories}</h3>
-            <RadioGroup value={category?.slug || 'all'} className="space-y-2">
-               <Link className="flex items-center" href={getQueryRoute({}, 'all')}>
-                  <RadioGroupItem className="cursor-pointer" id="category" value="all" />
-                  <label htmlFor="category" className="cursor-pointer pl-2">
+         <div className="space-y-4">
+            <h3 className="text-sm font-semibold tracking-[0.04em] text-slate-900 uppercase">{common.categories}</h3>
+            <RadioGroup value={category?.slug || 'all'} className="space-y-3">
+               <Link
+                  className="flex items-center gap-3 text-sm text-slate-700 transition-colors hover:text-slate-950"
+                  href={getQueryRoute({}, 'all')}
+               >
+                  <RadioGroupItem className="cursor-pointer border-slate-400 text-[#1d3f7b]" id="category" value="all" />
+                  <label htmlFor="category" className="cursor-pointer">
                      Todos os artigos
                   </label>
                </Link>
@@ -51,12 +60,12 @@ const BlogFilter = ({ setOpen }: BlogFilterProps) => {
                   return (
                      <div key={key} className="capitalize">
                         <Link
-                           className="flex items-center"
+                           className="flex items-center gap-3 text-sm text-slate-700 transition-colors hover:text-slate-950"
                            href={getQueryRoute({}, category.slug)}
                            onFinish={() => !urlParams.search && setOpen && setOpen(false)}
                         >
-                           <RadioGroupItem className="cursor-pointer" id={key} value={category.slug} />
-                           <label htmlFor={key} className="cursor-pointer pl-2">
+                           <RadioGroupItem className="cursor-pointer border-slate-400 text-[#1d3f7b]" id={key} value={category.slug} />
+                           <label htmlFor={key} className="cursor-pointer">
                               {category.name}
                            </label>
                         </Link>
