@@ -1,21 +1,21 @@
 import DeleteModal from '@/components/inertia/delete-modal';
-import { Checkbox } from '@/components/ui/checkbox';
 import Switch from '@/components/switch';
 import Tabs from '@/components/tabs';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { buildNavbarTree, recalculateFlatSorts, type NavbarTreeNode } from '@/lib/navbar-tree';
+import { cn } from '@/lib/utils';
 import { router, useForm } from '@inertiajs/react';
-import { ArrowUpDown, Edit, ExternalLink, GripVertical, Plus, Settings, Trash2 } from 'lucide-react';
+import { Edit, ExternalLink, GripVertical, Plus, Settings, Trash2 } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 
 interface NavbarItemForm {
-   type: 'url' | 'category' | 'action';
+   type: 'url' | 'category' | 'blog_category' | 'action';
    slug: string;
    subtitle: string;
    title: string;
@@ -23,6 +23,7 @@ interface NavbarItemForm {
    active: boolean;
    parent_id: number | null;
    course_category_id: number | null;
+   blog_category_id: number | null;
    display_courses_in_menu: boolean;
    items: { title: string; url: string }[];
    sort: number;
@@ -32,6 +33,7 @@ interface NavbarItemForm {
 interface Props {
    navbar: Navbar;
    courseCategories: CourseCategory[];
+   blogCategories: BlogCategory[];
 }
 
 const getRootMenuCount = (items: NavbarItem[]) => items.filter((item) => item.type !== 'action' && !item.parent_id).length;
@@ -51,13 +53,13 @@ const moveTreeItem = (items: NavbarItem[], draggedId: string | number, targetId:
 
    reordered.splice(nextTargetIndex >= 0 ? nextTargetIndex + (mode === 'before' ? 0 : 1) : reordered.length, 0, {
       ...draggedItem,
-      parent_id: mode === 'child' ? Number(targetId) : targetItem?.parent_id ?? null,
+      parent_id: mode === 'child' ? Number(targetId) : (targetItem?.parent_id ?? null),
    });
 
    return recalculateFlatSorts(reordered);
 };
 
-const NavbarEditor = ({ navbar, courseCategories }: Props) => {
+const NavbarEditor = ({ navbar, courseCategories, blogCategories }: Props) => {
    const [activeType, setActiveType] = useState<'menu' | 'action'>('menu');
    const [editingItem, setEditingItem] = useState<NavbarItem | null>(null);
    const [isFormOpen, setIsFormOpen] = useState(false);
@@ -75,11 +77,15 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
       active: true,
       parent_id: null,
       course_category_id: null,
+      blog_category_id: null,
       display_courses_in_menu: true,
       sort: 0,
    });
 
-   const sortedNavbarItems = useMemo(() => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)), [navbar.navbar_items]);
+   const sortedNavbarItems = useMemo(
+      () => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)),
+      [navbar.navbar_items],
+   );
    const actionItems = useMemo(() => sortedNavbarItems.filter((item) => item.type === 'action'), [sortedNavbarItems]);
    const activeMenuItems = useMemo(() => menuItems.filter((item) => item.type !== 'action'), [menuItems]);
    const menuTree = useMemo(() => buildNavbarTree(activeMenuItems), [activeMenuItems]);
@@ -107,21 +113,33 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
       );
    };
 
-   const openCreateForm = (type: 'url' | 'category' | 'action') => {
+   const openCreateForm = (type: 'url' | 'category' | 'blog_category' | 'action') => {
       const defaultCategory = type === 'category' ? courseCategories[0] : null;
+      const defaultBlogCategory = type === 'blog_category' ? blogCategories[0] : null;
 
       setEditingItem(null);
       setData({
          type,
-         slug: type === 'category' && defaultCategory ? `category-${defaultCategory.slug}` : '',
+         slug:
+            type === 'category' && defaultCategory
+               ? `category-${defaultCategory.slug}`
+               : type === 'blog_category' && defaultBlogCategory
+                 ? `blog-category-${defaultBlogCategory.slug}`
+                 : '',
          subtitle: '',
-         title: type === 'category' && defaultCategory ? defaultCategory.title : '',
-         value: '',
+         title:
+            type === 'category' && defaultCategory
+               ? defaultCategory.title
+               : type === 'blog_category' && defaultBlogCategory
+                 ? defaultBlogCategory.name
+                 : '',
+         value: type === 'blog_category' && defaultBlogCategory ? `/blogs/${defaultBlogCategory.slug}` : '',
          items: [],
          active: true,
          parent_id: null,
          course_category_id: defaultCategory ? Number(defaultCategory.id) : null,
-         display_courses_in_menu: true,
+         blog_category_id: defaultBlogCategory ? Number(defaultBlogCategory.id) : null,
+         display_courses_in_menu: type === 'category',
          sort: type === 'action' ? actionItems.length + 1 : getRootMenuCount(menuItems) + 1,
       });
       setIsFormOpen(true);
@@ -139,6 +157,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
          active: item.active,
          parent_id: item.parent_id ?? null,
          course_category_id: item.course_category_id ?? null,
+         blog_category_id: item.blog_category_id ?? null,
          display_courses_in_menu: item.display_courses_in_menu ?? true,
          sort: item.sort,
       });
@@ -151,9 +170,25 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
       setData((prev) => ({
          ...prev,
          course_category_id: selectedCategory ? Number(selectedCategory.id) : null,
+         blog_category_id: null,
          title: selectedCategory ? selectedCategory.title : prev.title,
          slug: selectedCategory ? `category-${selectedCategory.slug}` : prev.slug,
+         value: '',
          display_courses_in_menu: true,
+      }));
+   };
+
+   const handleBlogCategorySelect = (blogCategoryId: string) => {
+      const selectedCategory = blogCategories.find((category) => String(category.id) === blogCategoryId);
+
+      setData((prev) => ({
+         ...prev,
+         course_category_id: null,
+         blog_category_id: selectedCategory ? Number(selectedCategory.id) : null,
+         title: selectedCategory ? selectedCategory.name : prev.title,
+         slug: selectedCategory ? `blog-category-${selectedCategory.slug}` : prev.slug,
+         value: selectedCategory ? `/blogs/${selectedCategory.slug}` : prev.value,
+         display_courses_in_menu: false,
       }));
    };
 
@@ -199,7 +234,10 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
    };
 
    const renderMenuNode = (node: NavbarTreeNode<NavbarItem>, depth = 0) => {
-      const selectedCategory = node.item.course_category_id ? courseCategories.find((category) => category.id === node.item.course_category_id) : null;
+      const selectedCategory = node.item.course_category_id
+         ? courseCategories.find((category) => category.id === node.item.course_category_id)
+         : null;
+      const selectedBlogCategory = node.item.blog_category_id ? blogCategories.find((category) => category.id === node.item.blog_category_id) : null;
       const isDragged = draggedId === node.item.id;
       const hasStaticChildren = node.children.length > 0;
 
@@ -228,43 +266,60 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                   handleDropZone(node.item.id, dropState?.id === node.item.id ? dropState.mode : 'after');
                }}
                className={cn(
-                  'group flex items-start gap-3 rounded-2xl border border-transparent bg-muted/70 p-3 transition-all',
-                  depth > 0 && 'ml-8 border-l-2 border-dashed border-primary/20 bg-background/80',
+                  'group bg-muted/70 flex items-start gap-3 rounded-2xl border border-transparent p-3 transition-all',
+                  depth > 0 && 'border-primary/20 bg-background/80 ml-8 border-l-2 border-dashed',
                   isDragged && 'opacity-40',
                   dropState?.id === node.item.id && 'border-primary/40 bg-primary/5',
                )}
             >
                <button
                   type="button"
-                  className="mt-0.5 cursor-grab rounded-md p-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground active:cursor-grabbing"
+                  className="text-muted-foreground hover:bg-background hover:text-foreground mt-0.5 cursor-grab rounded-md p-1 transition-colors active:cursor-grabbing"
                >
                   <GripVertical className="h-4 w-4" />
                </button>
 
                <div className="flex-1">
-                  {node.item.subtitle ? <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-rose-500">{node.item.subtitle}</div> : null}
+                  {node.item.subtitle ? (
+                     <div className="text-[10px] font-semibold tracking-[0.24em] text-rose-500 uppercase">{node.item.subtitle}</div>
+                  ) : null}
 
                   <div className="flex items-center gap-2">
-                     {node.item.type === 'action' ? <Settings className="h-4 w-4 text-muted-foreground" /> : <ExternalLink className="h-4 w-4 text-muted-foreground" />}
-                     <div className="font-medium text-foreground">{node.item.title}</div>
+                     {node.item.type === 'action' ? (
+                        <Settings className="text-muted-foreground h-4 w-4" />
+                     ) : (
+                        <ExternalLink className="text-muted-foreground h-4 w-4" />
+                     )}
+                     <div className="text-foreground font-medium">{node.item.title}</div>
                      {node.item.type === 'category' ? (
-                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-600">
-                           Category
+                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-600 uppercase">
+                           Course Category
+                        </span>
+                     ) : null}
+                     {node.item.type === 'blog_category' ? (
+                        <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-sky-600 uppercase">
+                           Blog Category
                         </span>
                      ) : null}
                      {hasStaticChildren ? (
-                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                        <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase">
                            Dropdown
                         </span>
                      ) : null}
                   </div>
 
                   {node.item.type === 'category' ? (
-                     <div className="mt-1 text-sm text-muted-foreground">
+                     <div className="text-muted-foreground mt-1 text-sm">
                         {selectedCategory ? `${selectedCategory.courses_count ?? 0} courses from ${selectedCategory.title}` : 'Dynamic course list'}
                      </div>
+                  ) : node.item.type === 'blog_category' ? (
+                     <div className="text-muted-foreground mt-1 text-sm">
+                        {selectedBlogCategory
+                           ? `${selectedBlogCategory.published_blogs_count ?? selectedBlogCategory.blogs_count ?? 0} posts from ${selectedBlogCategory.name}`
+                           : node.item.value || 'Blog category link'}
+                     </div>
                   ) : node.item.value ? (
-                     <div className="mt-1 text-sm text-muted-foreground">{node.item.value}</div>
+                     <div className="text-muted-foreground mt-1 text-sm">{node.item.value}</div>
                   ) : null}
                </div>
 
@@ -304,7 +359,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                </TabsList>
 
                <div className="flex flex-wrap items-center gap-2">
-                  <div className="rounded-full border bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
+                  <div className="bg-muted/40 text-muted-foreground rounded-full border px-4 py-2 text-sm">
                      Drag items to reorder. Slide an item to the right of another root item to nest it.
                   </div>
 
@@ -313,9 +368,24 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                      Add URL
                   </Button>
 
-                  <Button variant="outline" className="flex items-center gap-2" onClick={() => openCreateForm('category')} disabled={courseCategories.length === 0}>
+                  <Button
+                     variant="outline"
+                     className="flex items-center gap-2"
+                     onClick={() => openCreateForm('category')}
+                     disabled={courseCategories.length === 0}
+                  >
                      <Plus className="h-4 w-4" />
-                     Add Category
+                     Add Course Category
+                  </Button>
+
+                  <Button
+                     variant="outline"
+                     className="flex items-center gap-2"
+                     onClick={() => openCreateForm('blog_category')}
+                     disabled={blogCategories.length === 0}
+                  >
+                     <Plus className="h-4 w-4" />
+                     Add Blog Category
                   </Button>
                </div>
             </div>
@@ -324,7 +394,9 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                {menuTree.length > 0 ? (
                   <div className="space-y-3">{menuTree.map((node) => renderMenuNode(node))}</div>
                ) : (
-                  <div className="py-8 text-center text-gray-500">No menu items found. Use the buttons above to add URL items or course categories.</div>
+                  <div className="py-8 text-center text-gray-500">
+                     No menu items found. Use the buttons above to add URL items or course categories.
+                  </div>
                )}
             </TabsContent>
 
@@ -364,7 +436,13 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
             <DialogContent className="max-w-2xl">
                <DialogHeader>
                   <DialogTitle>
-                     {editingItem ? 'Edit' : 'Create'} {data.type === 'category' ? 'Category' : data.type.charAt(0).toUpperCase() + data.type.slice(1)} Item
+                     {editingItem ? 'Edit' : 'Create'}{' '}
+                     {data.type === 'category'
+                        ? 'Course Category'
+                        : data.type === 'blog_category'
+                          ? 'Blog Category'
+                          : data.type.charAt(0).toUpperCase() + data.type.slice(1)}{' '}
+                     Item
                   </DialogTitle>
                   <DialogDescription>
                      {editingItem ? 'Update the details of this navbar item.' : 'Add a new navbar item to your navigation.'}
@@ -374,7 +452,10 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                      <Label>Status</Label>
-                     <Select value={data.active ? 'Active' : 'Deactive'} onValueChange={(value) => setData((prev) => ({ ...prev, active: value === 'Active' }))}>
+                     <Select
+                        value={data.active ? 'Active' : 'Deactive'}
+                        onValueChange={(value) => setData((prev) => ({ ...prev, active: value === 'Active' }))}
+                     >
                         <SelectTrigger>
                            <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -435,10 +516,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                   {data.type === 'category' && (
                      <div>
                         <Label htmlFor="course_category_id">Course Category</Label>
-                        <Select
-                           value={data.course_category_id ? String(data.course_category_id) : ''}
-                           onValueChange={handleCategorySelect}
-                        >
+                        <Select value={data.course_category_id ? String(data.course_category_id) : ''} onValueChange={handleCategorySelect}>
                            <SelectTrigger>
                               <SelectValue placeholder="Select a category" />
                            </SelectTrigger>
@@ -448,13 +526,31 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                                     {category.title}
                                  </SelectItem>
                               ))}
-                          </SelectContent>
-                       </Select>
+                           </SelectContent>
+                        </Select>
+                     </div>
+                  )}
+
+                  {data.type === 'blog_category' && (
+                     <div>
+                        <Label htmlFor="blog_category_id">Blog Category</Label>
+                        <Select value={data.blog_category_id ? String(data.blog_category_id) : ''} onValueChange={handleBlogCategorySelect}>
+                           <SelectTrigger>
+                              <SelectValue placeholder="Select a blog category" />
+                           </SelectTrigger>
+                           <SelectContent>
+                              {blogCategories.map((category) => (
+                                 <SelectItem key={category.id} value={String(category.id)}>
+                                    {category.name}
+                                 </SelectItem>
+                              ))}
+                           </SelectContent>
+                        </Select>
                      </div>
                   )}
 
                   {data.type === 'category' && (
-                     <div className="flex items-start gap-3 rounded-xl border bg-muted/30 p-4">
+                     <div className="bg-muted/30 flex items-start gap-3 rounded-xl border p-4">
                         <Checkbox
                            id="display_courses_in_menu"
                            checked={data.display_courses_in_menu}
@@ -464,7 +560,7 @@ const NavbarEditor = ({ navbar, courseCategories }: Props) => {
                            <Label htmlFor="display_courses_in_menu" className="cursor-pointer">
                               Exibir cursos no menu
                            </Label>
-                           <p className="text-sm text-muted-foreground">
+                           <p className="text-muted-foreground text-sm">
                               Quando ativo, a categoria abre o dropdown com os cursos. Quando desativado, o item vira um link para o slug informado.
                            </p>
                         </div>

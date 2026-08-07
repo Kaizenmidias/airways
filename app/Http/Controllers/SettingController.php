@@ -31,6 +31,7 @@ use App\Models\NavbarItem;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
+use Modules\Blog\Models\BlogCategory;
 
 class SettingController extends Controller
 {
@@ -75,8 +76,13 @@ class SettingController extends Controller
         $courseCategories = CourseCategory::withCount(['courses' => function ($query) {
             $query->where('status', 'approved');
         }])->orderBy('sort', 'asc')->get();
+        $blogCategories = BlogCategory::active()
+            ->where('slug', '!=', 'default')
+            ->withCount(['blogs', 'publishedBlogs'])
+            ->orderBy('sort', 'asc')
+            ->get();
 
-        return Inertia::render('dashboard/settings/system/index', compact('system', 'courseCategories'));
+        return Inertia::render('dashboard/settings/system/index', compact('system', 'courseCategories', 'blogCategories'));
     }
 
     /**

@@ -4,6 +4,7 @@ import AppearanceToggleTab from '@/components/appearance-tabs';
 import CourseCart from '@/components/course-cart';
 import Language from '@/components/language';
 import Notification from '@/components/notification';
+import PublicContainer from '@/components/public/public-container';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,9 +17,8 @@ import {
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import PublicContainer from '@/components/public/public-container';
-import { cn } from '@/lib/utils';
 import { buildNavbarTree, type NavbarTreeNode } from '@/lib/navbar-tree';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types/global';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronDown, GraduationCap, LayoutDashboard, LogOut, Menu, SettingsIcon, UserCircle, X } from 'lucide-react';
@@ -39,7 +39,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
    const [mobileOpenItems, setMobileOpenItems] = useState<Record<string, boolean>>({});
 
    const sortedItems = useMemo(() => {
-      return Array.isArray(navbar?.navbar_items) ? [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)) : [];
+      return Array.isArray(navbar?.navbar_items)
+         ? [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id))
+         : [];
    }, [navbar]);
 
    const linkItems = useMemo(() => sortedItems.filter((item) => item.type !== 'action' && item.active !== false), [sortedItems]);
@@ -61,7 +63,13 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       };
    }, []);
 
-   const resolveHref = (item: NavbarItem) => item.value || '';
+   const resolveHref = (item: NavbarItem) => {
+      if (item.type === 'blog_category') {
+         return item.value || (item.blog_category?.slug ? route('blogs.guest', { category: item.blog_category.slug }) : '');
+      }
+
+      return item.value || '';
+   };
    const isExternal = (href: string) => /^https?:\/\//i.test(href);
 
    const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
@@ -84,17 +92,24 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
    const renderNavLabel = (item: NavbarItem, className = '') => (
       <span className={cn('flex flex-col leading-tight', className)}>
-         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{item.subtitle}</span> : null}
-         <span className="text-inherit group-hover:text-primary">{item.title}</span>
+         {item.subtitle ? (
+            <span className="group-hover:text-primary text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{item.subtitle}</span>
+         ) : null}
+         <span className="group-hover:text-primary text-inherit">{item.title}</span>
       </span>
    );
 
    const renderCourseMenuItems = (courses: Course[]) =>
       courses.map((course) => (
          <DropdownMenuItem key={course.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
-               <Link href={resolveCourseHref(course)} className="block w-full text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+            <Link
+               href={resolveCourseHref(course)}
+               className="hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full text-white/90 transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+            >
                <span className="flex flex-col leading-tight">
-                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
+                  {course.sub_title ? (
+                     <span className="text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{course.sub_title}</span>
+                  ) : null}
                   <span className="text-inherit">{course.title}</span>
                </span>
             </Link>
@@ -107,7 +122,10 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
          return (
             <DropdownMenuItem key={child.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
-               <Link href={childHref} className="block w-full text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+               <Link
+                  href={childHref}
+                  className="hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full text-white/90 transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+               >
                   <span className="flex flex-col leading-tight">
                      <span>{child.title}</span>
                   </span>
@@ -130,7 +148,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                href={categoryHref || '#'}
                className={cn(
                   'group flex cursor-pointer items-center gap-1 rounded-md px-3 py-2 outline-none',
-                  'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary',
+                  'hover:!text-primary focus:!text-primary data-[state=open]:!text-primary text-sm font-medium text-white/90 transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white',
                )}
             >
                {renderNavLabel(item)}
@@ -141,7 +159,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (hasChildCategories && keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+               <DropdownMenuSubTrigger className="group hover:!text-primary focus:!text-primary data-[state=open]:!text-primary mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors last:mb-0 hover:bg-white focus:bg-white data-[state=open]:bg-white">
                   {renderNavLabel(item)}
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
@@ -154,7 +172,12 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (hasChildCategories) {
          return (
             <DropdownMenu key={item.id}>
-               <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}>
+               <DropdownMenuTrigger
+                  className={cn(
+                     'group flex cursor-pointer items-center gap-1 outline-none',
+                     'hover:!text-primary focus:!text-primary data-[state=open]:!text-primary text-sm font-medium text-white/90 transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white',
+                  )}
+               >
                   {renderNavLabel(item)}
                   <ChevronDown className="h-4 w-4" />
                </DropdownMenuTrigger>
@@ -168,7 +191,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       if (keySuffix) {
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="group mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+               <DropdownMenuSubTrigger className="group hover:!text-primary focus:!text-primary data-[state=open]:!text-primary mb-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-white/90 transition-colors last:mb-0 hover:bg-white focus:bg-white data-[state=open]:bg-white">
                   {renderNavLabel(item)}
                </DropdownMenuSubTrigger>
                <DropdownMenuSubContent className="min-w-56 border-white/10 bg-slate-950/95 text-white">
@@ -180,7 +203,12 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className={cn('group flex cursor-pointer items-center gap-1 outline-none', 'text-sm font-medium text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary')}>
+            <DropdownMenuTrigger
+               className={cn(
+                  'group flex cursor-pointer items-center gap-1 outline-none',
+                  'hover:!text-primary focus:!text-primary data-[state=open]:!text-primary text-sm font-medium text-white/90 transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white',
+               )}
+            >
                {renderNavLabel(item)}
                <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -188,7 +216,10 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                {!hasChildCategories && item.display_courses_in_menu !== false && courses.length > 0 ? renderCourseMenuItems(courses) : null}
                {!hasChildCategories && courses.length === 0 && item.display_courses_in_menu !== false ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-0 py-0">
-                     <Link href={categoryHref} className="block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+                     <Link
+                        href={categoryHref}
+                        className="hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full px-4 py-2 text-white/90 transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+                     >
                         {renderNavLabel(item)}
                      </Link>
                   </DropdownMenuItem>
@@ -211,7 +242,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             if (subNode.children.length > 0) {
                return (
                   <DropdownMenuSub key={`${parentKey}-${index}`}>
-                     <DropdownMenuSubTrigger className="group flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+                     <DropdownMenuSubTrigger className="group hover:!text-primary focus:!text-primary data-[state=open]:!text-primary flex cursor-pointer items-center gap-2 px-3 py-2 text-white/90 transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white">
                         {renderNavLabel(subItem)}
                      </DropdownMenuSubTrigger>
                      <DropdownMenuSubContent className="flex min-w-56 flex-col gap-1 border-white/10 bg-slate-950/95 p-2 text-white">
@@ -221,7 +252,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                );
             }
 
-            const subHref = subItem.value || '';
+            const subHref = resolveHref(subItem);
 
             if (!subHref) {
                return (
@@ -234,11 +265,17 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             return (
                <DropdownMenuItem key={`${parentKey}-${index}`} className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0" asChild>
                   {isExternal(subHref) ? (
-                     <a href={subHref} className="block w-full text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+                     <a
+                        href={subHref}
+                        className="hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full text-white/90 transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+                     >
                         {renderNavLabel(subItem)}
                      </a>
                   ) : (
-                     <Link href={subHref} className="block w-full text-white/90 transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+                     <Link
+                        href={subHref}
+                        className="hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full text-white/90 transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+                     >
                         {renderNavLabel(subItem)}
                      </Link>
                   )}
@@ -252,11 +289,15 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             key={course.id}
             href={resolveCourseHref(course)}
             onClick={() => setIsMenuOpen(false)}
-            className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+            className="group hover:text-primary block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white"
          >
             <span className="flex flex-col leading-tight">
-               {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8] group-hover:text-primary">{course.sub_title}</span> : null}
-               <span className="text-inherit group-hover:text-primary">{course.title}</span>
+               {course.sub_title ? (
+                  <span className="group-hover:text-primary text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">
+                     {course.sub_title}
+                  </span>
+               ) : null}
+               <span className="group-hover:text-primary text-inherit">{course.title}</span>
             </span>
          </Link>
       ));
@@ -270,10 +311,10 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                key={child.id}
                href={childHref}
                onClick={() => setIsMenuOpen(false)}
-               className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+               className="group hover:text-primary block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white"
             >
                <span className="flex flex-col leading-tight">
-                  <span className="text-inherit group-hover:text-primary">{child.title}</span>
+                  <span className="group-hover:text-primary text-inherit">{child.title}</span>
                </span>
             </Link>
          );
@@ -298,7 +339,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   key={item.id}
                   href={resolveCategoryHref(item) || '#'}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+                  className="hover:text-primary block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white"
                >
                   {renderNavLabel(item)}
                </Link>
@@ -310,7 +351,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                <button
                   type="button"
                   onClick={() => toggleMobileItem(mobileKey)}
-                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+                  className="group hover:text-primary flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white"
                >
                   {renderNavLabel(item)}
                   <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', isOpen && 'rotate-180')} />
@@ -318,7 +359,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                {isOpen ? (
                   <div className="space-y-3 pl-3">
-                     {hasChildCategories ? <div className="space-y-2">{renderMobileSubCategories(category as CourseCategory, childCategories)}</div> : null}
+                     {hasChildCategories ? (
+                        <div className="space-y-2">{renderMobileSubCategories(category as CourseCategory, childCategories)}</div>
+                     ) : null}
                      {!hasChildCategories && courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
                   </div>
                ) : null}
@@ -334,19 +377,27 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                <button
                   type="button"
                   onClick={() => toggleMobileItem(mobileKey)}
-                  className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white hover:text-primary"
+                  className="group hover:text-primary flex w-full items-center justify-between rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-left text-white transition-colors hover:bg-white"
                >
                   {renderNavLabel(item)}
                   <ChevronDown className={cn('h-4 w-4 shrink-0 transition-transform', isOpen && 'rotate-180')} />
                </button>
 
-               {isOpen ? <div className="space-y-2 pl-3">{node.children.map((childNode, index) => renderMobileNode(childNode, `${mobileKey}-${index}`))}</div> : null}
+               {isOpen ? (
+                  <div className="space-y-2 pl-3">
+                     {node.children.map((childNode, index) => renderMobileNode(childNode, `${mobileKey}-${index}`))}
+                  </div>
+               ) : null}
             </div>
          );
       }
 
       if (!href) {
-         return <div key={item.id} className="rounded-xl border border-white/10 bg-[#050b14] px-3 py-2">{renderNavLabel(item, 'text-white/80')}</div>;
+         return (
+            <div key={item.id} className="rounded-xl border border-white/10 bg-[#050b14] px-3 py-2">
+               {renderNavLabel(item, 'text-white/80')}
+            </div>
+         );
       }
 
       return (
@@ -354,7 +405,7 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
             key={item.id}
             href={href}
             onClick={() => setIsMenuOpen(false)}
-            className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+            className="group hover:text-primary block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white"
          >
             {renderNavLabel(item)}
          </Link>
@@ -472,11 +523,13 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
       <div className={cn('landing-navbar', isMenuOpen && 'bg-white')}>
          <div
             className={cn(
-               'fixed top-0 inset-x-0 z-50 w-full rounded-none border-x-0 border-b border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl transition-colors duration-300',
+               'fixed inset-x-0 top-0 z-50 w-full rounded-none border-x-0 border-b border-white/12 bg-[linear-gradient(180deg,rgba(102,122,153,0.36)_0%,rgba(40,58,83,0.38)_100%)] text-white backdrop-blur-xl transition-colors duration-300',
                isSticky && 'border-white/10 bg-[#060F1B] shadow-[0_18px_50px_rgba(8,15,27,0.35)]',
             )}
          >
-            <PublicContainer className={cn('relative flex h-[84px] items-center justify-between gap-4 py-2', customizable && isAdmin && 'section-edit')}>
+            <PublicContainer
+               className={cn('relative flex h-[84px] items-center justify-between gap-4 py-2', customizable && isAdmin && 'section-edit')}
+            >
                <div className="flex items-center gap-3">
                   <Link href="/" className="inline-flex items-center">
                      <div className="origin-left scale-[1.55]">
@@ -500,16 +553,12 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            return <Language key={item.id} />;
                         }
 
-                       if (item.slug === 'notification' && user) {
-                           return (
-                              <Notification key={item.id} iconOnly />
-                           );
+                        if (item.slug === 'notification' && user) {
+                           return <Notification key={item.id} iconOnly />;
                         }
 
                         if (item.slug === 'cart') {
-                           return (
-                              <CourseCart key={item.id} iconOnly />
-                           );
+                           return <CourseCart key={item.id} iconOnly />;
                         }
 
                         return null;
@@ -517,7 +566,11 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                   </div>
 
                   {customizable && isAdmin && (
-                     <Button asChild variant="outline" className="hidden h-10 rounded-full border-white/25 bg-transparent px-5 text-white shadow-none hover:bg-white/10 lg:inline-flex">
+                     <Button
+                        asChild
+                        variant="outline"
+                        className="hidden h-10 rounded-full border-white/25 bg-transparent px-5 text-white shadow-none hover:bg-white/10 lg:inline-flex"
+                     >
                         <Link href={customizeLink}>{props.customize ? translate.button.back || 'Back' : translate.button.edit || 'Customize'}</Link>
                      </Button>
                   )}
@@ -526,10 +579,14 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                      <div className="hidden items-center gap-3 lg:flex">{renderProfileMenu()}</div>
                   ) : (
                      <div className="hidden items-center gap-2 lg:flex">
-                        <Button asChild variant="outline" className="h-10 rounded-full border-white/20 bg-white/5 px-5 text-white shadow-none hover:bg-white/10">
+                        <Button
+                           asChild
+                           variant="outline"
+                           className="h-10 rounded-full border-white/20 bg-white/5 px-5 text-white shadow-none hover:bg-white/10"
+                        >
                            <Link href={route('register')}>{translate.button.sign_up || 'Sign up'}</Link>
                         </Button>
-                        <Button asChild className="h-10 rounded-full bg-primary px-5 text-white shadow-none hover:bg-primary/90">
+                        <Button asChild className="bg-primary hover:bg-primary/90 h-10 rounded-full px-5 text-white shadow-none">
                            <Link href={route('login')}>{translate.button.log_in || 'Log in'}</Link>
                         </Button>
                      </div>
@@ -581,7 +638,9 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
 
                      {customizable && isAdmin && (
                         <Button asChild variant="outline" className="w-full rounded-full shadow-none">
-                           <Link href={customizeLink}>{props.customize ? translate.button.back || 'Back' : translate.button.edit || 'Customize'}</Link>
+                           <Link href={customizeLink}>
+                              {props.customize ? translate.button.back || 'Back' : translate.button.edit || 'Customize'}
+                           </Link>
                         </Button>
                      )}
 
@@ -603,36 +662,56 @@ const Navbar = ({ language = true, heightCover = true, customizable = true }: Na
                            </div>
 
                            {(user.role === 'admin' || user.role === 'instructor') && (
-                              <Button asChild className="w-full rounded-full bg-primary text-white shadow-none hover:bg-primary/90">
+                              <Button asChild className="bg-primary hover:bg-primary/90 w-full rounded-full text-white shadow-none">
                                  <Link href={route('dashboard')}>{translate.button.dashboard || 'Dashboard'}</Link>
                               </Button>
                            )}
 
                            {(user.role === 'student' || user.role === 'instructor') && (
                               <>
-                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
+                                 <Button
+                                    asChild
+                                    variant="outline"
+                                    className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10"
+                                 >
                                     <Link href={route('student.index', { tab: 'courses' })}>{translate.button.my_courses || 'My Courses'}</Link>
                                  </Button>
-                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
+                                 <Button
+                                    asChild
+                                    variant="outline"
+                                    className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10"
+                                 >
                                     <Link href={route('student.index', { tab: 'profile' })}>{translate.button.profile || 'Profile'}</Link>
                                  </Button>
-                                 <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
+                                 <Button
+                                    asChild
+                                    variant="outline"
+                                    className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10"
+                                 >
                                     <Link href={route('student.index', { tab: 'settings' })}>{translate.button.settings || 'Settings'}</Link>
                                  </Button>
                               </>
                            )}
 
-                           <Button variant="secondary" className="w-full rounded-full bg-white/10 text-white hover:bg-white/15" onClick={() => router.post('/logout')}>
+                           <Button
+                              variant="secondary"
+                              className="w-full rounded-full bg-white/10 text-white hover:bg-white/15"
+                              onClick={() => router.post('/logout')}
+                           >
                               <LogOut className="mr-2 h-4 w-4" />
                               {translate.button.logout || 'Log out'}
                            </Button>
                         </div>
                      ) : (
                         <div className="space-y-3 border-t border-slate-200 pt-4">
-                           <Button asChild variant="outline" className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10">
+                           <Button
+                              asChild
+                              variant="outline"
+                              className="w-full rounded-full border-white/20 bg-white/5 text-white shadow-none hover:bg-white/10"
+                           >
                               <Link href={route('register')}>{translate.button.sign_up || 'Sign up'}</Link>
                            </Button>
-                           <Button asChild className="w-full rounded-full bg-primary text-white shadow-none hover:bg-primary/90">
+                           <Button asChild className="bg-primary hover:bg-primary/90 w-full rounded-full text-white shadow-none">
                               <Link href={route('login')}>{translate.button.log_in || 'Log in'}</Link>
                            </Button>
                         </div>

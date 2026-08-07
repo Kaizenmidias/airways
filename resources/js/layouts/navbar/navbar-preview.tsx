@@ -27,8 +27,19 @@ interface NavbarPreviewProps {
 const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-   const items = useMemo(() => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)), [navbar.navbar_items]);
+   const items = useMemo(
+      () => [...navbar.navbar_items].sort((a, b) => Number(a.sort) - Number(b.sort) || Number(a.id) - Number(b.id)),
+      [navbar.navbar_items],
+   );
    const linkTree = useMemo(() => buildNavbarTree(items.filter((item) => item.type !== 'action' && item.active)), [items]);
+
+   const resolveHref = (item: NavbarItem) => {
+      if (item.type === 'blog_category') {
+         return item.value || (item.blog_category?.slug ? route('blogs.guest', { category: item.blog_category.slug }) : '');
+      }
+
+      return item.value || '';
+   };
 
    const resolveCourseHref = (course: Course) => route('course.details', { slug: course.slug, id: course.id });
    const resolveCategoryHref = (item: NavbarItem) => {
@@ -43,7 +54,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderNavLabel = (item: NavbarItem) => (
       <span className="flex flex-col leading-tight">
-         {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
+         {item.subtitle ? <span className="text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{item.subtitle}</span> : null}
          <span className="text-inherit">{item.title}</span>
       </span>
    );
@@ -51,9 +62,14 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
    const renderCourseItems = (courses: Course[]) =>
       courses.map((course) => (
          <DropdownMenuItem key={course.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
-            <Link href={resolveCourseHref(course)} className="block w-full text-foreground transition-colors hover:bg-white hover:text-primary focus:bg-white focus:text-primary data-[highlighted]:bg-white data-[highlighted]:text-primary">
+            <Link
+               href={resolveCourseHref(course)}
+               className="text-foreground hover:text-primary focus:text-primary data-[highlighted]:text-primary block w-full transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+            >
                <span className="flex flex-col leading-tight">
-                  {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
+                  {course.sub_title ? (
+                     <span className="text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{course.sub_title}</span>
+                  ) : null}
                   <span className="text-inherit">{course.title}</span>
                </span>
             </Link>
@@ -66,7 +82,10 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
          return (
             <DropdownMenuItem key={child.id} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
-               <Link href={childHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+               <Link
+                  href={childHref}
+                  className="text-foreground hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+               >
                   <span className="flex flex-col leading-tight">
                      <span>{child.title}</span>
                   </span>
@@ -87,7 +106,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             <Link
                key={item.id}
                href={categoryHref || '#'}
-               className="flex cursor-pointer items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary"
+               className="text-foreground hover:!text-primary focus:!text-primary data-[state=open]:!text-primary flex cursor-pointer items-center rounded-md px-3 py-2 text-sm transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white"
             >
                {renderNavLabel(item)}
             </Link>
@@ -98,7 +117,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
          if (hasChildCategories) {
             return (
                <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-                  <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+                  <DropdownMenuSubTrigger className="text-foreground hover:!text-primary focus:!text-primary data-[state=open]:!text-primary mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm transition-colors last:mb-0 hover:bg-white focus:bg-white data-[state=open]:bg-white">
                      {renderNavLabel(item)}
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent className="min-w-20">
@@ -110,19 +129,17 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
          return (
             <DropdownMenuSub key={`${item.id}${keySuffix}`}>
-               <DropdownMenuSubTrigger className="mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary last:mb-0">
+               <DropdownMenuSubTrigger className="text-foreground hover:!text-primary focus:!text-primary data-[state=open]:!text-primary mb-1 flex cursor-pointer items-center rounded-md py-2 text-sm transition-colors last:mb-0 hover:bg-white focus:bg-white data-[state=open]:bg-white">
                   {renderNavLabel(item)}
                </DropdownMenuSubTrigger>
-               <DropdownMenuSubContent className="min-w-20">
-                  {courses.length > 0 ? renderCourseItems(courses) : null}
-               </DropdownMenuSubContent>
+               <DropdownMenuSubContent className="min-w-20">{courses.length > 0 ? renderCourseItems(courses) : null}</DropdownMenuSubContent>
             </DropdownMenuSub>
          );
       }
 
       return (
          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+            <DropdownMenuTrigger className="text-foreground hover:!text-primary focus:!text-primary data-[state=open]:!text-primary flex cursor-pointer items-center py-1 text-sm transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white">
                {renderNavLabel(item)}
                <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
@@ -131,7 +148,10 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                {!hasChildCategories && courses.length > 0 ? renderCourseItems(courses) : null}
                {!hasChildCategories && courses.length === 0 ? (
                   <DropdownMenuItem asChild className="cursor-pointer px-5">
-                     <Link href={categoryHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+                     <Link
+                        href={categoryHref}
+                        className="text-foreground hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+                     >
                         {renderNavLabel(item)}
                      </Link>
                   </DropdownMenuItem>
@@ -154,7 +174,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             if (subNode.children.length > 0) {
                return (
                   <DropdownMenuSub key={`${parentKey}-${idx}`}>
-                     <DropdownMenuSubTrigger className="flex cursor-pointer items-center py-1 text-sm text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[state=open]:bg-white data-[state=open]:!text-primary">
+                     <DropdownMenuSubTrigger className="text-foreground hover:!text-primary focus:!text-primary data-[state=open]:!text-primary flex cursor-pointer items-center py-1 text-sm transition-colors hover:bg-white focus:bg-white data-[state=open]:bg-white">
                         {renderNavLabel(subItem)}
                         <ChevronRight className="ml-auto h-4 w-4" />
                      </DropdownMenuSubTrigger>
@@ -165,7 +185,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                );
             }
 
-            const subHref = subItem.value || '';
+            const subHref = resolveHref(subItem);
 
             if (!subHref) {
                return (
@@ -177,7 +197,10 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
             return (
                <DropdownMenuItem key={`${parentKey}-${idx}`} asChild className="mb-1 cursor-pointer rounded-md px-4 py-2 last:mb-0">
-                  <Link href={subHref} className="block w-full text-foreground transition-colors hover:bg-white hover:!text-primary focus:bg-white focus:!text-primary data-[highlighted]:bg-white data-[highlighted]:!text-primary">
+                  <Link
+                     href={subHref}
+                     className="text-foreground hover:!text-primary focus:!text-primary data-[highlighted]:!text-primary block w-full transition-colors hover:bg-white focus:bg-white data-[highlighted]:bg-white"
+                  >
                      {renderNavLabel(subItem)}
                   </Link>
                </DropdownMenuItem>
@@ -190,11 +213,13 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             key={course.id}
             href={resolveCourseHref(course)}
             onClick={() => setIsMenuOpen(false)}
-            className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+            className="border-border text-foreground hover:bg-background hover:text-primary block rounded-xl border px-3 py-2 transition-colors"
          >
             <span className="flex flex-col leading-tight">
-               {course.sub_title ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{course.sub_title}</span> : null}
-                  <span className="text-inherit">{course.title}</span>
+               {course.sub_title ? (
+                  <span className="text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{course.sub_title}</span>
+               ) : null}
+               <span className="text-inherit">{course.title}</span>
             </span>
          </Link>
       ));
@@ -209,13 +234,13 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                   key={child.id}
                   href={childHref}
                   onClick={() => setIsMenuOpen(false)}
-                  className="group block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white hover:text-primary"
+                  className="group hover:text-primary block rounded-xl border border-white/10 bg-[#050b14] px-3 py-2 text-white transition-colors hover:bg-white"
                >
                   <span className="flex items-center justify-between gap-3">
                      <span className="flex flex-col leading-tight">
-                        <span className="text-inherit group-hover:text-primary">{child.title}</span>
+                        <span className="group-hover:text-primary text-inherit">{child.title}</span>
                      </span>
-                     <ChevronRight className="h-4 w-4 shrink-0 text-white/50 group-hover:text-primary" />
+                     <ChevronRight className="group-hover:text-primary h-4 w-4 shrink-0 text-white/50" />
                   </span>
                </Link>
             );
@@ -225,7 +250,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderMobileNode = (node: NavbarTreeNode, parentKey: string | number) => {
       const { item } = node;
-      const href = item.value || '';
+      const href = resolveHref(item);
 
       if (item.type === 'category') {
          const category = item.course_category;
@@ -240,7 +265,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
                   key={item.id}
                   href={resolveCategoryHref(item) || '#'}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+                  className="border-border text-foreground hover:bg-background hover:text-primary block rounded-xl border px-3 py-2 transition-colors"
                >
                   {renderNavLabel(item)}
                </Link>
@@ -249,10 +274,10 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
          return (
             <AccordionItem key={item.id} value={`cat-${parentKey}-${item.id}`} className="border-b-0">
-               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
+               <AccordionTrigger className="text-foreground [&>svg]:text-muted-foreground rounded-xl px-3 py-2 text-left text-sm font-medium hover:no-underline">
                   {renderNavLabel(item)}
                </AccordionTrigger>
-               <AccordionContent className="pb-0 pt-2">
+               <AccordionContent className="pt-2 pb-0">
                   <div className="space-y-3 pl-3">
                      {hasChildCategories ? renderMobileSubCategories(category as CourseCategory, childCategories) : null}
                      {!hasChildCategories && courses.length > 0 ? <div className="space-y-2">{renderMobileCourseItems(courses)}</div> : null}
@@ -265,11 +290,13 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       if (node.children.length > 0) {
          return (
             <AccordionItem key={item.id} value={`node-${parentKey}-${item.id}`} className="border-b-0">
-               <AccordionTrigger className="rounded-xl px-3 py-2 text-left text-sm font-medium text-foreground hover:no-underline [&>svg]:text-muted-foreground">
+               <AccordionTrigger className="text-foreground [&>svg]:text-muted-foreground rounded-xl px-3 py-2 text-left text-sm font-medium hover:no-underline">
                   {renderNavLabel(item)}
                </AccordionTrigger>
-               <AccordionContent className="pb-0 pt-2">
-                  <div className="space-y-2 pl-3">{node.children.map((childNode, index) => renderMobileNode(childNode, `${parentKey}-${index}`))}</div>
+               <AccordionContent className="pt-2 pb-0">
+                  <div className="space-y-2 pl-3">
+                     {node.children.map((childNode, index) => renderMobileNode(childNode, `${parentKey}-${index}`))}
+                  </div>
                </AccordionContent>
             </AccordionItem>
          );
@@ -277,9 +304,11 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
       if (!href) {
          return (
-            <div key={item.id} className="rounded-xl border border-border px-3 py-2">
-               <span className="flex flex-col leading-tight text-muted-foreground">
-                  {item.subtitle ? <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccccccb8]">{item.subtitle}</span> : null}
+            <div key={item.id} className="border-border rounded-xl border px-3 py-2">
+               <span className="text-muted-foreground flex flex-col leading-tight">
+                  {item.subtitle ? (
+                     <span className="text-[10px] font-semibold tracking-[0.22em] text-[#ccccccb8] uppercase">{item.subtitle}</span>
+                  ) : null}
                   <span className="text-inherit">{item.title}</span>
                </span>
             </div>
@@ -291,7 +320,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
             key={item.id}
             href={href}
             onClick={() => setIsMenuOpen(false)}
-            className="block rounded-xl border border-border px-3 py-2 text-foreground transition-colors hover:bg-background hover:text-primary"
+            className="border-border text-foreground hover:bg-background hover:text-primary block rounded-xl border px-3 py-2 transition-colors"
          >
             {renderNavLabel(item)}
          </Link>
@@ -300,7 +329,7 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
 
    const renderNode = (node: NavbarTreeNode) => {
       const { item } = node;
-      const href = item.value || '';
+      const href = resolveHref(item);
 
       if (item.type === 'category') {
          return renderCategoryNode(item);
@@ -321,7 +350,11 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       }
 
       if (!href) {
-         return <span key={item.id} className="py-1 text-sm font-normal">{renderNavLabel(item)}</span>;
+         return (
+            <span key={item.id} className="py-1 text-sm font-normal">
+               {renderNavLabel(item)}
+            </span>
+         );
       }
 
       return (
@@ -358,22 +391,20 @@ const NavbarPreview = ({ auth, navbar }: NavbarPreviewProps) => {
       <div className="border-border bg-background rounded-lg border px-4 transition-colors">
          <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-               <div className="flex items-center gap-10">
-                  <Link href="/">
-                     <AppLogo />
-                  </Link>
+            <div className="flex items-center gap-10">
+               <Link href="/">
+                  <AppLogo />
+               </Link>
 
-                  {/* Desktop Navigation */}
-                  <div className="hidden gap-4 md:flex md:items-center">
-                     {linkTree.map((node) => renderNode(node))}
-                  </div>
-               </div>
+               {/* Desktop Navigation */}
+               <div className="hidden gap-4 md:flex md:items-center">{linkTree.map((node) => renderNode(node))}</div>
+            </div>
 
-               <div className="flex items-center gap-2">
-                  {auth ? (
-                     items.map((item) => <div key={item.id}>{renderActionItems(item)}</div>)
-                  ) : (
-                     <>
+            <div className="flex items-center gap-2">
+               {auth ? (
+                  items.map((item) => <div key={item.id}>{renderActionItems(item)}</div>)
+               ) : (
+                  <>
                      <Button asChild variant="outline" className="h-auto rounded-sm px-5 py-2.5 shadow-none">
                         <Link href={route('register')}>Sign Up</Link>
                      </Button>

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Course\CourseCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Blog\Models\BlogCategory;
 
 class NavbarItem extends Model
 {
@@ -17,6 +18,7 @@ class NavbarItem extends Model
         'value',
         'items',
         'course_category_id',
+        'blog_category_id',
         'display_courses_in_menu',
         'active',
         'parent_id',
@@ -27,6 +29,7 @@ class NavbarItem extends Model
         'sort' => 'integer',
         'active' => 'boolean',
         'course_category_id' => 'integer',
+        'blog_category_id' => 'integer',
         'display_courses_in_menu' => 'boolean',
         'parent_id' => 'integer',
         'items' => 'array',
@@ -50,6 +53,14 @@ class NavbarItem extends Model
     public function courseCategory(): BelongsTo
     {
         return $this->belongsTo(CourseCategory::class, 'course_category_id');
+    }
+
+    /**
+     * Get the blog category linked to this navbar item.
+     */
+    public function blogCategory(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
     }
 
     /**

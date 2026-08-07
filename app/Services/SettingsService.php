@@ -11,6 +11,7 @@ use App\Models\Page;
 use App\Models\Setting;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Modules\Blog\Models\BlogCategory;
 
 class SettingsService extends MediaService
 {
@@ -156,24 +157,27 @@ class SettingsService extends MediaService
             return Navbar::where('slug', $slug)
                 ->where('active', true)
                 ->with(['navbarItems' => function ($query) {
-                    $query->with(['courseCategory' => function ($categoryQuery) {
-                        $categoryQuery->with([
-                            'courses' => function ($courseQuery) {
-                                $courseQuery->where('status', 'approved')
-                                    ->whereNull('course_category_child_id')
-                                    ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
-                                    ->orderBy('title', 'asc');
-                            },
-                            'category_children' => function ($childQuery) {
-                                $childQuery->orderBy('sort', 'asc')
-                                    ->with(['courses' => function ($courseQuery) {
-                                        $courseQuery->where('status', 'approved')
-                                            ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
-                                            ->orderBy('title', 'asc');
-                                    }]);
-                            },
-                        ]);
-                    }]);
+                    $query->with([
+                        'blogCategory',
+                        'courseCategory' => function ($categoryQuery) {
+                            $categoryQuery->with([
+                                'courses' => function ($courseQuery) {
+                                    $courseQuery->where('status', 'approved')
+                                        ->whereNull('course_category_child_id')
+                                        ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
+                                        ->orderBy('title', 'asc');
+                                },
+                                'category_children' => function ($childQuery) {
+                                    $childQuery->orderBy('sort', 'asc')
+                                        ->with(['courses' => function ($courseQuery) {
+                                            $courseQuery->where('status', 'approved')
+                                                ->select('id', 'title', 'sub_title', 'slug', 'thumbnail', 'course_category_id', 'course_category_child_id')
+                                                ->orderBy('title', 'asc');
+                                        }]);
+                                },
+                            ]);
+                        },
+                    ]);
                 }])
                 ->first();
         }, 5);
@@ -209,6 +213,8 @@ class SettingsService extends MediaService
                 }
                 $data['value'] = null; // Dropdowns don't use value field
                 $data['parent_id'] = null;
+                $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
             } elseif ($data['type'] === 'action') {
                 // For action types, clear both value and items fields
                 $data['value'] = null;
@@ -216,6 +222,7 @@ class SettingsService extends MediaService
                 $data['parent_id'] = null;
                 $data['subtitle'] = null;
                 $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
             } elseif ($data['type'] === 'category') {
                 $category = CourseCategory::find($data['course_category_id'] ?? null);
 
@@ -226,14 +233,28 @@ class SettingsService extends MediaService
 
                 $data['value'] = null;
                 $data['items'] = null;
+                $data['blog_category_id'] = null;
                 $data['subtitle'] = $data['subtitle'] ?? null;
                 $data['display_courses_in_menu'] = array_key_exists('display_courses_in_menu', $data)
                     ? (bool) $data['display_courses_in_menu']
                     : true;
+            } elseif ($data['type'] === 'blog_category') {
+                $category = BlogCategory::find($data['blog_category_id'] ?? null);
+
+                if ($category) {
+                    $data['title'] = $data['title'] ?: $category->name;
+                    $data['slug'] = $data['slug'] ?: 'blog-category-' . $category->slug;
+                    $data['value'] = '/blogs/' . $category->slug;
+                }
+
+                $data['items'] = null;
+                $data['course_category_id'] = null;
+                $data['display_courses_in_menu'] = false;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
                 $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
                 $data['display_courses_in_menu'] = false;
             }
 
@@ -266,6 +287,8 @@ class SettingsService extends MediaService
                 }
                 $data['value'] = null; // Dropdowns don't use value field
                 $data['parent_id'] = null;
+                $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
             } elseif ($data['type'] === 'action') {
                 // For action types, clear both value and items fields
                 $data['value'] = null;
@@ -273,6 +296,7 @@ class SettingsService extends MediaService
                 $data['parent_id'] = null;
                 $data['subtitle'] = null;
                 $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
             } elseif ($data['type'] === 'category') {
                 $category = CourseCategory::find($data['course_category_id'] ?? null);
 
@@ -283,13 +307,27 @@ class SettingsService extends MediaService
 
                 $data['value'] = null;
                 $data['items'] = null;
+                $data['blog_category_id'] = null;
                 $data['display_courses_in_menu'] = array_key_exists('display_courses_in_menu', $data)
                     ? (bool) $data['display_courses_in_menu']
                     : true;
+            } elseif ($data['type'] === 'blog_category') {
+                $category = BlogCategory::find($data['blog_category_id'] ?? null);
+
+                if ($category) {
+                    $data['title'] = $data['title'] ?: $category->name;
+                    $data['slug'] = $data['slug'] ?: 'blog-category-' . $category->slug;
+                    $data['value'] = '/blogs/' . $category->slug;
+                }
+
+                $data['items'] = null;
+                $data['course_category_id'] = null;
+                $data['display_courses_in_menu'] = false;
             } else {
                 // For URL types, clear items field
                 $data['items'] = null;
                 $data['course_category_id'] = null;
+                $data['blog_category_id'] = null;
                 $data['display_courses_in_menu'] = false;
             }
 
@@ -369,6 +407,7 @@ class SettingsService extends MediaService
                 ->where('active', true)
                 ->with(['navbarItems' => function ($query) use ($type) {
                     $query->where('active', true)
+                        ->with(['courseCategory', 'blogCategory'])
                         ->when($type, function ($q) use ($type) {
                             return $q->where('type', $type);
                         })
@@ -407,6 +446,7 @@ class SettingsService extends MediaService
                 'value' => $item->value,
                 'items' => $item->items,
                 'course_category_id' => $item->course_category_id,
+                'blog_category_id' => $item->blog_category_id,
                 'display_courses_in_menu' => $item->display_courses_in_menu,
                 'parent_id' => $item->parent_id,
                 'sort' => $maxSort + 1,

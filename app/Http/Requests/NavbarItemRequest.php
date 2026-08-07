@@ -22,12 +22,13 @@ class NavbarItemRequest extends FormRequest
    public function rules(): array
    {
       return [
-         'type' => 'required|string|in:url,category,action',
+         'type' => 'required|string|in:url,category,blog_category,action',
          'slug' => 'required|string|max:255',
          'title' => 'required|string|max:255',
          'subtitle' => 'nullable|string|max:255',
          'value' => 'required_if:type,url|nullable|string|max:500',
          'course_category_id' => 'required_if:type,category|nullable|integer|exists:course_categories,id',
+         'blog_category_id' => 'required_if:type,blog_category|nullable|integer|exists:blog_categories,id',
          'display_courses_in_menu' => 'nullable|boolean',
          'active' => 'required|boolean',
          'parent_id' => 'nullable|integer|exists:navbar_items,id',
@@ -47,7 +48,7 @@ class NavbarItemRequest extends FormRequest
    {
       return [
          'type.required' => 'The navbar item type is required.',
-         'type.in' => 'The navbar item type must be one of: url, category, or action.',
+         'type.in' => 'The navbar item type must be one of: url, category, blog_category, or action.',
          'slug.required' => 'The slug is required.',
          'slug.max' => 'The slug may not be greater than 255 characters.',
          'title.required' => 'The title is required.',
@@ -56,6 +57,8 @@ class NavbarItemRequest extends FormRequest
          'value.max' => 'The value may not be greater than 500 characters.',
          'course_category_id.required_if' => 'Please select a course category.',
          'course_category_id.exists' => 'The selected course category does not exist.',
+         'blog_category_id.required_if' => 'Please select a blog category.',
+         'blog_category_id.exists' => 'The selected blog category does not exist.',
          'display_courses_in_menu.boolean' => 'The display courses in menu field must be true or false.',
          'items.array' => 'The dropdown items must be an array.',
          'items.*.title.required_with' => 'Each dropdown item must have a title.',
